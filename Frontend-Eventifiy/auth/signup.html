@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Sign up | EVENTIFY</title>
+<style>
+    @font-face {
+        font-family: 'Material Symbols Outlined';
+        font-style: normal;
+        font-weight: 100 700;
+        font-display: block;
+        src: url('../assets/fonts/material-symbols-outlined.woff2') format('woff2');
+    }
+    .material-symbols-outlined {
+        font-family: 'Material Symbols Outlined';
+        font-weight: normal;
+        font-style: normal;
+        font-size: 24px;
+        line-height: 1;
+        letter-spacing: normal;
+        text-transform: none;
+        display: inline-block;
+        white-space: nowrap;
+        overflow: hidden;
+        word-wrap: normal;
+        direction: ltr;
+        -webkit-font-feature-settings: 'liga';
+        -webkit-font-smoothing: antialiased;
+    }
+    </style>
+
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+    tailwind.config = {
+        darkMode: "class",
+        theme: {
+            extend: {
+                colors: {
+                    background: "#faf8ff", surface: "#faf8ff",
+                    "surface-container-lowest": "#ffffff", "surface-container-low": "#f3f3fe",
+                    "surface-container": "#ededf9", "on-surface": "#191b23",
+                    "on-surface-variant": "#434655", outline: "#737686", "outline-variant": "#c3c6d7",
+                    primary: "#0058be", "on-primary": "#ffffff", "primary-container": "#2170e4",
+                    secondary: "#6b38d4", "on-secondary": "#ffffff",
+                    tertiary: "#006947",
+                    error: "#ba1a1a"
+                },
+                fontFamily: {
+                    "headline-lg": ["Inter"], "headline-md": ["Inter"], "title-lg": ["Inter"],
+                    "body-lg": ["Inter"], "body-md": ["Inter"], "body-sm": ["Inter"], "label-md": ["Inter"], "label-lg": ["Inter"]
+                },
+                fontSize: {
+                    "headline-lg": ["32px", {"lineHeight": "40px", "fontWeight": "700"}],
+                    "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "700"}],
+                    "title-lg": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                    "label-md": ["14px", {"lineHeight": "20px", "fontWeight": "600"}],
+                    "label-lg": ["16px", {"lineHeight": "22px", "fontWeight": "600"}]
+                }
+            }
+        }
+    }
+</script>
+<style>
+    body { font-family: 'Inter', sans-serif; }
+    .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; vertical-align: middle; }
+    .brand-gradient-text { background: linear-gradient(90deg, #0058be, #6b38d4); -webkit-background-clip: text; background-clip: text; color: transparent; }
+    .side-gradient { background: radial-gradient(120% 120% at 80% 10%, rgba(107,56,212,0.9) 0%, rgba(0,88,190,0.9) 55%, rgba(0,105,71,0.85) 100%); }
+    input:focus { outline: none !important; border-color: #0058be !important; box-shadow: 0 0 0 3px rgba(0,88,190,0.12) !important; }
+</style>
+</head>
+<body class="bg-background text-on-surface min-h-screen">
+<div class="min-h-screen grid grid-cols-1 lg:grid-cols-2">
+<!-- Visual Side -->
+<div class="hidden lg:flex side-gradient items-center justify-center p-16 relative overflow-hidden order-2 lg:order-1">
+<div class="relative z-10 text-white max-w-md space-y-6">
+<span class="material-symbols-outlined text-5xl" style="font-variation-settings: 'FILL' 1;">hub</span>
+<h2 class="font-headline-md text-headline-md">Discover. Connect. Grow.</h2>
+<p class="font-body-md text-body-md text-white/85">Create your profile, let AI generate your CV, and unlock competitions, courses, and events matched to you.</p>
+<div class="flex flex-col gap-3 pt-2">
+<span class="flex items-center gap-2 font-body-sm text-body-sm"><span class="material-symbols-outlined text-[18px]">check_circle</span> Smart AI recommendations</span>
+<span class="flex items-center gap-2 font-body-sm text-body-sm"><span class="material-symbols-outlined text-[18px]">check_circle</span> Apply from one place</span>
+<span class="flex items-center gap-2 font-body-sm text-body-sm"><span class="material-symbols-outlined text-[18px]">check_circle</span> Follow organizations &amp; join teams</span>
+</div>
+</div>
+</div>
+<!-- Form Side -->
+<div class="flex flex-col justify-center px-6 sm:px-16 py-12 order-1 lg:order-2">
+<a class="flex items-center gap-2 mb-10" href="../marketing/landing.html">
+<span class="material-symbols-outlined text-primary text-3xl" style="font-variation-settings: 'FILL' 1;">hub</span>
+<span class="font-title-lg text-title-lg font-black brand-gradient-text">EVENTIFY</span>
+</a>
+<div class="max-w-md w-full mx-auto">
+<h1 class="font-headline-lg text-headline-lg mb-2">Create your account</h1>
+<p class="font-body-md text-body-md text-on-surface-variant mb-6" id="subtitle">Start discovering opportunities tailored to your skills.</p>
+<div class="grid grid-cols-2 gap-3 mb-6" role="radiogroup" aria-label="Account type">
+<button aria-checked="true" class="account-type-btn flex flex-col items-center gap-2 py-4 rounded-xl border-2 border-primary bg-primary/5 transition-colors" data-type="personal" role="radio" type="button">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">person</span>
+<span class="font-label-md text-label-md text-on-surface">Personal Account</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Find opportunities</span>
+</button>
+<button aria-checked="false" class="account-type-btn flex flex-col items-center gap-2 py-4 rounded-xl border-2 border-outline-variant transition-colors" data-type="organization" role="radio" type="button">
+<span class="material-symbols-outlined text-on-surface-variant">apartment</span>
+<span class="font-label-md text-label-md text-on-surface">Organization Account</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Publish events</span>
+</button>
+</div>
+<form class="space-y-5" id="signup-form" onsubmit="event.preventDefault(); window.location.href=document.getElementById('signup-form').dataset.destination || '../index.html';">
+<div class="flex flex-col gap-2">
+<label class="font-label-md text-label-md" for="name" id="name-label">Full name</label>
+<input class="h-12 px-4 bg-surface-container-lowest border border-outline-variant rounded-lg transition-all" id="name" placeholder="Sarah Chen" required="" type="text"/>
+</div>
+<div class="flex flex-col gap-2 hidden" id="org-website-field">
+<label class="font-label-md text-label-md" for="org-website">Website <span class="text-on-surface-variant font-normal">(optional)</span></label>
+<input class="h-12 px-4 bg-surface-container-lowest border border-outline-variant rounded-lg transition-all" id="org-website" placeholder="https://yourorganization.com" type="url"/>
+</div>
+<div class="flex flex-col gap-2">
+<label class="font-label-md text-label-md" for="email" id="email-label">Email</label>
+<input class="h-12 px-4 bg-surface-container-lowest border border-outline-variant rounded-lg transition-all" id="email" placeholder="you@example.com" required="" type="email"/>
+</div>
+<div class="flex flex-col gap-2">
+<label class="font-label-md text-label-md" for="password">Password</label>
+<input class="h-12 px-4 bg-surface-container-lowest border border-outline-variant rounded-lg transition-all" id="password" placeholder="At least 8 characters" required="" type="password"/>
+</div>
+<label class="flex items-start gap-2 font-body-sm text-body-sm text-on-surface-variant">
+<input class="rounded border-outline-variant text-primary mt-0.5" required="" type="checkbox"/>
+                        I agree to the <a class="text-primary hover:underline" href="../marketing/about.html">Terms</a> and <a class="text-primary hover:underline" href="../marketing/about.html">Privacy Policy</a>
+                    </label>
+<button class="w-full h-12 bg-primary text-on-primary rounded-full font-label-lg text-label-lg shadow-md hover:bg-primary-container transition-colors" id="submit-btn" type="submit">Create account</button>
+</form>
+<div class="flex items-center gap-4 my-8">
+<div class="flex-1 h-px bg-outline-variant"></div>
+<span class="font-label-sm text-on-surface-variant">OR</span>
+<div class="flex-1 h-px bg-outline-variant"></div>
+</div>
+<button class="w-full h-12 border border-outline-variant rounded-full font-label-md text-label-md flex items-center justify-center gap-2 hover:bg-surface-container-low transition-colors" type="button">
+<span class="material-symbols-outlined text-[20px]">mail</span> Continue with Google
+            </button>
+<p class="text-center font-body-sm text-body-sm text-on-surface-variant mt-8">Already have an account? <a class="text-primary font-semibold hover:underline" href="login.html">Log in</a></p>
+</div>
+</div>
+</div>
+<script>
+    const accountConfig = {
+        personal: {
+            subtitle: "Start discovering opportunities tailored to your skills.",
+            nameLabel: "Full name",
+            namePlaceholder: "Sarah Chen",
+            emailLabel: "Email",
+            emailPlaceholder: "you@example.com",
+            submitLabel: "Create account",
+            destination: "../index.html",
+            showWebsite: false
+        },
+       organization: {
+    subtitle: "Complete your organization registration by verifying your organization details.",
+    nameLabel: "Organization name",
+    namePlaceholder: "e.g. TechGenius Labs",
+    emailLabel: "Work email",
+    emailPlaceholder: "contact@yourorganization.com",
+    submitLabel: "Continue to Verification",
+    destination: "organization-verification.html",
+    showWebsite: true
+}
+    };
+
+    const buttons = document.querySelectorAll(".account-type-btn");
+    const form = document.getElementById("signup-form");
+    const orgWebsiteField = document.getElementById("org-website-field");
+
+    function applyAccountType(type) {
+        const cfg = accountConfig[type];
+        document.getElementById("subtitle").textContent = cfg.subtitle;
+        document.getElementById("name-label").textContent = cfg.nameLabel;
+        document.getElementById("name").placeholder = cfg.namePlaceholder;
+        document.getElementById("email-label").textContent = cfg.emailLabel;
+        document.getElementById("email").placeholder = cfg.emailPlaceholder;
+        document.getElementById("submit-btn").textContent = cfg.submitLabel;
+        form.dataset.destination = cfg.destination;
+        orgWebsiteField.classList.toggle("hidden", !cfg.showWebsite);
+
+        buttons.forEach((btn) => {
+            const active = btn.dataset.type === type;
+            btn.setAttribute("aria-checked", active ? "true" : "false");
+            btn.classList.toggle("border-primary", active);
+            btn.classList.toggle("bg-primary/5", active);
+            btn.classList.toggle("border-outline-variant", !active);
+            btn.querySelector(".material-symbols-outlined").classList.toggle("text-primary", active);
+            btn.querySelector(".material-symbols-outlined").classList.toggle("text-on-surface-variant", !active);
+        });
+    }
+
+    buttons.forEach((btn) => btn.addEventListener("click", () => applyAccountType(btn.dataset.type)));
+    applyAccountType("personal");
+</script>
+</body></html>

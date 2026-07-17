@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Rafeeq AI | EVENTIFY</title>
+<style>
+    @font-face {
+        font-family: 'Material Symbols Outlined';
+        font-style: normal;
+        font-weight: 100 700;
+        font-display: block;
+        src: url('../assets/fonts/material-symbols-outlined.woff2') format('woff2');
+    }
+    .material-symbols-outlined {
+        font-family: 'Material Symbols Outlined';
+        font-weight: normal;
+        font-style: normal;
+        font-size: 24px;
+        line-height: 1;
+        letter-spacing: normal;
+        text-transform: none;
+        display: inline-block;
+        white-space: nowrap;
+        overflow: hidden;
+        word-wrap: normal;
+        direction: ltr;
+        -webkit-font-feature-settings: 'liga';
+        -webkit-font-smoothing: antialiased;
+    }
+    </style>
+
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+    tailwind.config = {
+        darkMode: "class",
+        theme: {
+            extend: {
+                colors: {
+                    background: "#f8f9ff", surface: "#f8f9ff", "surface-container-lowest": "#ffffff",
+                    "surface-container-low": "#eff4ff", "surface-container": "#e6eeff", "surface-container-high": "#dce9ff",
+                    "on-background": "#0d1c2e", "on-surface": "#0d1c2e", "on-surface-variant": "#424754",
+                    outline: "#727785", "outline-variant": "#c2c6d6",
+                    primary: "#0058be", "on-primary": "#ffffff", "primary-container": "#2170e4",
+                    secondary: "#6b38d4", "on-secondary": "#ffffff", "secondary-container": "#8455ef",
+                    tertiary: "#006947"
+                },
+                spacing: { "container-margin-mobile": "16px", "container-margin-desktop": "40px" },
+                fontFamily: {
+                    "headline-lg-mobile": ["Inter"], "headline-md": ["Inter"], "title-md": ["Inter"],
+                    "body-lg": ["Inter"], "body-md": ["Inter"], "body-sm": ["Inter"], "label-md": ["Inter"], "label-sm": ["Inter"]
+                },
+                fontSize: {
+                    "headline-lg-mobile": ["24px", {"lineHeight": "30px", "fontWeight": "700"}],
+                    "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "700"}],
+                    "title-md": ["18px", {"lineHeight": "26px", "fontWeight": "600"}],
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                    "label-md": ["14px", {"lineHeight": "20px", "fontWeight": "600"}],
+                    "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "500"}]
+                }
+            }
+        }
+    }
+</script>
+<style>
+    body { font-family: 'Inter', sans-serif; }
+    .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; vertical-align: middle; }
+    .rafeeq-gradient { background: linear-gradient(135deg, #0058be 0%, #6b38d4 100%); }
+    .bubble-ai { background: #ffffff; border: 1px solid #c2c6d6; }
+    .bubble-user { background: #0058be; color: #fff; }
+    .mode-active { background: #fff; color: #0058be; box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
+</style>
+</head>
+<body class="bg-background text-on-background min-h-screen flex flex-col">
+<!-- Top Bar -->
+<header class="sticky top-0 z-50 w-full h-16 bg-surface/90 backdrop-blur-md border-b border-outline-variant/30 flex items-center px-container-margin-mobile md:px-container-margin-desktop">
+<div class="flex justify-between items-center w-full max-w-[900px] mx-auto">
+<a class="flex items-center gap-2 text-on-surface-variant hover:text-primary transition-colors" href="../index.html">
+<span class="material-symbols-outlined">arrow_back</span>
+<span class="font-label-md text-label-md">Back</span>
+</a>
+<div class="flex items-center gap-2">
+<div class="w-9 h-9 rounded-full rafeeq-gradient flex items-center justify-center">
+<span class="material-symbols-outlined text-white text-[20px]">smart_toy</span>
+</div>
+<span class="font-title-md text-title-md">Rafeeq</span>
+</div>
+<div class="flex bg-surface-container rounded-full p-1">
+<button class="mode-active px-4 py-1.5 rounded-full font-label-sm text-label-sm transition-all" id="text-mode-btn">Text</button>
+<button class="px-4 py-1.5 rounded-full font-label-sm text-label-sm text-on-surface-variant transition-all" id="voice-mode-btn">Voice</button>
+</div>
+</div>
+</header>
+<!-- Chat Area -->
+<main class="flex-1 max-w-[900px] w-full mx-auto px-container-margin-mobile md:px-container-margin-desktop py-8 flex flex-col gap-6" id="chat-log">
+<div class="flex gap-3 max-w-[80%]">
+<div class="w-9 h-9 rounded-full rafeeq-gradient flex items-center justify-center flex-shrink-0">
+<span class="material-symbols-outlined text-white text-[18px]">smart_toy</span>
+</div>
+<div class="bubble-ai rounded-2xl rounded-tl-sm px-5 py-3.5 font-body-md text-body-md">
+                Hi! I'm Rafeeq, your AI voice companion. Ready to help you find the right opportunity — want me to check what matches your skills right now?
+            </div>
+</div>
+<div class="flex gap-3 max-w-[80%] self-end flex-row-reverse">
+<div class="bubble-user rounded-2xl rounded-tr-sm px-5 py-3.5 font-body-md text-body-md">
+                Yes, what matches my Python and machine learning skills?
+            </div>
+</div>
+<div class="flex gap-3 max-w-[80%]">
+<div class="w-9 h-9 rounded-full rafeeq-gradient flex items-center justify-center flex-shrink-0">
+<span class="material-symbols-outlined text-white text-[18px]">smart_toy</span>
+</div>
+<div class="space-y-3">
+<div class="bubble-ai rounded-2xl rounded-tl-sm px-5 py-3.5 font-body-md text-body-md">
+                    I found 3 strong matches. The top one is a <strong>98% match</strong> — the Global AI Innovation Challenge, a hackathon focused on applied AI. Want me to summarize it or check your compatibility in detail?
+                </div>
+<div class="flex flex-wrap gap-2">
+<a class="px-4 py-2 bg-surface-container-lowest border border-outline-variant rounded-lg font-label-sm text-label-sm hover:border-primary/50 transition-colors flex items-center gap-1" href="opportunity.html"><span class="material-symbols-outlined text-[16px] text-primary">summarize</span> Summarize it</a>
+<a class="px-4 py-2 bg-surface-container-lowest border border-outline-variant rounded-lg font-label-sm text-label-sm hover:border-primary/50 transition-colors flex items-center gap-1" href="opportunity.html"><span class="material-symbols-outlined text-[16px] text-secondary">target</span> Check compatibility</a>
+<a class="px-4 py-2 bg-surface-container-lowest border border-outline-variant rounded-lg font-label-sm text-label-sm hover:border-primary/50 transition-colors flex items-center gap-1" href="explore.html"><span class="material-symbols-outlined text-[16px] text-tertiary">explore</span> Show more matches</a>
+</div>
+</div>
+</div>
+</main>
+<!-- Text Input Bar -->
+<div class="sticky bottom-0 w-full bg-surface/95 backdrop-blur-md border-t border-outline-variant/30 p-4" id="text-input-bar">
+<form class="max-w-[900px] mx-auto flex items-center gap-3" onsubmit="event.preventDefault();">
+<input class="flex-1 h-12 px-5 bg-surface-container-lowest border border-outline-variant rounded-full focus:ring-2 focus:ring-primary focus:border-transparent transition-all font-body-md" placeholder="Ask Rafeeq anything about opportunities…" type="text"/>
+<button class="w-12 h-12 rafeeq-gradient rounded-full flex items-center justify-center text-white shadow-md hover:scale-105 transition-transform flex-shrink-0" type="submit">
+<span class="material-symbols-outlined">send</span>
+</button>
+</form>
+</div>
+<!-- Voice Mode Panel (hidden by default) -->
+<div class="hidden flex-1 flex-col items-center justify-center gap-6 pb-16" id="voice-panel">
+<div class="relative">
+<div class="w-40 h-40 rounded-full rafeeq-gradient flex items-center justify-center shadow-2xl">
+<span class="material-symbols-outlined text-white text-6xl">mic</span>
+</div>
+<span class="absolute inset-0 rounded-full bg-primary/20 animate-ping"></span>
+</div>
+<p class="font-body-lg text-body-lg text-on-surface-variant text-center max-w-sm px-6">Tap the mic and talk naturally — Rafeeq listens, analyzes, and guides you every step of the way.</p>
+<button class="px-6 py-3 border border-outline-variant rounded-full font-label-md text-label-md hover:bg-surface-container transition-colors" id="switch-to-text">Switch to text instead</button>
+</div>
+<script>
+    const textBtn = document.getElementById('text-mode-btn');
+    const voiceBtn = document.getElementById('voice-mode-btn');
+    const chatLog = document.getElementById('chat-log');
+    const textBar = document.getElementById('text-input-bar');
+    const voicePanel = document.getElementById('voice-panel');
+
+    function showText() {
+        chatLog.classList.remove('hidden');
+        textBar.classList.remove('hidden');
+        voicePanel.classList.add('hidden');
+        voicePanel.classList.remove('flex');
+        textBtn.classList.add('mode-active');
+        voiceBtn.classList.remove('mode-active');
+    }
+    function showVoice() {
+        chatLog.classList.add('hidden');
+        textBar.classList.add('hidden');
+        voicePanel.classList.remove('hidden');
+        voicePanel.classList.add('flex');
+        voiceBtn.classList.add('mode-active');
+        textBtn.classList.remove('mode-active');
+    }
+    textBtn.addEventListener('click', showText);
+    voiceBtn.addEventListener('click', showVoice);
+    document.getElementById('switch-to-text').addEventListener('click', showText);
+</script>
+</body></html>
