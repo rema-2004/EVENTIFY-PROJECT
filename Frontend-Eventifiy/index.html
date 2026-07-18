@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>EVENTIFY | AI-Powered Opportunity Hub</title>
+<!-- Global Theme Handler (Prevents FOUC in dark mode) -->
+<script src="assets/js/theme.js"></script>
+<link rel="stylesheet" href="assets/css/theme.css"/>
+<style>
+    @font-face {
+        font-family: 'Material Symbols Outlined';
+        font-style: normal;
+        font-weight: 100 700;
+        font-display: block;
+        src: url('assets/fonts/material-symbols-outlined.woff2') format('woff2');
+    }
+    .material-symbols-outlined {
+        font-family: 'Material Symbols Outlined';
+        font-weight: normal;
+        font-style: normal;
+        font-size: 24px;
+        line-height: 1;
+        letter-spacing: normal;
+        text-transform: none;
+        display: inline-block;
+        white-space: nowrap;
+        overflow: hidden;
+        word-wrap: normal;
+        direction: ltr;
+        -webkit-font-feature-settings: 'liga';
+        -webkit-font-smoothing: antialiased;
+    }
+    </style>
+
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-secondary-fixed": "#23005c",
+                        "surface-variant": "#d5e3fc",
+                        "on-tertiary": "#ffffff",
+                        "on-tertiary-fixed-variant": "#005236",
+                        "error-container": "#ffdad6",
+                        "outline": "#727785",
+                        "background": "#f8f9ff",
+                        "surface": "#f8f9ff",
+                        "on-tertiary-container": "#f5fff6",
+                        "tertiary-fixed-dim": "#4edea3",
+                        "on-background": "#0d1c2e",
+                        "surface-container-lowest": "#ffffff",
+                        "secondary-container": "#8455ef",
+                        "tertiary": "#006947",
+                        "tertiary-fixed": "#6ffbbe",
+                        "surface-bright": "#f8f9ff",
+                        "on-primary-fixed": "#001a42",
+                        "on-error": "#ffffff",
+                        "surface-container-low": "#eff4ff",
+                        "on-secondary-container": "#fffbff",
+                        "on-error-container": "#93000a",
+                        "on-surface-variant": "#424754",
+                        "secondary-fixed-dim": "#d0bcff",
+                        "on-secondary": "#ffffff",
+                        "primary": "#0058be",
+                        "primary-fixed": "#d8e2ff",
+                        "surface-container": "#e6eeff",
+                        "secondary": "#6b38d4",
+                        "tertiary-container": "#00855b",
+                        "surface-tint": "#005ac2",
+                        "on-primary-container": "#fefcff",
+                        "on-tertiary-fixed": "#002113",
+                        "on-primary": "#ffffff",
+                        "error": "#ba1a1a",
+                        "surface-dim": "#ccdbf3",
+                        "primary-fixed-dim": "#adc6ff",
+                        "primary-container": "#2170e4",
+                        "inverse-on-surface": "#eaf1ff",
+                        "outline-variant": "#c2c6d6",
+                        "inverse-surface": "#233144",
+                        "surface-container-high": "#dce9ff",
+                        "surface-container-highest": "#d5e3fc",
+                        "on-surface": "#0d1c2e",
+                        "on-secondary-fixed-variant": "#5516be",
+                        "on-primary-fixed-variant": "#004395",
+                        "inverse-primary": "#adc6ff",
+                        "secondary-fixed": "#e9ddff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "20px",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "xs": "4px",
+                        "container-margin-desktop": "40px",
+                        "sm": "8px",
+                        "base": "4px",
+                        "2xl": "48px",
+                        "xl": "32px",
+                        "container-margin-mobile": "16px",
+                        "md": "16px",
+                        "lg": "24px",
+                        "gutter": "16px"
+                    },
+                    "fontFamily": {
+                        "headline-xl": ["Inter"],
+                        "headline-lg-mobile": ["Inter"],
+                        "body-md": ["Inter"],
+                        "title-md": ["Inter"],
+                        "headline-lg": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "label-md": ["Inter"],
+                        "body-sm": ["Inter"],
+                        "label-sm": ["Inter"]
+                    },
+                    "fontSize": {
+                        "headline-xl": ["36px", {"lineHeight": "44px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "headline-lg-mobile": ["24px", {"lineHeight": "30px", "fontWeight": "700"}],
+                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "title-md": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                        "headline-lg": ["28px", {"lineHeight": "34px", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                        "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                        "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                        "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                        "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "500"}]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .bento-grid {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: 24px;
+        }
+        .match-glow {
+            box-shadow: 0 0 20px rgba(59, 130, 246, 0.15);
+        }
+        .rafeeq-gradient {
+            background: linear-gradient(135deg, #0058be 0%, #6b38d4 100%);
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background min-h-screen pb-24 md:pb-0 dark:bg-[#0d1c2e] dark:text-[#f8f9ff] transition-colors duration-300">
+<!-- Top Navigation Bar -->
+<nav class="fixed top-0 w-full z-50 glass-nav border-b border-outline-variant/30 dark:border-white/10 h-16 flex items-center">
+<div class="flex justify-between items-center px-container-margin-mobile md:px-container-margin-desktop w-full max-w-[1280px] mx-auto">
+<div class="flex items-center gap-8">
+<a class="font-headline-lg-mobile text-headline-lg-mobile font-bold tracking-tight text-primary" href="index.html">EVENTIFY</a>
+<div class="hidden md:flex gap-6">
+<a class="font-label-md text-label-md text-primary font-bold border-b-2 border-primary pb-1 transition-all" href="index.html">Home</a>
+<a class="font-label-md text-label-md text-on-surface-variant hover:text-primary dark:text-[#c3c6d7] dark:hover:text-primary transition-colors" href="app/explore.html">Explore</a>
+<a class="font-label-md text-label-md text-on-surface-variant hover:text-primary dark:text-[#c3c6d7] dark:hover:text-primary transition-colors" href="app/posts.html">Posts</a>
+<a class="font-label-md text-label-md text-on-surface-variant hover:text-primary dark:text-[#c3c6d7] dark:hover:text-primary transition-colors" href="app/notifications.html">Notifications</a>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<button class="theme-toggle w-9 h-9 rounded-full flex items-center justify-center text-on-surface-variant hover:text-primary hover:bg-surface-container-low dark:text-gray-300 dark:hover:text-white dark:hover:bg-white/10 transition-colors" title="Switch theme">
+    <span class="material-symbols-outlined text-[20px]">dark_mode</span>
+</button>
+<a class="hidden md:flex items-center gap-2 px-4 py-2 bg-primary/5 hover:bg-primary/10 rounded-lg text-primary dark:text-primary dark:hover:bg-primary/10 font-label-md transition-all" href="app/rafeeq.html">
+<span class="material-symbols-outlined text-[20px]" data-icon="smart_toy">smart_toy</span>
+                    Rafeeq AI
+                </a>
+<a class="h-10 w-10 rounded-full overflow-hidden border-2 border-primary-container block" href="app/profile.html">
+<img class="w-full h-full object-cover" data-alt="A clean, professional headshot of a diverse young professional man in his late 20s with a warm, confident smile. He is wearing a modern navy blue blazer over a crisp white shirt. The background is a soft-focus office environment with large windows and bright natural light, reflecting the premium, high-stakes event management brand aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCaUW4ycO4zpbXU8-f7qQ8e67JQFR0kFopGobvmcyuwtb7RmtLjv8uPEEmSl-hbsk0Uo2ApZUUq0wRlZ_zn8PJ4ugNgbj5OOGiU0BEkvvm8agYRwod83fIHy3htoOWJsIvO4ldpAhRTz0oyAMispIOZSiEf-bq73m7QKJeH-ZAfVM4q8r4pOddVVra4gOVTwYxIXtrSAQ5_f0WzHxDTzUUNzi4IEbgzPPqIh4aHvXgk12witr7-3N8pVFOo07Rs0y08Ht-8bubrd2i-"/>
+</a>
+</div>
+</div>
+</nav>
+<!-- Main Content Canvas -->
+<main class="pt-24 pb-12 px-container-margin-mobile md:px-container-margin-desktop max-w-[1280px] mx-auto space-y-12">
+<!-- Hero Section -->
+<section class="relative overflow-hidden rounded-xl p-8 md:p-16 flex flex-col items-center text-center space-y-6">
+<!-- Atmospheric Background -->
+<div class="absolute inset-0 -z-10 bg-gradient-to-br from-primary-container/20 via-surface to-secondary-container/10 dark:from-primary/10 dark:via-[#0e1f35] dark:to-secondary/5"></div>
+
+<div class="space-y-2">
+<span class="inline-block px-4 py-1 bg-primary/10 text-primary dark:bg-primary/20 dark:text-primary-container font-label-md rounded-full">Welcome Back 👋</span>
+<h1 class="font-headline-xl text-headline-xl text-on-background dark:text-white tracking-tight max-w-2xl mx-auto">
+                    Discover the Right <span class="text-primary italic">Opportunity</span> with AI
+                </h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant dark:text-gray-300 max-w-xl mx-auto">
+                    Find competitions, events, workshops, and courses tailored to your skills and interests.
+                </p>
+</div>
+<div class="w-full max-w-3xl relative mt-8">
+<div class="absolute inset-y-0 left-5 flex items-center pointer-events-none">
+<span class="material-symbols-outlined text-outline" data-icon="search">search</span>
+</div>
+<input class="w-full pl-14 pr-32 py-5 bg-surface dark:bg-slate-900/90 dark:text-white border border-outline-variant dark:border-white/15 shadow-lg rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent transition-all text-body-md font-body-md" placeholder="Search opportunities, events, workshops, or courses..." type="text"/>
+<button class="absolute right-3 top-2.5 bottom-2.5 px-6 bg-primary text-on-primary font-label-md rounded-lg hover:bg-primary-container transition-colors">
+                    Search
+                </button>
+</div>
+</section>
+<!-- AI Recommendation Section -->
+<section class="space-y-6">
+<div class="flex justify-between items-end">
+<div class="space-y-1">
+<h2 class="font-headline-lg text-headline-lg text-on-background dark:text-white flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary" data-icon="auto_awesome">auto_awesome</span>
+                        Recommended For You
+                    </h2>
+<p class="font-body-md text-body-md text-on-surface-variant dark:text-gray-300">Based on your profile and skills, we found opportunities that match your interests.</p>
+</div>
+<a class="text-primary font-label-md hover:underline" href="app/explore.html">View All Matches</a>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-gutter">
+<!-- Recommended Card 1 -->
+<div class="bg-surface-container-lowest dark:bg-slate-900/80 border border-outline-variant/30 dark:border-white/10 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-all group border-l-4 border-l-secondary premium-card">
+<div class="h-48 relative overflow-hidden">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="A dynamic digital art piece representing a global coding hackathon. The scene shows glowing blue circuit lines flowing through a futuristic city skyline under a night sky." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB9CEnFNI0sa64wtdt1xcbuCO2ctuePljYf3b0mGoAfsaVbTQZl6EUEKGeq_A-lCje6-84UGOy-xM_EX1fj34sF-YWMO-_0SG4_iedT1vjYrRw5UpEFxOlngZ_cDhCxJRFxyyChSuzfbQzaifbDrY-ySQm0SZNqdXFNpNdzVSiaboP2NAJ4pYTV-P32G1lYqug8kLksnCytiGNYKiUHGIacjDYyZIZ5HHucNTeyCLWQmzn3HRdmrm8n18EIgGN0AobDjfqjTG3DQkjK"/>
+<div class="absolute top-3 right-3 px-3 py-1 bg-secondary text-white rounded-lg font-label-sm flex items-center gap-1 shadow-lg">
+<span class="material-symbols-outlined text-[14px]" data-icon="bolt">bolt</span> 98% Match
+                        </div>
+</div>
+<div class="p-6 space-y-4">
+<div>
+<span class="text-[10px] uppercase tracking-wider text-secondary font-bold">HACKATHON</span>
+<a class="block" href="app/opportunity.html"><h3 class="font-title-md text-title-md text-on-background dark:text-white line-clamp-1 mt-1 hover:text-primary transition-colors">Global AI Innovation Challenge</h3></a>
+<p class="font-body-sm text-body-sm text-on-surface-variant dark:text-gray-300">By TechGenius Labs</p>
+</div>
+<div class="flex items-center gap-4 text-outline dark:text-gray-400 font-label-sm">
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-[18px]" data-icon="calendar_month">calendar_month</span>
+                                Oct 24
+                            </div>
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-[18px]" data-icon="location_on">location_on</span>
+                                Remote
+                            </div>
+</div>
+<div class="flex gap-2 pt-2">
+<a class="flex-1 text-center bg-tertiary text-on-tertiary font-label-md py-3 rounded-lg hover:opacity-90 transition-opacity" href="app/opportunity.html">Apply Now</a>
+<button class="px-3 border border-outline-variant dark:border-white/10 rounded-lg hover:bg-surface-container dark:hover:bg-slate-800 transition-colors text-on-surface-variant dark:text-gray-300">
+<span class="material-symbols-outlined" data-icon="bookmark">bookmark</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Recommended Card 2 -->
+<div class="bg-surface-container-lowest dark:bg-slate-900/80 border border-outline-variant/30 dark:border-white/10 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-all group border-l-4 border-l-primary premium-card">
+<div class="h-48 relative overflow-hidden">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="A professional workshop setting focused on deep learning." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBcUXLF60F3KbDnIVZepTTte_yzkhe3rkuMtXTXTMQzA1gyVuzXN1NQ0DXC7XHQBDIHEA2TXLK8EoSvioCS5PoWNoZKnVI7YeLCAxqcRtKE-cfSsrD6X3yBiiGI_J0DdnCu4vgHVOf7tn5UW93gDceqUiZ4hVu5ZCvSuDbEd3Dm8uTINHyELfvrJM4AvcW6lRAm2zAmGTlp9N7rNMUMizYToAN1_rTfY1KtEjsmeIx--zlkOzEz07DRgirbjC8bnSBfxNFTTtVBYuqf"/>
+<div class="absolute top-3 right-3 px-3 py-1 bg-secondary text-white rounded-lg font-label-sm flex items-center gap-1 shadow-lg">
+<span class="material-symbols-outlined text-[14px]" data-icon="bolt">bolt</span> 95% Match
+                        </div>
+</div>
+<div class="p-6 space-y-4">
+<div>
+<span class="text-[10px] uppercase tracking-wider text-primary font-bold">WORKSHOP</span>
+<a class="block" href="app/opportunity.html"><h3 class="font-title-md text-title-md text-on-background dark:text-white line-clamp-1 mt-1 hover:text-primary transition-colors">Deep Learning Mastery</h3></a>
+<p class="font-body-sm text-body-sm text-on-surface-variant dark:text-gray-300">University of Technology</p>
+</div>
+<div class="flex items-center gap-4 text-outline dark:text-gray-400 font-label-sm">
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-[18px]" data-icon="calendar_month">calendar_month</span>
+                                Nov 12
+                            </div>
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-[18px]" data-icon="location_on">location_on</span>
+                                Hybrid
+                            </div>
+</div>
+<div class="flex gap-2 pt-2">
+<a class="flex-1 text-center bg-tertiary text-on-tertiary font-label-md py-3 rounded-lg hover:opacity-90 transition-opacity" href="app/opportunity.html">Register</a>
+<button class="px-3 border border-outline-variant dark:border-white/10 rounded-lg hover:bg-surface-container dark:hover:bg-slate-800 transition-colors text-on-surface-variant dark:text-gray-300">
+<span class="material-symbols-outlined" data-icon="bookmark">bookmark</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Recommended Card 3 -->
+<div class="bg-surface-container-lowest dark:bg-slate-900/80 border border-outline-variant/30 dark:border-white/10 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-all group border-l-4 border-l-secondary premium-card">
+<div class="h-48 relative overflow-hidden">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="A futuristic web development competition poster." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAoXFluzheWmZ490MELdToAMEYpR_txVKV30osgae_hCJtZOTitQ7q-hlRINJEb6yu8WczfucSzRFeg7_ASopSg4PYi40bcSgLBAzpyDWcgZltV0lVaadKj9Hxg_0-MIvEynOlpWfO6oad4LDePXnQqUogQYAUOomnsxNQRm0sYppi6tcEF-XVtGAmZwLlJ7Zzvf2ojEvEnU0EwWkAE_qpAYRfUYUWLDeKx1nnQtM-6DxX8uCm13GfTKpd5tCt-XHKS5s04qO3jTwFA"/>
+<div class="absolute top-3 right-3 px-3 py-1 bg-secondary text-white rounded-lg font-label-sm flex items-center gap-1 shadow-lg">
+<span class="material-symbols-outlined text-[14px]" data-icon="bolt">bolt</span> 92% Match
+                        </div>
+</div>
+<div class="p-6 space-y-4">
+<div>
+<span class="text-[10px] uppercase tracking-wider text-secondary font-bold">COMPETITION</span>
+<a class="block" href="app/opportunity.html"><h3 class="font-title-md text-title-md text-on-background dark:text-white line-clamp-1 mt-1 hover:text-primary transition-colors">Frontend Wizards 2024</h3></a>
+<p class="font-body-sm text-body-sm text-on-surface-variant dark:text-gray-300">DevCommunity Hub</p>
+</div>
+<div class="flex items-center gap-4 text-outline dark:text-gray-400 font-label-sm">
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-[18px]" data-icon="calendar_month">calendar_month</span>
+                                Dec 05
+                            </div>
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-[18px]" data-icon="location_on">location_on</span>
+                                London, UK
+                            </div>
+</div>
+<div class="flex gap-2 pt-2">
+<a class="flex-1 text-center bg-tertiary text-on-tertiary font-label-md py-3 rounded-lg hover:opacity-90 transition-opacity" href="app/opportunity.html">Join Now</a>
+<button class="px-3 border border-outline-variant dark:border-white/10 rounded-lg hover:bg-surface-container dark:hover:bg-slate-800 transition-colors text-on-surface-variant dark:text-gray-300">
+<span class="material-symbols-outlined" data-icon="bookmark">bookmark</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Competitions Section -->
+<section class="space-y-6">
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+<h2 class="font-headline-lg text-headline-lg text-on-background dark:text-white">Explore Competitions</h2>
+<div class="flex gap-3 overflow-x-auto pb-2 md:pb-0 custom-scrollbar">
+<button class="px-5 py-2 rounded-full bg-primary text-on-primary font-label-md whitespace-nowrap">All</button>
+<button class="px-5 py-2 rounded-full bg-surface-container dark:bg-slate-800 text-on-surface-variant dark:text-[#c3c6d7] hover:bg-primary-fixed-dim dark:hover:bg-primary/20 transition-colors font-label-md whitespace-nowrap">AI &amp; Data</button>
+<button class="px-5 py-2 rounded-full bg-surface-container dark:bg-slate-800 text-on-surface-variant dark:text-[#c3c6d7] hover:bg-primary-fixed-dim dark:hover:bg-primary/20 transition-colors font-label-md whitespace-nowrap">Programming</button>
+<button class="px-5 py-2 rounded-full bg-surface-container dark:bg-slate-800 text-on-surface-variant dark:text-[#c3c6d7] hover:bg-primary-fixed-dim dark:hover:bg-primary/20 transition-colors font-label-md whitespace-nowrap">University</button>
+<button class="px-5 py-2 rounded-full bg-surface-container dark:bg-slate-800 text-on-surface-variant dark:text-[#c3c6d7] hover:bg-primary-fixed-dim dark:hover:bg-primary/20 transition-colors font-label-md whitespace-nowrap">Hackathons</button>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-4 gap-gutter">
+<!-- Comp Card 1 -->
+<div class="bg-surface-container-lowest dark:bg-slate-900/80 border border-outline-variant/30 dark:border-white/10 rounded-xl p-4 space-y-4 premium-card cursor-pointer group" onclick="location.href='app/opportunity.html'">
+<div class="aspect-video rounded-lg overflow-hidden mb-4">
+<img class="w-full h-full object-cover" data-alt="Cyber Sentinel CTF" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBv-V-8GjFWlxuhqQq9nPPBCQKNIYRDy0-x7U8GZDqCxf3lpcSiGNgXTpm9Dp9vtBNtYRJM9-o_XfAV_yWpqjCDBHhA3Xin8gTKbYsCIpYqce02UMEzafn25IYfHI6hd-IasfwMRqIx3qADrfqnj7m-D_PHpWiW6GRyb70Zw9C6yT7Xu6xsRz80sxxnJdXORtOzWdcpjojOlvDh2cdJULC_KUcENGeijXkCPjAA02-axN9qR_MrffMvhq-xjwZhj4cy_sT0Lsf7llBS"/>
+</div>
+<div class="flex justify-between items-start">
+<h4 class="font-title-md text-title-md text-on-background dark:text-white leading-tight">Cyber Sentinel CTF</h4>
+<span class="material-symbols-outlined text-outline dark:text-gray-400" data-icon="more_vert">more_vert</span>
+</div>
+<div class="space-y-2">
+<div class="flex items-center gap-2 text-outline dark:text-gray-400 font-label-sm">
+<span class="material-symbols-outlined text-[16px]" data-icon="groups">groups</span>
+                            Teams of 2-4
+                        </div>
+<div class="flex items-center gap-2 text-outline dark:text-gray-400 font-label-sm">
+<span class="material-symbols-outlined text-[16px]" data-icon="history">history</span>
+                            Ends in 5 days
+                        </div>
+</div>
+<div class="pt-2 flex items-center justify-between">
+<span class="px-3 py-1 bg-primary/5 text-primary text-[10px] font-bold rounded">LEVEL: ADVANCED</span>
+<span class="text-tertiary font-bold">$10k Prize</span>
+</div>
+</div>
+<!-- Comp Card 2 -->
+<div class="bg-surface-container-lowest dark:bg-slate-900/80 border border-outline-variant/30 dark:border-white/10 rounded-xl p-4 space-y-4 premium-card cursor-pointer group" onclick="location.href='app/opportunity.html'">
+<div class="aspect-video rounded-lg overflow-hidden mb-4">
+<img class="w-full h-full object-cover" data-alt="BizVantage Case Study" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAXn10C98Y8WUzcNLWBVvJ22710pYfWPZ0AdwJnkvIzzrkRa7SjmiUkilVPYW1oiK4Ay94CQTAE0NXfvrvQ1ES-3iyitDyREyHfC70KWD_7_pt6i4p6iLUmLapJfW3QyXTfYv66FWPz2QXVOtb_-1E6Xq2ZxWaVcVWTZuTF9J3PPl1-05OI8e-Te2CMLQPBS91gPoxcPfvlOHji7ZgCnKJinWFcW43YJAc9F9-8zF3LC5xxItr7Sgurkz4D6WhyaY2YYeCNgPQOH1ve"/>
+</div>
+<div class="flex justify-between items-start">
+<h4 class="font-title-md text-title-md text-on-background dark:text-white leading-tight">BizVantage Case Study</h4>
+<span class="material-symbols-outlined text-outline dark:text-gray-400" data-icon="more_vert">more_vert</span>
+</div>
+<div class="space-y-2">
+<div class="flex items-center gap-2 text-outline dark:text-gray-400 font-label-sm">
+<span class="material-symbols-outlined text-[16px]" data-icon="school">school</span>
+                            University Only
+                        </div>
+<div class="flex items-center gap-2 text-outline dark:text-gray-400 font-label-sm">
+<span class="material-symbols-outlined text-[16px]" data-icon="history">history</span>
+                            Registration Open
+                        </div>
+</div>
+<div class="pt-2 flex items-center justify-between">
+<span class="px-3 py-1 bg-primary/5 text-primary text-[10px] font-bold rounded">LEVEL: INTERMEDIATE</span>
+<span class="text-tertiary font-bold">Scholarship</span>
+</div>
+</div>
+<!-- Comp Card 3 -->
+<div class="bg-surface-container-lowest dark:bg-slate-900/80 border border-outline-variant/30 dark:border-white/10 rounded-xl p-4 space-y-4 premium-card cursor-pointer group" onclick="location.href='app/opportunity.html'">
+<div class="aspect-video rounded-lg overflow-hidden mb-4">
+<img class="w-full h-full object-cover" data-alt="DesignSprint 2024" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC3eL49qDKde8nJat8bbMD-e7iLAX5jUmYWEgqWWO3G4gKStDqZVQcvk-s0RAU_pzaZfmmGzBNiqJ0B90CztUFJsVgCQpiCiOIrzyZSob_6KdzfhMj191B5cm02XzBYKFUHVnYwHkgLcxET11ZEq7eZ3UN9W4lbYliTucyjKFvVY8yMqG-4JV5p3mAA1oYqsYiICSzmgCacyFAQ6SXYl7Fmm2s9yLl19UR4LVmrIGVCmPfepE7pwtjpwcBOapQEnDac5lnwZZ00ht5g"/>
+</div>
+<div class="flex justify-between items-start">
+<h4 class="font-title-md text-title-md text-on-background dark:text-white leading-tight">DesignSprint 2024</h4>
+<span class="material-symbols-outlined text-outline dark:text-gray-400" data-icon="more_vert">more_vert</span>
+</div>
+<div class="space-y-2">
+<div class="flex items-center gap-2 text-outline dark:text-gray-400 font-label-sm">
+<span class="material-symbols-outlined text-[16px]" data-icon="brush">brush</span>
+                            UI/UX Designers
+                        </div>
+<div class="flex items-center gap-2 text-outline dark:text-gray-400 font-label-sm">
+<span class="material-symbols-outlined text-[16px]" data-icon="history">history</span>
+                            Starts Tomorrow
+                        </div>
+</div>
+<div class="pt-2 flex items-center justify-between">
+<span class="px-3 py-1 bg-primary/5 text-primary text-[10px] font-bold rounded">LEVEL: OPEN</span>
+<span class="text-tertiary font-bold">Mentorship</span>
+</div>
+</div>
+<!-- Comp Card 4 -->
+<div class="bg-surface-container-lowest dark:bg-slate-900/80 border border-outline-variant/30 dark:border-white/10 rounded-xl p-4 space-y-4 premium-card cursor-pointer group" onclick="location.href='app/opportunity.html'">
+<div class="aspect-video rounded-lg overflow-hidden mb-4">
+<img class="w-full h-full object-cover" data-alt="RoboQuest Tech Challenge" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCXjuV5CQGqc-ZmamRm8rBUtKL8uClHTygX0WXc3pOz_URa_gxCcG8AwYwcTdoFJJMwYHK-8yGqGa_we6rtmdJ-o-dlrTDebv3EOaalvLTX0AbshUPKUwZyYLGMzXshnisKSXxiIb3z5i5gXzLOxFzkZDGyp2eiai4-zFbHE6L5JTyXWjUxjY4-Gr7FYQmzegkgSeyQxjeA9O5cBo5ah87T3qI-xYuJRoP8DJnofGUr37XLhF-OcBMLzFhDfV99BeirnKTIQgJ4rqvS"/>
+</div>
+<div class="flex justify-between items-start">
+<h4 class="font-title-md text-title-md text-on-background dark:text-white leading-tight">RoboQuest Tech</h4>
+<span class="material-symbols-outlined text-outline dark:text-gray-400" data-icon="more_vert">more_vert</span>
+</div>
+<div class="space-y-2">
+<div class="flex items-center gap-2 text-outline dark:text-gray-400 font-label-sm">
+<span class="material-symbols-outlined text-[16px]" data-icon="precision_manufacturing">precision_manufacturing</span>
+                            Hardware Devs
+                        </div>
+<div class="flex items-center gap-2 text-outline dark:text-gray-400 font-label-sm">
+<span class="material-symbols-outlined text-[16px]" data-icon="history">history</span>
+                            Ends in 2 days
+                        </div>
+</div>
+<div class="pt-2 flex items-center justify-between">
+<span class="px-3 py-1 bg-primary/5 text-primary text-[10px] font-bold rounded">LEVEL: ADVANCED</span>
+<span class="text-tertiary font-bold">$25k Grant</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Events Section -->
+<section class="space-y-8">
+<div class="flex flex-col md:flex-row items-center justify-between border-b border-outline-variant/30 dark:border-white/10">
+<div class="flex gap-8">
+<button class="pb-4 font-label-md text-primary border-b-2 border-primary">All Events</button>
+<button class="pb-4 font-label-md text-on-surface-variant dark:text-[#c3c6d7] hover:text-primary transition-colors">Workshops</button>
+<button class="pb-4 font-label-md text-on-surface-variant dark:text-[#c3c6d7] hover:text-primary transition-colors">Courses</button>
+<button class="pb-4 font-label-md text-on-surface-variant dark:text-[#c3c6d7] hover:text-primary transition-colors">Conferences</button>
+</div>
+<div class="pb-4 hidden md:flex items-center gap-2 text-on-surface-variant dark:text-[#c3c6d7] font-label-sm">
+<span class="material-symbols-outlined" data-icon="filter_list">filter_list</span>
+                    Filter by Date
+                </div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-12 gap-gutter">
+<!-- Large Featured Event -->
+<div class="md:col-span-8 bg-surface-container-lowest dark:bg-slate-900/60 border border-outline-variant/30 dark:border-white/10 rounded-xl overflow-hidden shadow-sm flex flex-col md:flex-row h-auto md:h-80 premium-card cursor-pointer" onclick="location.href='app/opportunity.html'">
+<div class="md:w-1/2 overflow-hidden">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" data-alt="Featured Event" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB4XGVVgdXcQZS5VeH1XemHRZule_sQgpM4yB8dp3TMxmIjOTnb7x77AU3_AQqluVNnUoBk5iOwilGg_Cj8LHOtQPsJVDcaa2kfvpwYLdBwATyhzxwNtAS856W4G73Ol2mDobe-pFocsYIgmXPkxxqQyS3aZpjC91TuFLwh-po8QIPiLvPOm1yFqZmmNUYFn-URTuNl5djEq9B_ex_XDVvWZZOaO1ql7f1IdMFa91gP9zwnDLnSsn8-06q6CYeqKkjDxqTjq8-BsmeU"/>
+</div>
+<div class="md:w-1/2 p-8 flex flex-col justify-between">
+<div class="space-y-2">
+<div class="flex items-center gap-2">
+<span class="px-2 py-1 bg-primary/10 text-primary text-[10px] font-bold rounded">FEATURED</span>
+<span class="text-error font-bold text-[10px]">LIVE NOW</span>
+</div>
+<h3 class="font-headline-lg text-headline-lg text-on-background dark:text-white leading-tight">Global AI Summit 2024: The Future of Agents</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant dark:text-gray-300 line-clamp-2">Join industry leaders from OpenAI, Google, and Meta for a three-day intensive summit on autonomous AI agents and their impact on global productivity.</p>
+</div>
+<div class="flex items-center justify-between pt-4">
+<div class="flex items-center -space-x-2">
+<div class="w-8 h-8 rounded-full border-2 border-white dark:border-slate-900 bg-surface-container-high flex items-center justify-center text-[10px] text-on-background dark:text-white">+1.2k</div>
+<div class="w-8 h-8 rounded-full border-2 border-white dark:border-slate-900 overflow-hidden bg-primary-fixed"></div>
+<div class="w-8 h-8 rounded-full border-2 border-white dark:border-slate-900 overflow-hidden bg-secondary-fixed"></div>
+</div>
+<button class="px-6 py-2 bg-primary text-on-primary rounded-lg font-label-md">Join Session</button>
+</div>
+</div>
+</div>
+<!-- Small Sidebar Event -->
+<div class="md:col-span-4 space-y-gutter">
+<div class="bg-surface-container-lowest dark:bg-slate-900/60 border border-outline-variant/30 dark:border-white/10 rounded-xl p-6 flex gap-4 items-center cursor-pointer hover:border-primary/50 dark:hover:border-primary/50 transition-colors" onclick="location.href='app/opportunity.html'">
+<div class="w-16 h-16 rounded-xl bg-primary-container/20 dark:bg-primary-container/10 flex flex-col items-center justify-center text-primary">
+<span class="font-bold text-headline-lg-mobile">28</span>
+<span class="text-[10px] font-bold uppercase">OCT</span>
+</div>
+<div>
+<h4 class="font-title-md text-title-md text-on-background dark:text-white line-clamp-1">Product Strategy Course</h4>
+<p class="text-on-surface-variant dark:text-gray-300 text-body-sm">6-Week Certificate Program</p>
+</div>
+</div>
+<div class="bg-surface-container-lowest dark:bg-slate-900/60 border border-outline-variant/30 dark:border-white/10 rounded-xl p-6 flex gap-4 items-center cursor-pointer hover:border-primary/50 dark:hover:border-primary/50 transition-colors" onclick="location.href='app/opportunity.html'">
+<div class="w-16 h-16 rounded-xl bg-secondary-container/20 dark:bg-secondary-container/10 flex flex-col items-center justify-center text-secondary">
+<span class="font-bold text-headline-lg-mobile">02</span>
+<span class="text-[10px] font-bold uppercase">NOV</span>
+</div>
+<div>
+<h4 class="font-title-md text-title-md text-on-background dark:text-white line-clamp-1">Rust for Web Devs</h4>
+<p class="text-on-surface-variant dark:text-gray-300 text-body-sm">Interactive Workshop</p>
+</div>
+</div>
+<div class="bg-surface-container-lowest dark:bg-slate-900/60 border border-outline-variant/30 dark:border-white/10 rounded-xl p-6 flex gap-4 items-center cursor-pointer hover:border-primary/50 dark:hover:border-primary/50 transition-colors" onclick="location.href='app/opportunity.html'">
+<div class="w-16 h-16 rounded-xl bg-tertiary-container/20 dark:bg-tertiary-container/10 flex flex-col items-center justify-center text-tertiary">
+<span class="font-bold text-headline-lg-mobile">15</span>
+<span class="text-[10px] font-bold uppercase">NOV</span>
+</div>
+<div>
+<h4 class="font-title-md text-title-md text-on-background dark:text-white line-clamp-1">DevOps Masterclass</h4>
+<p class="text-on-surface-variant dark:text-gray-300 text-body-sm">Hands-on Cloud Lab</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- AI Assistant: Rafeeq UI -->
+<div class="fixed bottom-8 right-8 z-[60] flex flex-col items-end pointer-events-none">
+<!-- AI Dialogue Popup -->
+<div class="mb-4 w-72 bg-white dark:bg-slate-900/95 backdrop-blur-md rounded-xl shadow-2xl border border-outline-variant/50 dark:border-white/15 overflow-hidden pointer-events-auto opacity-0 translate-y-10 transition-all duration-500" id="rafeeq-popup">
+<div class="rafeeq-gradient p-4 flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-white" data-icon="smart_toy">smart_toy</span>
+<span class="text-white font-bold font-label-md">Rafeeq AI</span>
+</div>
+<button class="text-white/80 hover:text-white pointer-events-auto" onclick="toggleRafeeq()">
+<span class="material-symbols-outlined" data-icon="close">close</span>
+</button>
+</div>
+<div class="p-4 space-y-4">
+<div class="flex items-center justify-between">
+    <p class="text-body-sm text-on-surface dark:text-white italic">"I've found 3 new competitions matching your Python skills!"</p>
+    <div class="voice-wave-container ml-2">
+        <span class="voice-bar"></span>
+        <span class="voice-bar"></span>
+        <span class="voice-bar"></span>
+        <span class="voice-bar"></span>
+        <span class="voice-bar"></span>
+    </div>
+</div>
+<div class="grid grid-cols-2 gap-2">
+<button class="p-2 text-left bg-surface dark:bg-slate-800 hover:bg-surface-container dark:hover:bg-slate-700/80 rounded-lg border border-outline-variant/30 dark:border-white/10 transition-colors pointer-events-auto">
+<span class="material-symbols-outlined text-primary text-[18px] block" data-icon="summarize">summarize</span>
+<span class="text-[10px] font-bold text-on-surface-variant dark:text-gray-300">Summarize</span>
+</button>
+<button class="p-2 text-left bg-surface dark:bg-slate-800 hover:bg-surface-container dark:hover:bg-slate-700/80 rounded-lg border border-outline-variant/30 dark:border-white/10 transition-colors pointer-events-auto">
+<span class="material-symbols-outlined text-secondary text-[18px] block" data-icon="menu_book">menu_book</span>
+<span class="text-[10px] font-bold text-on-surface-variant dark:text-gray-300">Explain</span>
+</button>
+<button class="p-2 text-left bg-surface dark:bg-slate-800 hover:bg-surface-container dark:hover:bg-slate-700/80 rounded-lg border border-outline-variant/30 dark:border-white/10 transition-colors pointer-events-auto">
+<span class="material-symbols-outlined text-tertiary text-[18px] block" data-icon="analytics">analytics</span>
+<span class="text-[10px] font-bold text-on-surface-variant dark:text-gray-300">Analyze</span>
+</button>
+<button class="p-2 text-left bg-surface dark:bg-slate-800 hover:bg-surface-container dark:hover:bg-slate-700/80 rounded-lg border border-outline-variant/30 dark:border-white/10 transition-colors pointer-events-auto">
+<span class="material-symbols-outlined text-primary-container text-[18px] block" data-icon="tips_and_updates">tips_and_updates</span>
+<span class="text-[10px] font-bold text-on-surface-variant dark:text-gray-300">Suggest</span>
+</button>
+</div>
+<a class="block text-center w-full py-2 bg-primary/5 hover:bg-primary/10 dark:hover:bg-primary/20 text-primary rounded-lg font-label-md text-label-md transition-colors pointer-events-auto" href="app/rafeeq.html">Open full chat</a>
+</div>
+</div>
+<!-- Floating Action Button -->
+<button class="pointer-events-auto h-16 w-16 rafeeq-gradient rounded-full shadow-xl flex items-center justify-center text-white hover:scale-110 active:scale-95 transition-all shadow-secondary/30 relative animate-pulse-wave" onclick="toggleRafeeq()">
+<span class="material-symbols-outlined text-[32px]" data-icon="mic">mic</span>
+</button>
+</div>
+<!-- Mobile Navigation (Suppressed on Desktop) -->
+<nav class="fixed bottom-0 w-full rounded-t-xl z-50 md:hidden flex justify-around items-center px-4 py-2 pb-safe bg-surface dark:bg-slate-900 border-t border-outline-variant/30 dark:border-white/10 shadow-[0_-4px_12px_rgba(59,130,246,0.08)]">
+<a class="flex flex-col items-center justify-center text-secondary bg-secondary-container/20 rounded-xl px-3 py-1 transition-transform active:scale-90" href="index.html">
+<span class="material-symbols-outlined" data-icon="home">home</span>
+<span class="font-label-sm text-label-sm">Home</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-gray-400 transition-transform active:scale-90" href="app/explore.html">
+<span class="material-symbols-outlined" data-icon="emoji_events">emoji_events</span>
+<span class="font-label-sm text-label-sm">Explore</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-gray-400 transition-transform active:scale-90" href="app/posts.html">
+<span class="material-symbols-outlined" data-icon="campaign">campaign</span>
+<span class="font-label-sm text-label-sm">Posts</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-gray-400 transition-transform active:scale-90" href="app/rafeeq.html">
+<span class="material-symbols-outlined" data-icon="smart_toy">smart_toy</span>
+<span class="font-label-sm text-label-sm">Rafeeq</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-gray-400 transition-transform active:scale-90" href="app/profile.html">
+<span class="material-symbols-outlined" data-icon="person">person</span>
+<span class="font-label-sm text-label-sm">Profile</span>
+</a>
+</nav>
+<script>
+        let isRafeeqOpen = false;
+        const popup = document.getElementById('rafeeq-popup');
+
+        function toggleRafeeq() {
+            isRafeeqOpen = !isRafeeqOpen;
+            if (isRafeeqOpen) {
+                popup.classList.remove('opacity-0', 'translate-y-10');
+                popup.classList.add('opacity-100', 'translate-y-0');
+            } else {
+                popup.classList.add('opacity-0', 'translate-y-10');
+                popup.classList.remove('opacity-100', 'translate-y-0');
+            }
+        }
+
+        // Show popup after a short delay for engagement
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                if (!isRafeeqOpen) toggleRafeeq();
+            }, 3000);
+        });
+    </script>
+</body></html>

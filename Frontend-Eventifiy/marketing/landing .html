@@ -1,0 +1,2508 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EVENTIFY | Discover Opportunities. Build Your Future.</title>
+<meta name="description" content="Discover events, competitions, hackathons, internships and courses with EVENTIFY — matched to you by AI.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+<style>
+:root{
+  --primary:#0058BE;
+  --primary-dark:#00417F;
+  --primary-light:#3E82D8;
+  --secondary:#6B38D4;
+  --secondary-light:#9B6FE8;
+  --bg:#F8FAFC;
+  --surface:#FFFFFF;
+  --text:#0D1C2E;
+  --text-muted:#5B6472;
+  --border:rgba(17,24,39,.06);
+  --border-strong:rgba(17,24,39,.10);
+  --radius:20px;
+  --radius-lg:28px;
+  --shadow-soft:0 12px 32px -12px rgba(17,24,39,.08);
+  --shadow-card:0 2px 12px -2px rgba(17,24,39,.06);
+  --shadow-card-hover:0 12px 28px -8px rgba(17,24,39,.10);
+  --shadow-elevated:0 16px 36px -10px rgba(17,24,39,.12);
+  --grad-brand:linear-gradient(135deg,var(--primary) 0%,var(--secondary) 100%);
+  --grad-brand-soft:linear-gradient(135deg,rgba(0,88,190,.08) 0%,rgba(107,56,212,.08) 100%);
+  --grad-brand-medium:linear-gradient(135deg,rgba(0,88,190,.14) 0%,rgba(107,56,212,.14) 100%);
+}
+
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;overflow-y:scroll;}
+body{
+  font-family:'Inter',sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+  overflow-x:hidden;
+  width:100%;
+}
+html::-webkit-scrollbar{width:0;}
+h1,h2,h3,h4{font-family:'Space Grotesk',sans-serif;letter-spacing:-.02em;line-height:1.15;}
+.mono{font-family:'JetBrains Mono',monospace;}
+a{text-decoration:none;color:inherit;}
+ul{list-style:none;}
+img{display:block;max-width:100%;}
+button{font-family:inherit;cursor:pointer;border:none;background:none;}
+.container{max-width:1200px;margin:0 auto;padding:0 24px;}
+section{position:relative;}
+
+.section-pad{padding:120px 0;}
+@media(max-width:768px){.section-pad{padding:80px 0;}}
+@media(max-width:480px){.section-pad{padding:60px 0;}}
+.section-gap{margin-top:-1px;}
+
+.section-tag{
+  display:inline-flex;align-items:center;gap:8px;
+  font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--primary);
+  background:var(--grad-brand-soft);
+  padding:8px 18px;border-radius:100px;margin-bottom:20px;
+}
+.section-head{max-width:600px;margin-bottom:56px;}
+.section-head h2{font-size:clamp(28px,3.2vw,40px);font-weight:700;margin-bottom:14px;color:var(--text);letter-spacing:-.03em;line-height:1.18;}
+.section-head p{font-size:16px;color:var(--text-muted);line-height:1.7;max-width:500px;}
+.section-head.center{margin-left:auto;margin-right:auto;text-align:center;}
+
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  padding:14px 28px;border-radius:100px;font-weight:600;font-size:14px;
+  transition:all .3s cubic-bezier(.2,.8,.2,1);
+  white-space:nowrap;position:relative;overflow:hidden;
+  letter-spacing:.01em;
+}
+.btn::after{
+  content:'';position:absolute;inset:0;background:rgba(255,255,255,0);transition:background .3s;
+  pointer-events:none;
+}
+.btn:hover::after{background:rgba(255,255,255,.1);}
+.btn-primary{
+  background:var(--grad-brand);color:#fff;
+  box-shadow:0 6px 20px -4px rgba(0,88,190,.35);
+  border:1px solid rgba(255,255,255,.1);
+}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 10px 28px -6px rgba(0,88,190,.45);letter-spacing:.02em;}
+.btn-primary:active{transform:translateY(0) scale(.98);box-shadow:0 4px 16px -4px rgba(0,88,190,.35);}
+.btn-light{
+  background:rgba(255,255,255,.1);color:#fff;
+  border:1.5px solid rgba(255,255,255,.2);backdrop-filter:blur(12px);
+}
+.btn-light:hover{background:rgba(255,255,255,.18);transform:translateY(-2px);border-color:rgba(255,255,255,.4);}
+.btn-outline{
+  border:1.5px solid var(--border-strong);color:var(--text);
+  background:var(--surface);
+}
+.btn-outline:hover{border-color:var(--primary);color:var(--primary);transform:translateY(-2px);box-shadow:var(--shadow-card);}
+.btn-sm{padding:11px 22px;font-size:13px;}
+.btn-lg{padding:17px 36px;font-size:15px;}
+.btn-icon{
+  width:44px;height:44px;padding:0;border-radius:14px;flex-shrink:0;
+}
+
+/* ===== PREMIUM BACKGROUND EFFECTS ===== */
+.bg-glow{
+  position:absolute;border-radius:50%;filter:blur(140px);pointer-events:none;z-index:0;opacity:.6;
+}
+.bg-glow-1{width:700px;height:700px;background:rgba(0,88,190,.05);top:-250px;right:-150px;}
+.bg-glow-2{width:600px;height:600px;background:rgba(107,56,212,.04);bottom:-200px;left:-150px;}
+.bg-glow-3{width:500px;height:500px;background:rgba(0,88,190,.035);top:50%;left:50%;transform:translate(-50%,-50%);}
+
+.bg-mesh{
+  position:absolute;inset:0;pointer-events:none;z-index:0;
+  background:
+    radial-gradient(circle at 20% 30%,rgba(0,88,190,.03) 0%,transparent 50%),
+    radial-gradient(circle at 80% 70%,rgba(107,56,212,.025) 0%,transparent 50%),
+    radial-gradient(circle at 50% 50%,rgba(0,88,190,.02) 0%,transparent 60%);
+}
+
+.bg-dots{
+  position:absolute;inset:0;pointer-events:none;z-index:0;opacity:.3;
+  background-image:radial-gradient(circle,rgba(0,88,190,.08) 1px,transparent 1px);
+  background-size:24px 24px;
+}
+
+/* ===== NAVBAR ===== */
+.navbar{
+  position:fixed;top:0;left:0;right:0;z-index:1000;
+  padding:20px 0;transition:all .4s cubic-bezier(.2,.8,.2,1);
+}
+.navbar.scrolled{
+  background:rgba(248,250,252,.82);backdrop-filter:blur(20px) saturate(180%);
+  -webkit-backdrop-filter:blur(20px) saturate(180%);
+  border-bottom:1px solid var(--border);padding:14px 0;
+  box-shadow:0 1px 3px rgba(17,24,39,.04);
+}
+.navbar .container{display:flex;align-items:center;justify-content:space-between;}
+.logo{display:flex;align-items:center;transition:opacity .2s;}
+.logo:hover{opacity:.85;}
+.logo img{height:52px;width:auto;}
+@media(max-width:768px){.logo img{height:42px;}}
+.navbar:not(.scrolled) .logo img{filter:brightness(0) invert(1) drop-shadow(0 1px 4px rgba(0,0,0,.3));}
+.navbar.scrolled .logo img{filter:none;}
+.nav-links{display:flex;gap:32px;}
+.nav-links a{
+  font-size:14px;font-weight:500;color:rgba(255,255,255,.8);
+  transition:color .25s;position:relative;
+}
+.nav-links a::after{
+  content:'';position:absolute;bottom:-4px;left:0;width:0;height:2px;
+  background:var(--grad-brand);border-radius:100px;transition:width .3s cubic-bezier(.2,.8,.2,1);
+}
+.nav-links a:hover::after{width:100%;}
+.navbar.scrolled .nav-links a{color:var(--text-muted);}
+.nav-links a:hover,.nav-links a.active{color:var(--primary);}
+.navbar:not(.scrolled) .nav-links a:hover,.navbar:not(.scrolled) .nav-links a.active{color:#fff;}
+.nav-buttons{display:flex;align-items:center;gap:12px;}
+.navbar:not(.scrolled) .btn-outline{border-color:rgba(255,255,255,.45);color:#fff;background:transparent;}
+.mobile-menu{display:none;font-size:22px;color:#fff;}
+.navbar.scrolled .mobile-menu{color:var(--text);}
+@media(max-width:920px){
+  .nav-links,.nav-buttons{display:none;}
+  .mobile-menu{display:block;}
+}
+
+/* ===== HERO / SLIDER ===== */
+.hero{position:relative;width:100vw;height:100vh;min-height:720px;overflow:hidden;left:50%;right:50%;margin-left:-50vw;margin-right:-50vw;}
+.slider{position:relative;width:100%;height:100%;}
+.slide{
+  position:absolute;inset:0;opacity:0;visibility:hidden;
+  transform:scale(1.06);
+  transition:opacity 1.2s ease,transform 6s ease,visibility 1.2s;
+}
+.slide.active{opacity:1;visibility:visible;transform:scale(1);z-index:2;}
+.slide-bg{position:absolute;inset:0;overflow:hidden;}
+.slide-bg img{width:100%;height:100%;object-fit:cover;position:absolute;inset:0;}
+.slide-bg .fallback{
+  position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+  font-size:min(30vw,340px);color:rgba(255,255,255,.08);
+}
+.slide-1 .slide-bg{background:linear-gradient(135deg,#031B3D,#0058BE 55%,#6B38D4);}
+.slide-2 .slide-bg{background:linear-gradient(135deg,#1B0B3D,#3A1F8F 50%,#0058BE);}
+.slide-3 .slide-bg{background:linear-gradient(135deg,#04203A,#0058BE 60%,#3E82D8);}
+.slide-4 .slide-bg{background:linear-gradient(135deg,#3B0F1F,#6B38D4 55%,#0058BE);}
+.slide-5 .slide-bg{background:linear-gradient(135deg,#021429,#00417F 50%,#6B38D4);}
+.overlay{position:absolute;inset:0;background:linear-gradient(90deg,rgba(3,10,25,.75) 0%,rgba(3,10,25,.50) 50%,rgba(3,10,25,.25) 100%);}
+.hero-content{position:relative;z-index:3;height:100%;display:flex;align-items:center;gap:60px;}
+.hero-left{max-width:600px;color:#fff;}
+.badge{
+  display:inline-flex;align-items:center;gap:8px;font-size:12px;font-weight:600;
+  padding:8px 18px;border-radius:100px;background:rgba(255,255,255,.08);
+  border:1px solid rgba(255,255,255,.18);backdrop-filter:blur(12px);margin-bottom:24px;
+  opacity:0;transform:translateY(16px);letter-spacing:.03em;
+}
+.hero-left h1{
+  font-size:clamp(38px,5vw,62px);font-weight:700;color:#fff;margin-bottom:20px;line-height:1.08;
+  text-shadow:0 2px 20px rgba(0,0,0,.12);
+}
+.hero-left h1 span{
+  background:linear-gradient(120deg,#7CB2FF,#C7A6FF);-webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.hero-left p{font-size:17px;color:rgba(255,255,255,.75);max-width:480px;margin-bottom:32px;
+  opacity:0;transform:translateY(16px);line-height:1.7;}
+.hero-buttons{display:flex;gap:14px;margin-bottom:36px;opacity:0;transform:translateY(16px);}
+.slide.active .badge,.slide.active .hero-left p,.slide.active .hero-buttons{
+  animation:riseIn .8s cubic-bezier(.2,.8,.2,1) forwards;
+}
+.slide.active .badge{animation-delay:.15s;}
+.slide.active h1{animation:riseIn .9s cubic-bezier(.2,.8,.2,1) .25s forwards;opacity:0;transform:translateY(20px);}
+.slide.active .hero-left p{animation-delay:.40s;}
+.slide.active .hero-buttons{animation-delay:.52s;}
+@keyframes riseIn{to{opacity:1;transform:translateY(0);}}
+
+/* search bar - AI powered */
+.hero-search{
+  display:flex;align-items:center;gap:0;
+  background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.2);
+  backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+  border-radius:100px;padding:5px 5px 5px 6px;max-width:520px;
+  opacity:0;transform:translateY(16px);
+  animation:riseIn .8s cubic-bezier(.2,.8,.2,1) .65s forwards;
+  transition:border-color .3s,box-shadow .3s;
+}
+.hero-search:focus-within{
+  border-color:rgba(255,255,255,.45);
+  box-shadow:0 0 0 4px rgba(255,255,255,.08);
+}
+.hero-search .search-icon{
+  color:rgba(255,255,255,.6);padding:0 4px 0 12px;font-size:14px;flex-shrink:0;
+}
+.hero-search input{
+  flex:1;background:none;border:none;outline:none;color:#fff;font-size:14px;
+  padding:12px 8px;min-width:0;font-family:'Inter';
+}
+.hero-search input::placeholder{color:rgba(255,255,255,.5);font-weight:400;}
+.hero-search .mic-btn{
+  width:38px;height:38px;border-radius:50%;background:rgba(255,255,255,.1);
+  border:1px solid rgba(255,255,255,.2);color:rgba(255,255,255,.8);
+  display:flex;align-items:center;justify-content:center;font-size:13px;
+  flex-shrink:0;transition:all .25s;
+}
+.hero-search .mic-btn:hover{background:rgba(255,255,255,.2);color:#fff;}
+.hero-search .ai-badge{
+  display:flex;align-items:center;gap:5px;font-size:11px;font-weight:600;
+  color:rgba(255,255,255,.7);padding:0 10px;border-left:1px solid rgba(255,255,255,.18);
+  white-space:nowrap;flex-shrink:0;letter-spacing:.02em;
+}
+.hero-search .ai-badge i{color:#7CB2FF;font-size:10px;}
+.hero-search button{
+  background:var(--grad-brand);color:#fff;font-weight:600;font-size:13px;
+  padding:11px 22px;border-radius:100px;flex-shrink:0;
+  transition:transform .25s,box-shadow .25s;
+}
+.hero-search button:hover{transform:scale(1.03);box-shadow:0 4px 16px rgba(0,88,190,.4);}
+@media(max-width:640px){.hero-search{flex-wrap:wrap;background:rgba(255,255,255,.12);border-radius:20px;padding:12px;}
+  .hero-search .mic-btn,.hero-search .ai-badge{display:none;}
+  .hero-search button{width:100%;justify-content:center;margin-top:6px;padding:13px;}
+}
+
+/* floating cards - cleaner & more elegant */
+.hero-right{position:relative;flex:1;height:100%;display:none;}
+@media(min-width:1080px){.hero-right{display:block;}}
+.floating-card{
+  position:absolute;
+  background:rgba(255,255,255,.78);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+  border:1px solid rgba(255,255,255,.4);border-radius:16px;padding:14px 18px;
+  box-shadow:0 8px 24px -8px rgba(3,10,25,.2),0 1px 2px rgba(3,10,25,.03);
+  color:var(--text);will-change:transform;transition:border-color .25s ease;
+}
+.floating-card:hover,.floating-card.is-selected{border-color:var(--primary);}
+.card-match{top:16%;right:8%;width:200px;animation:float1 7s ease-in-out infinite;}
+.card-match .match-label{
+  display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:600;
+  color:var(--secondary);background:rgba(107,56,212,.08);padding:4px 10px;border-radius:100px;
+  margin-bottom:10px;letter-spacing:.03em;
+}
+.card-match h3{font-size:14px;margin-bottom:8px;font-weight:600;}
+.progress{height:5px;background:#EEF1F6;border-radius:100px;overflow:hidden;margin-bottom:8px;}
+.progress-bar{height:100%;width:96%;background:var(--grad-brand);border-radius:100px;transition:width 1s ease;}
+.card-match strong{font-family:'JetBrains Mono';font-size:13px;color:var(--primary);font-weight:600;}
+.card-event{top:46%;right:12%;width:190px;display:flex;gap:12px;align-items:center;animation:float2 8s ease-in-out infinite;}
+.card-event .event-icon{
+  font-size:16px;color:var(--primary);background:var(--grad-brand-soft);
+  width:40px;height:40px;border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0;
+}
+.card-event h4{font-size:11px;color:var(--text-muted);font-weight:600;text-transform:uppercase;letter-spacing:.05em;}
+.card-event p{font-size:14px;font-weight:600;font-family:'Space Grotesk';}
+.card-users{bottom:18%;right:4%;width:180px;display:flex;gap:12px;align-items:center;animation:float3 7.5s ease-in-out infinite;}
+.card-users .users-icon{
+  font-size:14px;color:var(--secondary);background:rgba(107,56,212,.06);
+  width:38px;height:38px;border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0;
+}
+.card-users h4{font-family:'JetBrains Mono';font-size:15px;font-weight:700;}
+.card-users p{font-size:11px;color:var(--text-muted);font-weight:500;}
+@keyframes float1{0%,100%{transform:translateY(0);}50%{transform:translateY(-12px);}}
+@keyframes float2{0%,100%{transform:translateY(0);}50%{transform:translateY(10px);}}
+@keyframes float3{0%,100%{transform:translateY(0);}50%{transform:translateY(-8px);}}
+
+/* slider controls */
+.slider-nav{
+  position:absolute;top:50%;transform:translateY(-50%);z-index:5;
+  width:48px;height:48px;border-radius:50%;background:rgba(255,255,255,.1);
+  border:1px solid rgba(255,255,255,.25);color:#fff;font-size:15px;
+  display:flex;align-items:center;justify-content:center;backdrop-filter:blur(12px);
+  transition:all .3s cubic-bezier(.2,.8,.2,1);
+}
+.slider-nav:hover{background:rgba(255,255,255,.22);transform:translateY(-50%) scale(1.08);}
+.slider-prev{left:28px;}
+.slider-next{right:28px;}
+@media(max-width:640px){.slider-nav{width:40px;height:40px;font-size:13px;}
+.slider-prev{left:12px;}.slider-next{right:12px;}}
+.slider-indicators{
+  position:absolute;bottom:40px;left:50%;transform:translateX(-50%);z-index:5;
+  display:flex;gap:8px;
+}
+.slider-indicators button{
+  width:32px;height:3px;border-radius:100px;background:rgba(255,255,255,.3);
+  transition:all .3s;overflow:hidden;position:relative;
+}
+.slider-indicators button.active{background:rgba(255,255,255,.3);width:40px;}
+.slider-indicators button.active::after{
+  content:'';position:absolute;inset:0;background:#fff;border-radius:100px;
+  animation:indicatorFill 5s linear forwards;transform-origin:left;
+}
+@keyframes indicatorFill{from{transform:scaleX(0);}to{transform:scaleX(1);}}
+.scroll-hint{
+  position:absolute;bottom:40px;right:40px;z-index:5;color:rgba(255,255,255,.6);
+  font-size:11px;display:flex;flex-direction:column;align-items:center;gap:8px;
+  font-weight:500;letter-spacing:.06em;text-transform:uppercase;
+}
+@media(max-width:768px){.scroll-hint{display:none;}}
+.scroll-hint .line{width:1px;height:32px;background:linear-gradient(rgba(255,255,255,.6),transparent);
+  animation:scrollLine 2s ease-in-out infinite;}
+@keyframes scrollLine{0%{opacity:0;transform:scaleY(0);transform-origin:top;}50%{opacity:1;transform:scaleY(1);}100%{opacity:0;transform:scaleY(1);transform-origin:bottom;}}
+
+/* ===== TRUSTED BY ===== */
+.trusted{
+  padding:56px 0;border-bottom:1px solid var(--border);background:var(--surface);
+  position:relative;overflow:hidden;
+}
+.trusted::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse 60% 100% at 50% 0%,rgba(0,88,190,.03),transparent);
+}
+.trusted p{text-align:center;font-size:12px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--text-muted);margin-bottom:36px;}
+.trusted-logos{display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:48px;}
+.trusted-logos .logo-item{
+  display:flex;align-items:center;gap:10px;
+  color:#B8BFC8;transition:all .35s cubic-bezier(.2,.8,.2,1);
+  cursor:default;padding:8px 12px;border-radius:12px;
+}
+.trusted-logos .logo-item:hover{color:var(--text);background:rgba(0,88,190,.04);transform:translateY(-2px);}
+.trusted-logos .logo-item svg{width:22px;height:22px;flex-shrink:0;}
+.trusted-logos .logo-item span{font-family:'Space Grotesk';font-weight:600;font-size:17px;white-space:nowrap;}
+
+/* ===== STATS ===== */
+.stats{background:var(--grad-brand);position:relative;overflow:hidden;padding:80px 0;}
+.stats::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(circle at 15% 30%,rgba(255,255,255,.16),transparent 40%),
+             radial-gradient(circle at 85% 70%,rgba(255,255,255,.12),transparent 40%),
+             radial-gradient(circle at 50% 50%,rgba(255,255,255,.06),transparent 60%);
+}
+.stats::after{
+  content:'';position:absolute;inset:0;
+  background-image:radial-gradient(circle,rgba(255,255,255,.06) 1px,transparent 1px);
+  background-size:32px 32px;
+}
+@media(max-width:768px){.stats{padding:64px 0;}}
+.stats-grid{position:relative;display:grid;grid-template-columns:repeat(4,1fr);gap:32px;text-align:center;}
+@media(max-width:768px){.stats-grid{grid-template-columns:repeat(2,1fr);gap:24px;}}
+.stat-item{position:relative;}
+.stat-item h3{font-family:'JetBrains Mono';font-size:clamp(30px,3.8vw,44px);font-weight:700;color:#fff;margin-bottom:8px;}
+.stat-item p{color:rgba(255,255,255,.75);font-size:13px;font-weight:500;letter-spacing:.04em;}
+
+/* ===== WHY EVENTIFY ===== */
+.why-section{position:relative;background:var(--bg);}
+.why-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
+@media(max-width:900px){.why-grid{grid-template-columns:repeat(2,1fr);}}
+@media(max-width:600px){.why-grid{grid-template-columns:1fr;}}
+.why-card{
+  background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);
+  padding:36px 28px;transition:border-color .25s ease,transform .4s cubic-bezier(.2,.8,.2,1),box-shadow .4s cubic-bezier(.2,.8,.2,1);position:relative;overflow:hidden;
+}
+.why-card::before{
+  content:'';position:absolute;inset:0;background:var(--grad-brand-soft);
+  opacity:0;transition:opacity .4s;border-radius:var(--radius);
+}
+.why-card::after{
+  content:'';position:absolute;top:-40px;right:-40px;width:120px;height:120px;
+  border-radius:50%;background:rgba(0,88,190,.03);transition:all .5s;pointer-events:none;
+}
+.why-card:hover,.why-card.is-selected{transform:translateY(-4px);box-shadow:0 0 0 2px rgba(0,88,190,.18),var(--shadow-card-hover);border-color:var(--primary);}
+.why-card:hover::before{opacity:1;}
+.why-card:hover::after{transform:scale(1.5);background:rgba(0,88,190,.06);}
+.why-card>*{position:relative;z-index:1;}
+.why-icon{
+  width:48px;height:48px;border-radius:14px;background:var(--grad-brand-soft);
+  display:flex;align-items:center;justify-content:center;font-size:18px;color:var(--primary);margin-bottom:18px;
+  transition:transform .3s,background .3s;
+}
+.why-card:hover .why-icon{transform:scale(1.08);background:var(--grad-brand-medium);}
+.why-card h3{font-size:17px;margin-bottom:10px;font-weight:600;}
+.why-card p{font-size:14px;color:var(--text-muted);line-height:1.65;}
+
+/* ===== FEATURED OPPORTUNITIES ===== */
+.opp-section{position:relative;background:var(--surface);}
+.opp-section::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,var(--border-strong),transparent);
+}
+.section-head-row{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:48px;flex-wrap:wrap;gap:20px;}
+.opp-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;}
+@media(max-width:960px){.opp-grid{grid-template-columns:repeat(2,1fr);}}
+@media(max-width:640px){.opp-grid{grid-template-columns:1fr;}}
+.opp-card{
+  background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;
+  transition:border-color .25s ease,transform .4s cubic-bezier(.2,.8,.2,1),box-shadow .4s cubic-bezier(.2,.8,.2,1);position:relative;
+}
+.opp-card::after{
+  content:'';position:absolute;bottom:0;left:0;right:0;height:3px;
+  background:var(--grad-brand);opacity:0;transition:opacity .3s;z-index:2;
+}
+.opp-card:hover,.opp-card.is-selected{transform:translateY(-4px);box-shadow:0 0 0 2px rgba(0,88,190,.18),var(--shadow-card-hover);border-color:var(--primary);}
+.opp-card:hover::after{opacity:1;}
+.opp-thumb{height:160px;position:relative;display:flex;align-items:center;justify-content:center;overflow:hidden;}
+.opp-thumb i{font-size:42px;color:rgba(255,255,255,.8);transition:transform .4s;}
+.opp-card:hover .opp-thumb i{transform:scale(1.1);}
+.opp-thumb .tag{
+  position:absolute;top:14px;left:14px;
+  background:rgba(255,255,255,.92);backdrop-filter:blur(8px);
+  font-size:11px;font-weight:700;padding:5px 12px;border-radius:100px;color:var(--primary);
+  letter-spacing:.02em;
+}
+.opp-thumb .match-badge{
+  position:absolute;top:14px;right:14px;
+  background:rgba(107,56,212,.9);backdrop-filter:blur(8px);
+  font-size:11px;font-weight:700;padding:5px 12px;border-radius:100px;color:#fff;
+  display:flex;align-items:center;gap:4px;font-family:'JetBrains Mono';
+}
+.opp-body{padding:20px 22px 20px;}
+.opp-body h3{font-size:15px;margin-bottom:10px;line-height:1.35;font-weight:600;}
+.opp-meta{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px;}
+.opp-meta span{
+  display:inline-flex;align-items:center;gap:5px;font-size:12px;color:var(--text-muted);
+  background:var(--bg);padding:4px 10px;border-radius:100px;
+}
+.opp-meta i{width:12px;font-size:11px;color:var(--primary);}
+.opp-footer{display:flex;align-items:center;justify-content:space-between;padding-top:14px;border-top:1px solid var(--border);}
+.opp-footer .applicants{font-size:12px;color:var(--text-muted);font-weight:500;}
+.opp-footer .applicants strong{color:var(--text);font-weight:600;}
+.opp-body .btn{width:100%;}
+
+/* ===== CATEGORIES ===== */
+.cat-section{position:relative;background:var(--bg);}
+.cat-section::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,var(--border-strong),transparent);
+}
+.cat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;}
+@media(max-width:900px){.cat-grid{grid-template-columns:repeat(3,1fr);}}
+@media(max-width:640px){.cat-grid{grid-template-columns:repeat(2,1fr);}}
+.cat-card{
+  background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:32px 20px;
+  text-align:center;transition:border-color .25s ease,transform .4s cubic-bezier(.2,.8,.2,1),box-shadow .4s cubic-bezier(.2,.8,.2,1);position:relative;overflow:hidden;cursor:pointer;
+}
+.cat-card::before{
+  content:'';position:absolute;inset:0;background:var(--grad-brand);
+  opacity:0;transition:opacity .4s;border-radius:var(--radius);
+}
+.cat-card::after{
+  content:'';position:absolute;top:-30px;right:-30px;width:100px;height:100px;
+  border-radius:50%;background:rgba(255,255,255,.06);transition:all .5s;pointer-events:none;
+}
+.cat-card:hover,.cat-card.is-selected{transform:translateY(-4px);border-color:var(--primary);box-shadow:0 0 0 2px rgba(0,88,190,.18),var(--shadow-card-hover);}
+.cat-card:hover::before{opacity:1;}
+.cat-card:hover::after{transform:scale(1.8);}
+.cat-card>*{position:relative;z-index:1;}
+.cat-icon{
+  width:48px;height:48px;border-radius:14px;background:var(--grad-brand-soft);
+  display:inline-flex;align-items:center;justify-content:center;
+  font-size:20px;color:var(--primary);margin-bottom:14px;
+  transition:all .35s;
+}
+.cat-card:hover .cat-icon{background:rgba(255,255,255,.18);color:#fff;}
+.cat-card h4{font-size:14px;font-weight:600;transition:color .35s;margin-bottom:4px;}
+.cat-card:hover h4{color:#fff;}
+.cat-count{font-size:12px;color:var(--text-muted);font-weight:500;transition:color .35s;}
+.cat-card:hover .cat-count{color:rgba(255,255,255,.7);}
+
+/* ===== HOW IT WORKS ===== */
+.how-section{position:relative;overflow:hidden;background:var(--surface);}
+.how-section::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,var(--border-strong),transparent);
+}
+.how-steps{display:grid;grid-template-columns:repeat(4,1fr);gap:0;position:relative;}
+@media(max-width:900px){.how-steps{grid-template-columns:repeat(2,1fr);gap:24px;}}
+@media(max-width:600px){.how-steps{grid-template-columns:1fr;gap:20px;}}
+.how-step{
+  text-align:center;padding:40px 24px;position:relative;
+}
+.how-step-num{
+  width:56px;height:56px;border-radius:50%;background:var(--grad-brand-soft);
+  display:inline-flex;align-items:center;justify-content:center;
+  font-family:'JetBrains Mono';font-size:18px;font-weight:700;color:var(--primary);
+  margin-bottom:20px;position:relative;z-index:2;transition:all .3s;
+}
+.how-step:hover .how-step-num{background:var(--grad-brand);color:#fff;transform:scale(1.08);}
+.how-step-icon{
+  width:48px;height:48px;border-radius:14px;background:var(--surface);
+  border:1px solid var(--border);display:inline-flex;align-items:center;justify-content:center;
+  font-size:20px;color:var(--primary);margin-bottom:16px;transition:all .35s;
+}
+.how-step:hover .how-step-icon{background:var(--grad-brand-soft);border-color:transparent;}
+.how-step h3{font-size:16px;font-weight:600;margin-bottom:8px;}
+.how-step p{font-size:13px;color:var(--text-muted);line-height:1.6;max-width:220px;margin:0 auto;}
+.how-connector{
+  position:absolute;top:60px;left:calc(50% + 40px);right:calc(-50% + 40px);
+  height:2px;background:var(--grad-brand-soft);z-index:1;
+}
+@media(max-width:900px){.how-connector{display:none;}}
+.how-step:last-child .how-connector{display:none;}
+
+/* ===== RAFEEQ AI ===== */
+.rafeeq-section{position:relative;overflow:hidden;background:var(--bg);}
+.rafeeq-section::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,var(--border-strong),transparent);
+}
+.rafeeq{
+  background:linear-gradient(135deg,#071433 0%,#0F2A5C 40%,#2A1660 70%,#3B1E7A 100%);
+  border-radius:var(--radius-lg);padding:80px 68px;position:relative;overflow:hidden;color:#fff;
+}
+.rafeeq::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(circle at 80% 20%,rgba(155,111,232,.35),transparent 45%),
+             radial-gradient(circle at 15% 80%,rgba(62,130,216,.3),transparent 45%),
+             radial-gradient(circle at 50% 50%,rgba(255,255,255,.03),transparent 50%);
+}
+.rafeeq::after{
+  content:'';position:absolute;inset:0;
+  background-image:radial-gradient(circle,rgba(255,255,255,.04) 1px,transparent 1px);
+  background-size:28px 28px;
+}
+@media(max-width:768px){.rafeeq{padding:56px 28px;}}
+.rafeeq-inner{position:relative;display:flex;align-items:center;gap:56px;flex-wrap:wrap;}
+.rafeeq-visual{flex-shrink:0;position:relative;width:200px;height:200px;display:flex;align-items:center;justify-content:center;}
+.rafeeq-ring{position:absolute;inset:0;border-radius:50%;border:1.5px solid rgba(255,255,255,.15);}
+.rafeeq-ring.r2{inset:18px;}
+.rafeeq-ring.r3{inset:36px;}
+.rafeeq-pulse{position:absolute;inset:36px;border-radius:50%;background:rgba(255,255,255,.06);animation:pulseRing 2.4s ease-out infinite;}
+@keyframes pulseRing{0%{transform:scale(1);opacity:.6;}100%{transform:scale(1.8);opacity:0;}}
+.rafeeq-avatar{
+  position:relative;z-index:2;width:110px;height:110px;border-radius:50%;
+  background:var(--grad-brand);display:flex;align-items:center;justify-content:center;font-size:42px;
+  box-shadow:0 0 0 6px rgba(255,255,255,.06);
+}
+.rafeeq-mic{
+  position:absolute;bottom:2px;right:2px;z-index:3;width:42px;height:42px;border-radius:50%;
+  background:#fff;color:var(--primary);display:flex;align-items:center;justify-content:center;font-size:16px;
+  box-shadow:0 8px 20px rgba(0,0,0,.3);transition:transform .25s;
+}
+.rafeeq-mic:hover{transform:scale(1.08);}
+.rafeeq-text{flex:1;min-width:260px;}
+.rafeeq-text .section-tag{background:rgba(255,255,255,.1);color:#fff;}
+.rafeeq-text h2{font-size:clamp(24px,2.8vw,34px);margin-bottom:14px;}
+.rafeeq-text p{color:rgba(255,255,255,.7);font-size:15px;max-width:440px;margin-bottom:24px;line-height:1.7;}
+
+/* AI Conversation Preview */
+.ai-chat{
+  background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);
+  border-radius:16px;padding:20px;margin-bottom:28px;max-width:420px;
+  backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+}
+.ai-chat-msg{display:flex;gap:10px;margin-bottom:14px;}
+.ai-chat-msg:last-child{margin-bottom:0;}
+.ai-chat-avatar{
+  width:32px;height:32px;border-radius:10px;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;
+}
+.ai-chat-avatar.user{background:rgba(255,255,255,.15);color:#fff;}
+.ai-chat-avatar.ai{background:var(--grad-brand);color:#fff;}
+.ai-chat-bubble{
+  background:rgba(255,255,255,.08);border-radius:12px;padding:10px 14px;
+  font-size:13px;line-height:1.5;max-width:320px;color:rgba(255,255,255,.85);
+}
+.ai-chat-msg.ai-msg .ai-chat-bubble{background:rgba(107,56,212,.2);border:1px solid rgba(107,56,212,.3);}
+.ai-typing{display:flex;gap:4px;padding:4px 0;}
+.ai-typing span{width:5px;height:5px;border-radius:50%;background:rgba(255,255,255,.5);animation:typingDot 1.2s ease-in-out infinite;}
+.ai-typing span:nth-child(2){animation-delay:.15s;}
+.ai-typing span:nth-child(3){animation-delay:.3s;}
+@keyframes typingDot{0%,100%{opacity:.3;transform:scale(.8);}50%{opacity:1;transform:scale(1.1);}}
+
+.waveform{display:flex;align-items:center;gap:4px;height:32px;margin-bottom:28px;}
+.waveform span{width:3px;background:rgba(255,255,255,.45);border-radius:100px;animation:wave 1.2s ease-in-out infinite;}
+.waveform span:nth-child(1){height:10px;animation-delay:0s;}
+.waveform span:nth-child(2){height:20px;animation-delay:.1s;}
+.waveform span:nth-child(3){height:30px;animation-delay:.2s;}
+.waveform span:nth-child(4){height:14px;animation-delay:.3s;}
+.waveform span:nth-child(5){height:24px;animation-delay:.4s;}
+.waveform span:nth-child(6){height:10px;animation-delay:.5s;}
+.waveform span:nth-child(7){height:22px;animation-delay:.6s;}
+.waveform span:nth-child(8){height:8px;animation-delay:.7s;}
+@keyframes wave{0%,100%{transform:scaleY(.45);}50%{transform:scaleY(1);}}
+
+/* ===== TESTIMONIALS ===== */
+.testi-section{position:relative;background:var(--surface);}
+.testi-section::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,var(--border-strong),transparent);
+}
+.testi-wrap{position:relative;max-width:780px;margin:0 auto;}
+.testi-track{overflow:hidden;}
+.testi-slides{display:flex;transition:transform .6s cubic-bezier(.2,.8,.2,1);}
+.testi-slide{min-width:100%;padding:0 8px;}
+.testi-card{
+  background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);
+  padding:44px 40px;text-align:center;position:relative;overflow:hidden;transition:border-color .25s ease;
+}
+.testi-card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:3px;
+  background:var(--grad-brand);opacity:0;transition:opacity .3s;
+}
+.testi-card::after{
+  content:'';position:absolute;bottom:-60px;right:-60px;width:200px;height:200px;
+  border-radius:50%;background:rgba(0,88,190,.03);pointer-events:none;transition:transform .5s;
+}
+.testi-card:hover,.testi-card.is-selected{border-color:var(--primary);box-shadow:0 0 0 2px rgba(0,88,190,.14);}
+.testi-card:hover::before{opacity:1;}
+.testi-card:hover::after{transform:scale(1.2);}
+.testi-card i.quote{font-size:24px;color:var(--primary);opacity:.3;margin-bottom:20px;}
+.testi-card p{font-size:17px;color:var(--text);margin-bottom:28px;line-height:1.65;}
+.testi-avatar{
+  width:52px;height:52px;border-radius:50%;background:var(--grad-brand);margin:0 auto 14px;
+  display:flex;align-items:center;justify-content:center;color:#fff;font-weight:600;font-family:'Space Grotesk';
+  font-size:16px;box-shadow:0 4px 12px rgba(0,88,190,.2);
+}
+.testi-card h4{font-size:15px;margin-bottom:4px;font-weight:600;}
+.testi-card .testi-role{font-size:13px;color:var(--text-muted);margin-bottom:4px;}
+.testi-card .testi-achievement{
+  display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:600;
+  color:var(--secondary);background:rgba(107,56,212,.06);padding:4px 12px;border-radius:100px;
+  margin-top:8px;
+}
+.testi-dots{display:flex;justify-content:center;gap:8px;margin-top:32px;}
+.testi-dots button{width:8px;height:8px;border-radius:50%;background:var(--border-strong);transition:all .3s;}
+.testi-dots button.active{width:28px;border-radius:100px;background:var(--grad-brand);}
+
+/* ===== CTA ===== */
+.cta-section{padding:100px 0;position:relative;background:var(--bg);}
+.cta-section::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,var(--border-strong),transparent);
+}
+.cta-box{
+  background:var(--grad-brand);border-radius:var(--radius-lg);padding:72px 56px;text-align:center;
+  position:relative;overflow:hidden;
+}
+.cta-box::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(circle at 20% 20%,rgba(255,255,255,.18),transparent 45%),
+             radial-gradient(circle at 85% 85%,rgba(255,255,255,.14),transparent 45%),
+             radial-gradient(circle at 50% 50%,rgba(255,255,255,.06),transparent 60%);
+}
+.cta-box::after{
+  content:'';position:absolute;inset:0;
+  background-image:radial-gradient(circle,rgba(255,255,255,.04) 1px,transparent 1px);
+  background-size:28px 28px;
+}
+@media(max-width:768px){.cta-box{padding:56px 28px;}}
+.cta-box>*{position:relative;}
+.cta-box .section-tag{background:rgba(255,255,255,.14);color:#fff;}
+.cta-box h2{font-size:clamp(26px,3.2vw,40px);color:#fff;margin-bottom:14px;}
+.cta-box>p{color:rgba(255,255,255,.75);max-width:480px;margin:0 auto 32px;font-size:15px;line-height:1.7;}
+.cta-buttons{display:flex;justify-content:center;gap:14px;flex-wrap:wrap;margin-bottom:40px;}
+.cta-stats{
+  display:flex;justify-content:center;gap:48px;flex-wrap:wrap;
+  padding-top:32px;border-top:1px solid rgba(255,255,255,.15);
+}
+.cta-stat{text-align:center;}
+.cta-stat h4{font-family:'JetBrains Mono';font-size:22px;font-weight:700;color:#fff;margin-bottom:4px;}
+.cta-stat p{font-size:12px;color:rgba(255,255,255,.65);font-weight:500;letter-spacing:.04em;}
+
+/* ===== FOOTER ===== */
+.footer{background:#0B1220;color:rgba(255,255,255,.7);padding:80px 0 0;position:relative;}
+.footer::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,transparent,var(--primary),var(--secondary),transparent);
+  opacity:.5;
+}
+.footer-grid{display:grid;grid-template-columns:1.8fr 1fr 1fr 1fr;gap:48px;padding-bottom:48px;border-bottom:1px solid rgba(255,255,255,.06);}
+@media(max-width:800px){.footer-grid{grid-template-columns:1fr 1fr;gap:32px;}}
+@media(max-width:480px){.footer-grid{grid-template-columns:1fr;gap:28px;}}
+.footer-logo{display:inline-flex;align-items:center;gap:10px;margin-bottom:20px;}
+.footer-logo img{height:48px;width:auto;filter:brightness(0) invert(1);}
+@media(max-width:768px){.footer-logo img{height:40px;}}
+.footer p.desc{font-size:14px;max-width:300px;margin-bottom:24px;line-height:1.7;color:rgba(255,255,255,.55);}
+.social-links{display:flex;gap:12px;}
+.social-links a{
+  width:40px;height:40px;border-radius:12px;background:rgba(255,255,255,.06);
+  display:flex;align-items:center;justify-content:center;transition:all .3s;
+  border:1px solid rgba(255,255,255,.06);
+}
+.social-links a:hover{background:var(--grad-brand);transform:translateY(-3px);border-color:transparent;}
+.footer h4{color:#fff;font-size:14px;margin-bottom:24px;font-family:'Space Grotesk';font-weight:600;letter-spacing:.02em;}
+.footer ul li{margin-bottom:14px;}
+.footer ul a{font-size:13px;transition:color .2s;color:rgba(255,255,255,.55);}
+.footer ul a:hover{color:#fff;}
+.footer-contact li{display:flex;align-items:center;gap:10px;color:rgba(255,255,255,.55);font-size:13px;margin-bottom:14px;}
+.footer-contact li i{width:16px;color:var(--primary-light);font-size:12px;}
+.footer-bottom{padding:24px 0;text-align:center;font-size:12px;color:rgba(255,255,255,.3);}
+
+/* ===== SCROLL TOP ===== */
+#scrollTop{
+  position:fixed;bottom:28px;right:28px;width:44px;height:44px;border-radius:50%;
+  background:var(--grad-brand);color:#fff;display:flex;align-items:center;justify-content:center;
+  font-size:14px;box-shadow:0 6px 20px -4px rgba(0,88,190,.35);z-index:900;
+  opacity:0;visibility:hidden;transform:translateY(12px);transition:all .35s;
+}
+#scrollTop.show{opacity:1;visibility:visible;transform:translateY(0);}
+#scrollTop:hover{transform:translateY(-2px);box-shadow:0 10px 28px -6px rgba(0,88,190,.45);}
+
+/* scroll reveal */
+.reveal{opacity:0;transform:translateY(28px);transition:opacity .7s cubic-bezier(.2,.8,.2,1),transform .7s cubic-bezier(.2,.8,.2,1);}
+.reveal.in{opacity:1;transform:translateY(0);}
+
+/* staggered reveal for grids */
+.reveal-stagger > *{opacity:0;transform:translateY(20px);transition:opacity .6s cubic-bezier(.2,.8,.2,1),transform .6s cubic-bezier(.2,.8,.2,1);}
+.reveal-stagger.in > *:nth-child(1){transition-delay:.05s;opacity:1;transform:translateY(0);}
+.reveal-stagger.in > *:nth-child(2){transition-delay:.1s;opacity:1;transform:translateY(0);}
+.reveal-stagger.in > *:nth-child(3){transition-delay:.15s;opacity:1;transform:translateY(0);}
+.reveal-stagger.in > *:nth-child(4){transition-delay:.2s;opacity:1;transform:translateY(0);}
+.reveal-stagger.in > *:nth-child(5){transition-delay:.25s;opacity:1;transform:translateY(0);}
+.reveal-stagger.in > *:nth-child(6){transition-delay:.3s;opacity:1;transform:translateY(0);}
+.reveal-stagger.in > *:nth-child(7){transition-delay:.35s;opacity:1;transform:translateY(0);}
+.reveal-stagger.in > *:nth-child(8){transition-delay:.4s;opacity:1;transform:translateY(0);}
+
+@media(prefers-reduced-motion:reduce){
+  *{animation-duration:.01ms !important;animation-iteration-count:1 !important;transition-duration:.01ms !important;}
+}
+a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible{
+  outline:2px solid var(--primary);outline-offset:3px;
+}
+
+/* ===== DYNAMIC CSS - PROFESSIONAL EFFECTS ===== */
+
+/* 1. Animated Gradient Background */
+@keyframes gradientShift{
+  0%{background-position:0% 50%;}
+  50%{background-position:100% 50%;}
+  100%{background-position:0% 50%;}
+}
+.animated-gradient{
+  background:linear-gradient(-45deg,#0058BE,#6B38D4,#3E82D8,#9B6FE8);
+  background-size:400% 400%;
+  animation:gradientShift 15s ease infinite;
+}
+
+/* 2. Animated Border Glow Effect */
+@keyframes borderGlow{
+  0%,100%{border-color:rgba(0,88,190,.15);}
+  50%{border-color:rgba(107,56,212,.25);}
+}
+.glow-border{
+  border:1px solid rgba(0,88,190,.15);
+  animation:borderGlow 4s ease-in-out infinite;
+}
+
+/* 3. Text Gradient Animation */
+@keyframes textGradientFlow{
+  0%{background-position:0% 50%;}
+  50%{background-position:100% 50%;}
+  100%{background-position:0% 50%;}
+}
+.gradient-text-animated{
+  background:linear-gradient(90deg,var(--primary),var(--secondary),var(--primary-light),var(--secondary-light),var(--primary));
+  background-size:300% 100%;
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+  animation:textGradientFlow 6s ease infinite;
+}
+
+/* 4. Floating Shapes */
+@keyframes floatShape1{
+  0%,100%{transform:translate(0,0) rotate(0deg);}
+  25%{transform:translate(30px,-30px) rotate(90deg);}
+  50%{transform:translate(-20px,20px) rotate(180deg);}
+  75%{transform:translate(10px,-10px) rotate(270deg);}
+}
+@keyframes floatShape2{
+  0%,100%{transform:translate(0,0) rotate(0deg) scale(1);}
+  33%{transform:translate(-40px,20px) rotate(120deg) scale(1.1);}
+  66%{transform:translate(20px,-30px) rotate(240deg) scale(0.9);}
+}
+@keyframes floatShape3{
+  0%,100%{transform:translate(0,0) scale(1);}
+  50%{transform:translate(25px,25px) scale(1.15);}
+}
+.floating-shape{
+  position:absolute;border-radius:50%;pointer-events:none;z-index:0;
+  filter:blur(80px);opacity:.3;
+}
+.floating-shape.s1{
+  width:350px;height:350px;background:rgba(0,88,190,.06);
+  animation:floatShape1 25s ease-in-out infinite;
+}
+.floating-shape.s2{
+  width:300px;height:300px;background:rgba(107,56,212,.05);
+  animation:floatShape2 20s ease-in-out infinite;
+}
+.floating-shape.s3{
+  width:250px;height:250px;background:rgba(62,130,216,.04);
+  animation:floatShape3 18s ease-in-out infinite;
+}
+
+/* 5. Noise Texture Overlay */
+.noise-overlay{
+  position:fixed;inset:0;pointer-events:none;z-index:9999;
+  opacity:.012;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-repeat:repeat;background-size:256px 256px;
+}
+
+/* 6. 3D Card Tilt */
+.card-3d{
+  transition:transform .4s cubic-bezier(.2,.8,.2,1),box-shadow .4s;
+  transform-style:preserve-3d;perspective:1000px;
+}
+.card-3d:hover{
+  transform:translateY(-4px) rotateX(1deg) rotateY(-1deg);
+  box-shadow:0 20px 44px -10px rgba(0,88,190,.14);
+}
+
+/* 7. Magnetic Button Effect */
+.magnetic-btn{
+  transition:all .3s cubic-bezier(.2,.8,.2,1);
+  position:relative;
+}
+.magnetic-btn::before{
+  content:'';position:absolute;inset:-2px;border-radius:inherit;
+  background:var(--grad-brand);opacity:0;transition:opacity .3s;z-index:-1;
+  filter:blur(12px);
+}
+.magnetic-btn:hover::before{opacity:.4;}
+
+/* 8. Staggered Reveal with Scale */
+.reveal-scale{
+  opacity:0;transform:translateY(30px) scale(.95);
+  transition:opacity .7s cubic-bezier(.2,.8,.2,1),transform .7s cubic-bezier(.2,.8,.2,1);
+}
+.reveal-scale.in{opacity:1;transform:translateY(0) scale(1);}
+
+/* 9. Animated Underline */
+.animated-underline{
+  position:relative;display:inline-block;
+}
+.animated-underline::after{
+  content:'';position:absolute;bottom:-2px;left:0;width:0;height:2px;
+  background:var(--grad-brand);border-radius:100px;
+  transition:width .4s cubic-bezier(.2,.8,.2,1);
+}
+.animated-underline:hover::after{width:100%;}
+
+/* 10. Pulse Glow Effect */
+@keyframes pulseGlow{
+  0%,100%{box-shadow:0 0 0 0 rgba(0,88,190,.4);}
+  50%{box-shadow:0 0 0 12px rgba(0,88,190,0);}
+}
+.pulse-glow{animation:pulseGlow 2.5s ease-in-out infinite;}
+
+/* 11. Smooth Scroll Progress */
+.scroll-progress{
+  position:fixed;top:0;left:0;height:3px;background:var(--grad-brand);z-index:10001;
+  transform-origin:left;transform:scaleX(0);transition:transform .1s linear;
+}
+
+/* 12. Card Shine Effect */
+.card-shine{position:relative;overflow:hidden;}
+.card-shine::after{
+  content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;
+  background:linear-gradient(45deg,transparent 30%,rgba(255,255,255,.08) 50%,transparent 70%);
+  transform:translateX(-100%) rotate(45deg);transition:transform .6s;
+}
+.card-shine:hover::after{transform:translateX(100%) rotate(45deg);}
+
+/* 13. Gradient Border Animation */
+@keyframes gradientBorderRotate{
+  0%{--angle:0deg;}
+  100%{--angle:360deg;}
+}
+@property --angle{
+  syntax:'<angle>';initial-value:0deg;inherits:false;
+}
+.gradient-border-animated{
+  position:relative;border:none !important;
+}
+.gradient-border-animated::before{
+  content:'';position:absolute;inset:-2px;border-radius:inherit;
+  background:conic-gradient(from var(--angle),var(--primary),var(--secondary),var(--primary-light),var(--secondary-light),var(--primary));
+  z-index:-1;animation:gradientBorderRotate 4s linear infinite;
+}
+
+/* 14. Typing Animation for AI */
+@keyframes blink{
+  0%,100%{opacity:1;}
+  50%{opacity:0;}
+}
+.typing-cursor::after{
+  content:'|';animation:blink 1s step-end infinite;color:var(--secondary);
+}
+
+/* 15. Smooth Section Transitions */
+.section-fade{
+  opacity:0;transform:translateY(40px);
+  transition:opacity .8s cubic-bezier(.2,.8,.2,1),transform .8s cubic-bezier(.2,.8,.2,1);
+}
+.section-fade.visible{opacity:1;transform:translateY(0);}
+
+/* 16. Interactive Hover Lift */
+.hover-lift{
+  transition:all .35s cubic-bezier(.2,.8,.2,1);
+}
+.hover-lift:hover{
+  transform:translateY(-3px);
+  box-shadow:0 12px 28px -8px rgba(0,88,190,.12);
+}
+
+/* 17. Gradient Text on Hover */
+.hover-gradient-text{
+  transition:all .3s;
+}
+.hover-gradient-text:hover{
+  background:var(--grad-brand);-webkit-background-clip:text;background-clip:text;color:transparent;
+}
+
+/* 18. Animated Counter */
+@keyframes countUp{
+  from{opacity:0;transform:translateY(10px);}
+  to{opacity:1;transform:translateY(0);}
+}
+
+/* 19. Smooth Image Zoom */
+.image-zoom{overflow:hidden;}
+.image-zoom img{transition:transform .6s cubic-bezier(.2,.8,.2,1);}
+.image-zoom:hover img{transform:scale(1.05);}
+
+/* 20. Focus Ring Animation */
+@keyframes focusRing{
+  0%{box-shadow:0 0 0 0 rgba(0,88,190,.4);}
+  100%{box-shadow:0 0 0 8px rgba(0,88,190,0);}
+}
+*:focus-visible{animation:focusRing .3s ease-out;}
+
+/* ===== COMPREHENSIVE MOBILE RESPONSIVE ===== */
+@media(max-width:768px){
+  .hero{min-height:100svh;}
+  .hero-content{flex-direction:column;justify-content:center;gap:40px;padding-top:80px;}
+  .hero-left{max-width:100%;text-align:center;}
+  .hero-left h1{font-size:clamp(28px,8vw,42px);}
+  .hero-left p{margin-left:auto;margin-right:auto;}
+  .hero-buttons{justify-content:center;}
+  .hero-search{max-width:100%;}
+  .floating-card{display:none !important;}
+  .slider-nav{width:40px;height:40px;font-size:13px;}
+  .scroll-hint{display:none;}
+
+  .stats-grid{grid-template-columns:repeat(2,1fr);gap:24px;}
+  .stat-item h3{font-size:clamp(24px,6vw,36px);}
+
+  .section-head h2{font-size:clamp(24px,5.5vw,34px);}
+  .section-head p{font-size:15px;}
+
+  .why-grid{grid-template-columns:1fr;}
+  .why-card{padding:28px 24px;}
+
+  .opp-grid{grid-template-columns:1fr;}
+  .opp-card{border-radius:16px;}
+
+  .cat-grid{grid-template-columns:repeat(2,1fr);gap:12px;}
+  .cat-card{padding:24px 16px;border-radius:16px;}
+
+  .how-steps{grid-template-columns:1fr;gap:16px;}
+  .how-step{padding:28px 20px;}
+  .how-connector{display:none !important;}
+
+  .rafeeq{padding:48px 28px;border-radius:24px;}
+  .rafeeq-inner{flex-direction:column;text-align:center;gap:36px;}
+  .rafeeq-visual{margin:0 auto;}
+  .rafeeq-text{min-width:0;}
+  .rafeeq-text p{margin-left:auto;margin-right:auto;}
+  .ai-chat{max-width:100%;}
+
+  .testi-card{padding:32px 24px;}
+  .testi-card p{font-size:15px;}
+
+  .cta-box{padding:48px 28px;border-radius:24px;}
+  .cta-stats{gap:24px;}
+  .cta-stat h4{font-size:18px;}
+  .trust-badges{gap:16px;}
+
+  .faq-list{padding:0 8px;}
+  .faq-question{font-size:15px;padding:18px 0;}
+
+  .partners-grid{grid-template-columns:repeat(2,1fr);gap:28px;}
+
+  .footer-grid{grid-template-columns:1fr;gap:28px;text-align:center;}
+  .footer p.desc{margin-left:auto;margin-right:auto;}
+  .social-links{justify-content:center;}
+  .footer-contact li{justify-content:center;}
+}
+
+@media(max-width:480px){
+  .container{padding:0 16px;}
+  .hero-left h1{font-size:clamp(24px,7vw,36px);}
+  .hero-buttons{flex-direction:column;align-items:center;}
+  .hero-search{border-radius:16px;}
+  .stats-grid{grid-template-columns:repeat(2,1fr);gap:20px;}
+  .cat-grid{grid-template-columns:repeat(2,1fr);gap:10px;}
+  .cta-buttons{flex-direction:column;align-items:center;}
+  .testi-wrap{padding:0 8px;}
+}
+
+/* ===== HEADING HIERARCHY IMPROVEMENTS ===== */
+.hero-left h1{
+  font-size:clamp(38px,5vw,62px);font-weight:700;color:#fff;margin-bottom:20px;line-height:1.08;
+  text-shadow:0 2px 20px rgba(0,0,0,.12);
+}
+.section-head h2{
+  background:linear-gradient(135deg,var(--text) 0%,var(--text-muted) 100%);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.cta-box h2{
+  text-shadow:0 2px 16px rgba(0,0,0,.08);
+}
+.rafeeq-text h2{
+  text-shadow:0 2px 16px rgba(0,0,0,.15);
+}
+
+/* ===== DARK MODE ===== */
+html[data-theme="dark"]{
+  --bg:#0A0E1A;
+  --surface:#111827;
+  --text:#F1F5F9;
+  --text-muted:#94A3B8;
+  --border:rgba(255,255,255,.06);
+  --border-strong:rgba(255,255,255,.10);
+}
+html[data-theme="dark"] body{background:var(--bg);color:var(--text);}
+html[data-theme="dark"] .navbar.scrolled{
+  background:rgba(10,14,26,.85);border-bottom-color:rgba(255,255,255,.06);
+}
+html[data-theme="dark"] .navbar.scrolled .nav-links a{color:var(--text-muted);}
+html[data-theme="dark"] .navbar.scrolled .mobile-menu{color:var(--text);}
+html[data-theme="dark"] .navbar.scrolled .btn-outline{border-color:rgba(255,255,255,.15);color:var(--text);background:transparent;}
+html[data-theme="dark"] .btn-outline{border-color:rgba(255,255,255,.15);color:var(--text);background:var(--surface);}
+html[data-theme="dark"] .btn-outline:hover{border-color:var(--primary-light);color:var(--primary-light);}
+html[data-theme="dark"] .why-card,html[data-theme="dark"] .opp-card,html[data-theme="dark"] .cat-card,html[data-theme="dark"] .testi-card,html[data-theme="dark"] .how-step-icon{
+  background:var(--surface);border-color:var(--border);
+}
+html[data-theme="dark"] .why-card::before{background:rgba(0,88,190,.08);}
+html[data-theme="dark"] .floating-card{background:rgba(17,24,39,.88);border-color:rgba(255,255,255,.08);color:var(--text);}
+html[data-theme="dark"] .footer{background:#080C15;}
+html[data-theme="dark"] .footer ul a{color:rgba(255,255,255,.55);}
+html[data-theme="dark"] .footer-contact li{color:rgba(255,255,255,.55);}
+html[data-theme="dark"] .noise-overlay{opacity:.02;}
+html[data-theme="dark"] .trusted{background:var(--surface);}
+html[data-theme="dark"] .opp-section{background:var(--surface);}
+html[data-theme="dark"] .testi-section{background:var(--surface);}
+html[data-theme="dark"] .how-section{background:var(--surface);}
+html[data-theme="dark"] .section-head h2{
+  background:linear-gradient(135deg,var(--text) 0%,var(--text-muted) 100%);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+html[data-theme="dark"] .faq-item{border-color:var(--border);}
+html[data-theme="dark"] .partners-section{background:var(--bg);}
+html[data-theme="dark"] .faq-section{background:var(--surface);}
+html[data-theme="dark"] .stories-section{background:var(--bg);}
+html[data-theme="dark"] .deadlines-section{background:var(--surface);}
+html[data-theme="dark"] .partner-logo:hover{background:var(--surface);}
+
+/* Dark mode toggle button */
+.theme-toggle{
+  width:40px;height:40px;border-radius:12px;display:flex;align-items:center;justify-content:center;
+  font-size:16px;color:rgba(255,255,255,.7);background:rgba(255,255,255,.08);
+  border:1px solid rgba(255,255,255,.15);transition:all .3s;cursor:pointer;
+}
+.theme-toggle:hover{background:rgba(255,255,255,.15);color:#fff;}
+.theme-toggle .fa-moon,.theme-toggle .fa-sun{transition:all .3s;}
+.navbar.scrolled .theme-toggle{color:var(--text-muted);background:var(--bg);border-color:var(--border);}
+.navbar.scrolled .theme-toggle:hover{color:var(--primary);}
+html[data-theme="dark"] .theme-toggle .fa-moon{display:none;}
+html[data-theme="dark"] .theme-toggle .fa-sun{display:inline;}
+html:not([data-theme="dark"]) .theme-toggle .fa-moon{display:inline;}
+html:not([data-theme="dark"]) .theme-toggle .fa-sun{display:none;}
+
+/* ===== ROTATING PLACEHOLDER ===== */
+.rotating-placeholder{position:relative;}
+.rotating-placeholder .rp-text{
+  position:absolute;top:0;left:0;right:0;padding:0;font-size:14px;color:rgba(255,255,255,.5);
+  pointer-events:none;overflow:hidden;height:100%;display:flex;align-items:center;
+  transition:opacity .3s,transform .3s;
+}
+.rotating-placeholder .rp-text.rp-hide{opacity:0;transform:translateY(-10px);}
+
+/* ===== LIVE ACTIVITY BAR ===== */
+.live-activity{
+  background:var(--surface);border-bottom:1px solid var(--border);padding:16px 0;overflow:hidden;
+  position:relative;
+}
+.live-activity::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,var(--border-strong),transparent);
+}
+.activity-track{
+  display:flex;gap:40px;align-items:center;
+  animation:scrollActivity 30s linear infinite;
+}
+.activity-item{
+  display:flex;align-items:center;gap:10px;white-space:nowrap;
+  font-size:13px;color:var(--text-muted);font-weight:500;
+}
+.activity-item .a-dot{
+  width:8px;height:8px;border-radius:50%;background:#22C55E;flex-shrink:0;
+  animation:pulseGlow 2s ease-in-out infinite;
+}
+.activity-item strong{color:var(--text);font-weight:600;font-family:'JetBrains Mono';}
+@keyframes scrollActivity{
+  0%{transform:translateX(0);}
+  100%{transform:translateX(-50%);}
+}
+
+/* ===== TRENDING OPPORTUNITIES ===== */
+.trending-section{position:relative;background:var(--bg);overflow:hidden;}
+.trending-section::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,var(--border-strong),transparent);
+}
+.trending-track{
+  display:flex;gap:20px;overflow-x:auto;scroll-snap-type:x mandatory;
+  -webkit-overflow-scrolling:touch;padding-bottom:12px;
+  scrollbar-width:none;
+}
+.trending-track::-webkit-scrollbar{display:none;}
+.trending-card{
+  min-width:320px;max-width:320px;scroll-snap-align:start;
+  background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);
+  overflow:hidden;transition:all .4s cubic-bezier(.2,.8,.2,1);flex-shrink:0;
+}
+.trending-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-card-hover);border-color:transparent;}
+.trending-badge{
+  position:absolute;top:12px;left:12px;display:flex;align-items:center;gap:5px;
+  background:rgba(239,68,68,.9);color:#fff;font-size:11px;font-weight:700;
+  padding:5px 12px;border-radius:100px;
+}
+.trending-badge i{font-size:10px;}
+
+/* ===== UPCOMING DEADLINES ===== */
+.deadlines-section{position:relative;background:var(--surface);}
+.deadlines-section::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,var(--border-strong),transparent);
+}
+.deadline-timeline{max-width:680px;margin:0 auto;}
+.deadline-item{
+  display:flex;gap:20px;align-items:flex-start;padding:20px 0;
+  border-bottom:1px solid var(--border);position:relative;
+  transition:all .3s;
+}
+.deadline-item:last-child{border-bottom:none;}
+.deadline-item:hover{transform:translateX(4px);}
+.deadline-date{
+  min-width:64px;text-align:center;flex-shrink:0;
+  background:var(--grad-brand-soft);border-radius:14px;padding:12px 8px;
+}
+.deadline-date .dd-day{font-family:'JetBrains Mono';font-size:22px;font-weight:700;color:var(--primary);line-height:1;}
+.deadline-date .dd-month{font-size:11px;color:var(--text-muted);font-weight:600;text-transform:uppercase;letter-spacing:.05em;margin-top:4px;}
+.deadline-info{flex:1;}
+.deadline-info h4{font-size:15px;font-weight:600;margin-bottom:6px;}
+.deadline-info p{font-size:13px;color:var(--text-muted);line-height:1.5;}
+.deadline-urgency{
+  font-size:11px;font-weight:600;padding:4px 10px;border-radius:100px;white-space:nowrap;flex-shrink:0;align-self:center;
+}
+.deadline-urgency.urgent{background:rgba(239,68,68,.1);color:#EF4444;}
+.deadline-urgency.soon{background:rgba(245,158,11,.1);color:#F59E0B;}
+.deadline-urgency.open{background:rgba(34,197,94,.1);color:#22C55E;}
+
+/* ===== DASHBOARD PREVIEW ===== */
+.dashboard-section{position:relative;background:var(--bg);overflow:hidden;}
+.dashboard-section::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,var(--border-strong),transparent);
+}
+.dashboard-mockup{
+  background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);
+  overflow:hidden;box-shadow:var(--shadow-soft);max-width:900px;margin:0 auto;
+}
+.mockup-bar{
+  display:flex;align-items:center;gap:8px;padding:14px 20px;
+  background:var(--bg);border-bottom:1px solid var(--border);
+}
+.mockup-dot{width:10px;height:10px;border-radius:50%;}
+.mockup-dot.r{background:#FF5F57;}
+.mockup-dot.y{background:#FFBD2E;}
+.mockup-dot.g{background:#28C840;}
+.mockup-body{display:grid;grid-template-columns:220px 1fr;min-height:360px;}
+@media(max-width:768px){.mockup-body{grid-template-columns:1fr;}}
+.mockup-sidebar{
+  background:var(--surface);border-right:1px solid var(--border);padding:20px 16px;display:flex;flex-direction:column;gap:6px;
+}
+@media(max-width:768px){.mockup-sidebar{display:none;}}
+.mockup-nav-item{
+  display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:10px;
+  font-size:13px;color:var(--text-muted);font-weight:500;transition:all .2s;
+}
+.mockup-nav-item.active{background:var(--grad-brand-soft);color:var(--primary);font-weight:600;}
+.mockup-nav-item i{width:18px;font-size:14px;}
+.mockup-content{padding:24px;display:flex;flex-direction:column;gap:16px;}
+.mockup-header{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;}
+.mockup-header h3{font-size:18px;font-weight:600;}
+.mockup-stats-row{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;}
+@media(max-width:600px){.mockup-stats-row{grid-template-columns:1fr;}}
+.mockup-stat-card{
+  background:var(--bg);border:1px solid var(--border);border-radius:14px;padding:16px;
+}
+.mockup-stat-card .ms-label{font-size:11px;color:var(--text-muted);font-weight:600;text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px;}
+.mockup-stat-card .ms-value{font-family:'JetBrains Mono';font-size:24px;font-weight:700;color:var(--text);}
+.mockup-stat-card .ms-change{font-size:11px;color:#22C55E;font-weight:600;margin-top:4px;}
+.mockup-cards{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;}
+@media(max-width:600px){.mockup-cards{grid-template-columns:1fr;}}
+.mockup-mini-card{
+  background:var(--bg);border:1px solid var(--border);border-radius:12px;padding:14px;
+  display:flex;gap:12px;align-items:center;
+}
+.mockup-mini-icon{
+  width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;
+  font-size:16px;flex-shrink:0;
+}
+.mockup-mini-info h4{font-size:13px;font-weight:600;margin-bottom:2px;}
+.mockup-mini-info p{font-size:11px;color:var(--text-muted);}
+
+/* ===== SUCCESS STORIES ===== */
+.stories-section{position:relative;background:var(--bg);}
+.stories-section::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,var(--border-strong),transparent);
+}
+.stories-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
+@media(max-width:900px){.stories-grid{grid-template-columns:repeat(2,1fr);}}
+@media(max-width:640px){.stories-grid{grid-template-columns:1fr;}}
+.story-card{
+  background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);
+  padding:32px 24px;text-align:center;transition:all .4s cubic-bezier(.2,.8,.2,1);position:relative;overflow:hidden;
+}
+.story-card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:3px;
+  background:var(--grad-brand);opacity:0;transition:opacity .3s;
+}
+.story-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-card-hover);border-color:transparent;}
+.story-card:hover::before{opacity:1;}
+.story-avatar{
+  width:60px;height:60px;border-radius:50%;background:var(--grad-brand);margin:0 auto 16px;
+  display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;
+  font-family:'Space Grotesk';font-size:18px;box-shadow:0 6px 16px rgba(0,88,190,.25);
+}
+.story-card h4{font-size:15px;font-weight:600;margin-bottom:4px;}
+.story-card .story-role{font-size:12px;color:var(--text-muted);margin-bottom:12px;}
+.story-card p{font-size:13px;color:var(--text-muted);line-height:1.6;margin-bottom:16px;}
+.story-result{
+  display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:600;
+  padding:6px 14px;border-radius:100px;
+}
+.story-result.hired{background:rgba(34,197,94,.1);color:#22C55E;}
+.story-result.won{background:rgba(107,56,212,.1);color:var(--secondary);}
+.story-result.cert{background:rgba(0,88,190,.1);color:var(--primary);}
+
+/* ===== ORG CTA ===== */
+.org-section{position:relative;background:var(--bg);overflow:hidden;}
+.org-section::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,var(--border-strong),transparent);
+}
+.org-box{
+  background:linear-gradient(135deg,#0F2A5C 0%,#2A1660 50%,#0058BE 100%);
+  border-radius:var(--radius-lg);padding:72px 56px;display:flex;align-items:center;gap:56px;
+  color:#fff;position:relative;overflow:hidden;
+}
+.org-box::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(circle at 80% 30%,rgba(255,255,255,.1),transparent 45%);
+}
+.org-box::after{
+  content:'';position:absolute;inset:0;
+  background-image:radial-gradient(circle,rgba(255,255,255,.04) 1px,transparent 1px);
+  background-size:28px 28px;
+}
+@media(max-width:768px){.org-box{padding:48px 28px;flex-direction:column;text-align:center;gap:36px;}}
+.org-text{flex:1;position:relative;z-index:1;}
+.org-text h2{font-size:clamp(26px,3vw,36px);margin-bottom:16px;}
+.org-text p{color:rgba(255,255,255,.75);font-size:15px;line-height:1.7;margin-bottom:28px;max-width:440px;}
+.org-features{
+  display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:28px;
+}
+@media(max-width:540px){.org-features{grid-template-columns:1fr;}}
+.org-feature{
+  display:flex;align-items:center;gap:10px;font-size:13px;font-weight:500;
+  color:rgba(255,255,255,.8);
+}
+.org-feature i{color:#22C55E;font-size:14px;}
+.org-visual{position:relative;z-index:1;flex-shrink:0;width:280px;height:220px;display:flex;align-items:center;justify-content:center;}
+@media(max-width:768px){.org-visual{width:100%;height:160px;}}
+.org-visual-circle{
+  width:180px;height:180px;border-radius:50%;border:1.5px solid rgba(255,255,255,.15);
+  display:flex;align-items:center;justify-content:center;font-size:48px;
+  background:rgba(255,255,255,.05);backdrop-filter:blur(8px);
+  animation:pulseRing 3s ease-out infinite;
+}
+
+/* ===== FAQ SECTION ===== */
+.faq-section{position:relative;background:var(--surface);}
+.faq-section::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,var(--border-strong),transparent);
+}
+.faq-list{max-width:680px;margin:0 auto;}
+.faq-item{
+  border-bottom:1px solid var(--border);
+  overflow:hidden;
+}
+.faq-item:last-child{border-bottom:none;}
+.faq-question{
+  display:flex;align-items:center;justify-content:space-between;gap:16px;
+  width:100%;padding:22px 0;text-align:left;font-size:16px;font-weight:600;
+  color:var(--text);font-family:'Space Grotesk';letter-spacing:-.01em;
+  cursor:pointer;transition:color .25s;
+  background:none;border:none;
+}
+.faq-question:hover{color:var(--primary);}
+.faq-icon{
+  width:32px;height:32px;border-radius:10px;background:var(--grad-brand-soft);
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+  font-size:13px;color:var(--primary);
+  transition:background .35s cubic-bezier(.2,.8,.2,1),transform .4s cubic-bezier(.2,.8,.2,1),color .35s;
+}
+.faq-item.open .faq-icon{
+  background:var(--grad-brand);color:#fff;transform:rotate(45deg);
+}
+.faq-answer{
+  display:grid;grid-template-rows:0fr;
+  transition:grid-template-rows .45s cubic-bezier(.2,.8,.2,1);
+}
+.faq-item.open .faq-answer{grid-template-rows:1fr;}
+.faq-answer-inner{
+  overflow:hidden;
+  padding:0 0 22px 0;font-size:14px;color:var(--text-muted);line-height:1.75;
+}
+
+/* ===== PARTNERS SECTION ===== */
+.partners-section{position:relative;background:var(--bg);padding:72px 0;overflow:hidden;}
+.partners-section::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,var(--border-strong),transparent);
+}
+.partners-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:40px;}
+@media(max-width:900px){.partners-grid{grid-template-columns:repeat(2,1fr);gap:28px;}}
+@media(max-width:540px){.partners-grid{grid-template-columns:1fr;}}
+.partner-group{text-align:center;}
+.partner-group h4{
+  font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--text-muted);margin-bottom:20px;
+}
+.partner-logos{display:flex;flex-wrap:wrap;justify-content:center;gap:16px;}
+.partner-logo{
+  width:80px;height:50px;display:flex;align-items:center;justify-content:center;
+  border-radius:12px;padding:8px;
+  transition:all .35s cubic-bezier(.2,.8,.2,1);
+  filter:grayscale(1) opacity(.45);
+}
+.partner-logo:hover{filter:grayscale(0) opacity(1);transform:translateY(-3px);background:var(--surface);box-shadow:var(--shadow-card);}
+.partner-logo svg{width:100%;height:100%;}
+
+/* ===== TRUST INDICATORS ===== */
+.trust-badges{
+  display:flex;justify-content:center;align-items:center;gap:24px;flex-wrap:wrap;
+  margin-top:28px;
+}
+.trust-badge{
+  display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:500;
+  color:rgba(255,255,255,.65);
+}
+.trust-badge i{font-size:11px;color:rgba(255,255,255,.85);}
+
+</style>
+</head>
+<body>
+
+<!-- Noise Texture Overlay -->
+<div class="noise-overlay" aria-hidden="true"></div>
+
+<!-- Scroll Progress Bar -->
+<div class="scroll-progress" id="scrollProgress"></div>
+
+<!-- Floating Background Shapes -->
+<div class="floating-shape s1" style="top:10%;left:5%;" aria-hidden="true"></div>
+<div class="floating-shape s2" style="top:60%;right:10%;" aria-hidden="true"></div>
+<div class="floating-shape s3" style="bottom:20%;left:15%;" aria-hidden="true"></div>
+
+<header class="navbar" id="navbar">
+  <div class="container">
+    <a href="#" class="logo"><img src="../assets/images/LOGO+NAME.CHAT GPT (1).png" alt="EVENTIFY"></a>
+    <nav>
+      <ul class="nav-links">
+        <li><a class="active" href="#">Home</a></li>
+        <li><a href="#opportunities">Opportunities</a></li>
+        <li><a href="#categories">Categories</a></li>
+        <li><a href="#rafeeq">Rafeeq AI</a></li>
+        <li><a href="#faq">FAQ</a></li>
+        <li><a href="#about">About</a></li>
+      </ul>
+    </nav>
+    <div class="nav-buttons">
+      <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode"><i class="fa-solid fa-moon"></i><i class="fa-solid fa-sun"></i></button>
+      <a href="../auth/login.html" class="btn btn-outline btn-sm">Login</a>
+      <a href="../auth/signup.html" class="btn btn-primary btn-sm">Get Started</a>
+    </div>
+    <button class="mobile-menu" aria-label="Open menu"><i class="fa-solid fa-bars"></i></button>
+  </div>
+</header>
+
+<section class="hero" id="hero">
+  <div class="slider" id="slider">
+
+    <div class="slide slide-1 active" data-index="0">
+      <div class="slide-bg">
+        <img src="../assets/images/event3.jpeg" alt="Student presenting at a hackathon" onerror="this.remove()">
+        <div class="fallback"><i class="fa-solid fa-laptop-code" aria-hidden="true"></i></div>
+      </div>
+      <div class="overlay"></div>
+      <div class="container hero-content">
+        <div class="hero-left">
+          <span class="badge"><i class="fa-solid fa-bolt"></i> AI-Powered Matching</span>
+          <h1>Discover <span>Opportunities.</span><br>Build Your Future.</h1>
+          <p>Explore hackathons, competitions, internships, courses and conferences — all matched to your skills by AI.</p>
+          <div class="hero-buttons">
+            <a href="../auth/signup.html" class="btn btn-primary">Get Started</a>
+            <a href="#opportunities" class="btn btn-light">Explore Opportunities</a>
+          </div>
+          <div class="hero-search">
+            <i class="fa-solid fa-wand-magic-sparkles search-icon"></i>
+            <input type="text" placeholder="" id="heroSearchInput" class="rotating-placeholder">
+            <span class="rp-text" id="rpText">Ask Rafeeq AI to find opportunities...</span>
+            <button class="mic-btn" aria-label="Voice search"><i class="fa-solid fa-microphone"></i></button>
+            <span class="ai-badge"><i class="fa-solid fa-sparkles"></i> AI</span>
+            <button>Search</button>
+          </div>
+        </div>
+        <div class="hero-right">
+          <div class="floating-card card-match">
+            <span class="match-label"><i class="fa-solid fa-bolt"></i> AI Match</span>
+            <h3>Google AI Challenge</h3>
+            <div class="progress"><div class="progress-bar"></div></div>
+            <strong>96% Match &middot; Apply Now</strong>
+          </div>
+          <div class="floating-card card-event">
+            <div class="event-icon"><i class="fa-solid fa-calendar-days"></i></div>
+            <div><h4>Upcoming Events</h4><p>12 this month</p></div>
+          </div>
+          <div class="floating-card card-users">
+            <div class="users-icon"><i class="fa-solid fa-award"></i></div>
+            <div><h4>320+</h4><p>Certificates Earned</p></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="slide slide-2" data-index="1">
+      <div class="slide-bg">
+        <img src="../assets/images/event2.jpeg" alt="Students at a technical conference" onerror="this.remove()">
+        <div class="fallback"><i class="fa-solid fa-people-group" aria-hidden="true"></i></div>
+      </div>
+      <div class="overlay"></div>
+      <div class="container hero-content">
+        <div class="hero-left">
+          <span class="badge"><i class="fa-solid fa-star"></i> Trusted by top organizations</span>
+          <h1>Join <span>Inspiring</span><br>Events.</h1>
+          <p>Attend conferences, workshops and networking events hosted by leading universities and companies.</p>
+          <div class="hero-buttons">
+            <a href="../auth/signup.html" class="btn btn-primary">Join Today</a>
+            <a href="#opportunities" class="btn btn-light">Explore Opportunities</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="slide slide-3" data-index="2">
+      <div class="slide-bg">
+        <img src="../assets/images/event1.jpeg" alt="Student receiving a certificate" onerror="this.remove()">
+        <div class="fallback"><i class="fa-solid fa-award" aria-hidden="true"></i></div>
+      </div>
+      <div class="overlay"></div>
+      <div class="container hero-content">
+        <div class="hero-left">
+          <span class="badge"><i class="fa-solid fa-certificate"></i> Verified credentials</span>
+          <h1>Earn <span>Certificates.</span><br>Show Your Skills.</h1>
+          <p>Complete courses and challenges, then showcase verified certificates that recruiters trust.</p>
+          <div class="hero-buttons">
+            <a href="../auth/signup.html" class="btn btn-primary">Get Started</a>
+            <a href="#opportunities" class="btn btn-light">Explore Opportunities</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="slide slide-4" data-index="3">
+      <div class="slide-bg">
+        <img src="../assets/images/event4.jpeg" alt="Company conducting job interviews" onerror="this.remove()">
+        <div class="fallback"><i class="fa-solid fa-briefcase" aria-hidden="true"></i></div>
+      </div>
+      <div class="overlay"></div>
+      <div class="container hero-content">
+        <div class="hero-left">
+          <span class="badge"><i class="fa-solid fa-building"></i> 150+ hiring partners</span>
+          <h1>Find Your <span>Dream</span><br>Internship.</h1>
+          <p>Connect directly with organizations offering internships built for students ready to grow.</p>
+          <div class="hero-buttons">
+            <a href="../auth/signup.html" class="btn btn-primary">Get Started</a>
+            <a href="#opportunities" class="btn btn-light">Explore Opportunities</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="slide slide-5" data-index="4">
+      <div class="slide-bg">
+        <img src="../assets/images/event5.jpeg" alt="Team collaborating together" onerror="this.remove()">
+        <div class="fallback"><i class="fa-solid fa-users-rectangle" aria-hidden="true"></i></div>
+      </div>
+      <div class="overlay"></div>
+      <div class="container hero-content">
+        <div class="hero-left">
+          <span class="badge"><i class="fa-solid fa-handshake"></i> 8,000+ students</span>
+          <h1>Collaborate. Innovate.<br><span>Succeed.</span></h1>
+          <p>Team up with peers across universities to build, compete and grow together.</p>
+          <div class="hero-buttons">
+            <a href="../auth/signup.html" class="btn btn-primary">Get Started</a>
+            <a href="#opportunities" class="btn btn-light">Explore Opportunities</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <button class="slider-nav slider-prev" aria-label="Previous slide"><i class="fa-solid fa-chevron-left"></i></button>
+  <button class="slider-nav slider-next" aria-label="Next slide"><i class="fa-solid fa-chevron-right"></i></button>
+  <div class="slider-indicators" role="tablist" aria-label="Slide selector"></div>
+  <div class="scroll-hint"><span>Scroll</span><div class="line"></div></div>
+</section>
+
+<section class="partners-section" id="partners">
+  <div class="container">
+    <p style="text-align:center;font-size:12px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--text-muted);margin-bottom:48px;">Our Partners</p>
+    <div class="partners-grid">
+      <div class="partner-group">
+        <h4>Universities</h4>
+        <div class="partner-logos">
+          <div class="partner-logo"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 3L1 9l4 2.18v6L12 21l7-3.82v-6l2-1.09V17h2V9L12 3zm6.82 6L12 12.72 5.18 9 12 5.28 18.82 9zM17 15.99l-5 2.73-5-2.73v-3.72L12 15l5-2.73v3.72z"/></svg></div>
+          <div class="partner-logo"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 3L1 9l4 2.18v6L12 21l7-3.82v-6l2-1.09V17h2V9L12 3z"/></svg></div>
+          <div class="partner-logo"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 3L1 9l4 2.18v6L12 21l7-3.82v-6l2-1.09V17h2V9L12 3z"/></svg></div>
+          <div class="partner-logo"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 3L1 9l4 2.18v6L12 21l7-3.82v-6l2-1.09V17h2V9L12 3z"/></svg></div>
+        </div>
+      </div>
+      <div class="partner-group">
+        <h4>Companies</h4>
+        <div class="partner-logos">
+          <div class="partner-logo"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg></div>
+          <div class="partner-logo"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M11.4 24H0V12.6h11.4V24zM24 24H12.6V12.6H24V24zM11.4 11.4H0V0h11.4v11.4zm12.6 0H12.6V0H24v11.4z"/></svg></div>
+          <div class="partner-logo"><svg viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="10"/><path d="M12 6a6 6 0 1 0 0 12 6 6 0 0 0 0-12zm0 9a3 3 0 1 1 0-6 3 3 0 0 1 0 6z" fill="#fff"/></svg></div>
+          <div class="partner-logo"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" fill="none" stroke="currentColor" stroke-width="2"/></svg></div>
+        </div>
+      </div>
+      <div class="partner-group">
+        <h4>Communities</h4>
+        <div class="partner-logos">
+          <div class="partner-logo"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M4 4h16v16H4z" fill="none" stroke="currentColor" stroke-width="2"/><path d="M7 8h10M7 12h6M7 16h8" stroke="currentColor" stroke-width="1.5" fill="none"/></svg></div>
+          <div class="partner-logo"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="9" cy="7" r="4" fill="none" stroke="currentColor" stroke-width="2"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75" fill="none" stroke="currentColor" stroke-width="2"/></svg></div>
+          <div class="partner-logo"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" fill="none" stroke="currentColor" stroke-width="2"/></svg></div>
+          <div class="partner-logo"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M22 12h-4l-3 9L9 3l-3 9H2" fill="none" stroke="currentColor" stroke-width="2"/></svg></div>
+        </div>
+      </div>
+      <div class="partner-group">
+        <h4>Technology Partners</h4>
+        <div class="partner-logos">
+          <div class="partner-logo"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg></div>
+          <div class="partner-logo"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg></div>
+          <div class="partner-logo"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M9.4 16.6L4.8 12l4.6-4.6L8 6l-6 6 6 6 1.4-1.4zm5.2 0l4.6-4.6-4.6-4.6L16 6l6 6-6 6-1.4-1.4z"/></svg></div>
+          <div class="partner-logo"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 14H4V6h16v12z"/></svg></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="live-activity">
+  <div class="activity-track">
+    <div class="activity-item"><span class="a-dot"></span><strong>Sara M.</strong> just applied to Google AI Challenge</div>
+    <div class="activity-item"><span class="a-dot"></span><strong>Ahmad K.</strong> earned a certificate in Cybersecurity</div>
+    <div class="activity-item"><span class="a-dot"></span><strong>Lina H.</strong> matched with Microsoft Internship</div>
+    <div class="activity-item"><span class="a-dot"></span><strong>142 students</strong> are online right now</div>
+    <div class="activity-item"><span class="a-dot"></span><strong>Omar A.</strong> joined HTU Hackathon</div>
+    <div class="activity-item"><span class="a-dot"></span><strong>Nour S.</strong> completed AI Fundamentals course</div>
+    <div class="activity-item"><span class="a-dot"></span><strong>23 new opportunities</strong> added today</div>
+    <div class="activity-item"><span class="a-dot"></span><strong>Fadi R.</strong> got hired at Orange Jordan</div>
+    <div class="activity-item"><span class="a-dot"></span><strong>Sara M.</strong> just applied to Google AI Challenge</div>
+    <div class="activity-item"><span class="a-dot"></span><strong>Ahmad K.</strong> earned a certificate in Cybersecurity</div>
+    <div class="activity-item"><span class="a-dot"></span><strong>Lina H.</strong> matched with Microsoft Internship</div>
+    <div class="activity-item"><span class="a-dot"></span><strong>142 students</strong> are online right now</div>
+    <div class="activity-item"><span class="a-dot"></span><strong>Omar A.</strong> joined HTU Hackathon</div>
+    <div class="activity-item"><span class="a-dot"></span><strong>Nour S.</strong> completed AI Fundamentals course</div>
+    <div class="activity-item"><span class="a-dot"></span><strong>23 new opportunities</strong> added today</div>
+    <div class="activity-item"><span class="a-dot"></span><strong>Fadi R.</strong> got hired at Orange Jordan</div>
+  </div>
+</div>
+
+<section class="stats">
+  <div class="container stats-grid">
+    <div class="stat-item reveal"><h3 data-count="250">0</h3><p>Events Hosted</p></div>
+    <div class="stat-item reveal"><h3 data-count="8000">0</h3><p>Active Students</p></div>
+    <div class="stat-item reveal"><h3 data-count="150">0</h3><p>Partner Organizations</p></div>
+    <div class="stat-item reveal"><h3 data-count="98" data-suffix="%">0</h3><p>Success Rate</p></div>
+  </div>
+</section>
+
+<section class="section-pad why-section section-gap" id="about">
+  <div class="bg-glow bg-glow-1"></div>
+  <div class="bg-glow bg-glow-2"></div>
+  <div class="container" style="position:relative;z-index:1;">
+    <div class="section-head center reveal" style="margin-left:auto;margin-right:auto;">
+      <span class="section-tag">Why Eventify</span>
+      <h2>Everything you need, in one place</h2>
+      <p>A single platform that finds the right opportunity for you and takes the guesswork out of applying.</p>
+    </div>
+    <div class="why-grid reveal-stagger">
+      <div class="why-card card-3d card-shine"><div class="why-icon"><i class="fa-solid fa-brain"></i></div><h3>AI Recommendations</h3><p>Get opportunities ranked by how well they match your skills, interests and goals.</p></div>
+      <div class="why-card card-3d card-shine"><div class="why-icon"><i class="fa-solid fa-shield-halved"></i></div><h3>Verified Organizations</h3><p>Every host is reviewed, so you only see legitimate events and internships.</p></div>
+      <div class="why-card card-3d card-shine"><div class="why-icon"><i class="fa-solid fa-bolt"></i></div><h3>One-Click Apply</h3><p>Your profile is saved once — apply to any opportunity in a single tap.</p></div>
+      <div class="why-card card-3d card-shine"><div class="why-icon"><i class="fa-solid fa-award"></i></div><h3>Certificates</h3><p>Earn verified certificates you can add straight to your CV or LinkedIn.</p></div>
+      <div class="why-card card-3d card-shine"><div class="why-icon"><i class="fa-solid fa-bell"></i></div><h3>Smart Notifications</h3><p>Get notified the moment a deadline or opportunity matching you opens up.</p></div>
+      <div class="why-card card-3d card-shine"><div class="why-icon"><i class="fa-solid fa-microphone"></i></div><h3>Voice Assistant</h3><p>Ask Rafeeq AI out loud to find, filter and apply to opportunities for you.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="section-pad opp-section section-gap" id="opportunities">
+  <div class="bg-glow bg-glow-3"></div>
+  <div class="container" style="position:relative;z-index:1;">
+    <div class="section-head-row reveal">
+      <div class="section-head" style="margin-bottom:0;">
+        <span class="section-tag">Featured</span>
+        <h2>Featured Opportunities</h2>
+        <p>Hand-picked events, hackathons and internships closing soon.</p>
+      </div>
+      <a href="#" class="btn btn-outline">View All <i class="fa-solid fa-arrow-right"></i></a>
+    </div>
+    <div class="opp-grid reveal-stagger">
+      <div class="opp-card card-3d card-shine">
+        <div class="opp-thumb" style="background:linear-gradient(135deg,#0058BE,#3E82D8);">
+          <span class="tag">Hackathon</span>
+          <span class="match-badge"><i class="fa-solid fa-bolt"></i> 96%</span>
+          <i class="fa-solid fa-code"></i>
+        </div>
+        <div class="opp-body">
+          <h3>Google AI Challenge 2026</h3>
+          <div class="opp-meta">
+            <span><i class="fa-solid fa-location-dot"></i> Amman, Jordan</span>
+            <span><i class="fa-solid fa-calendar"></i> Aug 14, 2026</span>
+            <span><i class="fa-solid fa-users"></i> 1.2k applicants</span>
+          </div>
+          <div class="opp-footer">
+            <span class="applicants"><strong>3 days</strong> left</span>
+            <a href="#" class="btn btn-primary btn-sm">View Details</a>
+          </div>
+        </div>
+      </div>
+      <div class="opp-card card-3d card-shine">
+        <div class="opp-thumb" style="background:linear-gradient(135deg,#6B38D4,#9B6FE8);">
+          <span class="tag">Internship</span>
+          <span class="match-badge"><i class="fa-solid fa-bolt"></i> 92%</span>
+          <i class="fa-solid fa-briefcase"></i>
+        </div>
+        <div class="opp-body">
+          <h3>Microsoft Summer Internship</h3>
+          <div class="opp-meta">
+            <span><i class="fa-solid fa-location-dot"></i> Remote</span>
+            <span><i class="fa-solid fa-calendar"></i> Jul 30, 2026</span>
+            <span><i class="fa-solid fa-users"></i> 890 applicants</span>
+          </div>
+          <div class="opp-footer">
+            <span class="applicants"><strong>5 days</strong> left</span>
+            <a href="#" class="btn btn-primary btn-sm">View Details</a>
+          </div>
+        </div>
+      </div>
+      <div class="opp-card card-3d card-shine">
+        <div class="opp-thumb" style="background:linear-gradient(135deg,#0058BE,#6B38D4);">
+          <span class="tag">Course</span>
+          <span class="match-badge"><i class="fa-solid fa-bolt"></i> 88%</span>
+          <i class="fa-solid fa-book-open"></i>
+        </div>
+        <div class="opp-body">
+          <h3>Cybersecurity Fundamentals</h3>
+          <div class="opp-meta">
+            <span><i class="fa-solid fa-location-dot"></i> Online</span>
+            <span><i class="fa-solid fa-calendar"></i> Ongoing</span>
+            <span><i class="fa-solid fa-users"></i> 650 applicants</span>
+          </div>
+          <div class="opp-footer">
+            <span class="applicants"><strong>Open</strong> enrollment</span>
+            <a href="#" class="btn btn-primary btn-sm">View Details</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section-pad cat-section section-gap" id="categories">
+  <div class="container">
+    <div class="section-head center reveal" style="margin-left:auto;margin-right:auto;">
+      <span class="section-tag">Browse</span>
+      <h2>Explore by Category</h2>
+      <p>Find opportunities across every field of interest.</p>
+    </div>
+    <div class="cat-grid reveal-stagger">
+      <div class="cat-card card-3d">
+        <div class="cat-icon"><i class="fa-solid fa-microchip"></i></div>
+        <h4>Technology</h4>
+        <span class="cat-count">42 opportunities</span>
+      </div>
+      <div class="cat-card card-3d">
+        <div class="cat-icon"><i class="fa-solid fa-robot"></i></div>
+        <h4>AI</h4>
+        <span class="cat-count">28 opportunities</span>
+      </div>
+      <div class="cat-card card-3d">
+        <div class="cat-icon"><i class="fa-solid fa-chart-line"></i></div>
+        <h4>Business</h4>
+        <span class="cat-count">35 opportunities</span>
+      </div>
+      <div class="cat-card card-3d">
+        <div class="cat-icon"><i class="fa-solid fa-pen-ruler"></i></div>
+        <h4>Design</h4>
+        <span class="cat-count">19 opportunities</span>
+      </div>
+      <div class="cat-card card-3d">
+        <div class="cat-icon"><i class="fa-solid fa-hand-holding-heart"></i></div>
+        <h4>Volunteering</h4>
+        <span class="cat-count">24 opportunities</span>
+      </div>
+      <div class="cat-card card-3d">
+        <div class="cat-icon"><i class="fa-solid fa-shield-halved"></i></div>
+        <h4>Cyber Security</h4>
+        <span class="cat-count">16 opportunities</span>
+      </div>
+      <div class="cat-card card-3d">
+        <div class="cat-icon"><i class="fa-solid fa-code"></i></div>
+        <h4>Programming</h4>
+        <span class="cat-count">31 opportunities</span>
+      </div>
+      <div class="cat-card card-3d">
+        <div class="cat-icon"><i class="fa-solid fa-bullhorn"></i></div>
+        <h4>Marketing</h4>
+        <span class="cat-count">22 opportunities</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section-pad trending-section section-gap" id="trending">
+  <div class="container">
+    <div class="section-head-row reveal">
+      <div class="section-head" style="margin-bottom:0;">
+        <span class="section-tag"><i class="fa-solid fa-fire" style="color:#EF4444;"></i> Trending</span>
+        <h2>Trending Right Now</h2>
+        <p>Most popular opportunities this week, act fast before they close.</p>
+      </div>
+      <a href="#" class="btn btn-outline">View All <i class="fa-solid fa-arrow-right"></i></a>
+    </div>
+    <div class="trending-track reveal">
+      <div class="trending-card card-3d">
+        <div class="opp-thumb" style="background:linear-gradient(135deg,#EF4444,#F97316);">
+          <span class="trending-badge"><i class="fa-solid fa-fire"></i> Hot</span>
+          <span class="tag" style="background:rgba(255,255,255,.92);color:#EF4444;">Hackathon</span>
+          <i class="fa-solid fa-fire-flame-curved"></i>
+        </div>
+        <div class="opp-body">
+          <h3>Meta Hacker Cup 2026</h3>
+          <div class="opp-meta">
+            <span><i class="fa-solid fa-location-dot"></i> Remote</span>
+            <span><i class="fa-solid fa-calendar"></i> Jul 25, 2026</span>
+            <span><i class="fa-solid fa-users"></i> 3.4k applicants</span>
+          </div>
+          <div class="opp-footer">
+            <span class="applicants"><strong>2 days</strong> left</span>
+            <a href="#" class="btn btn-primary btn-sm">Apply Now</a>
+          </div>
+        </div>
+      </div>
+      <div class="trending-card card-3d">
+        <div class="opp-thumb" style="background:linear-gradient(135deg,#8B5CF6,#6B38D4);">
+          <span class="trending-badge"><i class="fa-solid fa-fire"></i> Hot</span>
+          <span class="tag" style="background:rgba(255,255,255,.92);color:#8B5CF6;">Internship</span>
+          <i class="fa-solid fa-rocket"></i>
+        </div>
+        <div class="opp-body">
+          <h3>Google STEP Internship</h3>
+          <div class="opp-meta">
+            <span><i class="fa-solid fa-location-dot"></i> Mountain View</span>
+            <span><i class="fa-solid fa-calendar"></i> Aug 1, 2026</span>
+            <span><i class="fa-solid fa-users"></i> 5.1k applicants</span>
+          </div>
+          <div class="opp-footer">
+            <span class="applicants"><strong>4 days</strong> left</span>
+            <a href="#" class="btn btn-primary btn-sm">Apply Now</a>
+          </div>
+        </div>
+      </div>
+      <div class="trending-card card-3d">
+        <div class="opp-thumb" style="background:linear-gradient(135deg,#0058BE,#3E82D8);">
+          <span class="trending-badge"><i class="fa-solid fa-fire"></i> Hot</span>
+          <span class="tag" style="background:rgba(255,255,255,.92);color:#0058BE;">Competition</span>
+          <i class="fa-solid fa-trophy"></i>
+        </div>
+        <div class="opp-body">
+          <h3>ACM ICPC Regional Contest</h3>
+          <div class="opp-meta">
+            <span><i class="fa-solid fa-location-dot"></i> Amman, Jordan</span>
+            <span><i class="fa-solid fa-calendar"></i> Sep 15, 2026</span>
+            <span><i class="fa-solid fa-users"></i> 1.8k applicants</span>
+          </div>
+          <div class="opp-footer">
+            <span class="applicants"><strong>Open</strong> registration</span>
+            <a href="#" class="btn btn-primary btn-sm">Register</a>
+          </div>
+        </div>
+      </div>
+      <div class="trending-card card-3d">
+        <div class="opp-thumb" style="background:linear-gradient(135deg,#059669,#10B981);">
+          <span class="trending-badge"><i class="fa-solid fa-fire"></i> Hot</span>
+          <span class="tag" style="background:rgba(255,255,255,.92);color:#059669;">Volunteer</span>
+          <i class="fa-solid fa-hand-holding-heart"></i>
+        </div>
+        <div class="opp-body">
+          <h3>IEEE Volunteering Program</h3>
+          <div class="opp-meta">
+            <span><i class="fa-solid fa-location-dot"></i> Hybrid</span>
+            <span><i class="fa-solid fa-calendar"></i> Aug 20, 2026</span>
+            <span><i class="fa-solid fa-users"></i> 890 applicants</span>
+          </div>
+          <div class="opp-footer">
+            <span class="applicants"><strong>7 days</strong> left</span>
+            <a href="#" class="btn btn-primary btn-sm">Apply Now</a>
+          </div>
+        </div>
+      </div>
+      <div class="trending-card card-3d">
+        <div class="opp-thumb" style="background:linear-gradient(135deg,#EA580C,#F59E0B);">
+          <span class="trending-badge"><i class="fa-solid fa-fire"></i> Hot</span>
+          <span class="tag" style="background:rgba(255,255,255,.92);color:#EA580C;">Course</span>
+          <i class="fa-solid fa-graduation-cap"></i>
+        </div>
+        <div class="opp-body">
+          <h3>Deep Learning Specialization</h3>
+          <div class="opp-meta">
+            <span><i class="fa-solid fa-location-dot"></i> Online</span>
+            <span><i class="fa-solid fa-calendar"></i> Ongoing</span>
+            <span><i class="fa-solid fa-users"></i> 2.3k enrolled</span>
+          </div>
+          <div class="opp-footer">
+            <span class="applicants"><strong>Open</strong> enrollment</span>
+            <a href="#" class="btn btn-primary btn-sm">Enroll Now</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section-pad deadlines-section section-gap" id="deadlines">
+  <div class="container">
+    <div class="section-head center reveal" style="margin-left:auto;margin-right:auto;">
+      <span class="section-tag">Don't Miss Out</span>
+      <h2>Upcoming Deadlines</h2>
+      <p>Stay ahead — these opportunities are closing soon.</p>
+    </div>
+    <div class="deadline-timeline reveal">
+      <div class="deadline-item">
+        <div class="deadline-date"><div class="dd-day">18</div><div class="dd-month">Jul</div></div>
+        <div class="deadline-info">
+          <h4>Meta Hacker Cup 2026</h4>
+          <p>Global coding competition by Meta. Top prizes up to $20,000.</p>
+        </div>
+        <span class="deadline-urgency urgent">1 day left</span>
+      </div>
+      <div class="deadline-item">
+        <div class="deadline-date"><div class="dd-day">25</div><div class="dd-month">Jul</div></div>
+        <div class="deadline-info">
+          <h4>Google AI Challenge</h4>
+          <p>AI-focused hackathon with mentorship from Google engineers.</p>
+        </div>
+        <span class="deadline-urgency urgent">3 days left</span>
+      </div>
+      <div class="deadline-item">
+        <div class="deadline-date"><div class="dd-day">30</div><div class="dd-month">Jul</div></div>
+        <div class="deadline-info">
+          <h4>Microsoft Summer Internship</h4>
+          <p>Software engineering internship with hands-on project experience.</p>
+        </div>
+        <span class="deadline-urgency soon">5 days left</span>
+      </div>
+      <div class="deadline-item">
+        <div class="deadline-date"><div class="dd-day">05</div><div class="dd-month">Aug</div></div>
+        <div class="deadline-info">
+          <h4>Cybersecurity Fundamentals Course</h4>
+          <p>Online course covering network security, cryptography and forensics.</p>
+        </div>
+        <span class="deadline-urgency soon">10 days left</span>
+      </div>
+      <div class="deadline-item">
+        <div class="deadline-date"><div class="dd-day">15</div><div class="dd-month">Sep</div></div>
+        <div class="deadline-info">
+          <h4>ACM ICPC Regional Contest</h4>
+          <p>Annual programming contest for university students in the Middle East.</p>
+        </div>
+        <span class="deadline-urgency open">Open</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section-pad how-section section-gap" id="how">
+  <div class="container">
+    <div class="section-head center reveal" style="margin-left:auto;margin-right:auto;">
+      <span class="section-tag">How It Works</span>
+      <h2>Start in 4 Simple Steps</h2>
+      <p>From sign-up to your first opportunity in minutes.</p>
+    </div>
+    <div class="how-steps reveal">
+      <div class="how-step">
+        <div class="how-step-num">1</div>
+        <div class="how-step-icon"><i class="fa-solid fa-user-plus"></i></div>
+        <h3>Create your profile</h3>
+        <p>Tell us your skills, interests and goals in under 2 minutes.</p>
+      </div>
+      <div class="how-step">
+        <div class="how-connector"></div>
+        <div class="how-step-num">2</div>
+        <div class="how-step-icon"><i class="fa-solid fa-microchip"></i></div>
+        <h3>AI analyzes your interests</h3>
+        <p>Rafeeq AI learns what you're looking for and scans thousands of opportunities.</p>
+      </div>
+      <div class="how-step">
+        <div class="how-connector"></div>
+        <div class="how-step-num">3</div>
+        <div class="how-step-icon"><i class="fa-solid fa-wand-magic-sparkles"></i></div>
+        <h3>Receive personalized matches</h3>
+        <p>Get a curated feed ranked by relevance, deadline and skill match.</p>
+      </div>
+      <div class="how-step">
+        <div class="how-connector"></div>
+        <div class="how-step-num">4</div>
+        <div class="how-step-icon"><i class="fa-solid fa-paper-plane"></i></div>
+        <h3>Apply with one click</h3>
+        <p>Your profile is pre-filled — just tap Apply and you're done.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section-pad dashboard-section section-gap" id="dashboard">
+  <div class="container">
+    <div class="section-head center reveal" style="margin-left:auto;margin-right:auto;">
+      <span class="section-tag">Platform Preview</span>
+      <h2>Your Personalized Dashboard</h2>
+      <p>See what you get after signing up — AI recommendations, event tracking, applications and certificates.</p>
+    </div>
+    <div class="dashboard-mockup reveal">
+      <div class="mockup-bar">
+        <span class="mockup-dot r"></span>
+        <span class="mockup-dot y"></span>
+        <span class="mockup-dot g"></span>
+        <div style="flex:1;display:flex;justify-content:center;">
+          <div style="background:var(--bg);border-radius:8px;padding:5px 40px;font-size:11px;color:var(--text-muted);font-family:'JetBrains Mono';">app.eventify.io/dashboard</div>
+        </div>
+      </div>
+      <div class="mockup-body">
+        <div class="mockup-sidebar">
+          <div class="mockup-nav-item active"><i class="fa-solid fa-house"></i> Dashboard</div>
+          <div class="mockup-nav-item"><i class="fa-solid fa-compass"></i> Explore</div>
+          <div class="mockup-nav-item"><i class="fa-solid fa-bookmark"></i> Saved</div>
+          <div class="mockup-nav-item"><i class="fa-solid fa-paper-plane"></i> Applications</div>
+          <div class="mockup-nav-item"><i class="fa-solid fa-robot"></i> Rafeeq AI</div>
+          <div class="mockup-nav-item"><i class="fa-solid fa-certificate"></i> Certificates</div>
+          <div class="mockup-nav-item"><i class="fa-solid fa-calendar-days"></i> Calendar</div>
+          <div class="mockup-nav-item"><i class="fa-solid fa-gear"></i> Settings</div>
+        </div>
+        <div class="mockup-content">
+          <div class="mockup-header">
+            <h3>Welcome back, Ahmad</h3>
+            <a href="#" class="btn btn-primary btn-sm">Explore Opportunities</a>
+          </div>
+          <div class="mockup-stats-row">
+            <div class="mockup-stat-card">
+              <div class="ms-label">Match Score</div>
+              <div class="ms-value">94%</div>
+              <div class="ms-change">+12% this week</div>
+            </div>
+            <div class="mockup-stat-card">
+              <div class="ms-label">Applications</div>
+              <div class="ms-value">12</div>
+              <div class="ms-change">3 pending review</div>
+            </div>
+            <div class="mockup-stat-card">
+              <div class="ms-label">Certificates</div>
+              <div class="ms-value">5</div>
+              <div class="ms-change">+2 this month</div>
+            </div>
+          </div>
+          <div class="mockup-cards">
+            <div class="mockup-mini-card">
+              <div class="mockup-mini-icon" style="background:rgba(0,88,190,.1);color:var(--primary);"><i class="fa-solid fa-code"></i></div>
+              <div class="mockup-mini-info"><h4>Google AI Challenge</h4><p>96% match · 3 days left</p></div>
+            </div>
+            <div class="mockup-mini-card">
+              <div class="mockup-mini-icon" style="background:rgba(107,56,212,.1);color:var(--secondary);"><i class="fa-solid fa-briefcase"></i></div>
+              <div class="mockup-mini-info"><h4>Microsoft Internship</h4><p>92% match · 5 days left</p></div>
+            </div>
+            <div class="mockup-mini-card">
+              <div class="mockup-mini-icon" style="background:rgba(34,197,94,.1);color:#22C55E;"><i class="fa-solid fa-robot"></i></div>
+              <div class="mockup-mini-info"><h4>Rafeeq AI</h4><p>14 new recommendations</p></div>
+            </div>
+            <div class="mockup-mini-card">
+              <div class="mockup-mini-icon" style="background:rgba(245,158,11,.1);color:#F59E0B;"><i class="fa-solid fa-certificate"></i></div>
+              <div class="mockup-mini-info"><h4>Cybersecurity Cert</h4><p>Ready to download</p></div>
+            </div>
+            <div class="mockup-mini-card">
+              <div class="mockup-mini-icon" style="background:rgba(239,68,68,.1);color:#EF4444;"><i class="fa-solid fa-calendar-days"></i></div>
+              <div class="mockup-mini-info"><h4>Upcoming Events</h4><p>3 events this week</p></div>
+            </div>
+            <div class="mockup-mini-card">
+              <div class="mockup-mini-icon" style="background:rgba(0,88,190,.1);color:var(--primary);"><i class="fa-solid fa-paper-plane"></i></div>
+              <div class="mockup-mini-info"><h4>My Applications</h4><p>12 total · 3 active</p></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section-pad rafeeq-section section-gap" id="rafeeq">
+  <div class="container">
+    <div class="rafeeq reveal">
+      <div class="rafeeq-inner">
+        <div class="rafeeq-visual">
+          <div class="rafeeq-ring"></div>
+          <div class="rafeeq-ring r2"></div>
+          <div class="rafeeq-ring r3"></div>
+          <div class="rafeeq-pulse"></div>
+          <div class="rafeeq-avatar"><i class="fa-solid fa-robot"></i></div>
+          <button class="rafeeq-mic" aria-label="Talk with Rafeeq" id="rafeeqMic"><i class="fa-solid fa-microphone"></i></button>
+        </div>
+        <div class="rafeeq-text">
+          <span class="section-tag">Meet Rafeeq</span>
+          <h2>Your AI Assistant for Opportunities</h2>
+          <p>Ask Rafeeq to find hackathons, filter by deadline, or explain any opportunity — all by voice.</p>
+          <div class="ai-chat">
+            <div class="ai-chat-msg">
+              <div class="ai-chat-avatar user"><i class="fa-solid fa-user"></i></div>
+              <div class="ai-chat-bubble">Find AI Hackathons in Jordan</div>
+            </div>
+            <div class="ai-chat-msg ai-msg">
+              <div class="ai-chat-avatar ai"><i class="fa-solid fa-robot"></i></div>
+              <div class="ai-chat-bubble">
+                I found <strong>14 matching opportunities</strong>. The top match is the Google AI Challenge with a 96% score. Want me to apply for you?
+              </div>
+            </div>
+          </div>
+          <div class="waveform"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+          <button class="btn btn-primary" id="talkBtn"><i class="fa-solid fa-microphone"></i> Talk with Rafeeq</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section-pad testi-section section-gap">
+  <div class="container">
+    <div class="section-head center reveal" style="margin-left:auto;margin-right:auto;">
+      <span class="section-tag">Success Stories</span>
+      <h2>Students Love Eventify</h2>
+      <p>Real stories from students who found their breakthrough through our platform.</p>
+    </div>
+    <div class="testi-wrap reveal">
+      <div class="testi-track">
+        <div class="testi-slides" id="testiTrack">
+        <div class="testi-slide">
+          <div class="testi-card">
+            <i class="fa-solid fa-quote-left quote"></i>
+            <p>EVENTIFY helped me find my first internship in just two weeks. Rafeeq AI matched me with Google's hackathon based on my Python skills — I never would have applied on my own.</p>
+            <div class="testi-avatar">AK</div>
+            <h4>Ahmad Khaled</h4>
+            <span class="testi-role">Computer Science — University of Jordan</span>
+            <span class="testi-achievement"><i class="fa-solid fa-trophy"></i> Internship at Google</span>
+          </div>
+        </div>
+        <div class="testi-slide">
+          <div class="testi-card">
+            <i class="fa-solid fa-quote-left quote"></i>
+            <p>Rafeeq AI suggested competitions I never would have found on my own. The personalized recommendations saved me hours of searching. It truly understands what students need.</p>
+            <div class="testi-avatar">SM</div>
+            <h4>Sara Mohammad</h4>
+            <span class="testi-role">AI Student — German Jordanian University</span>
+            <span class="testi-achievement"><i class="fa-solid fa-medal"></i> Winner, AI Hackathon 2025</span>
+          </div>
+        </div>
+        <div class="testi-slide">
+          <div class="testi-card">
+            <i class="fa-solid fa-quote-left quote"></i>
+            <p>Simple, modern and genuinely useful. The AI matching is incredibly accurate — I got 5 certificates in one semester and landed an internship at Microsoft.</p>
+            <div class="testi-avatar">OA</div>
+            <h4>Omar Ali</h4>
+            <span class="testi-role">Software Engineering — HTU</span>
+            <span class="testi-achievement"><i class="fa-solid fa-building"></i> Intern at Microsoft</span>
+          </div>
+        </div>
+      </div>
+      <div class="testi-dots" id="testiDots"></div>
+    </div>
+  </div>
+</section>
+
+<section class="section-pad stories-section section-gap" id="stories">
+  <div class="container">
+    <div class="section-head center reveal" style="margin-left:auto;margin-right:auto;">
+      <span class="section-tag">Success Stories</span>
+      <h2>Real Results, Real Students</h2>
+      <p>See how EVENTIFY helped students land their dream opportunities.</p>
+    </div>
+    <div class="stories-grid reveal-stagger">
+      <div class="story-card card-3d">
+        <div class="story-avatar">LH</div>
+        <h4>Lina Hassan</h4>
+        <span class="story-role">Software Engineering — GJU</span>
+        <p>EVENTIFY matched me with a Google internship I never would have found on my own. The AI really understood my skills.</p>
+        <span class="story-result hired"><i class="fa-solid fa-briefcase"></i> Hired at Google</span>
+      </div>
+      <div class="story-card card-3d">
+        <div class="story-avatar">KM</div>
+        <h4>Khaled Mansour</h4>
+        <span class="story-role">AI & Machine Learning — JUST</span>
+        <p>Rafeeq AI suggested 5 hackathons that perfectly matched my interests. I won two of them and got certified.</p>
+        <span class="story-result won"><i class="fa-solid fa-trophy"></i> 2x Hackathon Winner</span>
+      </div>
+      <div class="story-card card-3d">
+        <div class="story-avatar">NA</div>
+        <h4>Nour Al-Rashed</h4>
+        <span class="story-role">Cybersecurity — HTU</span>
+        <p>Through EVENTIFY I completed 3 professional courses and earned certificates that boosted my CV significantly.</p>
+        <span class="story-result cert"><i class="fa-solid fa-certificate"></i> 3 Certificates Earned</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section-pad org-section section-gap" id="organizations">
+  <div class="container">
+    <div class="org-box reveal">
+      <div class="org-text">
+        <span class="section-tag" style="background:rgba(255,255,255,.12);color:#fff;">For Organizations</span>
+        <h2>Host Events & Find Top Talent</h2>
+        <p>Reach thousands of qualified students. Post hackathons, internships and competitions — with AI-powered applicant matching.</p>
+        <div class="org-features">
+          <div class="org-feature"><i class="fa-solid fa-check-circle"></i> AI Matched Applicants</div>
+          <div class="org-feature"><i class="fa-solid fa-check-circle"></i> Verified Student Profiles</div>
+          <div class="org-feature"><i class="fa-solid fa-check-circle"></i> Real-time Analytics</div>
+          <div class="org-feature"><i class="fa-solid fa-check-circle"></i> One-Click Certificates</div>
+        </div>
+        <a href="#" class="btn btn-light" style="background:#fff;color:var(--primary);">Register as Organization</a>
+      </div>
+      <div class="org-visual">
+        <div class="org-visual-circle"><i class="fa-solid fa-building" style="color:#fff;"></i></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section-pad faq-section section-gap" id="faq">
+  <div class="container">
+    <div class="section-head center reveal" style="margin-left:auto;margin-right:auto;">
+      <span class="section-tag">FAQ</span>
+      <h2>Frequently Asked Questions</h2>
+      <p>Everything you need to know about Eventify.</p>
+    </div>
+    <div class="faq-list reveal">
+      <div class="faq-item">
+        <button class="faq-question">What is Eventify? <span class="faq-icon"><i class="fa-solid fa-plus"></i></span></button>
+        <div class="faq-answer"><div class="faq-answer-inner">Eventify is an AI-powered platform that connects students and graduates with hackathons, competitions, internships, courses and conferences. Our AI assistant Rafeeq matches opportunities to your skills, interests and career goals — so you never miss the right one.</div></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-question">Is Eventify free? <span class="faq-icon"><i class="fa-solid fa-plus"></i></span></button>
+        <div class="faq-answer"><div class="faq-answer-inner">Yes, Eventify is completely free for students. You can create a profile, explore opportunities, apply with one click, and use Rafeeq AI — all at no cost. Organizations pay a small fee to post opportunities and access our talent pool.</div></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-question">Who can join Eventify? <span class="faq-icon"><i class="fa-solid fa-plus"></i></span></button>
+        <div class="faq-answer"><div class="faq-answer-inner">Eventify is open to university students, fresh graduates and early-career professionals across all disciplines. Whether you're in computer science, business, design or any other field — if you're looking for opportunities, Eventify is for you.</div></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-question">How does AI matching work? <span class="faq-icon"><i class="fa-solid fa-plus"></i></span></button>
+        <div class="faq-answer"><div class="faq-answer-inner">When you create your profile, Rafeeq AI analyzes your skills, interests, academic background and career goals. It then scans thousands of opportunities and ranks them by relevance — giving you a personalized match score for each one. The more you interact, the smarter it gets.</div></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-question">Can organizations publish opportunities? <span class="faq-icon"><i class="fa-solid fa-plus"></i></span></button>
+        <div class="faq-answer"><div class="faq-answer-inner">Absolutely. Companies, universities and communities can register as organizations on Eventify. They can post hackathons, internships, competitions and courses — then use our AI matching to find the most qualified applicants automatically.</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="cta-section section-gap">
+  <div class="container">
+    <div class="cta-box reveal animated-gradient">
+      <span class="section-tag">Ready to start?</span>
+      <h2>Ready to discover your next opportunity?</h2>
+      <p>Join thousands of students already building their future with Eventify. Your personalized dashboard, AI matching and one-click apply — all free.</p>
+      <div class="cta-buttons">
+        <a href="../auth/signup.html" class="btn btn-light" style="background:#fff;color:var(--primary);">Create Free Account</a>
+        <a href="#opportunities" class="btn btn-light">Explore Opportunities</a>
+      </div>
+      <div class="trust-badges">
+        <span class="trust-badge"><i class="fa-solid fa-circle-check"></i> Free to Join</span>
+        <span class="trust-badge"><i class="fa-solid fa-circle-check"></i> AI Powered</span>
+        <span class="trust-badge"><i class="fa-solid fa-circle-check"></i> Trusted by 8,000+ Students</span>
+        <span class="trust-badge"><i class="fa-solid fa-circle-check"></i> Secure Platform</span>
+      </div>
+      <div class="cta-stats">
+        <div class="cta-stat"><h4>8,000+</h4><p>Active Students</p></div>
+        <div class="cta-stat"><h4>98%</h4><p>Success Rate</p></div>
+        <div class="cta-stat"><h4>150+</h4><p>Organizations</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <a href="#" class="footer-logo"><img src="../assets/images/LOGO+NAME.CHAT GPT (1).png" alt="EVENTIFY"></a>
+        <p class="desc">Connecting students and graduates with opportunities, matched by AI.</p>
+        <div class="social-links">
+          <a href="#" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+          <a href="#" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+          <a href="#" aria-label="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
+          <a href="#" aria-label="X"><i class="fa-brands fa-x-twitter"></i></a>
+        </div>
+      </div>
+      <div>
+        <h4>Platform</h4>
+        <ul>
+          <li><a href="#about">About</a></li>
+          <li><a href="#opportunities">Events</a></li>
+          <li><a href="#organizations">Organizations</a></li>
+          <li><a href="#rafeeq">Rafeeq AI</a></li>
+          <li><a href="#categories">Categories</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Resources</h4>
+        <ul>
+          <li><a href="#faq">FAQ</a></li>
+          <li><a href="#">Help Center</a></li>
+          <li><a href="#">Careers</a></li>
+          <li><a href="#">Blog</a></li>
+          <li><a href="#">Community</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Legal</h4>
+        <ul>
+          <li><a href="#">Privacy Policy</a></li>
+          <li><a href="#">Terms of Service</a></li>
+          <li><a href="#">Cookie Policy</a></li>
+          <li><a href="#">Contact</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom"><p>&copy; 2026 EVENTIFY. All rights reserved.</p></div>
+  </div>
+</footer>
+
+<button id="scrollTop" aria-label="Scroll to top"><i class="fa-solid fa-arrow-up"></i></button>
+
+<script>
+(function(){
+  const navbar = document.getElementById('navbar');
+  const scrollTopBtn = document.getElementById('scrollTop');
+  const scrollProgress = document.getElementById('scrollProgress');
+  
+  window.addEventListener('scroll', () => {
+    const y = window.scrollY;
+    navbar.classList.toggle('scrolled', y > 40);
+    scrollTopBtn.classList.toggle('show', y > 500);
+    
+    // Scroll progress bar
+    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    const scrollPercent = (y / docHeight);
+    scrollProgress.style.transform = `scaleX(${scrollPercent})`;
+  });
+  scrollTopBtn.addEventListener('click', () => window.scrollTo({top:0,behavior:'smooth'}));
+
+  const slides = Array.from(document.querySelectorAll('.slide'));
+  const indicatorsWrap = document.querySelector('.slider-indicators');
+  let current = 0, timer;
+
+  slides.forEach((_, i) => {
+    const b = document.createElement('button');
+    b.setAttribute('role','tab');
+    b.setAttribute('aria-label', 'Go to slide ' + (i+1));
+    if(i===0) b.classList.add('active');
+    b.addEventListener('click', () => goTo(i));
+    indicatorsWrap.appendChild(b);
+  });
+  const dots = Array.from(indicatorsWrap.children);
+
+  function goTo(i){
+    slides[current].classList.remove('active');
+    dots[current].classList.remove('active');
+    current = (i + slides.length) % slides.length;
+    slides[current].classList.add('active');
+    dots[current].classList.add('active');
+    restart();
+  }
+  function next(){ goTo(current+1); }
+  function prev(){ goTo(current-1); }
+  function restart(){ clearInterval(timer); timer = setInterval(next, 5000); }
+
+  document.querySelector('.slider-next').addEventListener('click', next);
+  document.querySelector('.slider-prev').addEventListener('click', prev);
+
+  const heroEl = document.getElementById('hero');
+  heroEl.addEventListener('keydown', (e) => {
+    if(e.key === 'ArrowRight') next();
+    if(e.key === 'ArrowLeft') prev();
+  });
+
+  let touchStartX = 0;
+  heroEl.addEventListener('touchstart', e => touchStartX = e.touches[0].clientX, {passive:true});
+  heroEl.addEventListener('touchend', e => {
+    const dx = e.changedTouches[0].clientX - touchStartX;
+    if(dx > 50) prev();
+    if(dx < -50) next();
+  }, {passive:true});
+
+  restart();
+
+  const mobileBtn = document.querySelector('.mobile-menu');
+  mobileBtn.addEventListener('click', () => {
+    document.querySelector('.navbar').classList.toggle('scrolled');
+    const links = document.querySelector('.nav-links');
+    links.style.display = links.style.display === 'flex' ? 'none' : 'flex';
+  });
+
+  const revealEls = document.querySelectorAll('.reveal,.reveal-stagger,.reveal-scale,.section-fade');
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if(entry.isIntersecting){ 
+        entry.target.classList.add('in');
+        entry.target.classList.add('visible');
+        io.unobserve(entry.target); 
+      }
+    });
+  }, {threshold:.12, rootMargin:'0px 0px -40px 0px'});
+  revealEls.forEach(el => io.observe(el));
+
+  const counters = document.querySelectorAll('[data-count]');
+  const counterIO = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if(!entry.isIntersecting) return;
+      const el = entry.target;
+      const target = parseInt(el.dataset.count, 10);
+      const suffix = el.dataset.suffix || '+';
+      const dur = 1600;
+      const start = performance.now();
+      function tick(now){
+        const p = Math.min((now-start)/dur, 1);
+        const eased = 1 - Math.pow(1-p, 3);
+        el.textContent = Math.floor(eased*target).toLocaleString() + suffix;
+        if(p < 1) requestAnimationFrame(tick);
+        else el.textContent = target.toLocaleString() + suffix;
+      }
+      requestAnimationFrame(tick);
+      counterIO.unobserve(el);
+    });
+  }, {threshold:.5});
+  counters.forEach(el => counterIO.observe(el));
+
+  const testiTrack = document.getElementById('testiTrack');
+  const testiSlides = Array.from(testiTrack.children);
+  const testiDotsWrap = document.getElementById('testiDots');
+  let tCurrent = 0;
+  testiSlides.forEach((_, i) => {
+    const d = document.createElement('button');
+    if(i===0) d.classList.add('active');
+    d.setAttribute('aria-label','Go to testimonial ' + (i+1));
+    d.addEventListener('click', () => tGoTo(i));
+    testiDotsWrap.appendChild(d);
+  });
+  const tDots = Array.from(testiDotsWrap.children);
+  function tGoTo(i){
+    tCurrent = (i + testiSlides.length) % testiSlides.length;
+    testiTrack.style.transform = 'translateX(-' + (tCurrent*100) + '%)';
+    tDots.forEach(d => d.classList.remove('active'));
+    tDots[tCurrent].classList.add('active');
+  }
+  setInterval(() => tGoTo(tCurrent+1), 6000);
+
+  const mic = document.getElementById('rafeeqMic');
+  const talkBtn = document.getElementById('talkBtn');
+  [mic, talkBtn].forEach(btn => btn.addEventListener('click', () => {
+    btn.style.transform = 'scale(0.94)';
+    setTimeout(() => btn.style.transform = '', 160);
+  }));
+
+  /* ===== DARK MODE ===== */
+  const themeToggle = document.getElementById('themeToggle');
+  const savedTheme = localStorage.getItem('eventify-theme');
+  if(savedTheme === 'dark') document.documentElement.setAttribute('data-theme','dark');
+  themeToggle.addEventListener('click', () => {
+    const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+    if(isDark){
+      document.documentElement.removeAttribute('data-theme');
+      localStorage.setItem('eventify-theme','light');
+    } else {
+      document.documentElement.setAttribute('data-theme','dark');
+      localStorage.setItem('eventify-theme','dark');
+    }
+  });
+
+  /* ===== ROTATING PLACEHOLDER ===== */
+  const rpText = document.getElementById('rpText');
+  const heroInput = document.getElementById('heroSearchInput');
+  const phrases = [
+    'Ask Rafeeq AI to find opportunities...',
+    'Search hackathons in Jordan...',
+    'Find AI internships near you...',
+    'Discover cybersecurity courses...',
+    'Explore volunteering programs...',
+    'Find competitions with prizes...',
+    'Search by skill: Python, React...'
+  ];
+  let rpIndex = 0;
+  function rotatePlaceholder(){
+    rpText.classList.add('rp-hide');
+    setTimeout(() => {
+      rpIndex = (rpIndex + 1) % phrases.length;
+      rpText.textContent = phrases[rpIndex];
+      rpText.classList.remove('rp-hide');
+    }, 300);
+  }
+  setInterval(rotatePlaceholder, 3000);
+  heroInput.addEventListener('focus', () => rpText.style.display = 'none');
+  heroInput.addEventListener('blur', () => {
+    if(!heroInput.value) rpText.style.display = '';
+  });
+
+  /* ===== LIVE ACTIVITY - PAUSE ON HOVER ===== */
+  const actTrack = document.querySelector('.activity-track');
+  if(actTrack){
+    actTrack.addEventListener('mouseenter', () => actTrack.style.animationPlayState = 'paused');
+    actTrack.addEventListener('mouseleave', () => actTrack.style.animationPlayState = 'running');
+  }
+
+  /* ===== TRENDING SCROLL ===== */
+  const trendingTrack = document.querySelector('.trending-track');
+  if(trendingTrack){
+    trendingTrack.addEventListener('mouseenter', () => trendingTrack.style.scrollBehavior = 'auto');
+    trendingTrack.addEventListener('mouseleave', () => trendingTrack.style.scrollBehavior = 'smooth');
+  }
+
+  /* ===== FAQ ACCORDION ===== */
+  document.querySelectorAll('.faq-question').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const item = btn.closest('.faq-item');
+      const isOpen = item.classList.contains('open');
+      document.querySelectorAll('.faq-item.open').forEach(el => el.classList.remove('open'));
+      if(!isOpen) item.classList.add('open');
+    });
+  });
+})();
+</script>
+</body>
+</html>

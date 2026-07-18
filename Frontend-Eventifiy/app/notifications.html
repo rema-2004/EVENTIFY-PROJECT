@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport"/>
+<title>Notifications | Eventify AI</title>
+<style>
+    @font-face {
+        font-family: 'Material Symbols Outlined';
+        font-style: normal;
+        font-weight: 100 700;
+        font-display: block;
+        src: url('../assets/fonts/material-symbols-outlined.woff2') format('woff2');
+    }
+    .material-symbols-outlined {
+        font-family: 'Material Symbols Outlined';
+        font-weight: normal;
+        font-style: normal;
+        font-size: 24px;
+        line-height: 1;
+        letter-spacing: normal;
+        text-transform: none;
+        display: inline-block;
+        white-space: nowrap;
+        overflow: hidden;
+        word-wrap: normal;
+        direction: ltr;
+        -webkit-font-feature-settings: 'liga';
+        -webkit-font-smoothing: antialiased;
+    }
+    </style>
+
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Google Fonts: Inter -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols -->
+<!-- Theme Configuration -->
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface-container-highest": "#e1e2ed",
+                    "surface-container-low": "#f3f3fe",
+                    "on-secondary-fixed": "#23005c",
+                    "primary-fixed": "#dbe1ff",
+                    "tertiary": "#943700",
+                    "on-secondary": "#ffffff",
+                    "on-surface-variant": "#434655",
+                    "on-error": "#ffffff",
+                    "background": "#faf8ff",
+                    "on-primary-fixed-variant": "#003ea8",
+                    "inverse-on-surface": "#f0f0fb",
+                    "outline": "#737686",
+                    "on-error-container": "#93000a",
+                    "on-surface": "#191b23",
+                    "outline-variant": "#c3c6d7",
+                    "secondary-fixed": "#e9ddff",
+                    "on-secondary-container": "#fffbff",
+                    "surface": "#faf8ff",
+                    "surface-variant": "#e1e2ed",
+                    "surface-container-lowest": "#ffffff",
+                    "tertiary-fixed": "#ffdbcd",
+                    "on-tertiary-fixed": "#360f00",
+                    "surface-container": "#ededf9",
+                    "on-tertiary-container": "#ffede6",
+                    "on-primary": "#ffffff",
+                    "error": "#ba1a1a",
+                    "surface-tint": "#0053db",
+                    "on-secondary-fixed-variant": "#5516be",
+                    "tertiary-fixed-dim": "#ffb596",
+                    "primary-container": "#2563eb",
+                    "on-tertiary": "#ffffff",
+                    "inverse-primary": "#b4c5ff",
+                    "primary": "#0058be",
+                    "surface-bright": "#faf8ff",
+                    "tertiary-container": "#bc4800",
+                    "on-tertiary-fixed-variant": "#7d2d00",
+                    "error-container": "#ffdad6",
+                    "surface-container-high": "#e7e7f3",
+                    "on-primary-container": "#eeefff",
+                    "secondary-container": "#8455ef",
+                    "on-primary-fixed": "#00174b",
+                    "surface-dim": "#d9d9e5",
+                    "secondary": "#6b38d4",
+                    "primary-fixed-dim": "#b4c5ff",
+                    "on-background": "#191b23",
+                    "inverse-surface": "#2e3039",
+                    "secondary-fixed-dim": "#d0bcff"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "stack_gap_sm": "8px",
+                    "stack_gap_lg": "32px",
+                    "container_max_width": "1280px",
+                    "stack_gap_md": "16px",
+                    "gutter": "24px",
+                    "sidebar_width": "280px",
+                    "top_nav_height": "72px",
+                    "margin_mobile": "16px"
+            },
+            "fontFamily": {
+                    "body-md": ["Inter"],
+                    "body-lg": ["Inter"],
+                    "display-lg": ["Inter"],
+                    "label-md": ["Inter"],
+                    "headline-md": ["Inter"],
+                    "headline-lg": ["Inter"],
+                    "title-lg": ["Inter"],
+                    "label-sm": ["Inter"],
+                    "headline-lg-mobile": ["Inter"]
+            },
+            "fontSize": {
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                    "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "500"}],
+                    "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                    "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "title-lg": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                    "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "600"}],
+                    "headline-lg-mobile": ["24px", {"lineHeight": "32px", "fontWeight": "600"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .active-dot {
+            width: 8px;
+            height: 8px;
+            background-color: #0053db;
+            border-radius: 50%;
+        }
+        .glass-nav {
+            background: rgba(250, 248, 255, 0.8);
+            backdrop-filter: blur(12px);
+        }
+        .bento-card-hover {
+            transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.2s ease;
+        }
+        .bento-card-hover:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.08);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface text-on-surface font-body-md selection:bg-primary/20">
+<!-- Top Navigation Anchor -->
+<header class="sticky top-0 w-full z-50 glass-nav border-b border-outline-variant/30 shadow-sm flex items-center justify-between px-margin_mobile h-top_nav_height">
+<div class="flex items-center gap-4">
+<a class="material-symbols-outlined text-primary p-2 active:scale-95 duration-200" data-icon="arrow_back" href="../index.html">arrow_back</a>
+<h1 class="font-headline-md text-headline-md text-on-surface">Notifications</h1>
+</div>
+<a class="material-symbols-outlined text-primary p-2 active:scale-95 duration-200" data-icon="settings" href="profile.html">settings</a>
+</header>
+<main class="max-w-container_max_width mx-auto pb-32">
+<!-- Filter Tabs Section -->
+<section class="px-margin_mobile py-4 sticky top-[72px] z-40 bg-surface/95 backdrop-blur-md">
+<div class="flex gap-stack_gap_md overflow-x-auto no-scrollbar py-2">
+<button class="px-6 py-2 rounded-full bg-primary text-on-primary font-label-md text-label-md shadow-md shadow-primary/20 transition-all">All</button>
+<button class="px-6 py-2 rounded-full bg-surface-container text-on-surface-variant font-label-md text-label-md hover:bg-surface-variant transition-colors">Unread</button>
+<button class="px-6 py-2 rounded-full bg-surface-container text-on-surface-variant font-label-md text-label-md hover:bg-surface-variant transition-colors">Mentions</button>
+</div>
+</section>
+<!-- Notification List -->
+<div class="px-margin_mobile flex flex-col gap-4 mt-2">
+<!-- AI Recommendation Card -->
+<div class="group relative bg-surface-container-lowest p-5 rounded-xl border border-outline-variant/50 bento-card-hover flex gap-4 cursor-pointer" onclick="location.href='opportunity.html'">
+<div class="flex-shrink-0 w-12 h-12 rounded-full bg-secondary-container/10 flex items-center justify-center border border-secondary-container/20">
+<span class="material-symbols-outlined text-secondary" data-icon="auto_awesome" style="font-variation-settings: 'FILL' 1;">auto_awesome</span>
+</div>
+<div class="flex-1 flex flex-col gap-1">
+<div class="flex justify-between items-start">
+<span class="font-label-sm text-label-sm text-secondary-container uppercase tracking-wider">AI Recommendation</span>
+<div class="flex items-center gap-2">
+<span class="text-on-surface-variant font-label-sm text-label-sm">2h ago</span>
+<div class="active-dot"></div>
+</div>
+</div>
+<p class="font-body-md text-body-md text-on-surface pr-4">Based on your CV, we found a new <span class="font-semibold text-primary">Hackathon</span> matching your AI skills.</p>
+<div class="mt-2 flex gap-2">
+<span class="px-3 py-1 rounded-full bg-secondary/5 text-secondary text-label-sm font-label-sm border border-secondary/10">AI-Powered</span>
+<span class="px-3 py-1 rounded-full bg-surface-container-highest text-on-surface-variant text-label-sm font-label-sm">New Match</span>
+</div>
+</div>
+<div class="absolute left-0 top-0 bottom-0 w-1 bg-secondary rounded-l-xl"></div>
+</div>
+<!-- Deadline Reminder Card -->
+<div class="group relative bg-surface-container-lowest p-5 rounded-xl border border-outline-variant/50 bento-card-hover flex gap-4 cursor-pointer" onclick="location.href='opportunity.html'">
+<div class="flex-shrink-0 w-12 h-12 rounded-full bg-error-container/10 flex items-center justify-center border border-error-container/20">
+<span class="material-symbols-outlined text-error" data-icon="alarm" style="font-variation-settings: 'FILL' 1;">alarm</span>
+</div>
+<div class="flex-1 flex flex-col gap-1">
+<div class="flex justify-between items-start">
+<span class="font-label-sm text-label-sm text-error uppercase tracking-wider">Deadline Reminder</span>
+<div class="flex items-center gap-2">
+<span class="text-on-surface-variant font-label-sm text-label-sm">5h ago</span>
+<div class="active-dot"></div>
+</div>
+</div>
+<p class="font-body-md text-body-md text-on-surface pr-4">Only <span class="font-bold text-error">24 hours left</span> to apply for the Global Design Summit!</p>
+</div>
+<div class="absolute left-0 top-0 bottom-0 w-1 bg-error rounded-l-xl"></div>
+</div>
+<!-- Application Update Card -->
+<div class="group bg-surface-container-lowest p-5 rounded-xl border border-outline-variant/50 bento-card-hover flex gap-4 cursor-pointer" onclick="location.href='opportunity.html'">
+<div class="flex-shrink-0 w-12 h-12 rounded-full bg-primary-container/10 flex items-center justify-center border border-primary-container/20">
+<span class="material-symbols-outlined text-primary" data-icon="check_circle" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</div>
+<div class="flex-1 flex flex-col gap-1">
+<div class="flex justify-between items-start">
+<span class="font-label-sm text-label-sm text-primary uppercase tracking-wider">Application Update</span>
+<span class="text-on-surface-variant font-label-sm text-label-sm">1d ago</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface">Your application for <span class="font-semibold">'Quantum Computing Workshop'</span> has been <span class="text-primary font-bold">accepted!</span></p>
+</div>
+</div>
+<!-- Organization Post -->
+<div class="group bg-surface-container-lowest p-5 rounded-xl border border-outline-variant/50 bento-card-hover flex gap-4 cursor-pointer" onclick="location.href='posts.html'">
+<div class="flex-shrink-0 w-12 h-12 rounded-full overflow-hidden border-2 border-surface shadow-sm bg-primary/10 flex items-center justify-center">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">apartment</span>
+</div>
+<div class="flex-1 flex flex-col gap-1">
+<div class="flex justify-between items-start">
+<div class="flex items-center gap-1">
+<span class="font-semibold text-on-surface">TechGenius Labs</span>
+<span class="text-on-surface-variant">published a new post</span>
+</div>
+<span class="text-on-surface-variant font-label-sm text-label-sm">2d ago</span>
+</div>
+<div class="mt-2 p-3 bg-surface-container-low rounded-lg border border-outline-variant/30 italic text-on-surface-variant text-label-md">
+                        "Excited to announce registration is now open for the AI Summit..."
+                    </div>
+</div>
+</div>
+<!-- Social Activity: Friend Request -->
+<div class="group bg-surface-container-lowest p-5 rounded-xl border border-outline-variant/50 bento-card-hover flex gap-4 cursor-pointer" onclick="location.href='profile.html'">
+<div class="flex-shrink-0 w-12 h-12 rounded-full overflow-hidden border-2 border-surface shadow-sm">
+<img class="w-full h-full object-cover" data-alt="Close up profile picture of a young professional male designer with a creative look, wearing stylish glasses, high-end studio lighting with subtle blue and purple accents in the background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB2GbQS-NWZy4s11NQjIQnQlE6RA8qo3lCvQgA9R_t2cD0_3acPrckEE0p1mNr11PNtBvzZabEH08T5SS3l8_yxv1z0CKApqpBF0FeUemSWMeTsU1gyATXMZKQKcr4zB-0ZK4lP2_VXAh9cWXQJu__mUeBUD8Kyg9A3OhPaCTW6Qf5PA0ZiNCOnYnHiuu0bcvuLxY7-WgnAFp6LK_4cDOeuu71FvYU_WLyMu9GWA_8GV8mKc6ZKD0u1z-MckDKeRNePjzQ2G1fU2JqK"/>
+</div>
+<div class="flex-1 flex flex-col gap-1">
+<div class="flex justify-between items-start">
+<div class="flex items-center gap-1">
+<span class="font-semibold text-on-surface">Alex Rivera</span>
+<span class="text-on-surface-variant">sent you a friend request</span>
+</div>
+<span class="text-on-surface-variant font-label-sm text-label-sm">3d ago</span>
+</div>
+<div class="mt-3 flex gap-2">
+<button class="flex-1 bg-primary text-on-primary py-2 rounded-full font-label-md text-label-md active:scale-95 duration-150 transition-all">Accept</button>
+<button class="flex-1 bg-surface-container text-on-surface-variant py-2 rounded-full font-label-md text-label-md active:scale-95 duration-150 transition-all">Decline</button>
+</div>
+</div>
+</div>
+<!-- Organization Post -->
+<div class="group bg-surface-container-lowest p-5 rounded-xl border border-outline-variant/50 bento-card-hover flex gap-4 cursor-pointer" onclick="location.href='posts.html'">
+<div class="flex-shrink-0 w-12 h-12 rounded-full bg-tertiary-fixed flex items-center justify-center border border-tertiary/20">
+<span class="material-symbols-outlined text-tertiary" data-icon="campaign" style="font-variation-settings: 'FILL' 1;">campaign</span>
+</div>
+<div class="flex-1 flex flex-col gap-1">
+<div class="flex justify-between items-start">
+<span class="font-label-sm text-label-sm text-tertiary uppercase tracking-wider">Organization</span>
+<span class="text-on-surface-variant font-label-sm text-label-sm">4d ago</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface">New post from <span class="font-semibold text-tertiary-container">DevCommunity Hub</span>.</p>
+<p class="text-on-surface-variant text-label-md line-clamp-1 mt-1">"Registration for Frontend Wizards 2024 closes this Friday!"</p>
+</div>
+</div>
+</div>
+</main>
+<!-- Bottom Navigation Bar -->
+<nav class="lg:hidden fixed bottom-0 left-0 w-full z-50 glass-nav border-t border-outline-variant/20 flex justify-around items-center px-4 py-2 pb-safe shadow-lg">
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-colors" href="../index.html">
+<span class="material-symbols-outlined" data-icon="home">home</span>
+<span class="font-label-sm text-label-sm">Home</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-colors" href="explore.html">
+<span class="material-symbols-outlined" data-icon="explore">explore</span>
+<span class="font-label-sm text-label-sm">Discover</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-colors" href="create-team.html">
+<span class="material-symbols-outlined text-4xl text-primary" data-icon="add_circle" style="font-variation-settings: 'FILL' 1;">add_circle</span>
+<span class="font-label-sm text-label-sm">Create</span>
+</a>
+<a class="flex flex-col items-center justify-center bg-primary-container text-on-primary-container rounded-full px-4 py-1" href="notifications.html">
+<span class="material-symbols-outlined" data-icon="notifications" style="font-variation-settings: 'FILL' 1;">notifications</span>
+<span class="font-label-sm text-label-sm">Alerts</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-colors" href="profile.html">
+<span class="material-symbols-outlined" data-icon="person">person</span>
+<span class="font-label-sm text-label-sm">Profile</span>
+</a>
+</nav>
+<!-- Floating Action Button (FAB) logic as per mandate: Suppressed on Details/Notifications, but available for interaction -->
+<!-- Not rendered here per relevance rule -->
+<script>
+        // Micro-interaction for notification cards
+        document.querySelectorAll('.bento-card-hover').forEach(card => {
+            card.addEventListener('click', () => {
+                // Remove unread dot if exists
+                const dot = card.querySelector('.active-dot');
+                if (dot) {
+                    dot.style.opacity = '0';
+                    setTimeout(() => dot.remove(), 200);
+                }
+                
+                // Visual feedback
+                card.classList.add('bg-surface-container');
+                setTimeout(() => card.classList.remove('bg-surface-container'), 100);
+            });
+        });
+
+        // Tab selection logic
+        const tabs = document.querySelectorAll('section button');
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                tabs.forEach(t => {
+                    t.classList.remove('bg-primary', 'text-on-primary', 'shadow-primary/20');
+                    t.classList.add('bg-surface-container', 'text-on-surface-variant');
+                });
+                tab.classList.remove('bg-surface-container', 'text-on-surface-variant');
+                tab.classList.add('bg-primary', 'text-on-primary', 'shadow-primary/20');
+            });
+        });
+    </script>
+</body></html>

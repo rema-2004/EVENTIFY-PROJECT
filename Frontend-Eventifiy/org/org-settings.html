@@ -1,0 +1,270 @@
+﻿<!DOCTYPE html>
+<html class="light" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Organization Settings | EVENTIFY</title>
+    <script src="../assets/js/theme.js"></script>
+    <link rel="stylesheet" href="../assets/css/theme.css" />
+    <style>
+        @font-face {
+            font-family: 'Material Symbols Outlined';
+            font-style: normal;
+            font-weight: 100 700;
+            font-display: block;
+            src: url('../assets/fonts/material-symbols-outlined.woff2') format('woff2');
+        }
+        .material-symbols-outlined {
+            font-family: 'Material Symbols Outlined';
+            font-weight: normal;
+            font-style: normal;
+            font-size: 24px;
+            line-height: 1;
+            letter-spacing: normal;
+            text-transform: none;
+            display: inline-block;
+            white-space: nowrap;
+            overflow: hidden;
+            word-wrap: normal;
+            direction: ltr;
+            -webkit-font-feature-settings: 'liga';
+            -webkit-font-smoothing: antialiased;
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap"
+        rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "background": "#faf8ff",
+                        "surface-container-high": "#e7e7f3",
+                        "on-surface": "#191b23",
+                        "on-surface-variant": "#434655",
+                        "secondary-fixed-dim": "#d0bcff",
+                        "tertiary-fixed": "#ffdbcd",
+                        "on-secondary": "#ffffff",
+                        "on-tertiary-fixed": "#360f00",
+                        "primary-container": "#2563eb",
+                        "surface-container-low": "#f3f3fe",
+                        "primary-fixed": "#dbe1ff",
+                        "inverse-on-surface": "#f0f0fb",
+                        "surface": "#faf8ff",
+                        "on-error": "#ffffff",
+                        "primary": "#0058be",
+                        "on-tertiary-fixed-variant": "#7d2d00",
+                        "tertiary": "#943700",
+                        "success": "#006947",
+                        "on-success": "#ffffff",
+                        "success-container": "#00855b",
+                        "outline-variant": "#c3c6d7",
+                        "inverse-primary": "#b4c5ff",
+                        "error-container": "#ffdad6",
+                        "surface-container-highest": "#e1e2ed",
+                        "on-secondary-fixed-variant": "#5516be",
+                        "surface-tint": "#0053db",
+                        "secondary": "#6b38d4",
+                        "on-primary": "#ffffff",
+                        "tertiary-fixed-dim": "#ffb596",
+                        "tertiary-container": "#bc4800",
+                        "on-background": "#191b23",
+                        "inverse-surface": "#2e3039",
+                        "on-primary-fixed": "#00174b",
+                        "surface-container": "#ededf9",
+                        "on-primary-fixed-variant": "#003ea8",
+                        "surface-variant": "#e1e2ed",
+                        "secondary-fixed": "#e9ddff",
+                        "on-secondary-container": "#fffbff",
+                        "error": "#ba1a1a",
+                        "secondary-container": "#8455ef",
+                        "on-tertiary-container": "#ffede6",
+                        "on-primary-container": "#eeefff",
+                        "on-tertiary": "#ffffff",
+                        "surface-bright": "#faf8ff",
+                        "on-secondary-fixed": "#23005c",
+                        "surface-container-lowest": "#ffffff",
+                        "on-error-container": "#93000a",
+                        "outline": "#737686",
+                        "surface-dim": "#d9d9e5",
+                        "primary-fixed-dim": "#b4c5ff"
+                    },
+                    borderRadius: {
+                        DEFAULT: "0.25rem",
+                        lg: "0.5rem",
+                        xl: "0.75rem",
+                        full: "9999px"
+                    },
+                    spacing: {
+                        container_max_width: "1280px",
+                        stack_gap_sm: "8px",
+                        gutter: "24px",
+                        top_nav_height: "72px",
+                        stack_gap_lg: "32px",
+                        stack_gap_md: "16px",
+                        margin_mobile: "16px",
+                        sidebar_width: "280px"
+                    },
+                    fontFamily: {
+                        display: ["Inter"],
+                        body: ["Inter"],
+                        "display-lg": ["Inter"],
+                        "title-lg": ["Inter"],
+                        "label-sm": ["Inter"],
+                        "headline-lg-mobile": ["Inter"],
+                        "label-md": ["Inter"],
+                        "headline-lg": ["Inter"],
+                        "body-md": ["Inter"],
+                        "headline-md": ["Inter"],
+                        "body-lg": ["Inter"]
+                    },
+                    fontSize: {
+                        "display-lg": ["48px", { lineHeight: "56px", letterSpacing: "-0.02em", fontWeight: "700" }],
+                        "title-lg": ["20px", { lineHeight: "28px", fontWeight: "600" }],
+                        "label-sm": ["12px", { lineHeight: "16px", fontWeight: "600" }],
+                        "headline-lg-mobile": ["24px", { lineHeight: "32px", fontWeight: "600" }],
+                        "label-md": ["14px", { lineHeight: "20px", letterSpacing: "0.01em", fontWeight: "500" }],
+                        "headline-lg": ["32px", { lineHeight: "40px", letterSpacing: "-0.01em", fontWeight: "600" }],
+                        "body-md": ["16px", { lineHeight: "24px", fontWeight: "400" }],
+                        "headline-md": ["24px", { lineHeight: "32px", fontWeight: "600" }],
+                        "body-lg": ["18px", { lineHeight: "28px", fontWeight: "400" }]
+                    }
+                }
+            }
+        };
+    </script>
+    
+</head>
+
+<body class="bg-background text-on-surface font-body-md">
+    <header class="lg:hidden glass-header sticky top-0 z-50 flex h-16 items-center justify-between px-4 shadow-sm">
+        <a class="flex items-center gap-2" href="../index.html"><span
+                class="material-symbols-outlined text-primary" style="font-variation-settings:'FILL' 1;">hub</span>
+            <h1 class="text-headline-lg-mobile font-bold text-primary">EVENTIFY</h1>
+        </a>
+        <span class="rounded-full bg-primary/10 px-3 py-1 text-label-sm font-label-sm text-primary">ORGANIZER</span>
+    </header>
+    <div class="flex min-h-screen">
+        <aside class="glass-sidebar sticky top-0 z-50 hidden h-screen w-[280px] flex-col p-6 lg:flex">
+            <a class="mb-2 flex items-center gap-3" href="../index.html"><span
+                    class="material-symbols-outlined text-3xl text-primary"
+                    style="font-variation-settings:'FILL' 1;">hub</span>
+                <h1 class="text-headline-md font-bold text-primary">EVENTIFY</h1>
+            </a>
+            <span
+                class="mb-8 w-fit rounded-full bg-primary/10 px-3 py-1 text-label-sm font-semibold text-primary">ORGANIZER</span>
+                        <nav class="flex flex-1 flex-col gap-2">
+                <a class="flex items-center gap-3 rounded-xl px-4 py-3 text-on-surface-variant hover:bg-surface-container-high"
+                    href="org-dashboard.html"><span
+                        class="material-symbols-outlined">dashboard</span><span>Dashboard</span></a>
+                <a class="flex items-center gap-3 rounded-xl px-4 py-3 text-on-surface-variant hover:bg-surface-container-high"
+                    href="org-posts.html"><span
+                        class="material-symbols-outlined">campaign</span><span>Posts</span></a>
+                <a class="flex items-center gap-3 rounded-xl px-4 py-3 text-on-surface-variant hover:bg-surface-container-high"
+                    href="org-profile.html"><span
+                        class="material-symbols-outlined">apartment</span><span>Organization Profile</span></a>
+                <a class="flex items-center gap-3 rounded-xl px-4 py-3 text-on-surface-variant hover:bg-surface-container-high"
+                    href="org-opportunities.html"><span
+                        class="material-symbols-outlined">event_note</span><span>My Opportunities</span></a>
+                <a class="flex items-center gap-3 rounded-xl px-4 py-3 text-on-surface-variant hover:bg-surface-container-high"
+                    href="org-create-event.html"><span
+                        class="material-symbols-outlined">add_circle</span><span>Create Event</span></a>
+                <a class="flex items-center gap-3 rounded-xl px-4 py-3 text-on-surface-variant hover:bg-surface-container-high"
+                    href="org-applicants.html"><span
+                        class="material-symbols-outlined">group</span><span>Applicants</span></a>
+                <a class="flex items-center gap-3 rounded-xl px-4 py-3 text-on-surface-variant hover:bg-surface-container-high"
+                    href="org-messages.html"><span
+                        class="material-symbols-outlined">forum</span><span>Messages</span></a>
+                <a class="flex items-center gap-3 rounded-xl px-4 py-3 text-on-surface-variant hover:bg-surface-container-high"
+                    href="org-reports.html"><span
+                        class="material-symbols-outlined">bar_chart</span><span>Reports</span></a>
+                <a class="flex items-center gap-3 rounded-xl bg-secondary-container px-4 py-3 text-on-secondary-container"
+                    href="org-settings.html"><span class="material-symbols-outlined"
+                        style="font-variation-settings:'FILL' 1;">settings</span><span>Settings</span>
+                    <div class="ml-auto h-5 w-1 rounded-full bg-primary"></div>
+                </a>
+            </nav>
+            <div class="mt-auto rounded-2xl bg-surface-container p-4">
+                <p class="mb-2 text-label-sm font-semibold text-on-surface-variant">ORGANIZATION</p>
+                <p class="text-label-md font-medium">TechGenius Labs</p>
+                <p class="text-label-sm font-semibold text-success">Verified organizer since 2024</p>
+            </div>
+        </aside>
+        <main class="mx-auto w-full max-w-7xl flex-1 px-4 py-8 md:px-12">
+            <div class="mb-8">
+                <h2 class="text-headline-lg font-semibold">Organization Settings</h2>
+                <p class="mt-1 text-on-surface-variant">Maintain official profile data, verification documents, and
+                    organizer preferences.</p>
+            </div>
+            <div class="grid grid-cols-1 gap-6 lg:grid-cols-3">
+                <section
+                    class="rounded-2xl border border-outline-variant/50 bg-surface-container-lowest p-8 lg:col-span-2">
+                    <h3 class="mb-6 text-title-lg font-semibold">Official Information</h3>
+                    <form class="grid grid-cols-1 gap-5 md:grid-cols-2">
+                        <label class="flex flex-col gap-2 font-medium">Organization name<input
+                                class="h-12 rounded-lg border-outline-variant bg-white px-4"
+                                value="TechGenius Labs" /></label>
+                        <label class="flex flex-col gap-2 font-medium">Organization type<select
+                                class="h-12 rounded-lg border-outline-variant bg-white px-4">
+                                <option>Technology Training Center</option>
+                                <option>University</option>
+                                <option>Company</option>
+                                <option>Student Club</option>
+                                <option>NGO</option>
+                            </select></label>
+                        <label class="flex flex-col gap-2 font-medium">Work email<input
+                                class="h-12 rounded-lg border-outline-variant bg-white px-4"
+                                value="contact@techgenius.io" /></label>
+                        <label class="flex flex-col gap-2 font-medium">Website<input
+                                class="h-12 rounded-lg border-outline-variant bg-white px-4"
+                                value="https://techgenius.io" /></label>
+                        <label class="flex flex-col gap-2 font-medium">City<input
+                                class="h-12 rounded-lg border-outline-variant bg-white px-4" value="Amman" /></label>
+                        <label class="flex flex-col gap-2 font-medium">Country<input
+                                class="h-12 rounded-lg border-outline-variant bg-white px-4" value="Jordan" /></label>
+                        <label class="flex flex-col gap-2 font-medium md:col-span-2">Public description<textarea
+                                class="h-32 resize-none rounded-lg border-outline-variant bg-white p-4">A regional training and innovation lab helping students build practical AI, cloud, and product skills through workshops, competitions, and mentorship programs.</textarea></label>
+                        <div class="md:col-span-2 flex justify-end"><button
+                                class="rounded-full bg-primary px-8 py-3 font-medium text-on-primary">Save
+                                changes</button></div>
+                    </form>
+                </section>
+                <aside class="space-y-6">
+                    <section class="rounded-2xl border border-outline-variant/50 bg-surface-container-lowest p-6">
+                        <h3 class="mb-4 text-title-lg font-semibold">Verification</h3>
+                        <div class="mb-4 rounded-xl bg-success/10 p-4 text-success">
+                            <p class="font-semibold">Verified organizer</p>
+                            <p class="text-label-md">Reviewed by Eventify Admin on Mar 18, 2026.</p>
+                        </div>
+                        <div class="space-y-3 text-label-md">
+                            <p class="flex items-center justify-between"><span>Business license</span><span
+                                    class="text-success">Approved</span></p>
+                            <p class="flex items-center justify-between"><span>Domain email</span><span
+                                    class="text-success">Approved</span></p>
+                            <p class="flex items-center justify-between"><span>Training registry</span><span
+                                    class="text-success">Approved</span></p>
+                        </div>
+                    </section>
+                    <section class="rounded-2xl border border-outline-variant/50 bg-surface-container-lowest p-6">
+                        <h3 class="mb-4 text-title-lg font-semibold">Notification Rules</h3>
+                        <div class="space-y-4">
+                            <label class="flex items-center justify-between gap-3"><span>New applicants</span><input
+                                    class="rounded text-primary" checked type="checkbox" /></label>
+                            <label class="flex items-center justify-between gap-3"><span>Admin review
+                                    updates</span><input class="rounded text-primary" checked type="checkbox" /></label>
+                            <label class="flex items-center justify-between gap-3"><span>Weekly performance
+                                    report</span><input class="rounded text-primary" type="checkbox" /></label>
+                        </div>
+                    </section>
+                </aside>
+            </div>
+        </main>
+    </div>
+</body>
+
+</html>

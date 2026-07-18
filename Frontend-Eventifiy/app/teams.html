@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Eventify - Available Teams</title>
+<style>
+    @font-face {
+        font-family: 'Material Symbols Outlined';
+        font-style: normal;
+        font-weight: 100 700;
+        font-display: block;
+        src: url('../assets/fonts/material-symbols-outlined.woff2') format('woff2');
+    }
+    .material-symbols-outlined {
+        font-family: 'Material Symbols Outlined';
+        font-weight: normal;
+        font-style: normal;
+        font-size: 24px;
+        line-height: 1;
+        letter-spacing: normal;
+        text-transform: none;
+        display: inline-block;
+        white-space: nowrap;
+        overflow: hidden;
+        word-wrap: normal;
+        direction: ltr;
+        -webkit-font-feature-settings: 'liga';
+        -webkit-font-smoothing: antialiased;
+    }
+    </style>
+
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols -->
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "background": "#faf8ff",
+                        "surface-container-high": "#e7e7f3",
+                        "on-surface": "#191b23",
+                        "on-surface-variant": "#434655",
+                        "secondary-fixed-dim": "#d0bcff",
+                        "tertiary-fixed": "#ffdbcd",
+                        "on-secondary": "#ffffff",
+                        "on-tertiary-fixed": "#360f00",
+                        "primary-container": "#2563eb",
+                        "surface-container-low": "#f3f3fe",
+                        "primary-fixed": "#dbe1ff",
+                        "inverse-on-surface": "#f0f0fb",
+                        "surface": "#faf8ff",
+                        "on-error": "#ffffff",
+                        "primary": "#0058be",
+                        "on-tertiary-fixed-variant": "#7d2d00",
+                        "tertiary": "#943700",
+                        "outline-variant": "#c3c6d7",
+                        "inverse-primary": "#b4c5ff",
+                        "error-container": "#ffdad6",
+                        "surface-container-highest": "#e1e2ed",
+                        "on-secondary-fixed-variant": "#5516be",
+                        "surface-tint": "#0053db",
+                        "secondary": "#6b38d4",
+                        "on-primary": "#ffffff",
+                        "tertiary-fixed-dim": "#ffb596",
+                        "tertiary-container": "#bc4800",
+                        "on-background": "#191b23",
+                        "inverse-surface": "#2e3039",
+                        "on-primary-fixed": "#00174b",
+                        "surface-container": "#ededf9",
+                        "on-primary-fixed-variant": "#003ea8",
+                        "surface-variant": "#e1e2ed",
+                        "secondary-fixed": "#e9ddff",
+                        "on-secondary-container": "#fffbff",
+                        "error": "#ba1a1a",
+                        "secondary-container": "#8455ef",
+                        "on-tertiary-container": "#ffede6",
+                        "on-primary-container": "#eeefff",
+                        "on-tertiary": "#ffffff",
+                        "surface-bright": "#faf8ff",
+                        "on-secondary-fixed": "#23005c",
+                        "surface-container-lowest": "#ffffff",
+                        "on-error-container": "#93000a",
+                        "outline": "#737686",
+                        "surface-dim": "#d9d9e5",
+                        "primary-fixed-dim": "#b4c5ff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "container_max_width": "1280px",
+                        "stack_gap_sm": "8px",
+                        "gutter": "24px",
+                        "top_nav_height": "72px",
+                        "stack_gap_lg": "32px",
+                        "stack_gap_md": "16px",
+                        "margin_mobile": "16px",
+                        "sidebar_width": "280px"
+                    },
+                    "fontFamily": {
+                        "display-lg": ["Inter"],
+                        "title-lg": ["Inter"],
+                        "label-sm": ["Inter"],
+                        "headline-lg-mobile": ["Inter"],
+                        "label-md": ["Inter"],
+                        "headline-lg": ["Inter"],
+                        "body-md": ["Inter"],
+                        "headline-md": ["Inter"],
+                        "body-lg": ["Inter"]
+                    },
+                    "fontSize": {
+                        "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "title-lg": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                        "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "600"}],
+                        "headline-lg-mobile": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                        "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "500"}],
+                        "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                        "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .glass-sidebar {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(12px);
+            border-right: 1px solid #E2E8F0;
+        }
+        .glass-header {
+            background: rgba(250, 248, 255, 0.8);
+            backdrop-filter: blur(12px);
+        }
+        .card-lift {
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .card-lift:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.08);
+        }
+        .ai-border {
+            position: relative;
+            background: #fff;
+            padding: 1px;
+            border-radius: 1.05rem;
+            background-clip: padding-box;
+            border: 1px solid transparent;
+        }
+        .ai-border::before {
+            content: '';
+            position: absolute;
+            top: 0; right: 0; bottom: 0; left: 0;
+            z-index: -1;
+            margin: -1px;
+            border-radius: inherit;
+            background: linear-gradient(135deg, #0058be, #8455ef);
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-surface font-body-md">
+<!-- Top AppBar (Mobile/Tablet) -->
+<header class="md:hidden glass-header w-full sticky top-0 z-50 flex justify-between items-center px-4 h-16 shadow-sm">
+<a class="flex items-center gap-2" href="../index.html">
+<span class="material-symbols-outlined text-primary" data-icon="event_note">event_note</span>
+<h1 class="font-bold text-headline-lg-mobile text-primary">Eventify</h1>
+</a>
+<a class="p-2 rounded-full hover:bg-surface-container-low active:scale-95 duration-150 block" href="explore.html">
+<span class="material-symbols-outlined" data-icon="search">search</span>
+</a>
+</header>
+<div class="flex min-h-screen">
+<!-- Sidebar (Desktop) -->
+<aside class="hidden md:flex flex-col w-[280px] h-screen sticky top-0 glass-sidebar z-50 p-6">
+<a class="flex items-center gap-3 mb-10" href="../index.html">
+<span class="material-symbols-outlined text-primary text-3xl" data-icon="event_note">event_note</span>
+<h1 class="font-bold text-headline-md text-primary">Eventify</h1>
+</a>
+<nav class="flex-1 flex flex-col gap-2">
+<a class="flex items-center gap-4 px-4 py-3 rounded-xl bg-secondary-container text-on-secondary-container" href="../index.html">
+<span class="material-symbols-outlined" data-icon="home" style="font-variation-settings: 'FILL' 1;">home</span>
+<span class="font-label-md text-label-md">Home</span>
+<div class="ml-auto w-1 h-5 bg-primary rounded-full"></div>
+</a>
+<a class="flex items-center gap-4 px-4 py-3 rounded-xl text-on-surface-variant hover:bg-surface-container-high transition-colors" href="explore.html">
+<span class="material-symbols-outlined" data-icon="explore">explore</span>
+<span class="font-label-md text-label-md">Explore</span>
+</a>
+<a class="flex items-center gap-4 px-4 py-3 rounded-xl text-on-surface-variant hover:bg-surface-container-high transition-colors" href="notifications.html">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+<span class="font-label-md text-label-md">Alerts</span>
+</a>
+<a class="flex items-center gap-4 px-4 py-3 rounded-xl text-on-surface-variant hover:bg-surface-container-high transition-colors" href="profile.html">
+<span class="material-symbols-outlined" data-icon="person">person</span>
+<span class="font-label-md text-label-md">Profile</span>
+</a>
+</nav>
+<div class="mt-auto p-4 bg-surface-container rounded-2xl">
+<p class="text-label-sm font-label-sm text-on-surface-variant mb-2">HACKATHON STATUS</p>
+<div class="flex items-center justify-between mb-1">
+<span class="text-label-md font-label-md">Step 2 of 3</span>
+<span class="text-label-md font-label-md text-primary">66%</span>
+</div>
+<div class="w-full bg-surface-variant h-1.5 rounded-full overflow-hidden">
+<div class="bg-primary w-2/3 h-full rounded-full"></div>
+</div>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="flex-1 w-full max-w-7xl mx-auto px-4 md:px-12 py-8 pb-32 md:pb-8">
+<!-- Header & Step Indicator -->
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-10">
+<div>
+<div class="flex items-center gap-2 mb-2">
+<span class="px-3 py-1 bg-tertiary-fixed text-on-tertiary-fixed text-label-sm font-label-sm rounded-full">Competition Live</span>
+<span class="text-on-surface-variant text-label-md font-label-md">Step 2 of 3</span>
+</div>
+<h2 class="font-headline-lg text-headline-lg md:text-display-lg md:font-display-lg leading-tight">Available Teams for This Competition</h2>
+</div>
+<a class="bg-primary text-on-primary px-8 py-3 rounded-full font-label-md text-label-md shadow-lg flex items-center gap-2 hover:brightness-110 active:scale-95 transition-all" href="create-team.html">
+<span class="material-symbols-outlined" data-icon="add">add</span>
+                    Create New Team
+                </a>
+</div>
+<!-- Search & Filters -->
+<div class="flex flex-col gap-6 mb-12">
+<div class="flex flex-col md:flex-row gap-4">
+<div class="flex-1 relative">
+<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-outline" data-icon="search">search</span>
+<input class="w-full pl-12 pr-4 py-3 rounded-2xl border border-outline-variant bg-surface-container-lowest focus:ring-2 focus:ring-primary focus:border-transparent transition-all outline-none text-body-md" placeholder="Search by team name or project idea..." type="text"/>
+</div>
+<div class="flex gap-2 overflow-x-auto pb-2 md:pb-0">
+<button class="flex items-center gap-2 px-6 py-3 rounded-2xl border border-outline-variant bg-surface-container-lowest hover:bg-surface-container-high transition-all text-label-md font-label-md whitespace-nowrap">
+<span class="material-symbols-outlined text-primary" data-icon="filter_list">filter_list</span>
+                            All Skills
+                        </button>
+<button class="flex items-center gap-2 px-6 py-3 rounded-2xl bg-secondary-container text-on-secondary-container text-label-md font-label-md whitespace-nowrap shadow-sm">
+                            Python
+                        </button>
+<button class="flex items-center gap-2 px-6 py-3 rounded-2xl border border-outline-variant bg-surface-container-lowest hover:bg-surface-container-high transition-all text-label-md font-label-md whitespace-nowrap">
+                            UI/UX
+                        </button>
+<button class="flex items-center gap-2 px-6 py-3 rounded-2xl border border-outline-variant bg-surface-container-lowest hover:bg-surface-container-high transition-all text-label-md font-label-md whitespace-nowrap">
+                            AI
+                        </button>
+</div>
+</div>
+</div>
+<!-- Team Grid (Bento Style/Asymmetric) -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+<!-- Card 1: Featured/AI Recommended -->
+<div class="ai-border md:col-span-2 lg:col-span-2">
+<div class="p-8 h-full flex flex-col md:flex-row gap-8 bg-white rounded-2xl">
+<div class="flex-shrink-0">
+<div class="w-32 h-32 rounded-3xl bg-primary-fixed flex items-center justify-center overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A futuristic, minimalist geometric logo for a tech team named NeuroNex. The logo consists of clean white lines on a deep electric blue background, suggesting neural networks and high-end AI research. The aesthetic is sophisticated, corporate, and modern, fitting a high-end SaaS platform." src="https://lh3.googleusercontent.com/aida-public/AB6AXuABqnU1m7CfKkx7tOe81VT8yI0CFQm_2I7ZvpiTA4DumdAIgiS7XqO1U1aUBmSJn9g-NpN98ovqEo04AuH_D-qniLjNQWt9sOdvi76vb-8vbD3tS51NdfOgpmRw4hnGvopwUuBYsMVG2x8GRwRB7LWMquyr0bg4iPTcxWbeskgEmhobXCr8gH29lOwfCBNUUeZt-BH7j1mq56twFAxdfMzvHXhoUhhGOEJpD_Np1tJJH1MgQj1tNf0KAjLucTaGNeAAKQI8ikEoTDM4"/>
+</div>
+</div>
+<div class="flex-1">
+<div class="flex flex-wrap items-center justify-between gap-4 mb-4">
+<div>
+<h3 class="text-headline-md font-headline-md mb-1">NeuroNex</h3>
+<p class="text-on-surface-variant flex items-center gap-1 text-label-md font-label-md">
+<span class="material-symbols-outlined text-primary text-lg" data-icon="stars" style="font-variation-settings: 'FILL' 1;">stars</span>
+                                        Leader: Dr. Aris Thorne
+                                    </p>
+</div>
+<span class="bg-success-container px-4 py-1.5 rounded-full border border-primary text-primary text-label-sm font-label-sm uppercase tracking-wider flex items-center gap-1">
+<span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
+                                    Recruiting
+                                </span>
+</div>
+<p class="text-body-md text-on-surface-variant mb-6 line-clamp-2">
+                                Building a decentralized LLM orchestrator for sustainable edge computing. We need visionary thinkers.
+                            </p>
+<div class="flex flex-wrap gap-2 mb-8">
+<span class="bg-surface-container-high px-3 py-1 rounded-lg text-label-sm font-label-sm">Python</span>
+<span class="bg-surface-container-high px-3 py-1 rounded-lg text-label-sm font-label-sm">PyTorch</span>
+<span class="bg-surface-container-high px-3 py-1 rounded-lg text-label-sm font-label-sm">UI/UX</span>
+</div>
+<div class="flex items-center justify-between mt-auto">
+<div class="flex items-center gap-3">
+<div class="flex -space-x-3">
+<img class="w-10 h-10 rounded-full border-2 border-white object-cover" data-alt="A professional headshot of a diverse male developer in a brightly lit, modern office space. Soft cinematic lighting with a neutral gray background. High-end professional photography style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDhT6Su_LJr5bDu0t_rxToc1xk8wOTZWIoQB6wS1IThyVSFhWbROhg737J79LKV-Pmc-HtsjSYdTXHbb4Yh28Vux1q1cNcpRWxovJwLO0dldJmvPXVvMd6MSUPozJbhRiwGE_RxBnhoUVj30gyMuEm4F3_b8A5v9t_FPdyVddIKf4jSzLapoE2w8Z0gQJWosGSj_UCh0xjYGLuURk35QhnQN08ua5G3699BYrDOGxYAQvKKPR9yIluBtX0j9tc3rBqY2e4E4lmjm1xA"/>
+<img class="w-10 h-10 rounded-full border-2 border-white object-cover" data-alt="A professional headshot of a confident female UI designer with a warm expression. Bright, airy daylighting in a minimalist studio environment. Clean, modern aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDuSV1bfBO_FrWx-qTQa2gLqBTYHIDLSZpFqAFmpBQX9kmamCr_nm57FIoYWEWtRKsl9wZlUDb4TlVTaKTM4y0l-OBR-5ZJs4_Ib1fHcbDOZTlXodi3Crl9DEXFAW8nPbGeakm7igqp-uZCmK2egYkUjmB5Jiwrdo6nsZi8DHv6AU9OZkWO3p-IKjfDjB_WBUEirWkbfmS_waug6wi6YksChigukYcMs2PPfI273T7tV5KxAstCD59VP7h83fiSbvL_USnlLoKcpAz2"/>
+<div class="w-10 h-10 rounded-full border-2 border-white bg-surface-container-highest flex items-center justify-center text-label-sm">+1</div>
+</div>
+<span class="text-label-md font-label-md text-on-surface-variant">3/5 Members</span>
+</div>
+<div class="flex gap-3">
+<a class="px-6 py-2.5 rounded-full border border-outline-variant font-label-md text-label-md hover:bg-surface-container transition-all text-center" href="team-dashboard.html">View Details</a>
+<a class="px-6 py-2.5 rounded-full bg-primary text-on-primary font-label-md text-label-md hover:brightness-110 active:scale-95 transition-all text-center" href="team-dashboard.html">Request to Join</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Card 2 -->
+<div class="bg-white p-6 rounded-2xl border border-outline-variant card-lift flex flex-col h-full">
+<div class="flex items-start justify-between mb-6">
+<div class="w-16 h-16 rounded-2xl bg-secondary-fixed flex items-center justify-center overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A minimalist logo for a software team called CloudScale. A stylized cloud formed from sharp, modern geometric polygons in shades of purple and slate. Minimalist professional look for a tech environment." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCqCYVrg0hwpqru5Fe9bAcf3hFI_HcymhazDgPmLMdQtxbpkY9eHL3TnCI0B3dMEunM0pQyLAS5lrN2DgFvg8q98c0KEMC7H9TQNXVEHZBMjPY1Mxwhz9qdGgQo5jSTZWlNCr9HLa3BkWZT5L9vIyP9OmJNH3l76N7kVsdk_8ASVSzY6E8jckg6VzjXLtFklmpYRCvWrRQbC1aIqgGR3xJpWw9q-h6T-PbFekofMk12kas89Dh14E8vCqerj_uz9csAkaDHzyGva6J-"/>
+</div>
+<span class="bg-surface-container px-3 py-1 rounded-full text-primary text-label-sm font-label-sm flex items-center gap-1">
+<span class="material-symbols-outlined text-sm" data-icon="groups">groups</span>
+                            4/5
+                        </span>
+</div>
+<h3 class="text-title-lg font-title-lg mb-1">CloudScale</h3>
+<p class="text-on-surface-variant text-label-md font-label-md mb-4">Leader: Sarah Jenkins</p>
+<p class="text-body-md text-on-surface-variant mb-6 flex-grow">Optimizing serverless architectures for heavy traffic spikes.</p>
+<div class="flex flex-wrap gap-2 mb-8">
+<span class="bg-surface-container px-3 py-1 rounded-lg text-label-sm font-label-sm">AWS</span>
+<span class="bg-surface-container px-3 py-1 rounded-lg text-label-sm font-label-sm">Node.js</span>
+</div>
+<div class="grid grid-cols-2 gap-3 mt-auto">
+<a class="py-2.5 rounded-xl border border-outline-variant font-label-md text-label-md hover:bg-surface-container transition-all text-center" href="team-dashboard.html">View</a>
+<a class="py-2.5 rounded-xl bg-primary text-on-primary font-label-md text-label-md hover:brightness-110 active:scale-95 transition-all text-center" href="team-dashboard.html">Join</a>
+</div>
+</div>
+<!-- Card 3 -->
+<div class="bg-white p-6 rounded-2xl border border-outline-variant card-lift flex flex-col h-full">
+<div class="flex items-start justify-between mb-6">
+<div class="w-16 h-16 rounded-2xl bg-tertiary-fixed-dim flex items-center justify-center overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="An abstract, modern logo for a design-led team called PixelPerfect. A single vibrant purple pixel breaking away from a clean grid, symbolizing innovation. High-end, premium tech aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCxSqoiKhKuMhzosASWGg81635Ybgh4kl_FC3b3ssNURpqcZT0fH2Kk4mj86YC5NzjdfAg9LQfigAVcy5WPTKFO1fUX1h_ioelRwNBrwpS6wIZ76_fi1UIp3PKrmdl6gJG7ihBL_LnFZYMoFnSrTRW0jG_Kvj8LSS0HeLmYA2liTwMvufy9s0OPKUIJOLeEjnT3LsnMNqJ9yp68jjnSrBMZfnSMs-GPXDhmQzrLD9vYjuXLgOOSSE0GMYevawgA6wRU0Cz4eW1xk6bT"/>
+</div>
+<span class="bg-surface-container px-3 py-1 rounded-full text-primary text-label-sm font-label-sm flex items-center gap-1">
+<span class="material-symbols-outlined text-sm" data-icon="groups">groups</span>
+                            2/5
+                        </span>
+</div>
+<h3 class="text-title-lg font-title-lg mb-1">PixelPerfect</h3>
+<p class="text-on-surface-variant text-label-md font-label-md mb-4">Leader: Marcus Lee</p>
+<p class="text-body-md text-on-surface-variant mb-6 flex-grow">Designing the next generation of social interaction through spatial web.</p>
+<div class="flex flex-wrap gap-2 mb-8">
+<span class="bg-surface-container px-3 py-1 rounded-lg text-label-sm font-label-sm">UI/UX</span>
+<span class="bg-surface-container px-3 py-1 rounded-lg text-label-sm font-label-sm">Three.js</span>
+</div>
+<div class="grid grid-cols-2 gap-3 mt-auto">
+<a class="py-2.5 rounded-xl border border-outline-variant font-label-md text-label-md hover:bg-surface-container transition-all text-center" href="team-dashboard.html">View</a>
+<a class="py-2.5 rounded-xl bg-primary text-on-primary font-label-md text-label-md hover:brightness-110 active:scale-95 transition-all text-center" href="team-dashboard.html">Join</a>
+</div>
+</div>
+<!-- Card 4 -->
+<div class="bg-white p-6 rounded-2xl border border-outline-variant card-lift flex flex-col h-full">
+<div class="flex items-start justify-between mb-6">
+<div class="w-16 h-16 rounded-2xl bg-surface-container-highest flex items-center justify-center overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A clean, bold typography-based logo for a team named DataStream. The letters are intertwined with a digital flow graphic in vibrant orange and deep blue. Professional and energetic look." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCQOtjzK7bS-lnWwGCqf2XFj_M89deQV3ailE42kVi-oPOnYyeqiwEMIkEeDJ-bb_Am0rYDwkGHKDmpHm0yDIvmlu0XMmHls8l-EWtZ1-5myAD1gkwKHFuLkZ7I9kvtv3w-P-3ooDi8WJcflJsznBzyWUxELWyrOzdbMc--8vNSybPYpjqbe9W6vVEnIXkbl-xAr2-F8_tMZOsueHVeIgibVp571Egl48PJr1rhySEGxbk9efBOEIMHygMHwkMa9jI_1pbxfvRx4kpA"/>
+</div>
+<span class="bg-surface-container px-3 py-1 rounded-full text-primary text-label-sm font-label-sm flex items-center gap-1">
+<span class="material-symbols-outlined text-sm" data-icon="groups">groups</span>
+                            3/5
+                        </span>
+</div>
+<h3 class="text-title-lg font-title-lg mb-1">DataStream</h3>
+<p class="text-on-surface-variant text-label-md font-label-md mb-4">Leader: Elena Rodriguez</p>
+<p class="text-body-md text-on-surface-variant mb-6 flex-grow">Real-time analytics for carbon footprint monitoring.</p>
+<div class="flex flex-wrap gap-2 mb-8">
+<span class="bg-surface-container px-3 py-1 rounded-lg text-label-sm font-label-sm">Python</span>
+<span class="bg-surface-container px-3 py-1 rounded-lg text-label-sm font-label-sm">Data Viz</span>
+</div>
+<div class="grid grid-cols-2 gap-3 mt-auto">
+<a class="py-2.5 rounded-xl border border-outline-variant font-label-md text-label-md hover:bg-surface-container transition-all text-center" href="team-dashboard.html">View</a>
+<a class="py-2.5 rounded-xl bg-primary text-on-primary font-label-md text-label-md hover:brightness-110 active:scale-95 transition-all text-center" href="team-dashboard.html">Join</a>
+</div>
+</div>
+<!-- Card 5 -->
+<div class="bg-white p-6 rounded-2xl border border-outline-variant card-lift flex flex-col h-full">
+<div class="flex items-start justify-between mb-6">
+<div class="w-16 h-16 rounded-2xl bg-primary-container/20 flex items-center justify-center overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A minimalist tech logo for 'SwiftDev' featuring a stylized lightning bolt integrated into a code bracket. Vibrant blue and silver gradients on a soft white background. Modern, corporate, high-end design." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD_2fjHl1PmJX5xPgzlAPmyUqD4BeGfNI8Cv7pkj-Hp4fyBI4BOhr3m5g4P9RUy60PBm61guxYOm5rEYgqrz3ey2JD2v4t2qE3i_bViZfX7BEdjuiT_bwuuP59QHXiSuXIc2MqHckc-ZdAOmKVKD2yP2bZJZ8ZG2gDMKQSosd1NkDpsnZ7w-GkUqsSKFm7TB1nof-gMsKsGSsW2h5dOm_KJ08ZL_wfiZrXWd2gH3yCZifAqfK-CWDGxdwROtZWZn_rVgvyHVkhPpTa-"/>
+</div>
+<span class="bg-surface-container px-3 py-1 rounded-full text-primary text-label-sm font-label-sm flex items-center gap-1">
+<span class="material-symbols-outlined text-sm" data-icon="groups">groups</span>
+                            1/5
+                        </span>
+</div>
+<h3 class="text-title-lg font-title-lg mb-1">SwiftDev</h3>
+<p class="text-on-surface-variant text-label-md font-label-md mb-4">Leader: Kevin Park</p>
+<p class="text-body-md text-on-surface-variant mb-6 flex-grow">Mobile-first banking for the underbanked communities.</p>
+<div class="flex flex-wrap gap-2 mb-8">
+<span class="bg-surface-container px-3 py-1 rounded-lg text-label-sm font-label-sm">Flutter</span>
+<span class="bg-surface-container px-3 py-1 rounded-lg text-label-sm font-label-sm">AI</span>
+</div>
+<div class="grid grid-cols-2 gap-3 mt-auto">
+<a class="py-2.5 rounded-xl border border-outline-variant font-label-md text-label-md hover:bg-surface-container transition-all text-center" href="team-dashboard.html">View</a>
+<a class="py-2.5 rounded-xl bg-primary text-on-primary font-label-md text-label-md hover:brightness-110 active:scale-95 transition-all text-center" href="team-dashboard.html">Join</a>
+</div>
+</div>
+</div>
+</main>
+</div>
+<!-- Bottom Navigation (Mobile) -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-2 py-3 pb-safe bg-surface shadow-[0_-1px_12px_rgba(59,130,246,0.08)]">
+<a class="flex flex-col items-center justify-center bg-secondary-container text-on-secondary-container rounded-xl py-1 px-4" href="../index.html">
+<span class="material-symbols-outlined" data-icon="home" style="font-variation-settings: 'FILL' 1;">home</span>
+<span class="text-label-sm font-label-sm">Home</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant py-1 px-4" href="explore.html">
+<span class="material-symbols-outlined" data-icon="explore">explore</span>
+<span class="text-label-sm font-label-sm">Explore</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant py-1 px-4" href="notifications.html">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+<span class="text-label-sm font-label-sm">Alerts</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant py-1 px-4" href="profile.html">
+<span class="material-symbols-outlined" data-icon="person">person</span>
+<span class="text-label-sm font-label-sm">Profile</span>
+</a>
+</nav>
+<script>
+        // Simple micro-interaction for filter buttons
+        document.querySelectorAll('button').forEach(btn => {
+            btn.addEventListener('click', function() {
+                if(this.classList.contains('border-outline-variant')) {
+                    // Toggle selection logic could go here
+                }
+            });
+        });
+
+        // Search bar focus effect
+        const searchInput = document.querySelector('input[type="text"]');
+        if(searchInput) {
+            searchInput.addEventListener('focus', () => {
+                searchInput.parentElement.classList.add('scale-[1.01]');
+            });
+            searchInput.addEventListener('blur', () => {
+                searchInput.parentElement.classList.remove('scale-[1.01]');
+            });
+        }
+    </script>
+</body></html>
