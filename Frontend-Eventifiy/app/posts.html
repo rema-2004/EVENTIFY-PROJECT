@@ -95,115 +95,75 @@
 </div>
 </nav>
 <main class="pt-24 pb-12 px-container-margin-mobile md:px-container-margin-desktop max-w-[1280px] mx-auto">
-<div class="mb-8">
+<div class="mb-8 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+<div>
 <h1 class="font-headline-xl text-headline-xl">Posts</h1>
-<p class="font-body-lg text-body-lg text-on-surface-variant mt-1">Updates and announcements from the organizations you follow.</p>
+<p class="font-body-lg text-body-lg text-on-surface-variant mt-1">Browse the latest updates shared by organizers.</p>
 </div>
-<div class="grid grid-cols-1 lg:grid-cols-3 gap-gutter">
-<!-- Feed -->
-<div class="lg:col-span-2 space-y-4">
-<!-- Post 1 -->
-<div class="bg-surface-container-lowest border border-outline-variant/30 rounded-xl p-5 space-y-3">
+<div class="flex items-center gap-2 rounded-full border border-outline-variant/40 bg-white px-3 py-2 shadow-sm">
+<span class="material-symbols-outlined text-on-surface-variant">search</span>
+<input class="w-40 border-0 bg-transparent text-sm outline-none" placeholder="Search posts" type="text" />
+</div>
+</div>
+<div class="grid grid-cols-1 gap-gutter">
+<div class="space-y-4">
+<div class="overflow-hidden rounded-2xl border border-outline-variant/40 bg-surface-container-lowest p-5 shadow-sm">
 <div class="flex items-center gap-3">
-<div class="w-11 h-11 rounded-full overflow-hidden flex-shrink-0 flex items-center justify-center bg-primary/10">
+<div class="flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-full bg-primary/10">
 <span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">apartment</span>
 </div>
 <div>
 <p class="font-label-md text-label-md">TechGenius Labs</p>
-<p class="font-label-sm text-label-sm text-on-surface-variant">Verified Organizer &middot; 2h ago</p>
+<p class="font-label-sm text-label-sm text-on-surface-variant">Verified Organizer · 2h ago</p>
 </div>
 </div>
-<p class="font-body-md text-body-md">Registration for the <span class="font-semibold">Global AI Innovation Challenge</span> is now open! Teams of 2-4, $10k in prizes, remote-friendly. Apply before Oct 26.</p>
-<a class="inline-block text-primary font-label-sm text-label-sm hover:underline" href="opportunity.html">View opportunity →</a>
-<div class="flex items-center gap-6 text-on-surface-variant font-label-sm text-label-sm pt-1 border-t border-outline-variant/20 mt-1">
-<button class="flex items-center gap-1 hover:text-primary transition-colors"><span class="material-symbols-outlined text-[18px]">favorite</span> 132</button>
-<button class="flex items-center gap-1 hover:text-primary transition-colors"><span class="material-symbols-outlined text-[18px]">chat_bubble</span> 18</button>
-<button class="flex items-center gap-1 hover:text-primary transition-colors"><span class="material-symbols-outlined text-[18px]">share</span> Share</button>
+<p class="mt-4 font-body-md text-body-md">Registration for the Global AI Innovation Challenge is now open. Teams of 2-4, $10k in prizes, and remote-friendly opportunities are available.</p>
+<p class="details mt-3 hidden text-sm leading-6 text-on-surface-variant">More details will appear here for applicants who want to learn about the challenge timeline, eligibility, and how to submit the application before the deadline.</p>
+<button class="read-more mt-4 rounded-full border border-primary/20 bg-primary/5 px-4 py-2 text-sm font-semibold text-primary transition-all" type="button">Read more</button>
 </div>
-</div>
-<!-- Post 2 -->
-<div class="bg-surface-container-lowest border border-outline-variant/30 rounded-xl p-5 space-y-3">
+<div class="overflow-hidden rounded-2xl border border-outline-variant/40 bg-surface-container-lowest p-5 shadow-sm">
 <div class="flex items-center gap-3">
-<div class="w-11 h-11 rounded-full overflow-hidden flex-shrink-0 flex items-center justify-center bg-secondary/10">
+<div class="flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-full bg-secondary/10">
 <span class="material-symbols-outlined text-secondary" style="font-variation-settings: 'FILL' 1;">apartment</span>
 </div>
 <div>
 <p class="font-label-md text-label-md">DevCommunity Hub</p>
-<p class="font-label-sm text-label-sm text-on-surface-variant">Verified Organizer &middot; 5h ago</p>
+<p class="font-label-sm text-label-sm text-on-surface-variant">Verified Organizer · 5h ago</p>
 </div>
 </div>
-<p class="font-body-md text-body-md">Only one week left to register for <span class="font-semibold">Frontend Wizards 2024</span> in London! Limited seats — grab yours before they're gone.</p>
-<div class="rounded-lg overflow-hidden">
-<img class="w-full h-48 object-cover" alt="Frontend Wizards competition banner" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAoXFluzheWmZ490MELdToAMEYpR_txVKV30osgae_hCJtZOTitQ7q-hlRINJEb6yu8WczfucSzRFeg7_ASopSg4PYi40bcSgLBAzpyDWcgZltV0lVaadKj9Hxg_0-MIvEynOlpWfO6oad4LDePXnQqUogQYAUOomnsxNQRm0sYppi6tcEF-XVtGAmZwLlJ7Zzvf2ojEvEnU0EwWkAE_qpAYRfUYUWLDeKx1nnQtM-6DxX8uCm13GfTKpd5tCt-XHKS5s04qO3jTwFA"/>
+<p class="mt-4 font-body-md text-body-md">A new opportunity is now open for students and young founders to join Startup Sprint 2024 in Amman. Register before Friday to reserve your place and receive the event kit.</p>
+<p class="details mt-3 hidden text-sm leading-6 text-on-surface-variant">The registration form is open for early applicants. Participants will receive a confirmation email, event access details, and guidance on what to prepare before attending.</p>
+<button class="read-more mt-4 rounded-full border border-primary/20 bg-primary/5 px-4 py-2 text-sm font-semibold text-primary transition-all" type="button">Read more</button>
 </div>
-<a class="inline-block text-primary font-label-sm text-label-sm hover:underline" href="opportunity.html">View opportunity →</a>
-<div class="flex items-center gap-6 text-on-surface-variant font-label-sm text-label-sm pt-1 border-t border-outline-variant/20 mt-1">
-<button class="flex items-center gap-1 hover:text-primary transition-colors"><span class="material-symbols-outlined text-[18px]">favorite</span> 87</button>
-<button class="flex items-center gap-1 hover:text-primary transition-colors"><span class="material-symbols-outlined text-[18px]">chat_bubble</span> 9</button>
-<button class="flex items-center gap-1 hover:text-primary transition-colors"><span class="material-symbols-outlined text-[18px]">share</span> Share</button>
-</div>
-</div>
-<!-- Post 3 -->
-<div class="bg-surface-container-lowest border border-outline-variant/30 rounded-xl p-5 space-y-3">
+<div class="overflow-hidden rounded-2xl border border-outline-variant/40 bg-surface-container-lowest p-5 shadow-sm">
 <div class="flex items-center gap-3">
-<div class="w-11 h-11 rounded-full overflow-hidden flex-shrink-0 flex items-center justify-center bg-tertiary/10">
+<div class="flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-full bg-tertiary/10">
 <span class="material-symbols-outlined text-tertiary" style="font-variation-settings: 'FILL' 1;">apartment</span>
 </div>
 <div>
 <p class="font-label-md text-label-md">University of Technology</p>
-<p class="font-label-sm text-label-sm text-on-surface-variant">Verified Organizer &middot; 1d ago</p>
+<p class="font-label-sm text-label-sm text-on-surface-variant">Verified Organizer · 1d ago</p>
 </div>
 </div>
-<p class="font-body-md text-body-md">We just wrapped the Quantum Computing Bootcamp — huge thanks to everyone who joined! Recordings and certificates are on their way to your inbox.</p>
-<div class="flex items-center gap-6 text-on-surface-variant font-label-sm text-label-sm pt-1 border-t border-outline-variant/20 mt-1">
-<button class="flex items-center gap-1 hover:text-primary transition-colors"><span class="material-symbols-outlined text-[18px]">favorite</span> 54</button>
-<button class="flex items-center gap-1 hover:text-primary transition-colors"><span class="material-symbols-outlined text-[18px]">chat_bubble</span> 4</button>
-<button class="flex items-center gap-1 hover:text-primary transition-colors"><span class="material-symbols-outlined text-[18px]">share</span> Share</button>
+<p class="mt-4 font-body-md text-body-md">We just wrapped the Quantum Computing Bootcamp and shared the highlights with all participants. Certificates are on their way.</p>
+<p class="details mt-3 hidden text-sm leading-6 text-on-surface-variant">This post can expand to include learning resources, event recap notes, and follow-up instructions for all participants who want more context.</p>
+<button class="read-more mt-4 rounded-full border border-primary/20 bg-primary/5 px-4 py-2 text-sm font-semibold text-primary transition-all" type="button">Read more</button>
 </div>
-</div>
-</div>
-<!-- Sidebar: Organizations -->
-<div class="space-y-6">
-<div class="bg-surface-container-lowest border border-outline-variant/30 rounded-xl p-5 space-y-4">
-<h3 class="font-title-md text-title-md">Organizations You Follow</h3>
+<div class="overflow-hidden rounded-2xl border border-outline-variant/40 bg-surface-container-lowest p-5 shadow-sm">
 <div class="flex items-center gap-3">
-<div class="w-11 h-11 rounded-xl flex-shrink-0 flex items-center justify-center bg-primary/10"><span class="material-symbols-outlined text-primary">apartment</span></div>
-<div class="flex-1">
-<p class="font-label-md text-label-md">TechGenius Labs</p>
-<p class="font-label-sm text-label-sm text-on-surface-variant">12 posts this month</p>
+<div class="flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-full bg-primary/10">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">emoji_events</span>
+</div>
+<div>
+<p class="font-label-md text-label-md">EVENTIFY Team</p>
+<p class="font-label-sm text-label-sm text-on-surface-variant">New competition · Just posted</p>
 </div>
 </div>
-<div class="flex items-center gap-3">
-<div class="w-11 h-11 rounded-xl flex-shrink-0 flex items-center justify-center bg-secondary/10"><span class="material-symbols-outlined text-secondary">apartment</span></div>
-<div class="flex-1">
-<p class="font-label-md text-label-md">DevCommunity Hub</p>
-<p class="font-label-sm text-label-sm text-on-surface-variant">5 posts this month</p>
-</div>
-</div>
-<div class="flex items-center gap-3">
-<div class="w-11 h-11 rounded-xl flex-shrink-0 flex items-center justify-center bg-tertiary/10"><span class="material-symbols-outlined text-tertiary">apartment</span></div>
-<div class="flex-1">
-<p class="font-label-md text-label-md">University of Technology</p>
-<p class="font-label-sm text-label-sm text-on-surface-variant">3 posts this month</p>
-</div>
-</div>
-</div>
-<div class="bg-surface-container-lowest border border-outline-variant/30 rounded-xl p-5 space-y-4">
-<h3 class="font-title-md text-title-md">Suggested Organizations</h3>
-<div class="flex items-center justify-between gap-3">
-<div class="flex items-center gap-3">
-<div class="w-10 h-10 rounded-xl flex-shrink-0 flex items-center justify-center bg-primary/10"><span class="material-symbols-outlined text-primary">apartment</span></div>
-<p class="font-label-md text-label-md">DesignHub Amman</p>
-</div>
-<button class="px-4 py-1.5 border border-primary text-primary rounded-full font-label-sm text-label-sm hover:bg-primary/5 transition-colors">Follow</button>
-</div>
-<div class="flex items-center justify-between gap-3">
-<div class="flex items-center gap-3">
-<div class="w-10 h-10 rounded-xl flex-shrink-0 flex items-center justify-center bg-secondary/10"><span class="material-symbols-outlined text-secondary">apartment</span></div>
-<p class="font-label-md text-label-md">CloudNine Academy</p>
-</div>
-<button class="px-4 py-1.5 border border-primary text-primary rounded-full font-label-sm text-label-sm hover:bg-primary/5 transition-colors">Follow</button>
-</div>
+<p class="mt-4 font-body-md text-body-md">We just launched a new competition for creators and innovators. Join the challenge and share your idea with the community.</p>
+<a class="mt-3 inline-flex items-center gap-2 text-sm font-semibold text-primary hover:underline" href="opportunity.html">
+<span class="material-symbols-outlined text-[16px]">link</span>
+Open opportunity
+</a>
 </div>
 </div>
 </div>
@@ -231,4 +191,23 @@
 <span class="font-label-sm text-label-sm">Profile</span>
 </a>
 </nav>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('.read-more').forEach((button) => {
+    button.addEventListener('click', () => {
+      const card = button.closest('.overflow-hidden');
+      const details = card ? card.querySelector('.details') : null;
+      const isOpen = button.dataset.open === 'true';
+      button.dataset.open = isOpen ? 'false' : 'true';
+      button.textContent = isOpen ? 'Read more' : 'Show less';
+      button.classList.toggle('bg-primary', !isOpen);
+      button.classList.toggle('text-white', !isOpen);
+      button.classList.toggle('border-primary', !isOpen);
+      if (details) {
+        details.classList.toggle('hidden', isOpen);
+      }
+    });
+  });
+});
+</script>
 </body></html>
