@@ -142,7 +142,7 @@
 </head>
 
 <body class="bg-background text-on-surface font-body-md">
-    <header class="lg:hidden glass-header sticky top-0 z-50 flex h-16 items-center justify-between px-4 shadow-sm">
+    <header class="lg:hidden sticky top-0 z-50 flex h-16 items-center justify-between bg-background/95 px-4 shadow-sm backdrop-blur-sm">
         <a class="flex items-center gap-2" href="../index.html"><span
                 class="material-symbols-outlined text-primary" style="font-variation-settings:'FILL' 1;">hub</span>
             <h1 class="text-headline-lg-mobile font-bold text-primary">EVENTIFY</h1>
@@ -150,7 +150,7 @@
         <span class="rounded-full bg-primary/10 px-3 py-1 text-label-sm font-label-sm text-primary">ORGANIZER</span>
     </header>
     <div class="flex min-h-screen">
-        <aside class="glass-sidebar sticky top-0 z-50 hidden h-screen w-[280px] flex-col p-6 lg:flex">
+        <aside class="sticky top-0 z-50 hidden h-screen w-[280px] flex-col border-r border-outline-variant/40 bg-surface-container-lowest p-6 lg:flex">
             <a class="mb-2 flex items-center gap-3" href="../index.html"><span
                     class="material-symbols-outlined text-3xl text-primary"
                     style="font-variation-settings:'FILL' 1;">hub</span>
@@ -192,84 +192,297 @@
             </div>
         </aside>
         <main class="mx-auto w-full max-w-7xl flex-1 px-4 py-8 pb-24 md:px-12 lg:pb-8">
-            <div class="mb-8">
-                <h2 class="text-headline-lg font-semibold">Posts</h2>
-                <p class="mt-1 text-on-surface-variant">Share updates, announcements, and news with the people
-                    following TechGenius Labs.</p>
+            <div class="mb-8 rounded-[28px] border border-outline-variant/40 bg-gradient-to-r from-primary/10 via-surface-container-lowest to-secondary/10 p-6 shadow-sm">
+                <div class="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
+                    <div>
+                        <p class="mb-3 inline-flex items-center rounded-full bg-primary/10 px-3 py-1 text-sm font-semibold text-primary">Organizer workspace</p>
+                        <h2 class="text-headline-lg font-semibold">Posts</h2>
+                        <p class="mt-2 max-w-2xl text-on-surface-variant">Share updates, announcements, and news with the people following TechGenius Labs.</p>
+                    </div>
+                    <div class="rounded-2xl border border-primary/15 bg-white/80 px-4 py-3 shadow-sm">
+                        <p class="text-sm text-on-surface-variant">Active followers</p>
+                        <p class="text-2xl font-semibold text-primary">3,214</p>
+                    </div>
+                </div>
             </div>
-            <div class="grid grid-cols-1 gap-6 lg:grid-cols-3">
-                <div class="lg:col-span-2 space-y-4">
+
+            <div class="grid grid-cols-1 gap-6 xl:grid-cols-[1.6fr_0.9fr]">
+                <div class="space-y-4">
                     <!-- Composer -->
-                    <div class="rounded-2xl border border-outline-variant/50 bg-surface-container-lowest p-6">
-                        <label class="mb-2 block text-label-md font-semibold text-on-surface-variant" for="post-content">Write a
-                            new post</label>
-                        <textarea class="w-full resize-none rounded-xl border border-outline-variant bg-white p-4 text-body-md focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
+                    <div class="rounded-[28px] border border-outline-variant/40 bg-surface-container-lowest p-6 shadow-sm">
+                        <div class="mb-4 flex items-center gap-3">
+                            <div class="flex h-11 w-11 items-center justify-center rounded-2xl bg-primary/10 text-primary">
+                                <span class="material-symbols-outlined text-[22px]">edit_square</span>
+                            </div>
+                            <div>
+                                <h3 class="text-title-lg font-semibold">Write a new post</h3>
+                                <p class="text-sm text-on-surface-variant">Keep your audience informed with concise updates.</p>
+                            </div>
+                        </div>
+                        <textarea class="w-full resize-none rounded-2xl border border-outline-variant/60 bg-surface-container-low p-4 text-body-md text-on-surface shadow-sm focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
                             id="post-content" placeholder="Share news, a registration deadline, or an update with your followers…" rows="3"></textarea>
-                        <div class="mt-4 flex items-center justify-between">
-                            <button class="flex items-center gap-2 rounded-full border border-outline-variant px-4 py-2 text-label-md text-on-surface-variant hover:bg-surface-container-high transition-colors" type="button">
+                        <div class="mt-4 flex flex-wrap items-center justify-between gap-3">
+                            <button class="flex items-center gap-2 rounded-full border border-outline-variant/70 px-4 py-2 text-label-md text-on-surface-variant transition-colors hover:bg-surface-container-high" type="button">
                                 <span class="material-symbols-outlined text-[20px]">image</span> Add image
                             </button>
-                            <button class="rounded-full bg-primary px-6 py-2.5 text-label-md text-on-primary shadow-md hover:brightness-110 active:scale-95 transition-all" type="button">Publish</button>
+                            <button class="rounded-full bg-primary px-6 py-2.5 text-label-md text-on-primary shadow-md transition-all hover:brightness-110 active:scale-95" type="button">Publish</button>
                         </div>
                     </div>
+
                     <!-- Published Posts -->
                     <div class="flex items-center justify-between pt-2">
                         <h3 class="text-title-lg font-semibold">Your Posts</h3>
+                        <span class="rounded-full bg-surface-container px-3 py-1 text-sm text-on-surface-variant">3 updates</span>
                     </div>
-                    <div class="rounded-2xl border border-outline-variant/50 bg-surface-container-lowest p-6 space-y-3">
+
+                    <div class="rounded-[28px] border border-outline-variant/40 bg-surface-container-lowest p-6 shadow-sm">
                         <div class="flex items-start justify-between gap-4">
-                            <p class="font-body-md text-body-md">Registration for the <span class="font-semibold">Global AI Innovation Challenge</span> is now open! Teams of 2-4, $10k in prizes, remote-friendly. Apply before Oct 26.</p>
+                            <div class="flex gap-3">
+                                <div class="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-primary/10 text-label-md font-semibold text-primary">TG</div>
+                                <div>
+                                    <p class="font-semibold text-on-surface">TechGenius Labs</p>
+                                    <p class="text-sm text-on-surface-variant">2 hours ago • Announcement</p>
+                                </div>
+                            </div>
                             <div class="flex shrink-0 gap-1">
-                                <button class="rounded-lg p-2 text-on-surface-variant hover:bg-surface-container-high transition-colors" title="Edit post" type="button"><span class="material-symbols-outlined text-[20px]">edit</span></button>
-                                <button class="rounded-lg p-2 text-error hover:bg-error/10 transition-colors" title="Delete post" type="button"><span class="material-symbols-outlined text-[20px]">delete</span></button>
+                                <button class="rounded-lg p-2 text-on-surface-variant transition-colors hover:bg-surface-container-high" title="Edit post" type="button"><span class="material-symbols-outlined text-[20px]">edit</span></button>
+                                <button class="rounded-lg p-2 text-error transition-colors hover:bg-error/10" title="Delete post" type="button"><span class="material-symbols-outlined text-[20px]">delete</span></button>
                             </div>
                         </div>
-                        <div class="flex items-center gap-6 text-label-sm font-label-sm text-on-surface-variant">
-                            <span>2 hours ago</span>
+                        <p class="mt-4 text-body-md text-on-surface-variant">Registration for the <span class="font-semibold text-on-surface">Global AI Innovation Challenge</span> is now open! Teams of 2-4, $10k in prizes, remote-friendly. Apply before Oct 26.</p>
+                        <div class="mt-4 flex flex-wrap gap-2">
+                            <span class="rounded-full bg-primary/10 px-3 py-1 text-sm font-medium text-primary">Opportunity</span>
+                            <span class="rounded-full bg-surface-container px-3 py-1 text-sm text-on-surface-variant">Apply now</span>
                         </div>
                     </div>
-                    <div class="rounded-2xl border border-outline-variant/50 bg-surface-container-lowest p-6 space-y-3">
+
+                    <div class="rounded-[28px] border border-outline-variant/40 bg-surface-container-lowest p-6 shadow-sm">
                         <div class="flex items-start justify-between gap-4">
-                            <p class="font-body-md text-body-md">Our booth at the <span class="font-semibold">Career &amp; Internship Fair</span> is confirmed — come say hi and pick up an application on the spot.</p>
+                            <div class="flex gap-3">
+                                <div class="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-secondary/10 text-label-md font-semibold text-secondary">CF</div>
+                                <div>
+                                    <p class="font-semibold text-on-surface">TechGenius Labs</p>
+                                    <p class="text-sm text-on-surface-variant">1 day ago • Event</p>
+                                </div>
+                            </div>
                             <div class="flex shrink-0 gap-1">
-                                <button class="rounded-lg p-2 text-on-surface-variant hover:bg-surface-container-high transition-colors" title="Edit post" type="button"><span class="material-symbols-outlined text-[20px]">edit</span></button>
-                                <button class="rounded-lg p-2 text-error hover:bg-error/10 transition-colors" title="Delete post" type="button"><span class="material-symbols-outlined text-[20px]">delete</span></button>
+                                <button class="rounded-lg p-2 text-on-surface-variant transition-colors hover:bg-surface-container-high" title="Edit post" type="button"><span class="material-symbols-outlined text-[20px]">edit</span></button>
+                                <button class="rounded-lg p-2 text-error transition-colors hover:bg-error/10" title="Delete post" type="button"><span class="material-symbols-outlined text-[20px]">delete</span></button>
                             </div>
                         </div>
-                        <div class="flex items-center gap-6 text-label-sm font-label-sm text-on-surface-variant">
-                            <span>1 day ago</span>
+                        <p class="mt-4 text-body-md text-on-surface-variant">Our booth at the <span class="font-semibold text-on-surface">Career &amp; Internship Fair</span> is confirmed — come say hi and pick up an application on the spot.</p>
+                        <div class="mt-4 flex flex-wrap gap-2">
+                            <span class="rounded-full bg-success/10 px-3 py-1 text-sm font-medium text-success">On-site</span>
+                            <span class="rounded-full bg-surface-container px-3 py-1 text-sm text-on-surface-variant">Meet us there</span>
                         </div>
                     </div>
-                    <div class="rounded-2xl border border-outline-variant/50 bg-surface-container-lowest p-6 space-y-3 opacity-80">
+
+                    <div class="rounded-[28px] border border-outline-variant/40 bg-surface-container-lowest p-6 shadow-sm opacity-90">
                         <div class="flex items-start justify-between gap-4">
-                            <p class="font-body-md text-body-md">DevOps Masterclass wrapped this week — thank you to everyone who joined! Certificates go out by Friday.</p>
+                            <div class="flex gap-3">
+                                <div class="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-tertiary/10 text-label-md font-semibold text-tertiary">DM</div>
+                                <div>
+                                    <p class="font-semibold text-on-surface">TechGenius Labs</p>
+                                    <p class="text-sm text-on-surface-variant">6 days ago • Wrap-up</p>
+                                </div>
+                            </div>
                             <div class="flex shrink-0 gap-1">
-                                <button class="rounded-lg p-2 text-on-surface-variant hover:bg-surface-container-high transition-colors" title="Edit post" type="button"><span class="material-symbols-outlined text-[20px]">edit</span></button>
-                                <button class="rounded-lg p-2 text-error hover:bg-error/10 transition-colors" title="Delete post" type="button"><span class="material-symbols-outlined text-[20px]">delete</span></button>
+                                <button class="rounded-lg p-2 text-on-surface-variant transition-colors hover:bg-surface-container-high" title="Edit post" type="button"><span class="material-symbols-outlined text-[20px]">edit</span></button>
+                                <button class="rounded-lg p-2 text-error transition-colors hover:bg-error/10" title="Delete post" type="button"><span class="material-symbols-outlined text-[20px]">delete</span></button>
                             </div>
                         </div>
-                        <div class="flex items-center gap-6 text-label-sm font-label-sm text-on-surface-variant">
-                            <span>6 days ago</span>
+                        <p class="mt-4 text-body-md text-on-surface-variant">DevOps Masterclass wrapped this week — thank you to everyone who joined! Certificates go out by Friday.</p>
+                    </div>
+
+                    <div class="rounded-[28px] border border-outline-variant/40 bg-surface-container-lowest p-6 shadow-sm">
+                        <div class="flex items-start justify-between gap-4">
+                            <div class="flex gap-3">
+                                <div class="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-primary/10 text-label-md font-semibold text-primary">AI</div>
+                                <div>
+                                    <p class="font-semibold text-on-surface">TechGenius Labs</p>
+                                    <p class="text-sm text-on-surface-variant">1 week ago • Community</p>
+                                </div>
+                            </div>
+                            <div class="flex shrink-0 gap-1">
+                                <button class="rounded-lg p-2 text-on-surface-variant transition-colors hover:bg-surface-container-high" title="Edit post" type="button"><span class="material-symbols-outlined text-[20px]">edit</span></button>
+                                <button class="rounded-lg p-2 text-error transition-colors hover:bg-error/10" title="Delete post" type="button"><span class="material-symbols-outlined text-[20px]">delete</span></button>
+                            </div>
                         </div>
+                        <p class="mt-4 text-body-md text-on-surface-variant">We are hosting a live Q&amp;A session next week for students interested in AI and product design. Save your spot now.</p>
+                    </div>
+
+                    <div class="rounded-[28px] border border-outline-variant/40 bg-surface-container-lowest p-6 shadow-sm">
+                        <div class="flex items-start justify-between gap-4">
+                            <div class="flex gap-3">
+                                <div class="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-secondary/10 text-label-md font-semibold text-secondary">NS</div>
+                                <div>
+                                    <p class="font-semibold text-on-surface">TechGenius Labs</p>
+                                    <p class="text-sm text-on-surface-variant">2 weeks ago • Network</p>
+                                </div>
+                            </div>
+                            <div class="flex shrink-0 gap-1">
+                                <button class="rounded-lg p-2 text-on-surface-variant transition-colors hover:bg-surface-container-high" title="Edit post" type="button"><span class="material-symbols-outlined text-[20px]">edit</span></button>
+                                <button class="rounded-lg p-2 text-error transition-colors hover:bg-error/10" title="Delete post" type="button"><span class="material-symbols-outlined text-[20px]">delete</span></button>
+                            </div>
+                        </div>
+                        <p class="mt-4 text-body-md text-on-surface-variant">New networking session with founders and mentors is now open for registration. Join the conversation and grow your circle.</p>
+                    </div>
+
+                    <div class="mt-2 flex justify-center">
+                        <button class="rounded-full border border-primary/20 px-5 py-2.5 text-sm font-semibold text-primary transition-colors hover:bg-primary/10" type="button">Load more</button>
                     </div>
                 </div>
-                <!-- Sidebar: Stats -->
-                <div class="space-y-6">
-                    <div class="rounded-2xl border border-outline-variant/50 bg-surface-container-lowest p-6 space-y-4">
-                        <h3 class="text-title-lg font-semibold">Followers</h3>
-                        <p class="font-display-lg text-display-lg text-primary">3,214</p>
-                        <p class="text-label-md font-label-md text-on-surface-variant">people are following your posts</p>
+
+                <div class="space-y-4">
+                    <div class="rounded-[28px] border border-outline-variant/40 bg-surface-container-lowest p-5 shadow-sm">
+                        <div class="mb-4 flex items-center justify-between">
+                            <h3 class="text-title-lg font-semibold">Explore Other Posts</h3>
+                            <span class="rounded-full bg-primary/10 px-3 py-1 text-label-sm text-primary">Discover</span>
+                        </div>
+                        <div class="space-y-3">
+                            <div class="rounded-2xl border border-outline-variant/40 bg-surface-container-low p-3">
+                                <p class="mb-2 text-sm font-semibold text-primary">Latest posts</p>
+                                <div class="space-y-2">
+                                    <button class="w-full rounded-xl border border-outline-variant/30 bg-white p-3 text-left transition-colors hover:border-primary/30 hover:bg-surface-container-high" type="button" data-org="GreenFuture Initiative" data-title="Community Volunteer Day" data-body="Join our team this Friday to plant 300 trees and support a greener city. The event starts at 8:00 AM and everyone is welcome." data-meta="Posted 2 hours ago • Open for volunteers">
+                                        <div class="flex items-center justify-between gap-3">
+                                            <div>
+                                                <p class="font-semibold text-on-surface">GreenFuture Initiative</p>
+                                                <p class="mt-1 text-sm text-on-surface-variant">Volunteer day this Friday — join us to plant 300 trees.</p>
+                                            </div>
+                                            <span class="material-symbols-outlined text-[20px] text-primary">chevron_right</span>
+                                        </div>
+                                    </button>
+                                    <button class="w-full rounded-xl border border-outline-variant/30 bg-white p-3 text-left transition-colors hover:border-primary/30 hover:bg-surface-container-high" type="button" data-org="City Tech Hub" data-title="Startup Bootcamp Open" data-body="Students can now register for our startup bootcamp to learn product design, pitch building, and founder basics with mentors." data-meta="Posted 1 day ago • Registration open">
+                                        <div class="flex items-center justify-between gap-3">
+                                            <div>
+                                                <p class="font-semibold text-on-surface">City Tech Hub</p>
+                                                <p class="mt-1 text-sm text-on-surface-variant">New startup bootcamp registrations are now open for students.</p>
+                                            </div>
+                                            <span class="material-symbols-outlined text-[20px] text-primary">chevron_right</span>
+                                        </div>
+                                    </button>
+                                    <button class="w-full rounded-xl border border-outline-variant/30 bg-white p-3 text-left transition-colors hover:border-primary/30 hover:bg-surface-container-high" type="button" data-org="Creative Minds Studio" data-title="Design Challenge Results" data-body="The winners of our design challenge will be announced next week. Stay tuned for featured projects and awards." data-meta="Posted 3 days ago • Upcoming announcement">
+                                        <div class="flex items-center justify-between gap-3">
+                                            <div>
+                                                <p class="font-semibold text-on-surface">Creative Minds Studio</p>
+                                                <p class="mt-1 text-sm text-on-surface-variant">Design challenge winners will be announced next week.</p>
+                                            </div>
+                                            <span class="material-symbols-outlined text-[20px] text-primary">chevron_right</span>
+                                        </div>
+                                    </button>
+                                </div>
+                            </div>
+                            <div id="postsListContainer" class="hidden max-h-80 space-y-2 overflow-y-auto pr-1">
+                                <button class="w-full rounded-xl border border-outline-variant/30 bg-white p-3 text-left transition-colors hover:border-primary/30 hover:bg-surface-container-high" type="button" data-org="GreenFuture Initiative" data-title="Community Volunteer Day" data-body="Join our team this Friday to plant 300 trees and support a greener city. The event starts at 8:00 AM and everyone is welcome." data-meta="Posted 2 hours ago • Open for volunteers">
+                                    <div class="flex items-center justify-between gap-3">
+                                        <div>
+                                            <p class="font-semibold text-on-surface">GreenFuture Initiative</p>
+                                            <p class="mt-1 text-sm text-on-surface-variant">Volunteer day this Friday — join us to plant 300 trees.</p>
+                                        </div>
+                                        <span class="material-symbols-outlined text-[20px] text-primary">chevron_right</span>
+                                    </div>
+                                </button>
+                                <button class="w-full rounded-xl border border-outline-variant/30 bg-white p-3 text-left transition-colors hover:border-primary/30 hover:bg-surface-container-high" type="button" data-org="City Tech Hub" data-title="Startup Bootcamp Open" data-body="Students can now register for our startup bootcamp to learn product design, pitch building, and founder basics with mentors." data-meta="Posted 1 day ago • Registration open">
+                                    <div class="flex items-center justify-between gap-3">
+                                        <div>
+                                            <p class="font-semibold text-on-surface">City Tech Hub</p>
+                                            <p class="mt-1 text-sm text-on-surface-variant">New startup bootcamp registrations are now open for students.</p>
+                                        </div>
+                                        <span class="material-symbols-outlined text-[20px] text-primary">chevron_right</span>
+                                    </div>
+                                </button>
+                                <button class="w-full rounded-xl border border-outline-variant/30 bg-white p-3 text-left transition-colors hover:border-primary/30 hover:bg-surface-container-high" type="button" data-org="Creative Minds Studio" data-title="Design Challenge Results" data-body="The winners of our design challenge will be announced next week. Stay tuned for featured projects and awards." data-meta="Posted 3 days ago • Upcoming announcement">
+                                    <div class="flex items-center justify-between gap-3">
+                                        <div>
+                                            <p class="font-semibold text-on-surface">Creative Minds Studio</p>
+                                            <p class="mt-1 text-sm text-on-surface-variant">Design challenge winners will be announced next week.</p>
+                                        </div>
+                                        <span class="material-symbols-outlined text-[20px] text-primary">chevron_right</span>
+                                    </div>
+                                </button>
+                            </div>
+                            <div class="flex justify-center">
+                                <button id="viewAllPostsBtn" class="rounded-full border border-primary/20 px-4 py-2 text-sm font-semibold text-primary transition-colors hover:bg-primary/10" type="button">View all posts</button>
+                            </div>
+                        </div>
                     </div>
-                    <div class="rounded-2xl border border-outline-variant/50 bg-surface-container-lowest p-6 space-y-3">
-                        <h3 class="text-title-lg font-semibold mb-1">Posting Tips</h3>
-                        <p class="flex items-start gap-2 text-label-md text-on-surface-variant"><span class="material-symbols-outlined text-tertiary text-[18px]">check_circle</span> Mention deadlines to drive urgency.</p>
-                        <p class="flex items-start gap-2 text-label-md text-on-surface-variant"><span class="material-symbols-outlined text-tertiary text-[18px]">check_circle</span> Add an image to boost engagement.</p>
-                        <p class="flex items-start gap-2 text-label-md text-on-surface-variant"><span class="material-symbols-outlined text-tertiary text-[18px]">check_circle</span> Keep updates short and specific.</p>
+
+                    <div class="rounded-[28px] border border-outline-variant/40 bg-surface-container-lowest p-5 shadow-sm">
+                        <h3 class="text-title-lg font-semibold">Posting Tips</h3>
+                        <div class="mt-3 space-y-3">
+                            <p class="flex items-start gap-2 text-sm text-on-surface-variant"><span class="material-symbols-outlined text-[18px] text-tertiary">check_circle</span> Mention deadlines to create urgency.</p>
+                            <p class="flex items-start gap-2 text-sm text-on-surface-variant"><span class="material-symbols-outlined text-[18px] text-tertiary">check_circle</span> Add a clear image to boost engagement.</p>
+                            <p class="flex items-start gap-2 text-sm text-on-surface-variant"><span class="material-symbols-outlined text-[18px] text-tertiary">check_circle</span> Keep updates short and specific.</p>
+                        </div>
                     </div>
                 </div>
             </div>
         </main>
     </div>
+
+    <div id="postModal" class="fixed inset-0 z-[60] hidden items-center justify-center bg-black/40 p-4">
+        <div class="w-full max-w-lg rounded-3xl border border-outline-variant/50 bg-surface-container-lowest p-6 shadow-2xl">
+            <div class="flex items-start justify-between gap-4">
+                <div>
+                    <p id="modalOrg" class="text-label-md font-semibold text-primary">Organization</p>
+                    <h3 id="modalTitle" class="mt-1 text-title-lg font-semibold text-on-surface">Post details</h3>
+                </div>
+                <button id="closeModalBtn" class="rounded-full p-2 text-on-surface-variant hover:bg-surface-container-high" type="button" aria-label="Close post details">
+                    <span class="material-symbols-outlined text-[22px]">close</span>
+                </button>
+            </div>
+            <p id="modalBody" class="mt-4 text-body-md text-on-surface-variant"></p>
+            <div class="mt-6 flex items-center justify-between rounded-xl bg-surface-container p-3 text-sm text-on-surface-variant">
+                <span id="modalMeta">Loading...</span>
+                <button id="modalActionBtn" class="rounded-full bg-primary px-4 py-2 text-sm font-medium text-on-primary" type="button">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const postModal = document.getElementById('postModal');
+        const modalOrg = document.getElementById('modalOrg');
+        const modalTitle = document.getElementById('modalTitle');
+        const modalBody = document.getElementById('modalBody');
+        const modalMeta = document.getElementById('modalMeta');
+        const closeModalBtn = document.getElementById('closeModalBtn');
+        const modalActionBtn = document.getElementById('modalActionBtn');
+        const viewAllPostsBtn = document.getElementById('viewAllPostsBtn');
+        const postsListContainer = document.getElementById('postsListContainer');
+
+        const closeModal = () => {
+            postModal.classList.add('hidden');
+            postModal.classList.remove('flex');
+        };
+
+        document.querySelectorAll('[data-org]').forEach((button) => {
+            button.addEventListener('click', () => {
+                modalOrg.textContent = button.dataset.org;
+                modalTitle.textContent = button.dataset.title;
+                modalBody.textContent = button.dataset.body;
+                modalMeta.textContent = button.dataset.meta;
+                postModal.classList.remove('hidden');
+                postModal.classList.add('flex');
+            });
+        });
+
+        if (viewAllPostsBtn && postsListContainer) {
+            viewAllPostsBtn.addEventListener('click', () => {
+                postsListContainer.classList.toggle('hidden');
+                viewAllPostsBtn.textContent = postsListContainer.classList.contains('hidden') ? 'View all posts' : 'Hide posts';
+            });
+        }
+
+        [closeModalBtn, modalActionBtn].forEach((button) => {
+            button.addEventListener('click', closeModal);
+        });
+
+        postModal.addEventListener('click', (event) => {
+            if (event.target === postModal) {
+                closeModal();
+            }
+        });
+    </script>
 </body>
 
 </html>
