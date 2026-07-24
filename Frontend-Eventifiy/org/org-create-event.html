@@ -3,6 +3,7 @@
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <title>Create Event | EVENTIFY</title>
+<link rel="stylesheet" href="../assets/css/theme.css" />
 <style>
     @font-face {
         font-family: 'Material Symbols Outlined';
@@ -24,6 +25,7 @@
         overflow: hidden;
         word-wrap: normal;
         direction: ltr;
+        font-feature-settings: 'liga';
         -webkit-font-feature-settings: 'liga';
         -webkit-font-smoothing: antialiased;
     }
@@ -138,7 +140,7 @@
         body { min-height: max(884px, 100dvh); }
     </style>
   </head>
-<body class="bg-background text-on-surface font-body-md">
+<body class="min-h-screen bg-background text-on-surface font-body-md">
 <header class="lg:hidden glass-header w-full sticky top-0 z-50 flex justify-between items-center px-4 h-16 shadow-sm">
 <a class="flex items-center gap-2" href="../index.html">
 <span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">hub</span>
@@ -154,32 +156,24 @@
 </a>
 <span class="mb-8 px-3 py-1 rounded-full bg-primary/10 text-primary font-label-sm text-label-sm w-fit">ORGANIZER</span>
             <nav class="flex flex-1 flex-col gap-2">
-                <a class="flex items-center gap-3 rounded-xl px-4 py-3 text-on-surface-variant hover:bg-surface-container-high"
-                    href="org-dashboard.html"><span
-                        class="material-symbols-outlined">dashboard</span><span>Dashboard</span></a>
-                <a class="flex items-center gap-3 rounded-xl px-4 py-3 text-on-surface-variant hover:bg-surface-container-high"
-                    href="org-posts.html"><span
-                        class="material-symbols-outlined">campaign</span><span>Posts</span></a>
-                <a class="flex items-center gap-3 rounded-xl px-4 py-3 text-on-surface-variant hover:bg-surface-container-high"
-                    href="org-profile.html"><span
-                        class="material-symbols-outlined">apartment</span><span>Organization Profile</span></a>
-                <a class="flex items-center gap-3 rounded-xl px-4 py-3 text-on-surface-variant hover:bg-surface-container-high"
-                    href="org-opportunities.html"><span
-                        class="material-symbols-outlined">event_note</span><span>My Opportunities</span></a>
-                <a class="flex items-center gap-3 rounded-xl bg-secondary-container px-4 py-3 text-on-secondary-container"
-                    href="org-create-event.html"><span class="material-symbols-outlined"
-                        style="font-variation-settings:'FILL' 1;">add_circle</span><span>Create Event</span>
+                <a class="nav-link-enhanced flex items-center gap-3 rounded-2xl px-4 py-3 text-on-surface-variant transition-all duration-300 hover:bg-surface-container-high hover:text-primary"
+                    href="org-dashboard.html"><span class="material-symbols-outlined">dashboard</span><span>Dashboard</span></a>
+                <a class="nav-link-enhanced flex items-center gap-3 rounded-2xl px-4 py-3 text-on-surface-variant transition-all duration-300 hover:bg-surface-container-high hover:text-primary"
+                    href="org-posts.html"><span class="material-symbols-outlined">campaign</span><span>Posts</span></a>
+                <a class="nav-link-enhanced flex items-center gap-3 rounded-2xl px-4 py-3 text-on-surface-variant transition-all duration-300 hover:bg-surface-container-high hover:text-primary"
+                    href="org-profile.html"><span class="material-symbols-outlined">apartment</span><span>Organization Profile</span></a>
+                <a class="nav-link-enhanced flex items-center gap-3 rounded-2xl px-4 py-3 text-on-surface-variant transition-all duration-300 hover:bg-surface-container-high hover:text-primary"
+                    href="org-opportunities.html"><span class="material-symbols-outlined">event_note</span><span>My Opportunities</span></a>
+                <a class="nav-link-enhanced flex items-center gap-3 rounded-2xl bg-gradient-to-r from-primary/10 to-secondary/10 px-4 py-3 text-primary shadow-sm"
+                    href="org-create-event.html"><span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1;">add_circle</span><span>Create Event</span>
                     <div class="ml-auto h-5 w-1 rounded-full bg-primary"></div>
                 </a>
-                <a class="flex items-center gap-3 rounded-xl px-4 py-3 text-on-surface-variant hover:bg-surface-container-high"
-                    href="org-applicants.html"><span
-                        class="material-symbols-outlined">group</span><span>Applicants</span></a>
-                <a class="flex items-center gap-3 rounded-xl px-4 py-3 text-on-surface-variant hover:bg-surface-container-high"
-                    href="org-reports.html"><span
-                        class="material-symbols-outlined">bar_chart</span><span>Reports</span></a>
-                <a class="flex items-center gap-3 rounded-xl px-4 py-3 text-on-surface-variant hover:bg-surface-container-high"
-                    href="org-settings.html"><span
-                        class="material-symbols-outlined">settings</span><span>Settings</span></a>
+                <a class="nav-link-enhanced flex items-center gap-3 rounded-2xl px-4 py-3 text-on-surface-variant transition-all duration-300 hover:bg-surface-container-high hover:text-primary"
+                    href="org-applicants.html"><span class="material-symbols-outlined">group</span><span>Applicants</span></a>
+                <a class="nav-link-enhanced flex items-center gap-3 rounded-2xl px-4 py-3 text-on-surface-variant transition-all duration-300 hover:bg-surface-container-high hover:text-primary"
+                    href="org-reports.html"><span class="material-symbols-outlined">bar_chart</span><span>Reports</span></a>
+                <a class="nav-link-enhanced flex items-center gap-3 rounded-2xl px-4 py-3 text-on-surface-variant transition-all duration-300 hover:bg-surface-container-high hover:text-primary"
+                    href="org-settings.html"><span class="material-symbols-outlined">settings</span><span>Settings</span></a>
             </nav>
             <div class="mt-auto rounded-2xl bg-surface-container p-4">
                 <p class="mb-2 text-label-sm font-semibold text-on-surface-variant">ORGANIZATION</p>
@@ -189,70 +183,72 @@
         </aside>
 <main class="flex-1 w-full max-w-7xl mx-auto px-4 md:px-12 py-8 pb-24 lg:pb-8">
 <div class="max-w-3xl">
-<div class="flex items-center gap-2 mb-2">
-<a class="text-on-surface-variant hover:text-primary text-label-md font-label-md" href="org-dashboard.html">Dashboard</a>
+<div class="page-shell mb-4 flex items-center gap-2 rounded-full border border-primary/15 bg-white/60 px-4 py-2 text-sm backdrop-blur-sm">
+<a class="text-on-surface-variant hover:text-primary" href="org-dashboard.html">Dashboard</a>
 <span class="text-outline">/</span>
-<span class="text-on-surface font-label-md text-label-md">Create Event</span>
+<span class="font-semibold text-on-surface">Create Event</span>
 </div>
+<div class="mb-6 rounded-[28px] border border-primary/15 bg-gradient-to-br from-primary/10 via-surface-container-lowest to-secondary/10 p-6 shadow-[0_20px_60px_-24px_rgba(107,56,212,0.35)]">
 <h2 class="font-headline-lg text-headline-lg text-on-surface mb-1">Create / Edit Event</h2>
-<p class="text-on-surface-variant font-body-md mb-8">Submitted events are reviewed by our team before they go live.</p>
-<form class="flex flex-col gap-6 bg-surface-container-lowest p-8 rounded-2xl border border-outline-variant/50" onsubmit="event.preventDefault(); window.location.href='org-dashboard.html';">
+<p class="text-on-surface-variant font-body-md">Submitted events are reviewed by our team before they go live.</p>
+</div>
+<form class="soft-card premium-card flex flex-col gap-6 rounded-[28px] border border-outline-variant/40 p-8" onsubmit="event.preventDefault(); window.location.href='org-dashboard.html';">
 <div class="flex flex-col gap-2">
 <label class="font-label-md text-label-md" for="ev-title">Event Title</label>
-<input class="h-12 px-4 bg-white border border-outline-variant rounded-lg" id="ev-title" placeholder="e.g. Global AI Innovation Challenge" required="" type="text"/>
+<input class="h-12 rounded-xl border border-outline-variant/70 bg-surface-container-low px-4 shadow-sm" id="ev-title" placeholder="e.g. Global AI Innovation Challenge" required="" type="text"/>
 </div>
 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
 <div class="flex flex-col gap-2">
 <label class="font-label-md text-label-md" for="ev-type">Category</label>
-<select class="h-12 px-4 bg-white border border-outline-variant rounded-lg" id="ev-type">
+<select class="h-12 rounded-xl border border-outline-variant/70 bg-surface-container-low px-4 shadow-sm" id="ev-type">
 <option>Hackathon</option><option>Competition</option><option>Workshop</option><option>Course</option><option>Conference</option>
 </select>
 </div>
 <div class="flex flex-col gap-2">
 <label class="font-label-md text-label-md" for="ev-location">Location</label>
-<input class="h-12 px-4 bg-white border border-outline-variant rounded-lg" id="ev-location" placeholder="Remote or city" type="text"/>
+<input class="h-12 rounded-xl border border-outline-variant/70 bg-surface-container-low px-4 shadow-sm" id="ev-location" placeholder="Remote or city" type="text"/>
 </div>
 </div>
 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
 <div class="flex flex-col gap-2">
 <label class="font-label-md text-label-md" for="ev-start">Start Date</label>
-<input class="h-12 px-4 bg-white border border-outline-variant rounded-lg" id="ev-start" type="date"/>
+<input class="h-12 rounded-xl border border-outline-variant/70 bg-surface-container-low px-4 shadow-sm" id="ev-start" type="date"/>
 </div>
 <div class="flex flex-col gap-2">
 <label class="font-label-md text-label-md" for="ev-end">End Date</label>
-<input class="h-12 px-4 bg-white border border-outline-variant rounded-lg" id="ev-end" type="date"/>
+<input class="h-12 rounded-xl border border-outline-variant/70 bg-surface-container-low px-4 shadow-sm" id="ev-end" type="date"/>
 </div>
 </div>
 <div class="flex flex-col gap-2">
 <label class="font-label-md text-label-md" for="ev-desc">Description</label>
-<textarea class="p-4 bg-white border border-outline-variant rounded-lg resize-none" id="ev-desc" placeholder="Describe the challenge, agenda, and what participants will build or learn." rows="5"></textarea>
+<textarea class="resize-none rounded-xl border border-outline-variant/70 bg-surface-container-low p-4 shadow-sm" id="ev-desc" placeholder="Describe the challenge, agenda, and what participants will build or learn." rows="5"></textarea>
 </div>
 <div class="flex flex-col gap-2">
 <label class="font-label-md text-label-md" for="ev-cond">Requirements / Conditions</label>
-<textarea class="p-4 bg-white border border-outline-variant rounded-lg resize-none" id="ev-cond" placeholder="Team size, eligibility, required skills..." rows="3"></textarea>
+<textarea class="resize-none rounded-xl border border-outline-variant/70 bg-surface-container-low p-4 shadow-sm" id="ev-cond" placeholder="Team size, eligibility, required skills..." rows="3"></textarea>
 </div>
 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
 <div class="flex flex-col gap-2">
 <label class="font-label-md text-label-md" for="ev-prize">Prize / Scholarship</label>
-<input class="h-12 px-4 bg-white border border-outline-variant rounded-lg" id="ev-prize" placeholder="e.g. $10,000 Prize Pool" type="text"/>
+<input class="h-12 rounded-xl border border-outline-variant/70 bg-surface-container-low px-4 shadow-sm" id="ev-prize" placeholder="e.g. $10,000 Prize Pool" type="text"/>
 </div>
 <div class="flex flex-col gap-2">
 <label class="font-label-md text-label-md" for="ev-team">Team Size</label>
-<input class="h-12 px-4 bg-white border border-outline-variant rounded-lg" id="ev-team" placeholder="e.g. 2-4" type="text"/>
+<input class="h-12 rounded-xl border border-outline-variant/70 bg-surface-container-low px-4 shadow-sm" id="ev-team" placeholder="e.g. 2-4" type="text"/>
 </div>
 </div>
 <div class="flex flex-col gap-2">
 <label class="font-label-md text-label-md">Cover Image</label>
-<div class="border border-dashed border-outline-variant rounded-lg p-8 flex flex-col items-center gap-2 text-on-surface-variant">
+<div class="flex flex-col items-center gap-2 rounded-2xl border border-dashed border-outline-variant/70 bg-surface-container-low p-8 text-on-surface-variant shadow-sm">
 <span class="material-symbols-outlined text-3xl">upload</span>
 <p class="font-label-md text-label-md">Drag and drop, or click to upload</p>
 </div>
 </div>
-<div class="flex items-center justify-between pt-4 border-t border-outline-variant">
-<a class="px-6 py-3 text-on-surface-variant font-label-md hover:bg-surface-container-low rounded-xl transition-all" href="org-dashboard.html">Cancel</a>
+<div class="flex items-center justify-between border-t border-outline-variant pt-4">
+<a class="rounded-xl px-6 py-3 font-label-md text-on-surface-variant transition-all hover:bg-surface-container-low" href="org-dashboard.html">Cancel</a>
 <div class="flex gap-3">
-<button class="px-6 py-3 border border-outline-variant text-on-surface rounded-full font-label-md hover:bg-surface-container-low transition-all" type="button">Save Draft</button>
-<button class="px-8 py-3 bg-primary text-on-primary rounded-full font-label-md shadow-lg hover:brightness-110 transition-all" type="submit">Submit for Approval</button>
+<button class="rounded-full border border-outline-variant px-6 py-3 font-label-md text-on-surface transition-all duration-300 hover:-translate-y-0.5 hover:bg-surface-container-low" type="button">Save Draft</button>
+<button class="rounded-full bg-primary px-8 py-3 font-label-md text-on-primary shadow-lg transition-all duration-300 hover:-translate-y-0.5 hover:brightness-110" type="submit">Submit for Approval</button>
 </div>
 </div>
 </form>

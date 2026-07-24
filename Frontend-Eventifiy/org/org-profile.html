@@ -7,6 +7,7 @@
     <title>Organization Profile | EVENTIFY</title>
     <script src="../assets/js/theme.js"></script>
     <link rel="stylesheet" href="../assets/css/theme.css" />
+    <link rel="stylesheet" href="../assets/css/theme.css" />
     <style>
         @font-face {
             font-family: 'Material Symbols Outlined';
@@ -141,7 +142,7 @@
     
 </head>
 
-<body class="bg-background text-on-surface font-body-md">
+<body class="min-h-screen bg-background text-on-surface font-body-md">
     <header class="lg:hidden glass-header sticky top-0 z-50 flex h-16 items-center justify-between px-4 shadow-sm">
         <a class="flex items-center gap-2" href="../index.html"><span
                 class="material-symbols-outlined text-primary" style="font-variation-settings:'FILL' 1;">hub</span><span
@@ -157,33 +158,25 @@
             </a>
             <span
                 class="mb-8 w-fit rounded-full bg-primary/10 px-3 py-1 text-label-sm font-semibold text-primary">ORGANIZER</span>
-                        <nav class="flex flex-1 flex-col gap-2">
-                <a class="flex items-center gap-3 rounded-xl px-4 py-3 text-on-surface-variant hover:bg-surface-container-high"
-                    href="org-dashboard.html"><span
-                        class="material-symbols-outlined">dashboard</span><span>Dashboard</span></a>
-                <a class="flex items-center gap-3 rounded-xl px-4 py-3 text-on-surface-variant hover:bg-surface-container-high"
-                    href="org-posts.html"><span
-                        class="material-symbols-outlined">campaign</span><span>Posts</span></a>
-                <a class="flex items-center gap-3 rounded-xl bg-secondary-container px-4 py-3 text-on-secondary-container"
-                    href="org-profile.html"><span class="material-symbols-outlined"
-                        style="font-variation-settings:'FILL' 1;">apartment</span><span>Organization Profile</span>
+            <nav class="flex flex-1 flex-col gap-2">
+                <a class="nav-link-enhanced flex items-center gap-3 rounded-2xl px-4 py-3 text-on-surface-variant transition-all duration-300 hover:bg-surface-container-high hover:text-primary"
+                    href="org-dashboard.html"><span class="material-symbols-outlined">dashboard</span><span>Dashboard</span></a>
+                <a class="nav-link-enhanced flex items-center gap-3 rounded-2xl px-4 py-3 text-on-surface-variant transition-all duration-300 hover:bg-surface-container-high hover:text-primary"
+                    href="org-posts.html"><span class="material-symbols-outlined">campaign</span><span>Posts</span></a>
+                <a class="nav-link-enhanced flex items-center gap-3 rounded-2xl bg-gradient-to-r from-primary/10 to-secondary/10 px-4 py-3 text-primary shadow-sm"
+                    href="org-profile.html"><span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1;">apartment</span><span>Organization Profile</span>
                     <div class="ml-auto h-5 w-1 rounded-full bg-primary"></div>
                 </a>
-                <a class="flex items-center gap-3 rounded-xl px-4 py-3 text-on-surface-variant hover:bg-surface-container-high"
-                    href="org-opportunities.html"><span
-                        class="material-symbols-outlined">event_note</span><span>My Opportunities</span></a>
-                <a class="flex items-center gap-3 rounded-xl px-4 py-3 text-on-surface-variant hover:bg-surface-container-high"
-                    href="org-create-event.html"><span
-                        class="material-symbols-outlined">add_circle</span><span>Create Event</span></a>
-                <a class="flex items-center gap-3 rounded-xl px-4 py-3 text-on-surface-variant hover:bg-surface-container-high"
-                    href="org-applicants.html"><span
-                        class="material-symbols-outlined">group</span><span>Applicants</span></a>
-                <a class="flex items-center gap-3 rounded-xl px-4 py-3 text-on-surface-variant hover:bg-surface-container-high"
-                    href="org-reports.html"><span
-                        class="material-symbols-outlined">bar_chart</span><span>Reports</span></a>
-                <a class="flex items-center gap-3 rounded-xl px-4 py-3 text-on-surface-variant hover:bg-surface-container-high"
-                    href="org-settings.html"><span
-                        class="material-symbols-outlined">settings</span><span>Settings</span></a>
+                <a class="nav-link-enhanced flex items-center gap-3 rounded-2xl px-4 py-3 text-on-surface-variant transition-all duration-300 hover:bg-surface-container-high hover:text-primary"
+                    href="org-opportunities.html"><span class="material-symbols-outlined">event_note</span><span>My Opportunities</span></a>
+                <a class="nav-link-enhanced flex items-center gap-3 rounded-2xl px-4 py-3 text-on-surface-variant transition-all duration-300 hover:bg-surface-container-high hover:text-primary"
+                    href="org-create-event.html"><span class="material-symbols-outlined">add_circle</span><span>Create Event</span></a>
+                <a class="nav-link-enhanced flex items-center gap-3 rounded-2xl px-4 py-3 text-on-surface-variant transition-all duration-300 hover:bg-surface-container-high hover:text-primary"
+                    href="org-applicants.html"><span class="material-symbols-outlined">group</span><span>Applicants</span></a>
+                <a class="nav-link-enhanced flex items-center gap-3 rounded-2xl px-4 py-3 text-on-surface-variant transition-all duration-300 hover:bg-surface-container-high hover:text-primary"
+                    href="org-reports.html"><span class="material-symbols-outlined">bar_chart</span><span>Reports</span></a>
+                <a class="nav-link-enhanced flex items-center gap-3 rounded-2xl px-4 py-3 text-on-surface-variant transition-all duration-300 hover:bg-surface-container-high hover:text-primary"
+                    href="org-settings.html"><span class="material-symbols-outlined">settings</span><span>Settings</span></a>
             </nav>
             <div class="mt-auto rounded-2xl bg-surface-container p-4">
                 <p class="mb-2 text-label-sm font-semibold text-on-surface-variant">ORGANIZATION</p>
@@ -192,17 +185,20 @@
             </div>
         </aside>
         <main class="mx-auto w-full max-w-7xl flex-1 px-4 py-8 pb-24 md:px-12 lg:pb-8">
-            <div class="mb-8 flex flex-col justify-between gap-4 md:flex-row md:items-end">
-                <div>
-                    <h2 class="text-headline-lg font-semibold">Organization Profile</h2>
-                    <p class="mt-1 text-body-md text-on-surface-variant">Public trust profile shown to students before
-                        they apply.</p>
+            <div class="page-shell mb-8 overflow-hidden rounded-[32px] border border-primary/15 bg-gradient-to-br from-primary/10 via-surface-container-lowest to-secondary/10 p-6 shadow-[0_20px_60px_-24px_rgba(107,56,212,0.35)]">
+                <div class="flex flex-col justify-between gap-4 md:flex-row md:items-end">
+                    <div>
+                        <p class="mb-3 inline-flex items-center rounded-full bg-primary/10 px-3 py-1 text-sm font-semibold text-primary">Public profile</p>
+                        <h2 class="text-headline-lg font-semibold">Organization Profile</h2>
+                        <p class="mt-1 text-body-md text-on-surface-variant">Public trust profile shown to students before
+                            they apply.</p>
+                    </div>
+                    <a class="flex w-fit items-center gap-2 rounded-full bg-primary px-6 py-3 text-label-md font-medium text-on-primary shadow-lg transition-all duration-300 hover:-translate-y-0.5 hover:brightness-110"
+                        href="org-settings.html"><span class="material-symbols-outlined">edit</span>Edit profile</a>
                 </div>
-                <a class="flex w-fit items-center gap-2 rounded-full bg-primary px-6 py-3 text-label-md font-medium text-on-primary shadow-lg hover:brightness-110"
-                    href="org-settings.html"><span class="material-symbols-outlined">edit</span>Edit profile</a>
             </div>
             <section
-                class="mb-6 overflow-hidden rounded-2xl border border-outline-variant/50 bg-surface-container-lowest">
+                class="mb-6 overflow-hidden rounded-[28px] border border-outline-variant/40 bg-surface-container-lowest shadow-sm">
                 <div class="h-44 bg-gradient-to-r from-primary via-secondary to-success"></div>
                 <div class="p-8">
                     <div class="-mt-20 mb-6 flex flex-col gap-6 md:flex-row md:items-end">
@@ -222,19 +218,19 @@
                         </div>
                     </div>
                     <div class="grid grid-cols-2 gap-4 lg:grid-cols-4">
-                        <div class="rounded-xl bg-surface-container-low p-4">
+                        <div class="soft-card rounded-2xl p-4">
                             <p class="text-display-lg font-bold">24</p>
                             <p class="text-label-md text-on-surface-variant">Published opportunities</p>
                         </div>
-                        <div class="rounded-xl bg-surface-container-low p-4">
+                        <div class="soft-card rounded-2xl p-4">
                             <p class="text-display-lg font-bold">4.8</p>
                             <p class="text-label-md text-on-surface-variant">Participant rating</p>
                         </div>
-                        <div class="rounded-xl bg-surface-container-low p-4">
+                        <div class="soft-card rounded-2xl p-4">
                             <p class="text-display-lg font-bold">1.9k</p>
                             <p class="text-label-md text-on-surface-variant">Total applicants</p>
                         </div>
-                        <div class="rounded-xl bg-surface-container-low p-4">
+                        <div class="soft-card rounded-2xl p-4">
                             <p class="text-display-lg font-bold">2024</p>
                             <p class="text-label-md text-on-surface-variant">Verified since</p>
                         </div>
