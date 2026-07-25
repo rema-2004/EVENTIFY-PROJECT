@@ -202,18 +202,18 @@
 <h2 class="font-headline-lg text-headline-lg text-on-surface">Applicants &middot; Global AI Innovation Challenge</h2>
 </div>
 </div>
-<div class="flex gap-2 mb-6 mt-4">
-<button class="px-5 py-2 rounded-full bg-primary text-on-primary font-label-md text-label-md">All (98)</button>
-<button class="px-5 py-2 rounded-full bg-surface-container text-on-surface-variant hover:bg-surface-container-high transition-colors font-label-md text-label-md">Pending (17)</button>
-<button class="px-5 py-2 rounded-full bg-surface-container text-on-surface-variant hover:bg-surface-container-high transition-colors font-label-md text-label-md">Accepted (72)</button>
-<button class="px-5 py-2 rounded-full bg-surface-container text-on-surface-variant hover:bg-surface-container-high transition-colors font-label-md text-label-md">Rejected (9)</button>
+<div class="flex flex-wrap gap-2 mb-6 mt-4">
+<button class="filter-btn px-5 py-2 rounded-full bg-primary text-on-primary font-label-md text-label-md" data-filter="all" type="button">All (98)</button>
+<button class="filter-btn px-5 py-2 rounded-full bg-surface-container text-on-surface-variant hover:bg-surface-container-high transition-colors font-label-md text-label-md" data-filter="pending" type="button">Pending (17)</button>
+<button class="filter-btn px-5 py-2 rounded-full bg-surface-container text-on-surface-variant hover:bg-surface-container-high transition-colors font-label-md text-label-md" data-filter="accepted" type="button">Accepted (72)</button>
+<button class="filter-btn px-5 py-2 rounded-full bg-surface-container text-on-surface-variant hover:bg-surface-container-high transition-colors font-label-md text-label-md" data-filter="rejected" type="button">Rejected (9)</button>
 </div>
 <div class="bg-surface-container-lowest rounded-2xl border border-outline-variant/50 overflow-hidden">
 <div class="grid grid-cols-12 gap-4 px-6 py-3 bg-surface-container-low text-on-surface-variant font-label-sm text-label-sm uppercase tracking-wide hidden md:grid">
-<span class="col-span-4">Applicant</span><span class="col-span-2">AI Match</span><span class="col-span-3">Skills</span><span class="col-span-1">Status</span><span class="col-span-2 text-right">Action</span>
+<span class="col-span-4">Applicant</span><span class="col-span-2">AI Match</span><span class="col-span-3">Skills</span><span class="col-span-1">Status</span><span class="col-span-2 text-right">Decision</span>
 </div>
 <div class="divide-y divide-outline-variant/30">
-<div class="grid grid-cols-1 md:grid-cols-12 gap-3 md:gap-4 px-6 py-4 items-center">
+<div class="applicant-row grid grid-cols-1 md:grid-cols-12 gap-3 md:gap-4 px-6 py-4 items-center" data-status="pending">
 <div class="md:col-span-4 flex items-center gap-3">
 <div class="w-10 h-10 rounded-full bg-primary-fixed flex items-center justify-center font-label-md text-primary">A</div>
 <div><p class="font-label-md text-label-md text-on-surface">Alex Rivera</p><p class="text-label-sm font-label-sm text-on-surface-variant">3 yrs experience &middot; Computer Vision</p></div>
@@ -223,7 +223,7 @@
 <div class="md:col-span-1"><span class="px-3 py-1 rounded-full bg-tertiary/10 text-tertiary font-label-sm text-label-sm">Pending</span></div>
 <div class="md:col-span-2 flex justify-end"><div class="flex gap-2"><button class="px-4 py-2 rounded-lg bg-success text-on-success font-label-sm text-label-sm hover:brightness-110 transition-all">Accept</button><button class="px-4 py-2 rounded-lg border border-outline-variant font-label-sm text-label-sm hover:bg-surface-container transition-all">Reject</button></div></div>
 </div>
-<div class="grid grid-cols-1 md:grid-cols-12 gap-3 md:gap-4 px-6 py-4 items-center">
+<div class="applicant-row grid grid-cols-1 md:grid-cols-12 gap-3 md:gap-4 px-6 py-4 items-center" data-status="pending">
 <div class="md:col-span-4 flex items-center gap-3">
 <div class="w-10 h-10 rounded-full bg-primary-fixed flex items-center justify-center font-label-md text-primary">N</div>
 <div><p class="font-label-md text-label-md text-on-surface">Nadia Farouk</p><p class="text-label-sm font-label-sm text-on-surface-variant">Final-year CS student</p></div>
@@ -233,7 +233,7 @@
 <div class="md:col-span-1"><span class="px-3 py-1 rounded-full bg-tertiary/10 text-tertiary font-label-sm text-label-sm">Pending</span></div>
 <div class="md:col-span-2 flex justify-end"><div class="flex gap-2"><button class="px-4 py-2 rounded-lg bg-success text-on-success font-label-sm text-label-sm hover:brightness-110 transition-all">Accept</button><button class="px-4 py-2 rounded-lg border border-outline-variant font-label-sm text-label-sm hover:bg-surface-container transition-all">Reject</button></div></div>
 </div>
-<div class="grid grid-cols-1 md:grid-cols-12 gap-3 md:gap-4 px-6 py-4 items-center">
+<div class="applicant-row grid grid-cols-1 md:grid-cols-12 gap-3 md:gap-4 px-6 py-4 items-center" data-status="accepted">
 <div class="md:col-span-4 flex items-center gap-3">
 <div class="w-10 h-10 rounded-full bg-primary-fixed flex items-center justify-center font-label-md text-primary">M</div>
 <div><p class="font-label-md text-label-md text-on-surface">Marcus Lee</p><p class="text-label-sm font-label-sm text-on-surface-variant">Product Designer</p></div>
@@ -241,9 +241,9 @@
 <div class="md:col-span-2 font-label-md text-label-md text-secondary">76% match</div>
 <div class="md:col-span-3 flex flex-wrap gap-1"><span class="px-2 py-0.5 bg-surface-container-high rounded text-label-sm font-label-sm">UI/UX</span><span class="px-2 py-0.5 bg-surface-container-high rounded text-label-sm font-label-sm">Three.js</span></div>
 <div class="md:col-span-1"><span class="px-3 py-1 rounded-full bg-success/10 text-success font-label-sm text-label-sm">Accepted</span></div>
-<div class="md:col-span-2 flex justify-end"><span class="text-label-sm font-label-sm text-on-surface-variant">Notified</span></div>
+<div class="md:col-span-2 flex justify-end"><span class="text-label-sm font-label-sm text-on-surface-variant">Reviewed</span></div>
 </div>
-<div class="grid grid-cols-1 md:grid-cols-12 gap-3 md:gap-4 px-6 py-4 items-center">
+<div class="applicant-row grid grid-cols-1 md:grid-cols-12 gap-3 md:gap-4 px-6 py-4 items-center" data-status="accepted">
 <div class="md:col-span-4 flex items-center gap-3">
 <div class="w-10 h-10 rounded-full bg-primary-fixed flex items-center justify-center font-label-md text-primary">E</div>
 <div><p class="font-label-md text-label-md text-on-surface">Elena Rodriguez</p><p class="text-label-sm font-label-sm text-on-surface-variant">Data Analyst</p></div>
@@ -251,9 +251,9 @@
 <div class="md:col-span-2 font-label-md text-label-md text-secondary">81% match</div>
 <div class="md:col-span-3 flex flex-wrap gap-1"><span class="px-2 py-0.5 bg-surface-container-high rounded text-label-sm font-label-sm">Python</span><span class="px-2 py-0.5 bg-surface-container-high rounded text-label-sm font-label-sm">Data Viz</span></div>
 <div class="md:col-span-1"><span class="px-3 py-1 rounded-full bg-success/10 text-success font-label-sm text-label-sm">Accepted</span></div>
-<div class="md:col-span-2 flex justify-end"><span class="text-label-sm font-label-sm text-on-surface-variant">Notified</span></div>
+<div class="md:col-span-2 flex justify-end"><span class="text-label-sm font-label-sm text-on-surface-variant">Reviewed</span></div>
 </div>
-<div class="grid grid-cols-1 md:grid-cols-12 gap-3 md:gap-4 px-6 py-4 items-center">
+<div class="applicant-row grid grid-cols-1 md:grid-cols-12 gap-3 md:gap-4 px-6 py-4 items-center" data-status="rejected">
 <div class="md:col-span-4 flex items-center gap-3">
 <div class="w-10 h-10 rounded-full bg-primary-fixed flex items-center justify-center font-label-md text-primary">K</div>
 <div><p class="font-label-md text-label-md text-on-surface">Kevin Park</p><p class="text-label-sm font-label-sm text-on-surface-variant">Mobile Developer</p></div>
@@ -268,4 +268,28 @@
 
 </main>
 </div>
+<script>
+  const filterButtons = document.querySelectorAll('.filter-btn');
+  const applicantRows = document.querySelectorAll('.applicant-row');
+
+  filterButtons.forEach((button) => {
+    button.addEventListener('click', () => {
+      const selectedFilter = button.dataset.filter || 'all';
+
+      filterButtons.forEach((btn) => {
+        const isActive = btn === button;
+        btn.classList.toggle('bg-primary', isActive);
+        btn.classList.toggle('text-on-primary', isActive);
+        btn.classList.toggle('bg-surface-container', !isActive);
+        btn.classList.toggle('text-on-surface-variant', !isActive);
+      });
+
+      applicantRows.forEach((row) => {
+        const rowStatus = row.dataset.status || 'all';
+        const shouldShow = selectedFilter === 'all' || rowStatus === selectedFilter;
+        row.style.display = shouldShow ? '' : 'none';
+      });
+    });
+  });
+</script>
 </body></html>
