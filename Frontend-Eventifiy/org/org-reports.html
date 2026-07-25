@@ -179,59 +179,85 @@
             </div>
         </aside>
 <main class="flex-1 w-full max-w-7xl mx-auto px-4 md:px-12 py-8 pb-24 lg:pb-8">
-<div class="flex items-center gap-2 mb-2">
-<a class="text-on-surface-variant hover:text-primary text-label-md font-label-md" href="org-dashboard.html">Dashboard</a>
-<span class="text-outline">/</span>
-<span class="text-on-surface font-label-md text-label-md">Reports</span>
+<div class="mb-6 rounded-[32px] border border-primary/15 bg-gradient-to-br from-primary/10 via-surface-container-lowest to-secondary/10 p-6 shadow-[0_20px_60px_-24px_rgba(107,56,212,0.35)]">
+  <div class="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+    <div>
+      <div class="mb-3 flex items-center gap-2">
+        <a class="text-on-surface-variant hover:text-primary text-label-md font-label-md" href="org-dashboard.html">Dashboard</a>
+        <span class="text-outline">/</span>
+        <a class="rounded-full border border-primary/15 bg-white/70 px-3 py-1 text-on-surface transition-all duration-300 hover:-translate-y-0.5 hover:border-primary hover:bg-primary/10 hover:text-primary text-label-md font-label-md" href="org-reports.html">Reports</a>
+      </div>
+      <h2 class="font-headline-lg text-headline-lg text-on-surface">Reports</h2>
+      <p class="mt-2 max-w-2xl text-body-md text-on-surface-variant">Click on the statistics section to view performance rate, engagement, and participation insights.</p>
+    </div>
+    <div class="rounded-2xl border border-primary/15 bg-white/70 px-4 py-3 shadow-sm backdrop-blur-sm">
+      <p class="text-label-sm font-semibold uppercase tracking-wide text-primary">This month</p>
+      <p class="text-2xl font-semibold text-on-surface">+18.4%</p>
+    </div>
+  </div>
 </div>
-<h2 class="font-headline-lg text-headline-lg text-on-surface mb-1">Statistics &amp; Reports</h2>
-<p class="text-on-surface-variant font-body-md mb-8">Engagement across all your events, aggregated by Eventify.</p>
-<div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-10">
-<div class="bg-surface-container-lowest p-6 rounded-2xl border border-outline-variant/50"><p class="font-display-lg text-display-lg text-on-surface">12.4k</p><p class="font-label-md text-label-md text-on-surface-variant">Page Views</p></div>
-<div class="bg-surface-container-lowest p-6 rounded-2xl border border-outline-variant/50"><p class="font-display-lg text-display-lg text-on-surface">346</p><p class="font-label-md text-label-md text-on-surface-variant">Applications</p></div>
-<div class="bg-surface-container-lowest p-6 rounded-2xl border border-outline-variant/50"><p class="font-display-lg text-display-lg text-on-surface">73%</p><p class="font-label-md text-label-md text-on-surface-variant">Acceptance Rate</p></div>
-<div class="bg-surface-container-lowest p-6 rounded-2xl border border-outline-variant/50"><p class="font-display-lg text-display-lg text-on-surface">4.8/5</p><p class="font-label-md text-label-md text-on-surface-variant">Avg. Feedback</p></div>
+<div class="mb-10 grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
+<div class="rounded-[24px] border border-outline-variant/50 bg-surface-container-lowest p-6 shadow-sm">
+  <div class="mb-4 flex h-11 w-11 items-center justify-center rounded-2xl bg-primary/10 text-primary"><span class="material-symbols-outlined">visibility</span></div>
+  <p class="font-display-lg text-display-lg text-on-surface">12.4k</p>
+  <p class="mt-1 font-label-md text-label-md text-on-surface-variant">Page Views</p>
 </div>
-<div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-<div class="bg-surface-container-lowest p-8 rounded-2xl border border-outline-variant/50">
-<h3 class="font-title-lg text-title-lg mb-6">Applicants by Event</h3>
+<div class="rounded-[24px] border border-outline-variant/50 bg-surface-container-lowest p-6 shadow-sm">
+  <div class="mb-4 flex h-11 w-11 items-center justify-center rounded-2xl bg-secondary/10 text-secondary"><span class="material-symbols-outlined">group</span></div>
+  <p class="font-display-lg text-display-lg text-on-surface">346</p>
+  <p class="mt-1 font-label-md text-label-md text-on-surface-variant">Applications</p>
+</div>
+<div class="rounded-[24px] border border-outline-variant/50 bg-surface-container-lowest p-6 shadow-sm">
+  <div class="mb-4 flex h-11 w-11 items-center justify-center rounded-2xl bg-tertiary/10 text-tertiary"><span class="material-symbols-outlined">task_alt</span></div>
+  <p class="font-display-lg text-display-lg text-on-surface">73%</p>
+  <p class="mt-1 font-label-md text-label-md text-on-surface-variant">Acceptance Rate</p>
+</div>
+<div class="rounded-[24px] border border-outline-variant/50 bg-surface-container-lowest p-6 shadow-sm">
+  <div class="mb-4 flex h-11 w-11 items-center justify-center rounded-2xl bg-success/10 text-success"><span class="material-symbols-outlined">star</span></div>
+  <p class="font-display-lg text-display-lg text-on-surface">4.8/5</p>
+  <p class="mt-1 font-label-md text-label-md text-on-surface-variant">Avg. Feedback</p>
+</div>
+</div>
+<div class="grid grid-cols-1 gap-6 lg:grid-cols-2">
+<div class="rounded-[28px] border border-outline-variant/50 bg-surface-container-lowest p-8 shadow-sm">
+<h3 class="mb-6 text-title-lg font-semibold text-on-surface">Applicants by event</h3>
 <div class="space-y-4">
-<div class="flex items-center gap-4">
+<div class="flex items-center gap-4 rounded-2xl bg-surface-container-low p-3">
 <span class="w-32 shrink-0 font-label-sm text-label-sm text-on-surface-variant">Global AI Challenge</span>
 <div class="flex-1 h-3 bg-surface-container-high rounded-full overflow-hidden"><div class="bg-primary h-full rounded-full" style="width:92%"></div></div>
 <span class="w-16 text-right font-label-md text-label-md text-on-surface">98</span>
 </div>
-<div class="flex items-center gap-4">
+<div class="flex items-center gap-4 rounded-2xl bg-surface-container-low p-3">
 <span class="w-32 shrink-0 font-label-sm text-label-sm text-on-surface-variant">Frontend Wizards</span>
 <div class="flex-1 h-3 bg-surface-container-high rounded-full overflow-hidden"><div class="bg-secondary h-full rounded-full" style="width:78%"></div></div>
 <span class="w-16 text-right font-label-md text-label-md text-on-surface">150</span>
 </div>
-<div class="flex items-center gap-4">
+<div class="flex items-center gap-4 rounded-2xl bg-surface-container-low p-3">
 <span class="w-32 shrink-0 font-label-sm text-label-sm text-on-surface-variant">DevOps Masterclass</span>
 <div class="flex-1 h-3 bg-surface-container-high rounded-full overflow-hidden"><div class="bg-tertiary h-full rounded-full" style="width:22%"></div></div>
 <span class="w-16 text-right font-label-md text-label-md text-on-surface">24</span>
 </div>
 </div>
 </div>
-<div class="bg-surface-container-lowest p-8 rounded-2xl border border-outline-variant/50">
-<h3 class="font-title-lg text-title-lg mb-6">Top Skills Applying</h3>
+<div class="rounded-[28px] border border-outline-variant/50 bg-surface-container-lowest p-8 shadow-sm">
+<h3 class="mb-6 text-title-lg font-semibold text-on-surface">Top skills applying</h3>
 <div class="space-y-4">
-<div class="flex items-center gap-4">
+<div class="flex items-center gap-4 rounded-2xl bg-surface-container-low p-3">
 <span class="w-32 shrink-0 font-label-sm text-label-sm text-on-surface-variant">Python</span>
 <div class="flex-1 h-3 bg-surface-container-high rounded-full overflow-hidden"><div class="bg-primary h-full rounded-full" style="width:88%"></div></div>
 <span class="w-16 text-right font-label-md text-label-md text-on-surface">88%</span>
 </div>
-<div class="flex items-center gap-4">
+<div class="flex items-center gap-4 rounded-2xl bg-surface-container-low p-3">
 <span class="w-32 shrink-0 font-label-sm text-label-sm text-on-surface-variant">React</span>
 <div class="flex-1 h-3 bg-surface-container-high rounded-full overflow-hidden"><div class="bg-secondary h-full rounded-full" style="width:64%"></div></div>
 <span class="w-16 text-right font-label-md text-label-md text-on-surface">64%</span>
 </div>
-<div class="flex items-center gap-4">
+<div class="flex items-center gap-4 rounded-2xl bg-surface-container-low p-3">
 <span class="w-32 shrink-0 font-label-sm text-label-sm text-on-surface-variant">UI/UX Design</span>
 <div class="flex-1 h-3 bg-surface-container-high rounded-full overflow-hidden"><div class="bg-tertiary h-full rounded-full" style="width:41%"></div></div>
 <span class="w-16 text-right font-label-md text-label-md text-on-surface">41%</span>
 </div>
-<div class="flex items-center gap-4">
+<div class="flex items-center gap-4 rounded-2xl bg-surface-container-low p-3">
 <span class="w-32 shrink-0 font-label-sm text-label-sm text-on-surface-variant">Machine Learning</span>
 <div class="flex-1 h-3 bg-surface-container-high rounded-full overflow-hidden"><div class="bg-success h-full rounded-full" style="width:57%"></div></div>
 <span class="w-16 text-right font-label-md text-label-md text-on-surface">57%</span>
