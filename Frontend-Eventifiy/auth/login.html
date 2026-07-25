@@ -24,6 +24,7 @@
         overflow: hidden;
         word-wrap: normal;
         direction: ltr;
+        font-feature-settings: 'liga';
         -webkit-font-feature-settings: 'liga';
         -webkit-font-smoothing: antialiased;
     }
@@ -68,43 +69,75 @@
     .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; vertical-align: middle; }
     .brand-gradient-text { background: linear-gradient(90deg, #0058be, #6b38d4); -webkit-background-clip: text; background-clip: text; color: transparent; }
     .side-gradient { background: radial-gradient(120% 120% at 20% 10%, rgba(0,88,190,0.9) 0%, rgba(107,56,212,0.9) 60%, rgba(0,105,71,0.85) 100%); }
-    input:focus { outline: none !important; border-color: #0058be !important; box-shadow: 0 0 0 3px rgba(0,88,190,0.12) !important; }
+    .page-shell {
+        background:
+            radial-gradient(circle at top left, rgba(0, 88, 190, 0.08), transparent 28%),
+            radial-gradient(circle at bottom right, rgba(107, 56, 212, 0.08), transparent 24%),
+            linear-gradient(180deg, #faf8ff 0%, #f7f5ff 100%);
+    }
+    .auth-card {
+        background: rgba(255, 255, 255, 0.82);
+        backdrop-filter: blur(16px);
+        box-shadow: 0 24px 80px rgba(25, 27, 35, 0.12);
+    }
+    .auth-input:focus { outline: none !important; border-color: #0058be !important; box-shadow: 0 0 0 3px rgba(0,88,190,0.12) !important; }
+    .soft-ring { box-shadow: 0 10px 30px rgba(0, 88, 190, 0.08); }
 </style>
 </head>
-<body class="bg-background text-on-surface min-h-screen">
+<body class="page-shell text-on-surface min-h-screen">
 <div class="min-h-screen grid grid-cols-1 lg:grid-cols-2">
 <!-- Form Side -->
-<div class="flex flex-col justify-center px-6 sm:px-16 py-12">
-<a class="flex items-center gap-2 mb-10" href="../marketing/landing.html">
+<div class="flex flex-col justify-center px-6 sm:px-16 py-12 relative overflow-hidden">
+<div class="absolute inset-0 pointer-events-none">
+<div class="absolute -top-20 -left-20 h-64 w-64 rounded-full bg-primary/10 blur-3xl"></div>
+<div class="absolute bottom-0 right-0 h-72 w-72 rounded-full bg-secondary/10 blur-3xl"></div>
+</div>
+<a class="relative z-10 flex items-center gap-2 mb-10" href="../marketing/landing.html">
 <span class="material-symbols-outlined text-primary text-3xl" style="font-variation-settings: 'FILL' 1;">hub</span>
 <span class="font-title-lg text-title-lg font-black brand-gradient-text">EVENTIFY</span>
 </a>
-<div class="max-w-md w-full mx-auto">
+<div class="relative z-10 max-w-md w-full mx-auto auth-card border border-white/70 rounded-[28px] p-6 sm:p-8">
+<div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 text-primary text-sm font-semibold mb-5">
+<span class="material-symbols-outlined text-[18px]">lock</span>
+                        Secure Access
+                    </div>
 <h1 class="font-headline-lg text-headline-lg mb-2">Welcome back</h1>
-<p class="font-body-md text-body-md text-on-surface-variant mb-8">Log in to keep discovering opportunities tailored to you.</p>
-<form class="space-y-5" onsubmit="event.preventDefault(); window.location.href='../index.html';">
+<p class="font-body-md text-body-md text-on-surface-variant mb-8">Log in with your email or phone number to keep discovering opportunities tailored to you.</p>
+<form class="space-y-5" id="login-form" novalidate>
 <div class="flex flex-col gap-2">
-<label class="font-label-md text-label-md" for="email">Email</label>
-<input class="h-12 px-4 bg-surface-container-lowest border border-outline-variant rounded-lg transition-all" id="email" placeholder="you@example.com" required="" type="email"/>
+<label class="font-label-md text-label-md" for="identifier">Email or Phone</label>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-[20px]">alternate_email</span>
+<input aria-describedby="identifier-error" class="auth-input h-12 pl-11 pr-4 w-full bg-surface-container-lowest border border-outline-variant rounded-xl transition-all" id="identifier" placeholder="you@example.com or +1 555 123 4567" required="" type="text"/>
+</div>
+<p class="hidden text-sm text-error" id="identifier-error" role="alert"></p>
 </div>
 <div class="flex flex-col gap-2">
 <label class="font-label-md text-label-md" for="password">Password</label>
-<input class="h-12 px-4 bg-surface-container-lowest border border-outline-variant rounded-lg transition-all" id="password" placeholder="••••••••" required="" type="password"/>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-[20px]">key</span>
+<input aria-describedby="password-error auth-error" class="auth-input h-12 pl-11 pr-12 w-full bg-surface-container-lowest border border-outline-variant rounded-xl transition-all" id="password" placeholder="••••••••" required="" type="password"/>
+<button aria-label="Show password" class="absolute right-3 top-1/2 -translate-y-1/2 text-on-surface-variant hover:text-on-surface transition-colors" id="toggle-password" type="button">
+<span class="material-symbols-outlined text-[20px]" id="password-toggle-icon">visibility</span>
+</button>
 </div>
-<div class="flex items-center justify-between">
+<p class="hidden text-sm text-error" id="password-error" role="alert"></p>
+<p class="hidden text-sm text-error" id="auth-error" role="alert"></p>
+</div>
+<div class="flex items-center justify-between gap-4">
 <label class="flex items-center gap-2 font-body-sm text-body-sm text-on-surface-variant">
 <input class="rounded border-outline-variant text-primary" type="checkbox"/> Remember me
                         </label>
 <a class="font-label-md text-label-md text-primary hover:underline" href="#">Forgot password?</a>
 </div>
-<button class="w-full h-12 bg-primary text-on-primary rounded-full font-label-lg text-label-lg shadow-md hover:bg-primary-container transition-colors" type="submit">Log in</button>
+<button class="w-full h-12 bg-primary text-on-primary rounded-full font-label-lg text-label-lg shadow-md hover:bg-primary-container transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 soft-ring" id="login-submit" type="submit">Sign In</button>
 </form>
 <div class="flex items-center gap-4 my-8">
 <div class="flex-1 h-px bg-outline-variant"></div>
 <span class="font-label-sm text-on-surface-variant">OR</span>
 <div class="flex-1 h-px bg-outline-variant"></div>
 </div>
-<button class="w-full h-12 border border-outline-variant rounded-full font-label-md text-label-md flex items-center justify-center gap-2 hover:bg-surface-container-low transition-colors" type="button">
+<button class="w-full h-12 border border-outline-variant rounded-full font-label-md text-label-md flex items-center justify-center gap-2 hover:bg-surface-container-low transition-colors bg-white/80" type="button">
 <span class="material-symbols-outlined text-[20px]">mail</span> Continue with Google
             </button>
 <p class="text-center font-body-sm text-body-sm text-on-surface-variant mt-8">Don't have an account? <a class="text-primary font-semibold hover:underline" href="signup.html">Sign up</a></p>
@@ -112,11 +145,158 @@
 </div>
 <!-- Visual Side -->
 <div class="hidden lg:flex side-gradient items-center justify-center p-16 relative overflow-hidden">
+<div class="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.14),transparent_45%)]"></div>
 <div class="relative z-10 text-white max-w-md space-y-6">
+<div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/15 backdrop-blur-sm text-white/90 text-sm font-semibold">
+<span class="material-symbols-outlined text-[18px]">shield</span>
+                        Fast, secure, simple
+                    </div>
 <span class="material-symbols-outlined text-5xl" style="font-variation-settings: 'FILL' 1;">hub</span>
 <h2 class="font-headline-md text-headline-md">The right opportunity, for the right person, at the right time.</h2>
 <p class="font-body-md text-body-md text-white/85">Join thousands of students and professionals discovering competitions, courses, and events matched to their skills.</p>
+<div class="grid grid-cols-1 gap-3 pt-2">
+<div class="flex items-center gap-3 rounded-2xl bg-white/12 backdrop-blur-sm px-4 py-3 border border-white/10">
+<span class="material-symbols-outlined text-[20px]">verified</span>
+<span class="text-sm font-medium">Email or phone login supported</span>
+</div>
+<div class="flex items-center gap-3 rounded-2xl bg-white/12 backdrop-blur-sm px-4 py-3 border border-white/10">
+<span class="material-symbols-outlined text-[20px]">schedule</span>
+<span class="text-sm font-medium">Quick access to your saved work</span>
 </div>
 </div>
 </div>
+</div>
+</div>
+<script>
+    const loginForm = document.getElementById("login-form");
+    const identifierInput = document.getElementById("identifier");
+    const passwordInput = document.getElementById("password");
+    const identifierError = document.getElementById("identifier-error");
+    const passwordError = document.getElementById("password-error");
+    const authError = document.getElementById("auth-error");
+    const loginSubmit = document.getElementById("login-submit");
+    const togglePasswordButton = document.getElementById("toggle-password");
+    const passwordToggleIcon = document.getElementById("password-toggle-icon");
+
+    function setFieldError(input, errorElement, message) {
+        if (message) {
+            input.classList.add("border-error");
+            input.classList.remove("border-outline-variant");
+            errorElement.textContent = message;
+            errorElement.classList.remove("hidden");
+            return;
+        }
+
+        input.classList.remove("border-error");
+        input.classList.add("border-outline-variant");
+        errorElement.textContent = "";
+        errorElement.classList.add("hidden");
+    }
+
+    function isEmail(value) {
+        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
+    }
+
+    function isPhone(value) {
+        return /^[+]?([0-9][\s-()]*){7,15}$/.test(value);
+    }
+
+    function validateIdentifier() {
+        const value = identifierInput.value.trim();
+
+        if (!value) {
+            setFieldError(identifierInput, identifierError, "This field is required.");
+            return false;
+        }
+
+        const looksLikeEmail = value.includes("@");
+        if (looksLikeEmail && !isEmail(value)) {
+            setFieldError(identifierInput, identifierError, "Please enter a valid email address.");
+            return false;
+        }
+
+        if (!looksLikeEmail && !isPhone(value)) {
+            setFieldError(identifierInput, identifierError, "Please enter a valid phone number.");
+            return false;
+        }
+
+        setFieldError(identifierInput, identifierError, "");
+        return true;
+    }
+
+    function validatePassword() {
+        if (!passwordInput.value.trim()) {
+            setFieldError(passwordInput, passwordError, "This field is required.");
+            return false;
+        }
+
+        setFieldError(passwordInput, passwordError, "");
+        return true;
+    }
+
+    function clearAuthError() {
+        authError.textContent = "";
+        authError.classList.add("hidden");
+    }
+
+    function showAuthError(message) {
+        authError.textContent = message;
+        authError.classList.remove("hidden");
+    }
+
+    function updateSubmitState() {
+        loginSubmit.disabled = !identifierInput.value.trim() || !passwordInput.value.trim();
+    }
+
+    function togglePasswordVisibility() {
+        const isPassword = passwordInput.type === "password";
+        passwordInput.type = isPassword ? "text" : "password";
+        passwordToggleIcon.textContent = isPassword ? "visibility_off" : "visibility";
+    }
+
+    identifierInput.addEventListener("input", () => {
+        validateIdentifier();
+        clearAuthError();
+        updateSubmitState();
+    });
+
+    passwordInput.addEventListener("input", () => {
+        validatePassword();
+        clearAuthError();
+        updateSubmitState();
+    });
+
+    togglePasswordButton.addEventListener("click", togglePasswordVisibility);
+
+    loginForm.addEventListener("submit", (event) => {
+        event.preventDefault();
+
+        const validIdentifier = validateIdentifier();
+        const validPassword = validatePassword();
+
+        if (!validIdentifier || !validPassword) {
+            return;
+        }
+
+        const identifierValue = identifierInput.value.trim().toLowerCase();
+        const passwordValue = passwordInput.value.trim().toLowerCase();
+
+        if (identifierValue === "error@example.com" || passwordValue === "invalidpass") {
+            showAuthError("Invalid email or password. Please check your credentials and try again.");
+            return;
+        }
+
+        loginSubmit.disabled = true;
+        const originalText = loginSubmit.textContent;
+        loginSubmit.innerHTML = '<span class="material-symbols-outlined text-[20px] animate-spin">progress_activity</span> Logging in...';
+
+        window.setTimeout(() => {
+            loginSubmit.disabled = false;
+            loginSubmit.textContent = originalText;
+            window.location.href = "../index.html";
+        }, 800);
+    });
+
+    updateSubmitState();
+</script>
 </body></html>

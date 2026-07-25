@@ -24,6 +24,7 @@
         overflow: hidden;
         word-wrap: normal;
         direction: ltr;
+        font-feature-settings: 'liga';
         -webkit-font-feature-settings: 'liga';
         -webkit-font-smoothing: antialiased;
     }
@@ -69,14 +70,27 @@
     .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; vertical-align: middle; }
     .brand-gradient-text { background: linear-gradient(90deg, #0058be, #6b38d4); -webkit-background-clip: text; background-clip: text; color: transparent; }
     .side-gradient { background: radial-gradient(120% 120% at 80% 10%, rgba(107,56,212,0.9) 0%, rgba(0,88,190,0.9) 55%, rgba(0,105,71,0.85) 100%); }
-    input:focus { outline: none !important; border-color: #0058be !important; box-shadow: 0 0 0 3px rgba(0,88,190,0.12) !important; }
+    .page-shell {
+        background:
+            radial-gradient(circle at top left, rgba(0, 88, 190, 0.08), transparent 28%),
+            radial-gradient(circle at bottom right, rgba(107, 56, 212, 0.08), transparent 24%),
+            linear-gradient(180deg, #faf8ff 0%, #f7f5ff 100%);
+    }
+    .auth-card {
+        background: rgba(255, 255, 255, 0.82);
+        backdrop-filter: blur(16px);
+        box-shadow: 0 24px 80px rgba(25, 27, 35, 0.12);
+    }
+    .auth-input:focus { outline: none !important; border-color: #0058be !important; box-shadow: 0 0 0 3px rgba(0,88,190,0.12) !important; }
+    .soft-ring { box-shadow: 0 10px 30px rgba(0, 88, 190, 0.08); }
 </style>
 </head>
-<body class="bg-background text-on-surface min-h-screen">
+<body class="page-shell text-on-surface min-h-screen">
 <div class="min-h-screen grid grid-cols-1 lg:grid-cols-2">
 <!-- Visual Side -->
 <div class="hidden lg:flex side-gradient items-center justify-center p-16 relative overflow-hidden order-2 lg:order-1">
-<div class="relative z-10 text-white max-w-md space-y-6">
+<div class="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.14),transparent_45%)]"></div>
+<div class="relative z-10 text-white max-w-md space-y-6 lg:-translate-y-20">
 <span class="material-symbols-outlined text-5xl" style="font-variation-settings: 'FILL' 1;">hub</span>
 <h2 class="font-headline-md text-headline-md">Discover. Connect. Grow.</h2>
 <p class="font-body-md text-body-md text-white/85">Create your profile, let AI generate your CV, and unlock competitions, courses, and events matched to you.</p>
@@ -88,14 +102,22 @@
 </div>
 </div>
 <!-- Form Side -->
-<div class="flex flex-col justify-center px-6 sm:px-16 py-12 order-1 lg:order-2">
-<a class="flex items-center gap-2 mb-10" href="../marketing/landing.html">
+<div class="flex flex-col justify-center px-6 sm:px-16 py-12 relative overflow-hidden order-1 lg:order-2">
+<div class="absolute inset-0 pointer-events-none">
+<div class="absolute -top-20 -left-20 h-64 w-64 rounded-full bg-primary/10 blur-3xl"></div>
+<div class="absolute bottom-0 right-0 h-72 w-72 rounded-full bg-secondary/10 blur-3xl"></div>
+</div>
+<a class="relative z-10 flex items-center gap-2 mb-10" href="../marketing/landing.html">
 <span class="material-symbols-outlined text-primary text-3xl" style="font-variation-settings: 'FILL' 1;">hub</span>
 <span class="font-title-lg text-title-lg font-black brand-gradient-text">EVENTIFY</span>
 </a>
-<div class="max-w-md w-full mx-auto">
+<div class="relative z-10 max-w-md w-full mx-auto auth-card border border-white/70 rounded-[28px] p-6 sm:p-8">
+<div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 text-primary text-sm font-semibold mb-5">
+<span class="material-symbols-outlined text-[18px]">lock</span>
+                        Secure Access
+                    </div>
 <h1 class="font-headline-lg text-headline-lg mb-2">Create your account</h1>
-<p class="font-body-md text-body-md text-on-surface-variant mb-6" id="subtitle">Start discovering opportunities tailored to your skills.</p>
+<p class="font-body-md text-body-md text-on-surface-variant mb-6" id="subtitle">Create your personal account to start exploring opportunities.</p>
 <div class="grid grid-cols-2 gap-3 mb-6" role="radiogroup" aria-label="Account type">
 <button aria-checked="true" class="account-type-btn flex flex-col items-center gap-2 py-4 rounded-xl border-2 border-primary bg-primary/5 transition-colors" data-type="personal" role="radio" type="button">
 <span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">person</span>
@@ -108,35 +130,59 @@
 <span class="font-body-sm text-body-sm text-on-surface-variant">Publish events</span>
 </button>
 </div>
-<form class="space-y-5" id="signup-form" onsubmit="event.preventDefault(); window.location.href=document.getElementById('signup-form').dataset.destination || '../index.html';">
+<form class="space-y-5" id="signup-form" novalidate>
 <div class="flex flex-col gap-2">
-<label class="font-label-md text-label-md" for="name" id="name-label">Full name</label>
-<input class="h-12 px-4 bg-surface-container-lowest border border-outline-variant rounded-lg transition-all" id="name" placeholder="Sarah Chen" required="" type="text"/>
+<label class="font-label-md text-label-md" for="full-name">Full Name *</label>
+<input aria-describedby="full-name-error" class="auth-input h-12 px-4 bg-surface-container-lowest border border-outline-variant rounded-xl transition-all" id="full-name" name="fullName" placeholder="Sarah Chen" required="" type="text"/>
+<p class="hidden text-sm text-error" id="full-name-error" role="alert"></p>
+</div>
+<div class="flex flex-col gap-2">
+<label class="font-label-md text-label-md" for="phone">Phone Number *</label>
+<input aria-describedby="phone-error" class="auth-input h-12 px-4 bg-surface-container-lowest border border-outline-variant rounded-xl transition-all" id="phone" name="phone" placeholder="+1 555 123 4567" required="" type="tel"/>
+<p class="hidden text-sm text-error" id="phone-error" role="alert"></p>
 </div>
 <div class="flex flex-col gap-2 hidden" id="org-website-field">
 <label class="font-label-md text-label-md" for="org-website">Website <span class="text-on-surface-variant font-normal">(optional)</span></label>
-<input class="h-12 px-4 bg-surface-container-lowest border border-outline-variant rounded-lg transition-all" id="org-website" placeholder="https://yourorganization.com" type="url"/>
+<input class="auth-input h-12 px-4 bg-surface-container-lowest border border-outline-variant rounded-xl transition-all" id="org-website" name="organizationWebsite" placeholder="https://yourorganization.com" type="url"/>
 </div>
 <div class="flex flex-col gap-2">
-<label class="font-label-md text-label-md" for="email" id="email-label">Email</label>
-<input class="h-12 px-4 bg-surface-container-lowest border border-outline-variant rounded-lg transition-all" id="email" placeholder="you@example.com" required="" type="email"/>
+<label class="font-label-md text-label-md" for="email">Email Address *</label>
+<input aria-describedby="email-error" class="auth-input h-12 px-4 bg-surface-container-lowest border border-outline-variant rounded-xl transition-all" id="email" name="email" placeholder="you@example.com" required="" type="email"/>
+<p class="hidden text-sm text-error" id="email-error" role="alert"></p>
 </div>
 <div class="flex flex-col gap-2">
-<label class="font-label-md text-label-md" for="password">Password</label>
-<input class="h-12 px-4 bg-surface-container-lowest border border-outline-variant rounded-lg transition-all" id="password" placeholder="At least 8 characters" required="" type="password"/>
+<label class="font-label-md text-label-md" for="password">Password *</label>
+<div class="relative">
+<input aria-describedby="password-error password-strength" class="auth-input h-12 px-4 pr-12 w-full bg-surface-container-lowest border border-outline-variant rounded-xl transition-all" id="password" name="password" placeholder="At least 8 characters" required="" type="password"/>
+<button aria-label="Show password" class="absolute right-3 top-1/2 -translate-y-1/2 text-on-surface-variant hover:text-on-surface transition-colors" id="toggle-password" type="button">
+<span class="material-symbols-outlined text-[20px]" id="password-toggle-icon">visibility</span>
+</button>
+</div>
+<p class="hidden text-sm text-error" id="password-error" role="alert"></p>
+<p class="text-sm text-on-surface-variant" id="password-strength">Strength: <span class="font-semibold" id="password-strength-value">Weak</span></p>
+</div>
+<div class="flex flex-col gap-2">
+<label class="font-label-md text-label-md" for="confirm-password">Confirm Password *</label>
+<div class="relative">
+<input aria-describedby="confirm-password-error" class="auth-input h-12 px-4 pr-12 w-full bg-surface-container-lowest border border-outline-variant rounded-xl transition-all" id="confirm-password" name="confirmPassword" placeholder="Re-enter your password" required="" type="password"/>
+<button aria-label="Show confirm password" class="absolute right-3 top-1/2 -translate-y-1/2 text-on-surface-variant hover:text-on-surface transition-colors" id="toggle-confirm-password" type="button">
+<span class="material-symbols-outlined text-[20px]" id="confirm-password-toggle-icon">visibility</span>
+</button>
+</div>
+<p class="hidden text-sm text-error" id="confirm-password-error" role="alert"></p>
 </div>
 <label class="flex items-start gap-2 font-body-sm text-body-sm text-on-surface-variant">
-<input class="rounded border-outline-variant text-primary mt-0.5" required="" type="checkbox"/>
+<input class="rounded border-outline-variant text-primary mt-0.5" id="terms" required="" type="checkbox"/>
                         I agree to the <a class="text-primary hover:underline" href="../marketing/about.html">Terms</a> and <a class="text-primary hover:underline" href="../marketing/about.html">Privacy Policy</a>
                     </label>
-<button class="w-full h-12 bg-primary text-on-primary rounded-full font-label-lg text-label-lg shadow-md hover:bg-primary-container transition-colors" id="submit-btn" type="submit">Create account</button>
+<button class="w-full h-12 bg-primary text-on-primary rounded-full font-label-lg text-label-lg shadow-md hover:bg-primary-container transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 soft-ring" id="submit-btn" type="submit" disabled="">Create Account</button>
 </form>
 <div class="flex items-center gap-4 my-8">
 <div class="flex-1 h-px bg-outline-variant"></div>
 <span class="font-label-sm text-on-surface-variant">OR</span>
 <div class="flex-1 h-px bg-outline-variant"></div>
 </div>
-<button class="w-full h-12 border border-outline-variant rounded-full font-label-md text-label-md flex items-center justify-center gap-2 hover:bg-surface-container-low transition-colors" type="button">
+<button class="w-full h-12 border border-outline-variant rounded-full font-label-md text-label-md flex items-center justify-center gap-2 hover:bg-surface-container-low transition-colors bg-white/80" type="button">
 <span class="material-symbols-outlined text-[20px]">mail</span> Continue with Google
             </button>
 <p class="text-center font-body-sm text-body-sm text-on-surface-variant mt-8">Already have an account? <a class="text-primary font-semibold hover:underline" href="login.html">Log in</a></p>
@@ -146,54 +192,244 @@
 <script>
     const accountConfig = {
         personal: {
-            subtitle: "Start discovering opportunities tailored to your skills.",
-            nameLabel: "Full name",
+            subtitle: "Create your personal account to start exploring opportunities.",
+            nameLabel: "Full Name *",
             namePlaceholder: "Sarah Chen",
-            emailLabel: "Email",
+            emailLabel: "Email Address *",
             emailPlaceholder: "you@example.com",
-            submitLabel: "Create account",
+            submitLabel: "Create Account",
             destination: "../index.html",
+            showPhone: true,
             showWebsite: false
         },
-       organization: {
-    subtitle: "Complete your organization registration by verifying your organization details.",
-    nameLabel: "Organization name",
-    namePlaceholder: "e.g. TechGenius Labs",
-    emailLabel: "Work email",
-    emailPlaceholder: "contact@yourorganization.com",
-    submitLabel: "Continue to Verification",
-    destination: "organization-verification.html",
-    showWebsite: true
-}
+        organization: {
+            subtitle: "Complete your organization registration by verifying your organization details.",
+            nameLabel: "Organization Name *",
+            namePlaceholder: "e.g. TechGenius Labs",
+            emailLabel: "Work Email *",
+            emailPlaceholder: "contact@yourorganization.com",
+            submitLabel: "Continue to Verification",
+            destination: "organization-verification.html",
+            showPhone: false,
+            showWebsite: true
+        }
     };
 
-    const buttons = document.querySelectorAll(".account-type-btn");
+    const accountButtons = document.querySelectorAll(".account-type-btn");
     const form = document.getElementById("signup-form");
-    const orgWebsiteField = document.getElementById("org-website-field");
+    const submitBtn = document.getElementById("submit-btn");
+    const termsCheckbox = document.getElementById("terms");
+    const subtitle = document.getElementById("subtitle");
+    const nameLabel = document.querySelector('label[for="full-name"]');
+    const fullNameInput = document.getElementById("full-name");
+    const phoneField = document.getElementById("phone").closest(".flex.flex-col.gap-2");
+    const phoneInput = document.getElementById("phone");
+    const websiteField = document.getElementById("org-website-field");
+    const websiteInput = document.getElementById("org-website");
+    const emailLabel = document.querySelector('label[for="email"]');
+    const emailInput = document.getElementById("email");
+    const passwordInput = document.getElementById("password");
+    const confirmPasswordInput = document.getElementById("confirm-password");
+    const passwordStrengthValue = document.getElementById("password-strength-value");
+    const passwordToggleIcon = document.getElementById("password-toggle-icon");
+    const confirmPasswordToggleIcon = document.getElementById("confirm-password-toggle-icon");
+    const togglePasswordButton = document.getElementById("toggle-password");
+    const toggleConfirmPasswordButton = document.getElementById("toggle-confirm-password");
+
+    const fields = [
+        { input: fullNameInput, error: document.getElementById("full-name-error") },
+        { input: phoneInput, error: document.getElementById("phone-error") },
+        { input: emailInput, error: document.getElementById("email-error") },
+        { input: passwordInput, error: document.getElementById("password-error") },
+        { input: confirmPasswordInput, error: document.getElementById("confirm-password-error") }
+    ];
 
     function applyAccountType(type) {
-        const cfg = accountConfig[type];
-        document.getElementById("subtitle").textContent = cfg.subtitle;
-        document.getElementById("name-label").textContent = cfg.nameLabel;
-        document.getElementById("name").placeholder = cfg.namePlaceholder;
-        document.getElementById("email-label").textContent = cfg.emailLabel;
-        document.getElementById("email").placeholder = cfg.emailPlaceholder;
-        document.getElementById("submit-btn").textContent = cfg.submitLabel;
-        form.dataset.destination = cfg.destination;
-        orgWebsiteField.classList.toggle("hidden", !cfg.showWebsite);
+        const config = accountConfig[type];
 
-        buttons.forEach((btn) => {
-            const active = btn.dataset.type === type;
-            btn.setAttribute("aria-checked", active ? "true" : "false");
-            btn.classList.toggle("border-primary", active);
-            btn.classList.toggle("bg-primary/5", active);
-            btn.classList.toggle("border-outline-variant", !active);
-            btn.querySelector(".material-symbols-outlined").classList.toggle("text-primary", active);
-            btn.querySelector(".material-symbols-outlined").classList.toggle("text-on-surface-variant", !active);
+        subtitle.textContent = config.subtitle;
+        nameLabel.textContent = config.nameLabel;
+        fullNameInput.placeholder = config.namePlaceholder;
+        emailLabel.textContent = config.emailLabel;
+        emailInput.placeholder = config.emailPlaceholder;
+        submitBtn.textContent = config.submitLabel;
+        form.dataset.destination = config.destination;
+        phoneField.classList.toggle("hidden", !config.showPhone);
+        websiteField.classList.toggle("hidden", !config.showWebsite);
+
+        accountButtons.forEach((button) => {
+            const active = button.dataset.type === type;
+            button.setAttribute("aria-checked", active ? "true" : "false");
+            button.classList.toggle("border-primary", active);
+            button.classList.toggle("bg-primary/5", active);
+            button.classList.toggle("border-outline-variant", !active);
+            const icon = button.querySelector(".material-symbols-outlined");
+            icon.classList.toggle("text-primary", active);
+            icon.classList.toggle("text-on-surface-variant", !active);
         });
     }
 
-    buttons.forEach((btn) => btn.addEventListener("click", () => applyAccountType(btn.dataset.type)));
+    function setFieldError(input, error, message) {
+        if (message) {
+            input.classList.add("border-error");
+            input.classList.remove("border-outline-variant");
+            error.textContent = message;
+            error.classList.remove("hidden");
+            return;
+        }
+
+        input.classList.remove("border-error");
+        input.classList.add("border-outline-variant");
+        error.textContent = "";
+        error.classList.add("hidden");
+    }
+
+    function validateEmail(value) {
+        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
+    }
+
+    function validatePhone(value) {
+        return /^[+]?([0-9][\s-()]*){7,15}$/.test(value);
+    }
+
+    function getPasswordStrength(value) {
+        if (value.length < 8) return "Weak";
+        const score = [/[a-zA-Z]/.test(value), /\d/.test(value), /[^a-zA-Z\d]/.test(value)].filter(Boolean).length;
+        return score <= 1 ? "Medium" : "Strong";
+    }
+
+    function updatePasswordStrength() {
+        const strength = getPasswordStrength(passwordInput.value);
+        passwordStrengthValue.textContent = strength;
+        passwordStrengthValue.className = "font-semibold";
+        if (strength === "Weak") {
+            passwordStrengthValue.classList.add("text-error");
+        } else if (strength === "Medium") {
+            passwordStrengthValue.classList.add("text-amber-600");
+        } else {
+            passwordStrengthValue.classList.add("text-emerald-600");
+        }
+    }
+
+    function validateField(input, error) {
+        if (input === phoneInput && phoneField.classList.contains("hidden")) {
+            return true;
+        }
+
+        if (input === websiteInput && websiteField.classList.contains("hidden")) {
+            return true;
+        }
+
+        if (input === websiteInput) {
+            const value = input.value.trim();
+
+            if (!value) {
+                return true;
+            }
+
+            try {
+                new URL(value);
+                input.classList.remove("border-error");
+                input.classList.add("border-outline-variant");
+                return true;
+            } catch {
+                input.classList.add("border-error");
+                input.classList.remove("border-outline-variant");
+                return false;
+            }
+        }
+
+        const value = input.value.trim();
+
+        if (!value) {
+            setFieldError(input, error, "This field is required.");
+            return false;
+        }
+
+        if (input === phoneInput && !validatePhone(value)) {
+            setFieldError(input, error, "Please enter a valid phone number.");
+            return false;
+        }
+
+        if (input === emailInput && !validateEmail(value)) {
+            setFieldError(input, error, "Please enter a valid email address.");
+            return false;
+        }
+
+        if (input === passwordInput && value.length < 8) {
+            setFieldError(input, error, "Password must be at least 8 characters.");
+            return false;
+        }
+
+        if (input === confirmPasswordInput && value !== passwordInput.value) {
+            setFieldError(input, error, "Passwords do not match.");
+            return false;
+        }
+
+        setFieldError(input, error, "");
+        return true;
+    }
+
+    function updateSubmitState() {
+        submitBtn.disabled = !termsCheckbox.checked;
+    }
+
+    function togglePasswordVisibility(input, icon) {
+        const isPassword = input.type === "password";
+        input.type = isPassword ? "text" : "password";
+        icon.textContent = isPassword ? "visibility_off" : "visibility";
+    }
+
+    accountButtons.forEach((button) => {
+        button.addEventListener("click", () => applyAccountType(button.dataset.type));
+    });
+
+    fields.forEach(({ input, error }) => {
+        input.addEventListener("blur", () => validateField(input, error));
+        input.addEventListener("input", () => {
+            if (input === passwordInput) {
+                updatePasswordStrength();
+            }
+
+            if (input === confirmPasswordInput && confirmPasswordInput.value) {
+                validateField(confirmPasswordInput, document.getElementById("confirm-password-error"));
+            }
+
+            validateField(input, error);
+        });
+    });
+
+    termsCheckbox.addEventListener("change", updateSubmitState);
+    togglePasswordButton.addEventListener("click", () => togglePasswordVisibility(passwordInput, passwordToggleIcon));
+    toggleConfirmPasswordButton.addEventListener("click", () => togglePasswordVisibility(confirmPasswordInput, confirmPasswordToggleIcon));
+
+    form.addEventListener("submit", (event) => {
+        event.preventDefault();
+
+        const validations = fields
+            .filter(({ input }) => input !== phoneInput || !phoneField.classList.contains("hidden"))
+            .map(({ input, error }) => validateField(input, error));
+
+        updatePasswordStrength();
+        updateSubmitState();
+
+        if (!validations.every(Boolean) || !termsCheckbox.checked) {
+            return;
+        }
+
+        const originalText = submitBtn.innerHTML;
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<span class="material-symbols-outlined text-[20px] animate-spin">progress_activity</span> Creating...';
+
+        window.setTimeout(() => {
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = originalText;
+            window.location.href = "../index.html";
+        }, 900);
+    });
+
+    updatePasswordStrength();
+    updateSubmitState();
     applyAccountType("personal");
 </script>
 </body></html>
