@@ -424,7 +424,7 @@
         window.setTimeout(() => {
             submitBtn.disabled = false;
             submitBtn.innerHTML = originalText;
-            window.location.href = "../index.html";
+            window.location.href = form.dataset.destination || "../index.html";
         }, 900);
     });
 
