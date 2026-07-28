@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Messages | EVENTIFY Organizer</title>
+<link rel="stylesheet" href="../assets/css/theme.css" />
+<style>
+    @font-face {
+        font-family: 'Material Symbols Outlined';
+        font-style: normal;
+        font-weight: 100 700;
+        font-display: block;
+        src: url('../assets/fonts/material-symbols-outlined.woff2') format('woff2');
+    }
+    .material-symbols-outlined {
+        font-family: 'Material Symbols Outlined';
+        font-weight: normal;
+        font-style: normal;
+        font-size: 24px;
+        line-height: 1;
+        letter-spacing: normal;
+        text-transform: none;
+        display: inline-block;
+        white-space: nowrap;
+        overflow: hidden;
+        word-wrap: normal;
+        direction: ltr;
+        -webkit-font-feature-settings: 'liga';
+        -webkit-font-smoothing: antialiased;
+    }
+    </style>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "background": "#faf8ff", "surface-container-high": "#e7e7f3", "on-surface": "#191b23",
+                        "on-surface-variant": "#434655", "primary-container": "#2563eb", "surface-container-low": "#f3f3fe",
+                        "surface": "#faf8ff", "primary": "#0058be", "tertiary": "#943700",
+                        "success": "#006947", "outline-variant": "#c3c6d7", "surface-container-highest": "#e1e2ed",
+                        "secondary": "#6b38d4", "on-primary": "#ffffff", "surface-container": "#ededf9",
+                        "on-primary-container": "#eeefff", "surface-container-lowest": "#ffffff", "outline": "#737686"
+                    },
+                    "borderRadius": { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" },
+                    "spacing": { "container_max_width": "1280px", "top_nav_height": "72px" },
+                    "fontFamily": {
+                        "title-lg": ["Inter"], "label-sm": ["Inter"], "headline-lg-mobile": ["Inter"], "label-md": ["Inter"],
+                        "headline-lg": ["Inter"], "body-md": ["Inter"], "headline-md": ["Inter"], "body-sm": ["Inter"]
+                    },
+                    "fontSize": {
+                        "title-lg": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                        "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "600"}],
+                        "headline-lg-mobile": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                        "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "500"}],
+                        "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                        "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+    .glass-sidebar { background: rgba(255, 255, 255, 0.8); backdrop-filter: blur(12px); border-right: 1px solid #E2E8F0; }
+    .glass-header { background: rgba(250, 248, 255, 0.8); backdrop-filter: blur(12px); }
+    .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; vertical-align: middle; }
+    .bubble-them { background: #ffffff; border: 1px solid #c3c6d7; }
+    .bubble-me { background: #0058be; color: #fff; }
+    .convo-item.active { background: linear-gradient(135deg, rgba(0,88,190,0.08), rgba(107,56,212,0.08)); border-color: #0058be; }
+</style>
+</head>
+<body class="min-h-screen bg-background text-on-surface font-body-md">
+<header class="lg:hidden glass-header w-full sticky top-0 z-50 flex justify-between items-center px-4 h-16 shadow-sm">
+<a class="flex items-center gap-2" href="../index.html">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">hub</span>
+<h1 class="font-bold text-headline-lg-mobile text-primary">EVENTIFY</h1>
+</a>
+<span class="px-3 py-1 rounded-full bg-primary/10 text-primary font-label-sm text-label-sm">ORGANIZER</span>
+</header>
+<div class="flex h-screen overflow-hidden">
+<aside class="hidden lg:flex flex-col w-[280px] h-screen sticky top-0 glass-sidebar z-50 p-6 flex-shrink-0">
+<a class="flex items-center gap-3 mb-2" href="../index.html">
+<span class="material-symbols-outlined text-primary text-3xl" style="font-variation-settings: 'FILL' 1;">hub</span>
+<h1 class="font-bold text-headline-md text-primary">EVENTIFY</h1>
+</a>
+<span class="mb-8 px-3 py-1 rounded-full bg-primary/10 text-primary font-label-sm text-label-sm w-fit">ORGANIZER</span>
+            <nav class="flex flex-1 flex-col gap-2">
+                <a class="nav-link-enhanced flex items-center gap-3 rounded-2xl px-4 py-3 text-on-surface-variant transition-all duration-300 hover:bg-surface-container-high hover:text-primary"
+                    href="org-dashboard.html"><span class="material-symbols-outlined">dashboard</span><span>Dashboard</span></a>
+                <a class="nav-link-enhanced flex items-center gap-3 rounded-2xl px-4 py-3 text-on-surface-variant transition-all duration-300 hover:bg-surface-container-high hover:text-primary"
+                    href="org-posts.html"><span class="material-symbols-outlined">campaign</span><span>Posts</span></a>
+                <a class="nav-link-enhanced flex items-center gap-3 rounded-2xl px-4 py-3 text-on-surface-variant transition-all duration-300 hover:bg-surface-container-high hover:text-primary"
+                    href="org-profile.html"><span class="material-symbols-outlined">apartment</span><span>Organization Profile</span></a>
+                <a class="nav-link-enhanced flex items-center gap-3 rounded-2xl px-4 py-3 text-on-surface-variant transition-all duration-300 hover:bg-surface-container-high hover:text-primary"
+                    href="org-opportunities.html"><span class="material-symbols-outlined">event_note</span><span>My Opportunities</span></a>
+                <a class="nav-link-enhanced flex items-center gap-3 rounded-2xl px-4 py-3 text-on-surface-variant transition-all duration-300 hover:bg-surface-container-high hover:text-primary"
+                    href="org-applicants.html"><span class="material-symbols-outlined">group</span><span>Applicants</span></a>
+                <a class="nav-link-enhanced flex items-center gap-3 rounded-2xl bg-gradient-to-r from-primary/10 to-secondary/10 px-4 py-3 text-primary shadow-sm"
+                    href="org-messages.html"><span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1;">chat</span><span>Messages</span><div class="ml-auto h-5 w-1 rounded-full bg-primary"></div></a>
+                <a class="nav-link-enhanced flex items-center gap-3 rounded-2xl px-4 py-3 text-on-surface-variant transition-all duration-300 hover:bg-surface-container-high hover:text-primary"
+                    href="org-reports.html"><span class="material-symbols-outlined">bar_chart</span><span>Reports</span></a>
+                <a class="nav-link-enhanced flex items-center gap-3 rounded-2xl px-4 py-3 text-on-surface-variant transition-all duration-300 hover:bg-surface-container-high hover:text-primary"
+                    href="org-settings.html"><span class="material-symbols-outlined">settings</span><span>Settings</span></a>
+            </nav>
+            <div class="mt-auto rounded-2xl bg-surface-container p-4">
+                <p class="mb-2 text-label-sm font-semibold text-on-surface-variant">ORGANIZATION</p>
+                <p class="text-label-md font-medium">TechGenius Labs</p>
+                <p class="text-label-sm font-semibold text-success">Verified organizer since 2024</p>
+            </div>
+        </aside>
+<main class="flex-1 flex overflow-hidden">
+<!-- Conversation list -->
+<div class="w-full sm:w-[340px] flex-shrink-0 border-r border-outline-variant/40 flex flex-col overflow-hidden" id="convo-panel">
+<div class="p-5 border-b border-outline-variant/40">
+<h2 class="font-headline-md text-headline-md mb-1">Messages</h2>
+<p class="text-body-sm text-body-sm text-on-surface-variant">Conversations with applicants and participants.</p>
+</div>
+<div class="flex-1 overflow-y-auto" id="convo-list">
+<button class="convo-item active w-full flex items-center gap-3 p-4 border-l-4 border-transparent hover:bg-surface-container-low transition-colors text-left" data-thread="alex">
+<div class="w-11 h-11 rounded-full bg-primary/10 flex items-center justify-center text-primary font-label-md text-label-md flex-shrink-0">AR</div>
+<div class="flex-1 min-w-0">
+<div class="flex justify-between items-baseline">
+<span class="font-label-md text-label-md truncate">Alex Rivera</span>
+<span class="font-label-sm text-label-sm text-outline flex-shrink-0">10m</span>
+</div>
+<p class="text-body-sm text-body-sm text-on-surface-variant truncate">Is the hackathon still remote-only this year?</p>
+</div>
+<span class="w-2 h-2 rounded-full bg-primary flex-shrink-0"></span>
+</button>
+<button class="convo-item w-full flex items-center gap-3 p-4 border-l-4 border-transparent hover:bg-surface-container-low transition-colors text-left" data-thread="nadia">
+<div class="w-11 h-11 rounded-full bg-secondary/10 flex items-center justify-center text-secondary font-label-md text-label-md flex-shrink-0">NF</div>
+<div class="flex-1 min-w-0">
+<div class="flex justify-between items-baseline">
+<span class="font-label-md text-label-md truncate">Nadia Farouk</span>
+<span class="font-label-sm text-label-sm text-outline flex-shrink-0">2h</span>
+</div>
+<p class="text-body-sm text-body-sm text-on-surface-variant truncate">Thank you for accepting my application!</p>
+</div>
+</button>
+<button class="convo-item w-full flex items-center gap-3 p-4 border-l-4 border-transparent hover:bg-surface-container-low transition-colors text-left" data-thread="marcus">
+<div class="w-11 h-11 rounded-full bg-tertiary/10 flex items-center justify-center text-tertiary font-label-md text-label-md flex-shrink-0">ML</div>
+<div class="flex-1 min-w-0">
+<div class="flex justify-between items-baseline">
+<span class="font-label-md text-label-md truncate">Marcus Lee</span>
+<span class="font-label-sm text-label-sm text-outline flex-shrink-0">1d</span>
+</div>
+<p class="text-body-sm text-body-sm text-on-surface-variant truncate">Can I get an extension on the submission?</p>
+</div>
+</button>
+</div>
+</div>
+<!-- Active thread -->
+<section class="flex-1 flex-col hidden sm:flex overflow-hidden" id="thread-panel">
+<div class="h-[72px] flex items-center gap-3 px-6 border-b border-outline-variant/40 flex-shrink-0">
+<div class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary font-label-md text-label-md" id="thread-avatar">AR</div>
+<div>
+<p class="font-label-md text-label-md" id="thread-name">Alex Rivera</p>
+<p class="font-label-sm text-label-sm text-outline" id="thread-role">Applicant — Global AI Innovation Challenge</p>
+</div>
+<a class="ml-auto text-primary font-label-md text-label-md hover:underline" href="org-applicant-details.html">View application</a>
+</div>
+<div class="flex-1 overflow-y-auto px-6 py-6 flex flex-col gap-4" id="thread-messages">
+<div class="flex gap-3 max-w-[70%]">
+<div class="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-primary font-label-sm text-label-sm flex-shrink-0">AR</div>
+<div class="bubble-them rounded-2xl rounded-tl-sm px-4 py-3 font-body-sm text-body-sm">Hi! Congrats on organizing the challenge. Is the hackathon still remote-only this year?</div>
+</div>
+<div class="flex gap-3 max-w-[70%] self-end flex-row-reverse">
+<div class="bubble-me rounded-2xl rounded-tr-sm px-4 py-3 font-body-sm text-body-sm">Hi Alex! Yes, it's fully remote again this year, with an optional in-person finale in Amman.</div>
+</div>
+<div class="flex gap-3 max-w-[70%]">
+<div class="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-primary font-label-sm text-label-sm flex-shrink-0">AR</div>
+<div class="bubble-them rounded-2xl rounded-tl-sm px-4 py-3 font-body-sm text-body-sm">Perfect, that works great for my team. Thank you!</div>
+</div>
+</div>
+<form class="p-4 border-t border-outline-variant/40 flex items-center gap-3 flex-shrink-0" id="message-form">
+<input class="flex-1 h-11 px-4 bg-surface-container-low border border-outline-variant rounded-full focus:ring-2 focus:ring-primary focus:border-transparent transition-all font-body-sm text-body-sm outline-none" id="message-input" placeholder="Reply to applicant..." type="text"/>
+<button class="w-11 h-11 rounded-full flex items-center justify-center text-white shadow-md hover:scale-105 transition-transform flex-shrink-0 bg-gradient-to-br from-primary to-secondary" type="submit">
+<span class="material-symbols-outlined text-[20px]">send</span>
+</button>
+</form>
+</section>
+</main>
+</div>
+<script>
+    const threads = {
+        alex: {
+            name: "Alex Rivera", role: "Applicant — Global AI Innovation Challenge", avatar: "AR",
+            messages: [
+                { from: "them", text: "Hi! Congrats on organizing the challenge. Is the hackathon still remote-only this year?" },
+                { from: "me", text: "Hi Alex! Yes, it's fully remote again this year, with an optional in-person finale in Amman." },
+                { from: "them", text: "Perfect, that works great for my team. Thank you!" }
+            ]
+        },
+        nadia: {
+            name: "Nadia Farouk", role: "Participant — Frontend Wizards 2026", avatar: "NF",
+            messages: [
+                { from: "them", text: "Thank you for accepting my application!" },
+                { from: "me", text: "You're welcome, Nadia — we loved your portfolio. Check your email for the onboarding kit." }
+            ]
+        },
+        marcus: {
+            name: "Marcus Lee", role: "Applicant — DevOps Masterclass", avatar: "ML",
+            messages: [
+                { from: "them", text: "Can I get an extension on the submission? I'm traveling this week." },
+                { from: "me", text: "That's fine — we can extend your deadline by 3 days, just keep me posted." }
+            ]
+        }
+    };
+
+    const convoButtons = document.querySelectorAll('.convo-item');
+    const threadName = document.getElementById('thread-name');
+    const threadRole = document.getElementById('thread-role');
+    const threadAvatar = document.getElementById('thread-avatar');
+    const threadMessages = document.getElementById('thread-messages');
+    const threadPanel = document.getElementById('thread-panel');
+    const convoPanel = document.getElementById('convo-panel');
+
+    function renderThread(key) {
+        const thread = threads[key];
+        if (!thread) return;
+        threadName.textContent = thread.name;
+        threadRole.textContent = thread.role;
+        threadAvatar.textContent = thread.avatar;
+        threadMessages.innerHTML = '';
+        thread.messages.forEach(msg => {
+            const wrap = document.createElement('div');
+            if (msg.from === 'me') {
+                wrap.className = 'flex gap-3 max-w-[70%] self-end flex-row-reverse';
+                wrap.innerHTML = '<div class="bubble-me rounded-2xl rounded-tr-sm px-4 py-3 font-body-sm text-body-sm"></div>';
+            } else {
+                wrap.className = 'flex gap-3 max-w-[70%]';
+                wrap.innerHTML = `<div class="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-primary font-label-sm text-label-sm flex-shrink-0">${thread.avatar}</div><div class="bubble-them rounded-2xl rounded-tl-sm px-4 py-3 font-body-sm text-body-sm"></div>`;
+            }
+            wrap.lastElementChild.textContent = msg.text;
+            threadMessages.appendChild(wrap);
+        });
+        threadMessages.scrollTop = threadMessages.scrollHeight;
+    }
+
+    convoButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+            convoButtons.forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            renderThread(btn.dataset.thread);
+            if (window.innerWidth < 640) {
+                convoPanel.classList.add('hidden');
+                threadPanel.classList.remove('hidden');
+                threadPanel.classList.add('flex');
+            }
+        });
+    });
+
+    document.getElementById('message-form').addEventListener('submit', (e) => {
+        e.preventDefault();
+        const input = document.getElementById('message-input');
+        const text = input.value.trim();
+        if (!text) return;
+        const wrap = document.createElement('div');
+        wrap.className = 'flex gap-3 max-w-[70%] self-end flex-row-reverse';
+        wrap.innerHTML = '<div class="bubble-me rounded-2xl rounded-tr-sm px-4 py-3 font-body-sm text-body-sm"></div>';
+        wrap.lastElementChild.textContent = text;
+        threadMessages.appendChild(wrap);
+        threadMessages.scrollTop = threadMessages.scrollHeight;
+        input.value = '';
+    });
+</script>
+</body></html>

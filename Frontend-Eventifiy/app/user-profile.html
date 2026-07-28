@@ -1,0 +1,422 @@
+﻿<!DOCTYPE html>
+
+<html class="light" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Nadia Farouk | EVENTIFY</title>
+    <link rel="stylesheet" href="../assets/css/theme.css" />
+    <style>
+        @font-face {
+            font-family: 'Material Symbols Outlined';
+            font-style: normal;
+            font-weight: 100 700;
+            font-display: block;
+            src: url('../assets/fonts/material-symbols-outlined.woff2') format('woff2');
+        }
+
+        .material-symbols-outlined {
+            font-family: 'Material Symbols Outlined';
+            font-weight: normal;
+            font-style: normal;
+            font-size: 24px;
+            line-height: 1;
+            letter-spacing: normal;
+            text-transform: none;
+            display: inline-block;
+            white-space: nowrap;
+            overflow: hidden;
+            word-wrap: normal;
+            direction: ltr;
+            -webkit-font-feature-settings: 'liga';
+            -webkit-font-smoothing: antialiased;
+        }
+    </style>
+
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap"
+        rel="stylesheet" />
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+
+        .glass-sidebar {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+
+        .dark .glass-sidebar {
+            background: rgba(23, 33, 49, 0.8);
+            border-color: rgba(255, 255, 255, 0.05);
+        }
+
+        .premium-shadow {
+            box-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.08);
+        }
+    </style>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "primary-container": "#2563eb",
+                        "inverse-primary": "#b4c5ff",
+                        "secondary-container": "#8455ef",
+                        "on-surface": "#191b23",
+                        "surface-tint": "#0053db",
+                        "surface-container-lowest": "#ffffff",
+                        "on-background": "#191b23",
+                        "primary-fixed": "#dbe1ff",
+                        "on-surface-variant": "#434655",
+                        "on-tertiary-container": "#ffede6",
+                        "on-error": "#ffffff",
+                        "outline": "#737686",
+                        "secondary": "#6b38d4",
+                        "surface-dim": "#d9d9e5",
+                        "secondary-fixed-dim": "#d0bcff",
+                        "on-primary-fixed": "#00174b",
+                        "tertiary": "#943700",
+                        "surface-container-high": "#e7e7f3",
+                        "surface-container-low": "#f3f3fe",
+                        "outline-variant": "#c3c6d7",
+                        "surface-container": "#ededf9",
+                        "on-tertiary-fixed": "#360f00",
+                        "primary": "#0058be",
+                        "on-secondary": "#ffffff",
+                        "background": "#faf8ff",
+                        "on-primary": "#ffffff",
+                        "on-primary-container": "#eeefff",
+                        "surface-variant": "#e1e2ed",
+                        "surface-bright": "#faf8ff",
+                        "on-error-container": "#93000a",
+                        "on-tertiary-fixed-variant": "#7d2d00",
+                        "primary-fixed-dim": "#b4c5ff",
+                        "tertiary-fixed-dim": "#ffb596",
+                        "on-secondary-container": "#fffbff",
+                        "on-tertiary": "#ffffff",
+                        "on-secondary-fixed": "#23005c",
+                        "inverse-surface": "#2e3039",
+                        "tertiary-fixed": "#ffdbcd",
+                        "secondary-fixed": "#e9ddff",
+                        "on-secondary-fixed-variant": "#5516be",
+                        "error-container": "#ffdad6",
+                        "error": "#ba1a1a",
+                        "success": "#006947",
+                        "on-primary-fixed-variant": "#003ea8",
+                        "surface-container-highest": "#e1e2ed",
+                        "inverse-on-surface": "#f0f0fb",
+                        "surface": "#faf8ff",
+                        "tertiary-container": "#bc4800"
+                    },
+                    "borderRadius": { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" },
+                    "spacing": {
+                        "sidebar_width": "280px", "gutter": "24px", "stack_gap_sm": "8px",
+                        "container_max_width": "1280px", "stack_gap_lg": "32px", "stack_gap_md": "16px",
+                        "margin_mobile": "16px", "top_nav_height": "72px"
+                    },
+                    "fontFamily": {
+                        "label-sm": ["Inter"], "title-lg": ["Inter"], "label-md": ["Inter"],
+                        "headline-md": ["Inter"], "headline-lg": ["Inter"], "body-lg": ["Inter"],
+                        "display-lg": ["Inter"], "body-md": ["Inter"], "headline-lg-mobile": ["Inter"]
+                    },
+                    "fontSize": {
+                        "label-sm": ["12px", { "lineHeight": "16px", "fontWeight": "600" }],
+                        "title-lg": ["20px", { "lineHeight": "28px", "fontWeight": "600" }],
+                        "label-md": ["14px", { "lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "500" }],
+                        "headline-md": ["24px", { "lineHeight": "32px", "fontWeight": "600" }],
+                        "headline-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+                        "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }],
+                        "display-lg": ["48px", { "lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "headline-lg-mobile": ["24px", { "lineHeight": "32px", "fontWeight": "600" }]
+                    }
+                },
+            },
+        }
+    </script>
+</head>
+
+<body class="bg-background text-on-surface min-h-screen transition-colors duration-300">
+    <!-- Top Navigation -->
+    <header class="sticky top-0 z-40 w-full h-top_nav_height glass-nav border-b border-outline-variant/30 shadow-sm">
+        <div class="flex justify-between items-center px-gutter w-full max-w-container_max_width mx-auto h-full">
+            <div class="flex items-center gap-8">
+                <a class="font-headline-md text-headline-md font-black text-primary animate-pulse-wave"
+                    href="../index.html">EVENTIFY</a>
+                <div class="hidden md:flex relative group">
+                    <span
+                        class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline">search</span>
+                    <input
+                        class="bg-surface-container-low border-none rounded-full pl-10 pr-4 py-2 w-64 focus:ring-2 focus:ring-primary/20 transition-all"
+                        placeholder="Search opportunities, people..." type="text" />
+                </div>
+            </div>
+            <div class="flex items-center gap-4">
+                <a class="hidden md:flex items-center gap-2 px-6 py-2 bg-primary text-on-primary rounded-full font-label-md text-label-md hover:shadow-lg transition-all"
+                    href="rafeeq.html">
+                    Ask Rafeeq
+                </a>
+                <div class="flex items-center gap-2 text-on-surface-variant">
+                    <a class="material-symbols-outlined p-2 hover:bg-surface-container rounded-full cursor-pointer"
+                        href="notifications.html">notifications</a>
+                    <a class="material-symbols-outlined p-2 hover:bg-surface-container rounded-full cursor-pointer"
+                        href="messages.html">chat</a>
+                    <div class="w-10 h-10 rounded-full border-2 border-primary-container overflow-hidden ml-2">
+                        <a href="profile.html"><img class="w-full h-full object-cover" data-alt="Profile headshot"
+                                src="https://lh3.googleusercontent.com/aida-public/AB6AXuBNZNd9jfESR_zqyCdGqZwDbntamuVnge0Tsq-V3vcF2zyvrZSvmNGaB93G0gzrTb02wHy5s8MRNZhZH9jEmI85YogBnQiONoMP1hl-rBFILklBs2VaL0dsb1XL1iEKYTwc4tqZLh4woUaUgkPRTfZQZF5ieHDS-qLMFvAF9YnfG8jjnwrS-YfcbXwjwsWi0OAYnjGUq_7cGq2t5ReBfXzPBqfTv-lV_CfGaCpqCAVu9CKXTTurrtp70Su8ifqzsfE0bBloO3zt5iub" /></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+    <div class="max-w-container_max_width mx-auto flex gap-gutter px-gutter py-stack_gap_lg relative">
+        <!-- Left Sidebar Navigation -->
+        <aside
+            class="hidden lg:flex flex-col gap-4 fixed left-[max(0px,calc((100%-1280px)/2))] top-[calc(72px+24px)] h-[calc(100vh-120px)] w-sidebar_width glass-sidebar border-r border-outline-variant/30 rounded-xl p-4">
+            <nav class="flex flex-col gap-2">
+                <a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-low transition-colors rounded-lg group"
+                    href="../index.html">
+                    <span class="material-symbols-outlined text-outline group-hover:text-primary">home</span>
+                    <span class="font-label-md text-label-md">Home</span>
+                </a>
+                <a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-low transition-colors rounded-lg group"
+                    href="posts.html">
+                    <span class="material-symbols-outlined text-outline group-hover:text-primary">campaign</span>
+                    <span class="font-label-md text-label-md">Posts</span>
+                </a>
+                <a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-low transition-colors rounded-lg group"
+                    href="notifications.html">
+                    <span class="material-symbols-outlined text-outline group-hover:text-primary">notifications</span>
+                    <span class="font-label-md text-label-md">Notifications</span>
+                </a>
+                <a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-low transition-colors rounded-lg group"
+                    href="saved.html">
+                    <span class="material-symbols-outlined text-outline group-hover:text-primary">bookmark</span>
+                    <span class="font-label-md text-label-md">Saved</span>
+                </a>
+                <a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-low transition-colors rounded-lg group"
+                    href="profile.html">
+                    <span class="material-symbols-outlined text-outline group-hover:text-primary">account_circle</span>
+                    <span class="font-label-md text-label-md">My Profile</span>
+                </a>
+            </nav>
+            <div class="mt-auto p-4 bg-surface-container-low rounded-xl border border-outline-variant/50">
+                <p class="font-label-sm text-label-sm text-primary mb-2">VIEWING</p>
+                <p class="font-body-md text-body-md text-on-surface-variant mb-1">You're viewing another member's public
+                    profile.</p>
+                <a class="text-primary font-label-md text-label-md hover:underline" href="profile.html">Back to my
+                    profile</a>
+            </div>
+        </aside>
+        <!-- Main Content Area -->
+        <main class="flex-1 lg:ml-[304px] lg:mr-[304px] flex flex-col gap-stack_gap_md">
+            <!-- Profile Header -->
+            <section
+                class="bg-surface-container-lowest rounded-2xl overflow-hidden premium-shadow border border-outline-variant/50">
+                <div class="h-48 w-full bg-cover bg-center relative"
+                    data-alt="A dynamic abstract cover in teal and violet gradients, evoking a creative technologist's workspace."
+                    style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBeHOaLhImSXpSf94lw-SYxPYBwlc5gBXk7btOOFAhqx_oZFBSKtgn_P2pIGvFfCBhoMLxLxt6nkAaVv6TstLXm2DSDLS1AOT6QH_IRGTfXo2OtjjsArXHvWKur1GZZ2eDK6qHuSbQcfxMGo0fzNj2QnZzFWPIyhuDuCUdRosBAChWJFtM6RTcO8__ey71pVTFe5E9QEaseLBt6QNApMCSG2FDAAUMEE4xtjtfwbTwTctscv_cpXmi6Kt9_szB4pNw3Yn5KbAGVUlRw')">
+                </div>
+                <div class="px-8 pb-8 relative z-10 space-y-5">
+                    <div class="flex flex-col md:flex-row md:items-end gap-6">
+                        <div
+                            class="-mt-2 w-28 h-28 rounded-full border-4 border-surface-container-lowest overflow-hidden premium-shadow bg-surface flex-shrink-0">
+                            <img class="w-full h-full object-cover"
+                                data-alt="Portrait of a young professional woman with a confident smile, studio lighting."
+                                src="https://lh3.googleusercontent.com/aida-public/AB6AXuDsQh5xOHYdmYcFmjJRpba3iiPC5g3JPTyK7qlEyYGrWLO_FtAHZOzRW4cX1RMPUClIy0d90XrNRLcOHNKGQkJKGdAt1u1Ukq4lYdrRDfJqdzzKVIyNbQ2FgWThdiwD06oY_uvI63tt40yB9wAi_f92Yb_O6IrGry-GNDu_3j-NEv3cU8WRQgm1fNlsToUpHXTKZszchQ4CRvtQhgyxMTzzWqjh7YpyYoacng83yN5O38dvrRRbO8B2iYc2p5lfWbCbUaTJ-KCVF07o" />
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <div class="flex items-center gap-2">
+                                <h1 class="font-headline-lg text-headline-lg text-on-surface">Nadia Farouk</h1>
+                                <span class="material-symbols-outlined text-primary-container"
+                                    style="font-variation-settings: 'FILL' 1;" title="Verified Profile">verified</span>
+                            </div>
+                            <p class="font-title-lg text-title-lg text-on-surface-variant">Full-Stack Developer &amp;
+                                Hackathon Finalist</p>
+                            <p class="font-body-md text-body-md text-outline mt-1 flex items-center gap-1">
+                                <span class="material-symbols-outlined text-[18px]">location_on</span> Amman, Jordan • 2
+                                Hackathons Won
+                            </p>
+                        </div>
+                    </div>
+                    <div class="flex gap-2 w-full md:w-auto" id="profile-actions">
+                        <button
+                            class="flex-1 md:flex-none text-center px-6 py-2.5 bg-primary text-on-primary rounded-full font-label-md text-label-md hover:bg-primary-container transition-colors flex items-center justify-center gap-2"
+                            id="connect-btn" type="button">
+                            <span class="material-symbols-outlined text-[18px]">person_add</span> Connect
+                        </button>
+                        <a class="flex-1 md:flex-none text-center px-6 py-2.5 border border-outline-variant text-primary rounded-full font-label-md text-label-md hover:bg-surface-container-low transition-colors flex items-center justify-center gap-2"
+                            href="messages.html">
+                            <span class="material-symbols-outlined text-[18px]">chat</span> Message
+                        </a>
+                        <button
+                            class="p-2.5 border border-outline-variant text-on-surface-variant rounded-full hover:bg-surface-container-low transition-colors"
+                            id="more-actions-btn" title="More" type="button">
+                            <span class="material-symbols-outlined">more_horiz</span>
+                        </button>
+                    </div>
+                </div>
+                <div class="px-8 pb-8">
+                    <h3 class="font-title-lg text-title-lg mb-2">About</h3>
+                    <p class="font-body-md text-body-md text-on-surface-variant leading-relaxed">
+                        Full-stack developer focused on building fast, accessible web products. Finalist at two regional
+                        hackathons, currently exploring opportunities in developer tooling and applied AI through
+                        Eventify.
+                    </p>
+                </div>
+            </section>
+            <!-- Stats -->
+            <section class="grid grid-cols-1 md:grid-cols-3 gap-stack_gap_md">
+                <div
+                    class="bg-surface-container-lowest p-6 rounded-2xl border border-outline-variant/50 premium-shadow">
+                    <div class="flex justify-between items-start mb-4">
+                        <span
+                            class="material-symbols-outlined text-primary p-2 bg-primary/10 rounded-lg">emoji_events</span>
+                    </div>
+                    <p class="font-display-lg text-display-lg text-on-surface">5</p>
+                    <p class="font-label-md text-label-md text-on-surface-variant">Competitions Joined</p>
+                </div>
+                <div
+                    class="bg-surface-container-lowest p-6 rounded-2xl border border-outline-variant/50 premium-shadow">
+                    <div class="flex justify-between items-start mb-4">
+                        <span
+                            class="material-symbols-outlined text-secondary p-2 bg-secondary/10 rounded-lg">group</span>
+                    </div>
+                    <p class="font-display-lg text-display-lg text-on-surface">3</p>
+                    <p class="font-label-md text-label-md text-on-surface-variant">Teams Led</p>
+                </div>
+                <div
+                    class="bg-surface-container-lowest p-6 rounded-2xl border border-outline-variant/50 premium-shadow">
+                    <div class="flex justify-between items-start mb-4">
+                        <span
+                            class="material-symbols-outlined text-tertiary p-2 bg-tertiary/10 rounded-lg">school</span>
+                    </div>
+                    <p class="font-display-lg text-display-lg text-on-surface">6</p>
+                    <p class="font-label-md text-label-md text-on-surface-variant">Certificates</p>
+                </div>
+            </section>
+            <!-- Experience -->
+            <section
+                class="bg-surface-container-lowest p-8 rounded-2xl border border-outline-variant/50 premium-shadow">
+                <h3 class="font-headline-md text-headline-md mb-6">Experience</h3>
+                <div class="space-y-8">
+                    <div class="flex gap-4">
+                        <div
+                            class="w-12 h-12 bg-surface-container rounded-lg flex-shrink-0 flex items-center justify-center">
+                            <span class="material-symbols-outlined text-primary">terminal</span>
+                        </div>
+                        <div>
+                            <h4 class="font-title-lg text-title-lg">Finalist, Frontend Wizards 2025</h4>
+                            <p class="font-label-md text-label-md text-primary">Eventify Hackathon • Found via Eventify
+                            </p>
+                            <p class="font-label-sm text-label-sm text-outline">Mar 2025 • 3-person team</p>
+                            <p class="font-body-md text-body-md text-on-surface-variant mt-2">Built a real-time
+                                collaboration tool that reached the final round out of 120 teams.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!-- Skills -->
+            <section
+                class="bg-surface-container-lowest p-8 rounded-2xl border border-outline-variant/50 premium-shadow mt-stack_gap_md">
+                <h3 class="font-title-lg text-title-lg mb-6">Skills</h3>
+                <div class="flex flex-wrap gap-3">
+                    <span
+                        class="px-4 py-2 bg-primary/5 text-primary font-label-md text-label-md rounded-full border border-primary/10">React</span>
+                    <span
+                        class="px-4 py-2 bg-secondary/5 text-secondary font-label-md text-label-md rounded-full border border-secondary/10">Node.js</span>
+                    <span
+                        class="px-4 py-2 bg-surface-container-high text-on-surface-variant font-label-md text-label-md rounded-full">System
+                        Design</span>
+                    <span
+                        class="px-4 py-2 bg-surface-container-high text-on-surface-variant font-label-md text-label-md rounded-full">PostgreSQL</span>
+                    <span
+                        class="px-4 py-2 bg-primary/5 text-primary font-label-md text-label-md rounded-full border border-primary/10">TypeScript</span>
+                </div>
+            </section>
+        </main>
+        <!-- Right Panel (public visitor actions, replaces the owner-only settings panel) -->
+        <aside
+            class="hidden lg:flex flex-col gap-4 fixed right-[max(0px,calc((100%-1280px)/2))] top-[calc(72px+24px)] h-[calc(100vh-120px)] w-sidebar_width glass-sidebar border-l border-outline-variant/30 rounded-xl p-4">
+            <h3 class="font-label-md text-label-md text-on-surface px-2 mb-2">Mutual Connections</h3>
+            <div class="flex flex-col gap-1">
+                <a class="flex items-center gap-3 w-full p-3 hover:bg-surface-container rounded-lg transition-colors"
+                    href="user-profile.html">
+                    <div
+                        class="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-primary font-label-sm text-label-sm">
+                        AR</div>
+                    <span class="font-label-md text-label-md">Alex Rivera</span>
+                </a>
+                <a class="flex items-center gap-3 w-full p-3 hover:bg-surface-container rounded-lg transition-colors"
+                    href="user-profile.html">
+                    <div
+                        class="w-8 h-8 rounded-full bg-secondary/10 flex items-center justify-center text-secondary font-label-sm text-label-sm">
+                        ML</div>
+                    <span class="font-label-md text-label-md">Marcus Lee</span>
+                </a>
+            </div>
+            <div class="mt-4 pt-4 border-t border-outline-variant/30">
+                <h3 class="font-label-md text-label-md text-on-surface px-2 mb-2">On Eventify since</h3>
+                <p class="px-2 font-body-md text-body-md text-on-surface-variant">January 2024</p>
+            </div>
+            <div class="mt-auto p-4 rounded-xl bg-surface-container-low border border-outline-variant/50">
+                <button class="flex items-center gap-2 text-error font-label-md text-label-md hover:underline"
+                    id="report-btn" type="button">
+                    <span class="material-symbols-outlined text-[18px]">flag</span> Report this profile
+                </button>
+            </div>
+        </aside>
+    </div>
+    <!-- Mobile Nav Anchor -->
+    <nav
+        class="md:hidden fixed bottom-0 left-0 w-full bg-surface/80 backdrop-blur-xl border-t border-outline-variant z-50 px-gutter py-3 flex justify-between items-center">
+        <a class="flex flex-col items-center gap-1 text-outline" href="../index.html">
+            <span class="material-symbols-outlined">home</span>
+            <span class="text-[10px] font-bold">Home</span>
+        </a>
+        <a class="flex flex-col items-center gap-1 text-outline" href="posts.html">
+            <span class="material-symbols-outlined">campaign</span>
+            <span class="text-[10px] font-bold">Posts</span>
+        </a>
+        <a class="bg-primary p-3 rounded-full -mt-10 shadow-lg text-on-primary block animate-pulse-wave"
+            href="create-team.html">
+            <span class="material-symbols-outlined">add</span>
+        </a>
+        <a class="flex flex-col items-center gap-1 text-outline" href="notifications.html">
+            <span class="material-symbols-outlined">notifications</span>
+            <span class="text-[10px] font-bold">Alerts</span>
+        </a>
+        <a class="flex flex-col items-center gap-1 text-outline" href="profile.html">
+            <span class="material-symbols-outlined">account_circle</span>
+            <span class="text-[10px] font-bold">Profile</span>
+        </a>
+    </nav>
+    <script>
+        const connectBtn = document.getElementById('connect-btn');
+        connectBtn.addEventListener('click', () => {
+            const isPending = connectBtn.dataset.state === 'pending';
+            if (isPending) return;
+            connectBtn.dataset.state = 'pending';
+            connectBtn.innerHTML = '<span class="material-symbols-outlined text-[18px]">hourglass_top</span> Request Sent';
+            connectBtn.classList.remove('bg-primary', 'hover:bg-primary-container');
+            connectBtn.classList.add('bg-surface-container-high', 'text-on-surface-variant', 'cursor-default');
+        });
+
+        const reportBtn = document.getElementById('report-btn');
+        reportBtn.addEventListener('click', () => {
+            reportBtn.innerHTML = '<span class="material-symbols-outlined text-[18px]">check_circle</span> Reported — thank you';
+            reportBtn.disabled = true;
+            reportBtn.classList.add('opacity-60', 'cursor-default');
+        });
+    </script>
+</body>
+
+</html>
