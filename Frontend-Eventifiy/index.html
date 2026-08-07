@@ -28,111 +28,112 @@
         overflow: hidden;
         word-wrap: normal;
         direction: ltr;
+        font-feature-settings: 'liga';
         -webkit-font-feature-settings: 'liga';
         -webkit-font-smoothing: antialiased;
     }
-    </style>
+</style>
 
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
 <script id="tailwind-config">
-        tailwind.config = {
-            darkMode: "class",
-            theme: {
-                extend: {
-                    "colors": {
-                        "on-secondary-fixed": "#23005c",
-                        "surface-variant": "#d5e3fc",
-                        "on-tertiary": "#ffffff",
-                        "on-tertiary-fixed-variant": "#005236",
-                        "error-container": "#ffdad6",
-                        "outline": "#727785",
-                        "background": "#f8f9ff",
-                        "surface": "#f8f9ff",
-                        "on-tertiary-container": "#f5fff6",
-                        "tertiary-fixed-dim": "#4edea3",
-                        "on-background": "#0d1c2e",
-                        "surface-container-lowest": "#ffffff",
-                        "secondary-container": "#8455ef",
-                        "tertiary": "#006947",
-                        "tertiary-fixed": "#6ffbbe",
-                        "surface-bright": "#f8f9ff",
-                        "on-primary-fixed": "#001a42",
-                        "on-error": "#ffffff",
-                        "surface-container-low": "#eff4ff",
-                        "on-secondary-container": "#fffbff",
-                        "on-error-container": "#93000a",
-                        "on-surface-variant": "#424754",
-                        "secondary-fixed-dim": "#d0bcff",
-                        "on-secondary": "#ffffff",
-                        "primary": "#0058be",
-                        "primary-fixed": "#d8e2ff",
-                        "surface-container": "#e6eeff",
-                        "secondary": "#6b38d4",
-                        "tertiary-container": "#00855b",
-                        "surface-tint": "#005ac2",
-                        "on-primary-container": "#fefcff",
-                        "on-tertiary-fixed": "#002113",
-                        "on-primary": "#ffffff",
-                        "error": "#ba1a1a",
-                        "surface-dim": "#ccdbf3",
-                        "primary-fixed-dim": "#adc6ff",
-                        "primary-container": "#2170e4",
-                        "inverse-on-surface": "#eaf1ff",
-                        "outline-variant": "#c2c6d6",
-                        "inverse-surface": "#233144",
-                        "surface-container-high": "#dce9ff",
-                        "surface-container-highest": "#d5e3fc",
-                        "on-surface": "#0d1c2e",
-                        "on-secondary-fixed-variant": "#5516be",
-                        "on-primary-fixed-variant": "#004395",
-                        "inverse-primary": "#adc6ff",
-                        "secondary-fixed": "#e9ddff"
-                    },
-                    "borderRadius": {
-                        "DEFAULT": "0.25rem",
-                        "lg": "0.5rem",
-                        "xl": "20px",
-                        "full": "9999px"
-                    },
-                    "spacing": {
-                        "xs": "4px",
-                        "container-margin-desktop": "40px",
-                        "sm": "8px",
-                        "base": "4px",
-                        "2xl": "48px",
-                        "xl": "32px",
-                        "container-margin-mobile": "16px",
-                        "md": "16px",
-                        "lg": "24px",
-                        "gutter": "16px"
-                    },
-                    "fontFamily": {
-                        "headline-xl": ["Inter"],
-                        "headline-lg-mobile": ["Inter"],
-                        "body-md": ["Inter"],
-                        "title-md": ["Inter"],
-                        "headline-lg": ["Inter"],
-                        "body-lg": ["Inter"],
-                        "label-md": ["Inter"],
-                        "body-sm": ["Inter"],
-                        "label-sm": ["Inter"]
-                    },
-                    "fontSize": {
-                        "headline-xl": ["36px", {"lineHeight": "44px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
-                        "headline-lg-mobile": ["24px", {"lineHeight": "30px", "fontWeight": "700"}],
-                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
-                        "title-md": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
-                        "headline-lg": ["28px", {"lineHeight": "34px", "letterSpacing": "-0.01em", "fontWeight": "700"}],
-                        "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
-                        "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.05em", "fontWeight": "600"}],
-                        "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
-                        "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "500"}]
-                    }
+    tailwind.config = {
+        darkMode: "class",
+        theme: {
+            extend: {
+                "colors": {
+                    "on-secondary-fixed": "#23005c",
+                    "surface-variant": "#d5e3fc",
+                    "on-tertiary": "#ffffff",
+                    "on-tertiary-fixed-variant": "#005236",
+                    "error-container": "#ffdad6",
+                    "outline": "#727785",
+                    "background": "#f8f9ff",
+                    "surface": "#f8f9ff",
+                    "on-tertiary-container": "#f5fff6",
+                    "tertiary-fixed-dim": "#4edea3",
+                    "on-background": "#0d1c2e",
+                    "surface-container-lowest": "#ffffff",
+                    "secondary-container": "#8455ef",
+                    "tertiary": "#006947",
+                    "tertiary-fixed": "#6ffbbe",
+                    "surface-bright": "#f8f9ff",
+                    "on-primary-fixed": "#001a42",
+                    "on-error": "#ffffff",
+                    "surface-container-low": "#eff4ff",
+                    "on-secondary-container": "#fffbff",
+                    "on-error-container": "#93000a",
+                    "on-surface-variant": "#424754",
+                    "secondary-fixed-dim": "#d0bcff",
+                    "on-secondary": "#ffffff",
+                    "primary": "#0058be",
+                    "primary-fixed": "#d8e2ff",
+                    "surface-container": "#e6eeff",
+                    "secondary": "#6b38d4",
+                    "tertiary-container": "#00855b",
+                    "surface-tint": "#005ac2",
+                    "on-primary-container": "#fefcff",
+                    "on-tertiary-fixed": "#002113",
+                    "on-primary": "#ffffff",
+                    "error": "#ba1a1a",
+                    "surface-dim": "#ccdbf3",
+                    "primary-fixed-dim": "#adc6ff",
+                    "primary-container": "#2170e4",
+                    "inverse-on-surface": "#eaf1ff",
+                    "outline-variant": "#c2c6d6",
+                    "inverse-surface": "#233144",
+                    "surface-container-high": "#dce9ff",
+                    "surface-container-highest": "#d5e3fc",
+                    "on-surface": "#0d1c2e",
+                    "on-secondary-fixed-variant": "#5516be",
+                    "on-primary-fixed-variant": "#004395",
+                    "inverse-primary": "#adc6ff",
+                    "secondary-fixed": "#e9ddff"
+                },
+                "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "20px",
+                    "full": "9999px"
+                },
+                "spacing": {
+                    "xs": "4px",
+                    "container-margin-desktop": "40px",
+                    "sm": "8px",
+                    "base": "4px",
+                    "2xl": "48px",
+                    "xl": "32px",
+                    "container-margin-mobile": "16px",
+                    "md": "16px",
+                    "lg": "24px",
+                    "gutter": "16px"
+                },
+                "fontFamily": {
+                    "headline-xl": ["Inter"],
+                    "headline-lg-mobile": ["Inter"],
+                    "body-md": ["Inter"],
+                    "title-md": ["Inter"],
+                    "headline-lg": ["Inter"],
+                    "body-lg": ["Inter"],
+                    "label-md": ["Inter"],
+                    "body-sm": ["Inter"],
+                    "label-sm": ["Inter"]
+                },
+                "fontSize": {
+                    "headline-xl": ["36px", {"lineHeight": "44px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "headline-lg-mobile": ["24px", {"lineHeight": "30px", "fontWeight": "700"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "title-md": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                    "headline-lg": ["28px", {"lineHeight": "34px", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                    "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                    "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                    "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "500"}]
                 }
             }
         }
-    </script>
+    }
+</script>
 <style>
         body {
             font-family: 'Inter', sans-serif;
@@ -148,6 +149,23 @@
         .rafeeq-gradient {
             background: linear-gradient(135deg, #0058be 0%, #6b38d4 100%);
         }
+        .footer{background:#0B1220;color:rgba(255,255,255,.7);padding:80px 0 0;position:relative;margin-top:80px;}
+        .footer::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--primary),var(--secondary),transparent);opacity:.5;}
+        .footer-grid{display:grid;grid-template-columns:1.8fr 1fr 1fr 1fr;gap:48px;padding-bottom:48px;border-bottom:1px solid rgba(255,255,255,.06);}
+        .footer-logo{display:inline-flex;align-items:center;gap:10px;margin-bottom:20px;}
+        .footer-logo img{height:56px;width:auto;filter:brightness(0) invert(1);}
+        .footer p.desc{font-size:14px;max-width:300px;margin-bottom:24px;line-height:1.7;color:rgba(255,255,255,.55);}
+        .social-links{display:flex;gap:12px;}
+        .social-links a{width:40px;height:40px;border-radius:12px;background:rgba(255,255,255,.06);display:flex;align-items:center;justify-content:center;transition:all .3s;border:1px solid rgba(255,255,255,.06);color:#fff;text-decoration:none;}
+        .social-links a:hover{background:linear-gradient(135deg,#0058be,#6b38d4);transform:translateY(-3px);border-color:transparent;}
+        .footer h4{color:#fff;font-size:14px;margin-bottom:24px;font-family:'Inter';font-weight:600;letter-spacing:.02em;}
+        .footer ul li{margin-bottom:14px;}
+        .footer ul a{font-size:13px;transition:color .2s;color:rgba(255,255,255,.55);text-decoration:none;}
+        .footer ul a:hover{color:#fff;}
+        .footer-bottom{padding:24px 0;text-align:center;font-size:12px;color:rgba(255,255,255,.3);}
+        @media(max-width:800px){.footer-grid{grid-template-columns:1fr 1fr;gap:32px;}}
+        @media(max-width:480px){.footer-grid{grid-template-columns:1fr;gap:28px;}}
+        @media(max-width:768px){.footer{padding-top:64px;}}
     </style>
 </head>
 <body class="bg-background text-on-background min-h-screen pb-24 md:pb-0 dark:bg-[#0d1c2e] dark:text-[#f8f9ff] transition-colors duration-300">
@@ -155,7 +173,9 @@
 <nav class="fixed top-0 w-full z-50 glass-nav border-b border-outline-variant/30 dark:border-white/10 h-16 flex items-center">
 <div class="flex justify-between items-center px-container-margin-mobile md:px-container-margin-desktop w-full max-w-[1280px] mx-auto">
 <div class="flex items-center gap-8">
-<a class="font-headline-lg-mobile text-headline-lg-mobile font-bold tracking-tight text-primary" href="index.html">EVENTIFY</a>
+<a class="flex items-center gap-3" href="index.html" aria-label="EVENTIFY home">
+<img class="h-8 w-auto md:h-10" src="assets/images/LOGO+NAME.CHAT GPT (1).png" alt="EVENTIFY">
+</a>
 <div class="hidden md:flex gap-6">
 <a class="font-label-md text-label-md text-primary font-bold border-b-2 border-primary pb-1 transition-all" href="index.html">Home</a>
 <a class="font-label-md text-label-md text-on-surface-variant hover:text-primary dark:text-[#c3c6d7] dark:hover:text-primary transition-colors" href="app/explore.html">Explore</a>
@@ -500,6 +520,50 @@
 </div>
 </section>
 </main>
+<footer class="footer">
+<div class="container max-w-[1280px] mx-auto px-container-margin-mobile md:px-container-margin-desktop">
+<div class="footer-grid">
+<div>
+<a href="#" class="footer-logo"><img src="assets/images/LOGO+NAME.CHAT GPT (1).png" alt="EVENTIFY"></a>
+<p class="desc">Your AI-powered hub for jobs, competitions, events, workshops, and growth opportunities.</p>
+<div class="social-links">
+<a href="#" aria-label="Facebook"><span class="material-symbols-outlined text-[18px]">thumb_up</span></a>
+<a href="#" aria-label="Instagram"><span class="material-symbols-outlined text-[18px]">photo_camera</span></a>
+<a href="#" aria-label="LinkedIn"><span class="material-symbols-outlined text-[18px]">business_center</span></a>
+<a href="#" aria-label="Email"><span class="material-symbols-outlined text-[18px]">mail</span></a>
+</div>
+</div>
+<div>
+<h4>Explore</h4>
+<ul>
+<li><a href="index.html">Home</a></li>
+<li><a href="app/explore.html">Explore</a></li>
+<li><a href="app/posts.html">Posts</a></li>
+<li><a href="app/notifications.html">Notifications</a></li>
+</ul>
+</div>
+<div>
+<h4>Support</h4>
+<ul>
+<li><a href="#">FAQ</a></li>
+<li><a href="#">Help Center</a></li>
+<li><a href="#">Blog</a></li>
+<li><a href="#">Community</a></li>
+</ul>
+</div>
+<div>
+<h4>Contact</h4>
+<ul>
+<li><a href="#">Privacy Policy</a></li>
+<li><a href="#">Terms of Service</a></li>
+<li><a href="#">Support</a></li>
+<li><a href="#">Contact</a></li>
+</ul>
+</div>
+</div>
+<div class="footer-bottom"><p>&copy; 2026 EVENTIFY. All rights reserved.</p></div>
+</div>
+</footer>
 <!-- AI Assistant: Rafeeq UI -->
 <div class="fixed bottom-8 right-8 z-[60] flex flex-col items-end pointer-events-none">
 <!-- AI Dialogue Popup -->
@@ -576,6 +640,83 @@
 <script>
         let isRafeeqOpen = false;
         const popup = document.getElementById('rafeeq-popup');
+        const languageToggle = document.getElementById('languageToggle');
+        const languageToggleLabel = document.getElementById('languageToggleLabel');
+
+        const translations = {
+            ar: {
+                nav_home: 'الرئيسية',
+                nav_explore: 'استكشاف',
+                nav_posts: 'المنشورات',
+                nav_notifications: 'الإشعارات',
+                hero_badge: 'مرحبًا بعودتك 👋',
+                hero_title: 'اكتشف <span class="text-primary italic">الفرصة المناسبة</span> مع الذكاء الاصطناعي',
+                hero_subtitle: 'اعثر على المسابقات والفعاليات وورش العمل والدورات المناسبة لمهاراتك واهتماماتك.',
+                search_placeholder: 'ابحث عن الفرص أو الفعاليات أو ورش العمل أو الدورات...',
+                search_button: 'بحث',
+                recommended_title: 'مقترحات لك',
+                recommended_subtitle: 'بناءً على ملفك ومهاراتك، وجدنا فرصًا تناسب اهتماماتك.',
+                view_all_matches: 'عرض كل النتائج',
+                competitions_title: 'استكشف المسابقات',
+                events_all: 'كل الفعاليات',
+                events_workshops: 'ورش العمل',
+                events_courses: 'الدورات',
+                events_conferences: 'المؤتمرات'
+            },
+            en: {
+                nav_home: 'Home',
+                nav_explore: 'Explore',
+                nav_posts: 'Posts',
+                nav_notifications: 'Notifications',
+                hero_badge: 'Welcome Back 👋',
+                hero_title: 'Discover the Right <span class="text-primary italic">Opportunity</span> with AI',
+                hero_subtitle: 'Find competitions, events, workshops, and courses tailored to your skills and interests.',
+                search_placeholder: 'Search opportunities, events, workshops, or courses...',
+                search_button: 'Search',
+                recommended_title: 'Recommended For You',
+                recommended_subtitle: 'Based on your profile and skills, we found opportunities that match your interests.',
+                view_all_matches: 'View All Matches',
+                competitions_title: 'Explore Competitions',
+                events_all: 'All Events',
+                events_workshops: 'Workshops',
+                events_courses: 'Courses',
+                events_conferences: 'Conferences'
+            }
+        };
+
+        function applyLanguage(lang) {
+            const dictionary = translations[lang] || translations.en;
+
+            document.documentElement.lang = lang;
+            document.querySelectorAll('[data-i18n]').forEach((element) => {
+                const key = element.getAttribute('data-i18n');
+                if (dictionary[key]) {
+                    element.innerHTML = dictionary[key];
+                }
+            });
+
+            document.querySelectorAll('[data-i18n-placeholder]').forEach((element) => {
+                const key = element.getAttribute('data-i18n-placeholder');
+                if (dictionary[key]) {
+                    element.setAttribute('placeholder', dictionary[key]);
+                }
+            });
+
+            if (languageToggleLabel) {
+                languageToggleLabel.textContent = lang === 'ar' ? 'EN' : 'AR';
+                languageToggle.setAttribute('aria-label', lang === 'ar' ? 'Switch to English' : 'Switch to Arabic');
+            }
+
+            localStorage.setItem('eventify-language', lang);
+        }
+
+        const savedLanguage = localStorage.getItem('eventify-language') || 'en';
+        applyLanguage(savedLanguage);
+
+        languageToggle.addEventListener('click', () => {
+            const nextLanguage = document.documentElement.lang === 'ar' ? 'en' : 'ar';
+            applyLanguage(nextLanguage);
+        });
 
         function toggleRafeeq() {
             isRafeeqOpen = !isRafeeqOpen;

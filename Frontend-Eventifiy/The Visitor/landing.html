@@ -54,6 +54,9 @@ img{display:block;max-width:100%;}
 button{font-family:inherit;cursor:pointer;border:none;background:none;}
 .container{max-width:1200px;margin:0 auto;padding:0 24px;}
 section{position:relative;}
+section + section{
+  border-top:1px solid rgba(17,24,39,.06);
+}
 
 .section-pad{padding:120px 0;}
 @media(max-width:768px){.section-pad{padding:80px 0;}}
@@ -171,6 +174,9 @@ section{position:relative;}
 
 /* ===== HERO / SLIDER ===== */
 .hero{position:relative;width:100vw;height:100vh;min-height:720px;overflow:hidden;left:50%;right:50%;margin-left:-50vw;margin-right:-50vw;}
+.hero::before{
+  content:'';position:absolute;inset:0;background:linear-gradient(120deg,rgba(255,255,255,.1) 0%,transparent 35%,rgba(255,255,255,.04) 100%);z-index:1;pointer-events:none;
+}
 .slider{position:relative;width:100%;height:100%;}
 .slide{
   position:absolute;inset:0;opacity:0;visibility:hidden;
@@ -205,10 +211,17 @@ section{position:relative;}
 .hero-left h1 span{
   background:linear-gradient(120deg,#7CB2FF,#C7A6FF);-webkit-background-clip:text;background-clip:text;color:transparent;
 }
-.hero-left p{font-size:17px;color:rgba(255,255,255,.75);max-width:480px;margin-bottom:32px;
-  opacity:0;transform:translateY(16px);line-height:1.7;}
-.hero-buttons{display:flex;gap:14px;margin-bottom:36px;opacity:0;transform:translateY(16px);}
-.slide.active .badge,.slide.active .hero-left p,.slide.active .hero-buttons{
+.hero-left p{font-size:17px;color:rgba(255,255,255,.78);max-width:520px;margin-bottom:24px;
+  opacity:0;transform:translateY(16px);line-height:1.75;}
+.hero-buttons{display:flex;gap:14px;margin-bottom:20px;opacity:0;transform:translateY(16px);flex-wrap:wrap;}
+.hero-highlights{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:28px;opacity:0;transform:translateY(16px);}
+.hero-highlight{
+  display:inline-flex;align-items:center;gap:8px;padding:10px 14px;border-radius:999px;
+  background:rgba(255,255,255,.10);border:1px solid rgba(255,255,255,.16);backdrop-filter:blur(10px);
+  color:rgba(255,255,255,.9);font-size:13px;font-weight:600;box-shadow:0 8px 24px rgba(0,0,0,.08);
+}
+.hero-highlight i{color:#C7D8FF;font-size:12px;}
+.slide.active .badge,.slide.active .hero-left p,.slide.active .hero-buttons,.slide.active .hero-highlights{
   animation:riseIn .8s cubic-bezier(.2,.8,.2,1) forwards;
 }
 .slide.active .badge{animation-delay:.15s;}
@@ -220,13 +233,15 @@ section{position:relative;}
 /* search bar - AI powered */
 .hero-search{
   display:flex;align-items:center;gap:0;
-  background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.2);
+  background:rgba(255,255,255,.10);border:1px solid rgba(255,255,255,.2);
   backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
-  border-radius:100px;padding:5px 5px 5px 6px;max-width:520px;
+  border-radius:100px;padding:5px 5px 5px 6px;max-width:560px;
   opacity:0;transform:translateY(16px);
   animation:riseIn .8s cubic-bezier(.2,.8,.2,1) .65s forwards;
-  transition:border-color .3s,box-shadow .3s;
+  transition:border-color .3s,box-shadow .3s,transform .3s;
+  box-shadow:0 18px 50px rgba(0,0,0,.14);
 }
+.hero-search:hover{transform:translateY(-2px);}
 .hero-search:focus-within{
   border-color:rgba(255,255,255,.45);
   box-shadow:0 0 0 4px rgba(255,255,255,.08);
@@ -415,8 +430,19 @@ section{position:relative;}
   content:'';position:absolute;top:0;left:0;right:0;height:1px;
   background:linear-gradient(90deg,transparent,var(--border-strong),transparent);
 }
-.section-head-row{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:48px;flex-wrap:wrap;gap:20px;}
+.section-head-row{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:24px;flex-wrap:wrap;gap:20px;}
+.opp-filters{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:24px;}
+.filter-chip{
+  border:1px solid var(--border);background:var(--surface);color:var(--text-muted);
+  padding:10px 16px;border-radius:999px;font-size:13px;font-weight:600;
+  transition:all .25s ease;box-shadow:0 2px 8px rgba(17,24,39,.03);
+}
+.filter-chip:hover,.filter-chip.active{
+  background:var(--grad-brand);color:#fff;border-color:transparent;transform:translateY(-1px);
+  box-shadow:0 10px 24px rgba(0,88,190,.16);
+}
 .opp-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;}
+.opp-card.hidden{display:none;}
 @media(max-width:960px){.opp-grid{grid-template-columns:repeat(2,1fr);}}
 @media(max-width:640px){.opp-grid{grid-template-columns:1fr;}}
 .opp-card{
@@ -430,7 +456,9 @@ section{position:relative;}
 .opp-card:hover,.opp-card.is-selected{transform:translateY(-4px);box-shadow:0 0 0 2px rgba(0,88,190,.18),var(--shadow-card-hover);border-color:var(--primary);}
 .opp-card:hover::after{opacity:1;}
 .opp-thumb{height:160px;position:relative;display:flex;align-items:center;justify-content:center;overflow:hidden;}
-.opp-thumb i{font-size:42px;color:rgba(255,255,255,.8);transition:transform .4s;}
+.opp-thumb img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;}
+.opp-thumb::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(0,0,0,.18),rgba(0,0,0,.42));z-index:1;}
+.opp-thumb i{font-size:42px;color:rgba(255,255,255,.8);transition:transform .4s;position:relative;z-index:2;}
 .opp-card:hover .opp-thumb i{transform:scale(1.1);}
 .opp-thumb .tag{
   position:absolute;top:14px;left:14px;
@@ -1110,7 +1138,7 @@ html:not([data-theme="dark"]) .theme-toggle .fa-sun{display:none;}
 
 /* ===== LIVE ACTIVITY BAR ===== */
 .live-activity{
-  background:var(--surface);border-bottom:1px solid var(--border);padding:16px 0;overflow:hidden;
+  background:var(--surface);border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:18px 0;overflow:hidden;
   position:relative;
 }
 .live-activity::before{
@@ -1254,30 +1282,32 @@ html:not([data-theme="dark"]) .theme-toggle .fa-sun{display:none;}
 @media(max-width:900px){.stories-grid{grid-template-columns:repeat(2,1fr);}}
 @media(max-width:640px){.stories-grid{grid-template-columns:1fr;}}
 .story-card{
-  background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);
-  padding:32px 24px;text-align:center;transition:all .4s cubic-bezier(.2,.8,.2,1);position:relative;overflow:hidden;
+  background:linear-gradient(135deg,rgba(255,255,255,.95),rgba(245,248,255,.98));
+  border:1px solid rgba(0,88,190,.12);border-radius:22px;padding:22px 20px;
+  transition:all .35s ease;position:relative;overflow:hidden;display:flex;flex-direction:column;gap:12px;text-align:left;
+  box-shadow:0 10px 28px rgba(15, 23, 42, .06);
 }
 .story-card::before{
   content:'';position:absolute;top:0;left:0;right:0;height:3px;
-  background:var(--grad-brand);opacity:0;transition:opacity .3s;
+  background:var(--grad-brand);opacity:.95;
 }
-.story-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-card-hover);border-color:transparent;}
-.story-card:hover::before{opacity:1;}
-.story-avatar{
-  width:60px;height:60px;border-radius:50%;background:var(--grad-brand);margin:0 auto 16px;
-  display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;
-  font-family:'Space Grotesk';font-size:18px;box-shadow:0 6px 16px rgba(0,88,190,.25);
+.story-card:hover{transform:translateY(-4px);box-shadow:0 14px 34px rgba(15, 23, 42, .1);}
+.story-top{display:flex;align-items:center;gap:12px;}
+.story-photo{
+  width:54px;height:54px;border-radius:16px;object-fit:cover;display:block;
+  border:2px solid rgba(0,88,190,.14);box-shadow:0 8px 20px rgba(0,88,190,.12);
+  flex-shrink:0;
 }
-.story-card h4{font-size:15px;font-weight:600;margin-bottom:4px;}
-.story-card .story-role{font-size:12px;color:var(--text-muted);margin-bottom:12px;}
-.story-card p{font-size:13px;color:var(--text-muted);line-height:1.6;margin-bottom:16px;}
-.story-result{
-  display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:600;
-  padding:6px 14px;border-radius:100px;
+.story-card h4{font-size:15px;font-weight:700;margin:0;color:var(--text);}
+.story-card .story-role{font-size:12px;color:var(--text-muted);margin:0;}
+.story-card p{font-size:14px;color:var(--text-muted);line-height:1.65;margin:0;}
+.story-badge{
+  display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:700;
+  padding:7px 10px;border-radius:999px;width:fit-content;margin-top:auto;
+  background:rgba(0,88,190,.08);color:var(--primary);
 }
-.story-result.hired{background:rgba(34,197,94,.1);color:#22C55E;}
-.story-result.won{background:rgba(107,56,212,.1);color:var(--secondary);}
-.story-result.cert{background:rgba(0,88,190,.1);color:var(--primary);}
+.story-badge.won{background:rgba(107,56,212,.1);color:var(--secondary);}
+.story-badge.cert{background:rgba(34,197,94,.1);color:#22C55E;}
 
 /* ===== ORG CTA ===== */
 .org-section{position:relative;background:var(--bg);overflow:hidden;}
@@ -1361,7 +1391,7 @@ html:not([data-theme="dark"]) .theme-toggle .fa-sun{display:none;}
 }
 
 /* ===== PARTNERS SECTION ===== */
-.partners-section{position:relative;background:var(--bg);padding:72px 0;overflow:hidden;}
+.partners-section{position:relative;background:var(--bg);padding:82px 0;overflow:hidden;}
 .partners-section::before{
   content:'';position:absolute;top:0;left:0;right:0;height:1px;
   background:linear-gradient(90deg,transparent,var(--border-strong),transparent);
@@ -1449,6 +1479,11 @@ html:not([data-theme="dark"]) .theme-toggle .fa-sun{display:none;}
           <div class="hero-buttons">
             <a href="../auth/signup.html" class="btn btn-primary">Get Started</a>
             <a href="#opportunities" class="btn btn-light">Explore Opportunities</a>
+          </div>
+          <div class="hero-highlights">
+            <div class="hero-highlight"><i class="fa-solid fa-circle-check"></i><span>Free for students</span></div>
+            <div class="hero-highlight"><i class="fa-solid fa-shield-halved"></i><span>Verified organizations</span></div>
+            <div class="hero-highlight"><i class="fa-solid fa-sparkles"></i><span>AI-powered matching</span></div>
           </div>
           <div class="hero-search">
             <i class="fa-solid fa-wand-magic-sparkles search-icon"></i>
@@ -1663,16 +1698,23 @@ html:not([data-theme="dark"]) .theme-toggle .fa-sun{display:none;}
       <div class="section-head" style="margin-bottom:0;">
         <span class="section-tag">Featured</span>
         <h2>Featured Opportunities</h2>
-        <p>Hand-picked events, hackathons and internships closing soon.</p>
+        <p>Explore competitions, events, and workshops tailored to your interests.</p>
       </div>
       <a href="#" class="btn btn-outline">View All <i class="fa-solid fa-arrow-right"></i></a>
     </div>
+    <div class="opp-filters reveal">
+      <button class="filter-chip active" data-filter="all">All</button>
+      <button class="filter-chip" data-filter="competition">Competitions</button>
+      <button class="filter-chip" data-filter="event">Events</button>
+      <button class="filter-chip" data-filter="workshop">Workshops</button>
+      <button class="filter-chip" data-filter="internship">Internships</button>
+    </div>
     <div class="opp-grid reveal-stagger">
-      <div class="opp-card card-3d card-shine">
-        <div class="opp-thumb" style="background:linear-gradient(135deg,#0058BE,#3E82D8);">
-          <span class="tag">Hackathon</span>
+      <div class="opp-card card-3d card-shine" data-category="competition">
+        <div class="opp-thumb">
+          <img src="https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&w=900&q=80" alt="AI competition event">
+          <span class="tag">Competition</span>
           <span class="match-badge"><i class="fa-solid fa-bolt"></i> 96%</span>
-          <i class="fa-solid fa-code"></i>
         </div>
         <div class="opp-body">
           <h3>Google AI Challenge 2026</h3>
@@ -1687,11 +1729,11 @@ html:not([data-theme="dark"]) .theme-toggle .fa-sun{display:none;}
           </div>
         </div>
       </div>
-      <div class="opp-card card-3d card-shine">
-        <div class="opp-thumb" style="background:linear-gradient(135deg,#6B38D4,#9B6FE8);">
-          <span class="tag">Internship</span>
+      <div class="opp-card card-3d card-shine" data-category="workshop">
+        <div class="opp-thumb">
+          <img src="https://images.unsplash.com/photo-1516321497487-e288fb19713f?auto=format&fit=crop&w=900&q=80" alt="Workshop session">
+          <span class="tag">Workshop</span>
           <span class="match-badge"><i class="fa-solid fa-bolt"></i> 92%</span>
-          <i class="fa-solid fa-briefcase"></i>
         </div>
         <div class="opp-body">
           <h3>Microsoft Summer Internship</h3>
@@ -1706,11 +1748,11 @@ html:not([data-theme="dark"]) .theme-toggle .fa-sun{display:none;}
           </div>
         </div>
       </div>
-      <div class="opp-card card-3d card-shine">
-        <div class="opp-thumb" style="background:linear-gradient(135deg,#0058BE,#6B38D4);">
-          <span class="tag">Course</span>
+      <div class="opp-card card-3d card-shine" data-category="event">
+        <div class="opp-thumb">
+          <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=900&q=80" alt="Networking event">
+          <span class="tag">Event</span>
           <span class="match-badge"><i class="fa-solid fa-bolt"></i> 88%</span>
-          <i class="fa-solid fa-book-open"></i>
         </div>
         <div class="opp-body">
           <h3>Cybersecurity Fundamentals</h3>
@@ -1734,9 +1776,19 @@ html:not([data-theme="dark"]) .theme-toggle .fa-sun{display:none;}
     <div class="section-head center reveal" style="margin-left:auto;margin-right:auto;">
       <span class="section-tag">Browse</span>
       <h2>Explore by Category</h2>
-      <p>Find opportunities across every field of interest.</p>
+      <p>Discover all categories and find opportunities across every field of interest.</p>
     </div>
     <div class="cat-grid reveal-stagger">
+      <div class="cat-card card-3d" style="background:linear-gradient(135deg,rgba(0,88,190,.10),rgba(107,56,212,.10)); border-color:rgba(0,88,190,.22); text-align:left; padding:24px 20px; box-shadow:0 12px 28px rgba(0,88,190,.08);">
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;">
+          <div style="flex:1; min-width:180px;">
+            <div class="section-tag" style="margin-bottom:8px; padding:6px 12px;">All Categories</div>
+            <h4 style="font-size:16px; margin-bottom:6px;">Explore every category based on your interests</h4>
+            <p style="margin:0; color:var(--text-muted); font-size:13px; line-height:1.6;">Browse all available sections and discover opportunities that match your goals, skills, and passions.</p>
+          </div>
+          <a href="#opportunities" class="btn btn-primary btn-sm">View All</a>
+        </div>
+      </div>
       <div class="cat-card card-3d">
         <div class="cat-icon"><i class="fa-solid fa-microchip"></i></div>
         <h4>Technology</h4>
@@ -1982,86 +2034,6 @@ html:not([data-theme="dark"]) .theme-toggle .fa-sun{display:none;}
   </div>
 </section>
 
-<section class="section-pad dashboard-section section-gap" id="dashboard">
-  <div class="container">
-    <div class="section-head center reveal" style="margin-left:auto;margin-right:auto;">
-      <span class="section-tag">Platform Preview</span>
-      <h2>Your Personalized Dashboard</h2>
-      <p>See what you get after signing up — AI recommendations, event tracking, applications and certificates.</p>
-    </div>
-    <div class="dashboard-mockup reveal">
-      <div class="mockup-bar">
-        <span class="mockup-dot r"></span>
-        <span class="mockup-dot y"></span>
-        <span class="mockup-dot g"></span>
-        <div style="flex:1;display:flex;justify-content:center;">
-          <div style="background:var(--bg);border-radius:8px;padding:5px 40px;font-size:11px;color:var(--text-muted);font-family:'JetBrains Mono';">app.eventify.io/dashboard</div>
-        </div>
-      </div>
-      <div class="mockup-body">
-        <div class="mockup-sidebar">
-          <div class="mockup-nav-item active"><i class="fa-solid fa-house"></i> Dashboard</div>
-          <div class="mockup-nav-item"><i class="fa-solid fa-compass"></i> Explore</div>
-          <div class="mockup-nav-item"><i class="fa-solid fa-bookmark"></i> Saved</div>
-          <div class="mockup-nav-item"><i class="fa-solid fa-paper-plane"></i> Applications</div>
-          <div class="mockup-nav-item"><i class="fa-solid fa-robot"></i> Rafeeq AI</div>
-          <div class="mockup-nav-item"><i class="fa-solid fa-certificate"></i> Certificates</div>
-          <div class="mockup-nav-item"><i class="fa-solid fa-calendar-days"></i> Calendar</div>
-          <div class="mockup-nav-item"><i class="fa-solid fa-gear"></i> Settings</div>
-        </div>
-        <div class="mockup-content">
-          <div class="mockup-header">
-            <h3>Welcome back, Ahmad</h3>
-            <a href="#" class="btn btn-primary btn-sm">Explore Opportunities</a>
-          </div>
-          <div class="mockup-stats-row">
-            <div class="mockup-stat-card">
-              <div class="ms-label">Match Score</div>
-              <div class="ms-value">94%</div>
-              <div class="ms-change">+12% this week</div>
-            </div>
-            <div class="mockup-stat-card">
-              <div class="ms-label">Applications</div>
-              <div class="ms-value">12</div>
-              <div class="ms-change">3 pending review</div>
-            </div>
-            <div class="mockup-stat-card">
-              <div class="ms-label">Certificates</div>
-              <div class="ms-value">5</div>
-              <div class="ms-change">+2 this month</div>
-            </div>
-          </div>
-          <div class="mockup-cards">
-            <div class="mockup-mini-card">
-              <div class="mockup-mini-icon" style="background:rgba(0,88,190,.1);color:var(--primary);"><i class="fa-solid fa-code"></i></div>
-              <div class="mockup-mini-info"><h4>Google AI Challenge</h4><p>96% match · 3 days left</p></div>
-            </div>
-            <div class="mockup-mini-card">
-              <div class="mockup-mini-icon" style="background:rgba(107,56,212,.1);color:var(--secondary);"><i class="fa-solid fa-briefcase"></i></div>
-              <div class="mockup-mini-info"><h4>Microsoft Internship</h4><p>92% match · 5 days left</p></div>
-            </div>
-            <div class="mockup-mini-card">
-              <div class="mockup-mini-icon" style="background:rgba(34,197,94,.1);color:#22C55E;"><i class="fa-solid fa-robot"></i></div>
-              <div class="mockup-mini-info"><h4>Rafeeq AI</h4><p>14 new recommendations</p></div>
-            </div>
-            <div class="mockup-mini-card">
-              <div class="mockup-mini-icon" style="background:rgba(245,158,11,.1);color:#F59E0B;"><i class="fa-solid fa-certificate"></i></div>
-              <div class="mockup-mini-info"><h4>Cybersecurity Cert</h4><p>Ready to download</p></div>
-            </div>
-            <div class="mockup-mini-card">
-              <div class="mockup-mini-icon" style="background:rgba(239,68,68,.1);color:#EF4444;"><i class="fa-solid fa-calendar-days"></i></div>
-              <div class="mockup-mini-info"><h4>Upcoming Events</h4><p>3 events this week</p></div>
-            </div>
-            <div class="mockup-mini-card">
-              <div class="mockup-mini-icon" style="background:rgba(0,88,190,.1);color:var(--primary);"><i class="fa-solid fa-paper-plane"></i></div>
-              <div class="mockup-mini-info"><h4>My Applications</h4><p>12 total · 3 active</p></div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
 
 <section class="section-pad rafeeq-section section-gap" id="rafeeq">
   <div class="container">
@@ -2099,102 +2071,46 @@ html:not([data-theme="dark"]) .theme-toggle .fa-sun{display:none;}
   </div>
 </section>
 
-<section class="section-pad testi-section section-gap">
-  <div class="container">
-    <div class="section-head center reveal" style="margin-left:auto;margin-right:auto;">
-      <span class="section-tag">Success Stories</span>
-      <h2>Students Love Eventify</h2>
-      <p>Real stories from students who found their breakthrough through our platform.</p>
-    </div>
-    <div class="testi-wrap reveal">
-      <div class="testi-track">
-        <div class="testi-slides" id="testiTrack">
-        <div class="testi-slide">
-          <div class="testi-card">
-            <i class="fa-solid fa-quote-left quote"></i>
-            <p>EVENTIFY helped me find my first internship in just two weeks. Rafeeq AI matched me with Google's hackathon based on my Python skills — I never would have applied on my own.</p>
-            <div class="testi-avatar">AK</div>
-            <h4>Ahmad Khaled</h4>
-            <span class="testi-role">Computer Science — University of Jordan</span>
-            <span class="testi-achievement"><i class="fa-solid fa-trophy"></i> Internship at Google</span>
-          </div>
-        </div>
-        <div class="testi-slide">
-          <div class="testi-card">
-            <i class="fa-solid fa-quote-left quote"></i>
-            <p>Rafeeq AI suggested competitions I never would have found on my own. The personalized recommendations saved me hours of searching. It truly understands what students need.</p>
-            <div class="testi-avatar">SM</div>
-            <h4>Sara Mohammad</h4>
-            <span class="testi-role">AI Student — German Jordanian University</span>
-            <span class="testi-achievement"><i class="fa-solid fa-medal"></i> Winner, AI Hackathon 2025</span>
-          </div>
-        </div>
-        <div class="testi-slide">
-          <div class="testi-card">
-            <i class="fa-solid fa-quote-left quote"></i>
-            <p>Simple, modern and genuinely useful. The AI matching is incredibly accurate — I got 5 certificates in one semester and landed an internship at Microsoft.</p>
-            <div class="testi-avatar">OA</div>
-            <h4>Omar Ali</h4>
-            <span class="testi-role">Software Engineering — HTU</span>
-            <span class="testi-achievement"><i class="fa-solid fa-building"></i> Intern at Microsoft</span>
-          </div>
-        </div>
-      </div>
-      <div class="testi-dots" id="testiDots"></div>
-    </div>
-  </div>
-</section>
-
 <section class="section-pad stories-section section-gap" id="stories">
   <div class="container">
     <div class="section-head center reveal" style="margin-left:auto;margin-right:auto;">
       <span class="section-tag">Success Stories</span>
       <h2>Real Results, Real Students</h2>
-      <p>See how EVENTIFY helped students land their dream opportunities.</p>
+      <p>Students use Eventify to discover opportunities, grow faster, and build a stronger future.</p>
     </div>
     <div class="stories-grid reveal-stagger">
       <div class="story-card card-3d">
-        <div class="story-avatar">LH</div>
-        <h4>Lina Hassan</h4>
-        <span class="story-role">Software Engineering — GJU</span>
-        <p>EVENTIFY matched me with a Google internship I never would have found on my own. The AI really understood my skills.</p>
-        <span class="story-result hired"><i class="fa-solid fa-briefcase"></i> Hired at Google</span>
-      </div>
-      <div class="story-card card-3d">
-        <div class="story-avatar">KM</div>
-        <h4>Khaled Mansour</h4>
-        <span class="story-role">AI & Machine Learning — JUST</span>
-        <p>Rafeeq AI suggested 5 hackathons that perfectly matched my interests. I won two of them and got certified.</p>
-        <span class="story-result won"><i class="fa-solid fa-trophy"></i> 2x Hackathon Winner</span>
-      </div>
-      <div class="story-card card-3d">
-        <div class="story-avatar">NA</div>
-        <h4>Nour Al-Rashed</h4>
-        <span class="story-role">Cybersecurity — HTU</span>
-        <p>Through EVENTIFY I completed 3 professional courses and earned certificates that boosted my CV significantly.</p>
-        <span class="story-result cert"><i class="fa-solid fa-certificate"></i> 3 Certificates Earned</span>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section class="section-pad org-section section-gap" id="organizations">
-  <div class="container">
-    <div class="org-box reveal">
-      <div class="org-text">
-        <span class="section-tag" style="background:rgba(255,255,255,.12);color:#fff;">For Organizations</span>
-        <h2>Host Events & Find Top Talent</h2>
-        <p>Reach thousands of qualified students. Post hackathons, internships and competitions — with AI-powered applicant matching.</p>
-        <div class="org-features">
-          <div class="org-feature"><i class="fa-solid fa-check-circle"></i> AI Matched Applicants</div>
-          <div class="org-feature"><i class="fa-solid fa-check-circle"></i> Verified Student Profiles</div>
-          <div class="org-feature"><i class="fa-solid fa-check-circle"></i> Real-time Analytics</div>
-          <div class="org-feature"><i class="fa-solid fa-check-circle"></i> One-Click Certificates</div>
+        <div class="story-top">
+          <img class="story-photo" src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=200&q=80" alt="Lina Hassan" />
+          <div>
+            <h4>Lina Hassan</h4>
+            <span class="story-role">Software Engineering — GJU</span>
+          </div>
         </div>
-        <a href="#" class="btn btn-light" style="background:#fff;color:var(--primary);">Register as Organization</a>
+        <p>“EVENTIFY matched me with a Google internship I never would have found on my own. The AI understood my skills and helped me act fast.”</p>
+        <span class="story-badge"><i class="fa-solid fa-briefcase"></i> Hired at Google</span>
       </div>
-      <div class="org-visual">
-        <div class="org-visual-circle"><i class="fa-solid fa-building" style="color:#fff;"></i></div>
+      <div class="story-card card-3d">
+        <div class="story-top">
+          <img class="story-photo" src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=200&q=80" alt="Khaled Mansour" />
+          <div>
+            <h4>Khaled Mansour</h4>
+            <span class="story-role">AI &amp; Machine Learning — JUST</span>
+          </div>
+        </div>
+        <p>“Rafeeq AI suggested hackathons that matched my interests perfectly. I won two and earned certificates that strengthened my profile.”</p>
+        <span class="story-badge won"><i class="fa-solid fa-trophy"></i> 2x Hackathon Winner</span>
+      </div>
+      <div class="story-card card-3d">
+        <div class="story-top">
+          <img class="story-photo" src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=200&q=80" alt="Nour Al-Rashed" />
+          <div>
+            <h4>Nour Al-Rashed</h4>
+            <span class="story-role">Cybersecurity — HTU</span>
+          </div>
+        </div>
+        <p>“Through EVENTIFY I completed professional courses, built confidence, and earned certificates that boosted my CV.”</p>
+        <span class="story-badge cert"><i class="fa-solid fa-certificate"></i> 3 Certificates Earned</span>
       </div>
     </div>
   </div>
@@ -2237,10 +2153,10 @@ html:not([data-theme="dark"]) .theme-toggle .fa-sun{display:none;}
     <div class="cta-box reveal animated-gradient">
       <span class="section-tag">Ready to start?</span>
       <h2>Ready to discover your next opportunity?</h2>
-      <p>Join thousands of students already building their future with Eventify. Your personalized dashboard, AI matching and one-click apply — all free.</p>
+      <p>Join thousands of students already building their future with Eventify. Create your account, explore personalized opportunities, and take the next step with confidence.</p>
       <div class="cta-buttons">
-        <a href="../auth/signup.html" class="btn btn-light" style="background:#fff;color:var(--primary);">Create Free Account</a>
-        <a href="#opportunities" class="btn btn-light">Explore Opportunities</a>
+        <a href="../auth/signup.html" id="signupCtaBtn" class="btn btn-light" style="background:#fff;color:var(--primary);" target="_self">Create Free Account</a>
+        <a href="#opportunities" id="exploreCtaBtn" class="btn btn-light">Explore Opportunities</a>
       </div>
       <div class="trust-badges">
         <span class="trust-badge"><i class="fa-solid fa-circle-check"></i> Free to Join</span>
@@ -2411,24 +2327,27 @@ html:not([data-theme="dark"]) .theme-toggle .fa-sun{display:none;}
   counters.forEach(el => counterIO.observe(el));
 
   const testiTrack = document.getElementById('testiTrack');
-  const testiSlides = Array.from(testiTrack.children);
   const testiDotsWrap = document.getElementById('testiDots');
-  let tCurrent = 0;
-  testiSlides.forEach((_, i) => {
-    const d = document.createElement('button');
-    if(i===0) d.classList.add('active');
-    d.setAttribute('aria-label','Go to testimonial ' + (i+1));
-    d.addEventListener('click', () => tGoTo(i));
-    testiDotsWrap.appendChild(d);
-  });
-  const tDots = Array.from(testiDotsWrap.children);
-  function tGoTo(i){
-    tCurrent = (i + testiSlides.length) % testiSlides.length;
-    testiTrack.style.transform = 'translateX(-' + (tCurrent*100) + '%)';
-    tDots.forEach(d => d.classList.remove('active'));
-    tDots[tCurrent].classList.add('active');
+
+  if(testiTrack && testiDotsWrap){
+    const testiSlides = Array.from(testiTrack.children);
+    let tCurrent = 0;
+    testiSlides.forEach((_, i) => {
+      const d = document.createElement('button');
+      if(i===0) d.classList.add('active');
+      d.setAttribute('aria-label','Go to testimonial ' + (i+1));
+      d.addEventListener('click', () => tGoTo(i));
+      testiDotsWrap.appendChild(d);
+    });
+    const tDots = Array.from(testiDotsWrap.children);
+    function tGoTo(i){
+      tCurrent = (i + testiSlides.length) % testiSlides.length;
+      testiTrack.style.transform = 'translateX(-' + (tCurrent*100) + '%)';
+      tDots.forEach(d => d.classList.remove('active'));
+      tDots[tCurrent].classList.add('active');
+    }
+    setInterval(() => tGoTo(tCurrent+1), 6000);
   }
-  setInterval(() => tGoTo(tCurrent+1), 6000);
 
   const mic = document.getElementById('rafeeqMic');
   const talkBtn = document.getElementById('talkBtn');
@@ -2436,6 +2355,43 @@ html:not([data-theme="dark"]) .theme-toggle .fa-sun{display:none;}
     btn.style.transform = 'scale(0.94)';
     setTimeout(() => btn.style.transform = '', 160);
   }));
+
+  const filterChips = document.querySelectorAll('.filter-chip');
+  const opportunityCards = document.querySelectorAll('.opp-card');
+
+  filterChips.forEach(chip => {
+    chip.addEventListener('click', () => {
+      const selected = chip.dataset.filter || 'all';
+      filterChips.forEach(btn => btn.classList.remove('active'));
+      chip.classList.add('active');
+
+      opportunityCards.forEach(card => {
+        const matches = selected === 'all' || card.dataset.category === selected;
+        card.classList.toggle('hidden', !matches);
+      });
+    });
+  });
+
+  const signupCtaBtn = document.getElementById('signupCtaBtn');
+  const exploreCtaBtn = document.getElementById('exploreCtaBtn');
+
+  if(signupCtaBtn){
+    signupCtaBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      window.location.href = '../auth/signup.html';
+      window.location.assign('../auth/signup.html');
+    });
+  }
+
+  if(exploreCtaBtn){
+    exploreCtaBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      const opportunitiesSection = document.getElementById('opportunities');
+      if(opportunitiesSection){
+        opportunitiesSection.scrollIntoView({behavior:'smooth', block:'start'});
+      }
+    });
+  }
 
   /* ===== DARK MODE ===== */
   const themeToggle = document.getElementById('themeToggle');
