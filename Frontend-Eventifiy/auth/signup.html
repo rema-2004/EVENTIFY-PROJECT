@@ -174,91 +174,110 @@
 
 <!-- Form Side -->
 <div class="flex flex-col justify-center px-6 sm:px-16 py-12 relative overflow-hidden order-1 lg:order-2">
-<div class="absolute inset-0 pointer-events-none">
-<div class="absolute -top-20 -left-20 h-64 w-64 rounded-full bg-primary/10 blur-3xl"></div>
-<div class="absolute bottom-0 right-0 h-72 w-72 rounded-full bg-secondary/10 blur-3xl"></div>
-</div>
-<a class="relative z-10 flex items-center gap-2 mb-8 hover:opacity-90 transition-opacity" href="../marketing/landing.html">
-<span class="material-symbols-outlined text-primary text-3xl" style="font-variation-settings: 'FILL' 1;">hub</span>
-<span class="font-title-lg text-title-lg font-black brand-gradient-text">EVENTIFY</span>
-</a>
-<div class="relative z-10 max-w-md w-full mx-auto auth-card border border-white/70 rounded-[28px] p-6 sm:p-8 animate-fade-in">
-<div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 text-primary text-sm font-semibold mb-5">
-<span class="material-symbols-outlined text-[18px]">lock</span>
-                        Secure Access
-                    </div>
-<h1 class="font-headline-lg text-headline-lg mb-2">Create your account</h1>
-<p class="font-body-md text-body-md text-on-surface-variant mb-6" id="subtitle">Create your personal account to start exploring opportunities.</p>
-<div class="grid grid-cols-2 gap-3 mb-6" role="radiogroup" aria-label="Account type">
-<button aria-checked="true" class="account-type-btn flex flex-col items-center gap-2 py-4 rounded-xl border-2 border-primary bg-primary/5 transition-all transform hover:scale-[1.02]" data-type="personal" role="radio" type="button">
-<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">person</span>
-<span class="font-label-md text-label-md text-on-surface font-semibold">Personal Account</span>
-<span class="font-body-sm text-body-sm text-on-surface-variant">Find opportunities</span>
-</button>
-<button aria-checked="false" class="account-type-btn flex flex-col items-center gap-2 py-4 rounded-xl border-2 border-outline-variant transition-all transform hover:scale-[1.02]" data-type="organization" role="radio" type="button">
-<span class="material-symbols-outlined text-on-surface-variant">apartment</span>
-<span class="font-label-md text-label-md text-on-surface">Organization Account</span>
-<span class="font-body-sm text-body-sm text-on-surface-variant">Publish events</span>
-</button>
-</div>
-<form class="space-y-5" id="signup-form" novalidate>
-<div class="flex flex-col gap-2">
-<label class="font-label-md text-label-md" for="full-name">Full Name *</label>
-<input aria-describedby="full-name-error" class="auth-input h-12 px-4 bg-surface-container-lowest border border-outline-variant rounded-xl transition-all" id="full-name" name="fullName" placeholder="Sarah Chen" required="" type="text"/>
-<p class="hidden text-sm text-error" id="full-name-error" role="alert"></p>
-</div>
-<div class="flex flex-col gap-2">
-<label class="font-label-md text-label-md" for="phone">Phone Number *</label>
-<input aria-describedby="phone-error" class="auth-input h-12 px-4 bg-surface-container-lowest border border-outline-variant rounded-xl transition-all" id="phone" name="phone" placeholder="+1 555 123 4567" required="" type="tel"/>
-<p class="hidden text-sm text-error" id="phone-error" role="alert"></p>
-</div>
-<div class="flex flex-col gap-2 hidden" id="org-website-field">
-<label class="font-label-md text-label-md" for="org-website">Website <span class="text-on-surface-variant font-normal">(optional)</span></label>
-<input class="auth-input h-12 px-4 bg-surface-container-lowest border border-outline-variant rounded-xl transition-all" id="org-website" name="organizationWebsite" placeholder="https://yourorganization.com" type="url"/>
-</div>
-<div class="flex flex-col gap-2">
-<label class="font-label-md text-label-md" for="email">Email Address *</label>
-<input aria-describedby="email-error" class="auth-input h-12 px-4 bg-surface-container-lowest border border-outline-variant rounded-xl transition-all" id="email" name="email" placeholder="you@example.com" required="" type="email"/>
-<p class="hidden text-sm text-error" id="email-error" role="alert"></p>
-</div>
-<div class="flex flex-col gap-2">
-<label class="font-label-md text-label-md" for="password">Password *</label>
-<div class="relative">
-<input aria-describedby="password-error password-strength" class="auth-input h-12 px-4 pr-12 w-full bg-surface-container-lowest border border-outline-variant rounded-xl transition-all" id="password" name="password" placeholder="At least 8 characters" required="" type="password"/>
-<button aria-label="Show password" class="absolute right-3 top-1/2 -translate-y-1/2 text-on-surface-variant hover:text-on-surface transition-colors" id="toggle-password" type="button">
-<span class="material-symbols-outlined text-[20px]" id="password-toggle-icon">visibility</span>
-</button>
-</div>
-<p class="hidden text-sm text-error" id="password-error" role="alert"></p>
-<p class="text-sm text-on-surface-variant" id="password-strength">Strength: <span class="font-semibold" id="password-strength-value">Weak</span></p>
-</div>
-<div class="flex flex-col gap-2">
-<label class="font-label-md text-label-md" for="confirm-password">Confirm Password *</label>
-<div class="relative">
-<input aria-describedby="confirm-password-error" class="auth-input h-12 px-4 pr-12 w-full bg-surface-container-lowest border border-outline-variant rounded-xl transition-all" id="confirm-password" name="confirmPassword" placeholder="Re-enter your password" required="" type="password"/>
-<button aria-label="Show confirm password" class="absolute right-3 top-1/2 -translate-y-1/2 text-on-surface-variant hover:text-on-surface transition-colors" id="toggle-confirm-password" type="button">
-<span class="material-symbols-outlined text-[20px]" id="confirm-password-toggle-icon">visibility</span>
-</button>
-</div>
-<p class="hidden text-sm text-error" id="confirm-password-error" role="alert"></p>
-</div>
-<label class="flex items-start gap-2 font-body-sm text-body-sm text-on-surface-variant cursor-pointer">
-<input class="rounded border-outline-variant text-primary mt-0.5 focus:ring-primary" id="terms" required="" type="checkbox"/>
-<span class="select-none">I agree to the <a class="text-primary hover:underline font-semibold" href="../marketing/about.html">Terms</a> and <a class="text-primary hover:underline font-semibold" href="../marketing/about.html">Privacy Policy</a></span>
-</label>
-<button class="w-full h-12 bg-primary text-on-primary rounded-full font-label-lg text-label-lg shadow-md hover:bg-primary-container hover:shadow-lg transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 soft-ring" id="submit-btn" type="submit" disabled="">Create Account</button>
-</form>
-<div class="flex items-center gap-4 my-6">
-<div class="flex-1 h-px bg-outline-variant"></div>
-<span class="font-label-sm text-on-surface-variant">OR</span>
-<div class="flex-1 h-px bg-outline-variant"></div>
-</div>
-<button class="w-full h-12 border border-outline-variant rounded-full font-label-md text-label-md flex items-center justify-center gap-2 hover:bg-surface-container-low transition-all duration-200 bg-white/80 hover:border-on-surface" type="button">
-<svg class="w-5 h-5" viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z" fill="#EA4335"/></svg>
-<span>Continue with Google</span>
-</button>
-<p class="text-center font-body-sm text-body-sm text-on-surface-variant mt-6">Already have an account? <a class="text-primary font-semibold hover:underline" href="login.html">Log in</a></p>
-</div>
+    <div class="absolute inset-0 pointer-events-none">
+        <div class="absolute -top-20 -left-20 h-64 w-64 rounded-full bg-primary/10 blur-3xl"></div>
+        <div class="absolute bottom-0 right-0 h-72 w-72 rounded-full bg-secondary/10 blur-3xl"></div>
+    </div>
+
+    <a class="relative z-10 flex items-center gap-2 mb-10" href="../marketing/landing.html">
+        <span class="material-symbols-outlined text-primary text-3xl" style="font-variation-settings: 'FILL' 1;">hub</span>
+        <span class="font-title-lg text-title-lg font-black brand-gradient-text">EVENTIFY</span>
+    </a>
+
+    <div class="relative z-10 max-w-md w-full mx-auto auth-card border border-white/70 rounded-[28px] p-6 sm:p-8 animate-fade-in">
+        <a class="inline-flex items-center gap-1 text-on-surface-variant hover:text-primary font-label-md text-label-md mb-5 transition-colors" href="login.html">
+            <span class="material-symbols-outlined text-[18px]">arrow_back</span> Back to log in
+        </a>
+
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 text-primary text-sm font-semibold mb-5">
+            <span class="material-symbols-outlined text-[18px]">lock</span>
+            Secure Access
+        </div>
+
+        <h1 class="font-headline-lg text-headline-lg mb-2">Create your account</h1>
+        <p class="font-body-md text-body-md text-on-surface-variant mb-6" id="subtitle">Create your personal account to start exploring opportunities.</p>
+
+        <div class="grid grid-cols-2 gap-3 mb-6" role="radiogroup" aria-label="Account type">
+            <button aria-checked="true" class="account-type-btn flex flex-col items-center gap-2 py-4 rounded-xl border-2 border-primary bg-primary/5 transition-all transform hover:scale-[1.02]" data-type="personal" role="radio" type="button">
+                <span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">person</span>
+                <span class="font-label-md text-label-md text-on-surface font-semibold">Personal Account</span>
+                <span class="font-body-sm text-body-sm text-on-surface-variant">Find opportunities</span>
+            </button>
+            <button aria-checked="false" class="account-type-btn flex flex-col items-center gap-2 py-4 rounded-xl border-2 border-outline-variant transition-all transform hover:scale-[1.02]" data-type="organization" role="radio" type="button">
+                <span class="material-symbols-outlined text-on-surface-variant">apartment</span>
+                <span class="font-label-md text-label-md text-on-surface">Organization Account</span>
+                <span class="font-body-sm text-body-sm text-on-surface-variant">Publish events</span>
+            </button>
+        </div>
+
+        <form class="space-y-5" id="signup-form" novalidate>
+            <div class="flex flex-col gap-2">
+                <label class="font-label-md text-label-md" for="full-name">Full Name *</label>
+                <input aria-describedby="full-name-error" class="auth-input h-12 px-4 bg-surface-container-lowest border border-outline-variant rounded-xl transition-all" id="full-name" name="fullName" placeholder="Sarah Chen" required="" type="text"/>
+                <p class="hidden text-sm text-error" id="full-name-error" role="alert"></p>
+            </div>
+
+            <div class="flex flex-col gap-2">
+                <label class="font-label-md text-label-md" for="phone">Phone Number *</label>
+                <input aria-describedby="phone-error" class="auth-input h-12 px-4 bg-surface-container-lowest border border-outline-variant rounded-xl transition-all" id="phone" name="phone" placeholder="+1 555 123 4567" required="" type="tel"/>
+                <p class="hidden text-sm text-error" id="phone-error" role="alert"></p>
+            </div>
+
+            <div class="flex flex-col gap-2 hidden" id="org-website-field">
+                <label class="font-label-md text-label-md" for="org-website">Website <span class="text-on-surface-variant font-normal">(optional)</span></label>
+                <input class="auth-input h-12 px-4 bg-surface-container-lowest border border-outline-variant rounded-xl transition-all" id="org-website" name="organizationWebsite" placeholder="https://yourorganization.com" type="url"/>
+            </div>
+
+            <div class="flex flex-col gap-2">
+                <label class="font-label-md text-label-md" for="email">Email Address *</label>
+                <input aria-describedby="email-error" class="auth-input h-12 px-4 bg-surface-container-lowest border border-outline-variant rounded-xl transition-all" id="email" name="email" placeholder="you@example.com" required="" type="email"/>
+                <p class="hidden text-sm text-error" id="email-error" role="alert"></p>
+            </div>
+
+            <div class="flex flex-col gap-2">
+                <label class="font-label-md text-label-md" for="password">Password *</label>
+                <div class="relative">
+                    <input aria-describedby="password-error password-strength" class="auth-input h-12 px-4 pr-12 w-full bg-surface-container-lowest border border-outline-variant rounded-xl transition-all" id="password" name="password" placeholder="At least 8 characters" required="" type="password"/>
+                    <button aria-label="Show password" class="absolute right-3 top-1/2 -translate-y-1/2 text-on-surface-variant hover:text-on-surface transition-colors" id="toggle-password" type="button">
+                        <span class="material-symbols-outlined text-[20px]" id="password-toggle-icon">visibility</span>
+                    </button>
+                </div>
+                <p class="hidden text-sm text-error" id="password-error" role="alert"></p>
+                <p class="text-sm text-on-surface-variant" id="password-strength">Strength: <span class="font-semibold" id="password-strength-value">Weak</span></p>
+            </div>
+
+            <div class="flex flex-col gap-2">
+                <label class="font-label-md text-label-md" for="confirm-password">Confirm Password *</label>
+                <div class="relative">
+                    <input aria-describedby="confirm-password-error" class="auth-input h-12 px-4 pr-12 w-full bg-surface-container-lowest border border-outline-variant rounded-xl transition-all" id="confirm-password" name="confirmPassword" placeholder="Re-enter your password" required="" type="password"/>
+                    <button aria-label="Show confirm password" class="absolute right-3 top-1/2 -translate-y-1/2 text-on-surface-variant hover:text-on-surface transition-colors" id="toggle-confirm-password" type="button">
+                        <span class="material-symbols-outlined text-[20px]" id="confirm-password-toggle-icon">visibility</span>
+                    </button>
+                </div>
+                <p class="hidden text-sm text-error" id="confirm-password-error" role="alert"></p>
+            </div>
+
+            <label class="flex items-start gap-2 font-body-sm text-body-sm text-on-surface-variant cursor-pointer">
+                <input class="rounded border-outline-variant text-primary mt-0.5 focus:ring-primary" id="terms" required="" type="checkbox"/>
+                <span class="select-none">I agree to the <a class="text-primary hover:underline font-semibold" href="../marketing/about.html">Terms</a> and <a class="text-primary hover:underline font-semibold" href="../marketing/about.html">Privacy Policy</a></span>
+            </label>
+
+            <button class="w-full h-12 bg-primary text-on-primary rounded-full font-label-lg text-label-lg shadow-md hover:bg-primary-container hover:shadow-lg transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 soft-ring" id="submit-btn" type="submit" disabled="">Create Account</button>
+        </form>
+
+        <div class="flex items-center gap-4 my-6">
+            <div class="flex-1 h-px bg-outline-variant"></div>
+            <span class="font-label-sm text-on-surface-variant">OR</span>
+            <div class="flex-1 h-px bg-outline-variant"></div>
+        </div>
+
+        <button class="w-full h-12 border border-outline-variant rounded-full font-label-md text-label-md flex items-center justify-center gap-2 hover:bg-surface-container-low transition-all duration-200 bg-white/80 hover:border-on-surface" type="button">
+            <svg class="w-5 h-5" viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z" fill="#EA4335"/></svg>
+            <span>Continue with Google</span>
+        </button>
+
+        <p class="text-center font-body-sm text-body-sm text-on-surface-variant mt-6">Already have an account? <a class="text-primary font-semibold hover:underline" href="login.html">Log in</a></p>
+    </div>
 </div>
 </div>
 <script>
