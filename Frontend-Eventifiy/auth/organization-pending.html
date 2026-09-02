@@ -127,12 +127,7 @@ Redirecting to the home page in
 
 </p>
 
-<div id="counter"
-class="text-6xl font-extrabold text-blue-600 mt-3">
-
-10
-
-</div>
+<div id="counter" class="text-6xl font-extrabold text-blue-600 mt-3">10</div>
 
 <p class="text-gray-500 mt-2">
 
@@ -142,7 +137,7 @@ seconds...
 
 </div>
 
-<a href="../marketing/landing.html"
+<a href="../The%20Visitor/landing.html"
 
 class="mt-10 inline-flex items-center justify-center bg-blue-600 hover:bg-blue-700 transition duration-300 text-white px-10 py-4 rounded-full text-lg font-semibold shadow-lg">
 
@@ -155,27 +150,16 @@ class="mt-10 inline-flex items-center justify-center bg-blue-600 hover:bg-blue-7
 </div>
 
 <script>
-
 let seconds = 10;
-
 const counter = document.getElementById("counter");
-
-const timer = setInterval(()=>{
-
+const timer = setInterval(() => {
     seconds--;
-
     counter.innerHTML = seconds;
-
-    if(seconds <= 0){
-
+    if (seconds <= 0) {
         clearInterval(timer);
-
-        window.location.href="../marketing/landing.html";
-
+        window.location.href = "../The%20Visitor/landing.html";
     }
-
-},1000);
-
+}, 1000);
 </script>
 
 </body>
