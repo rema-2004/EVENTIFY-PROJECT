@@ -19,6 +19,8 @@ class User extends Authenticatable
     public const STATUS_ACTIVE = 'active';
     public const STATUS_SUSPENDED = 'suspended';
     public const STATUS_BANNED = 'banned';
+    public const PROVIDER_LOCAL = 'local';
+    public const PROVIDER_GOOGLE = 'google';
 
     protected $fillable = [
         'name',
@@ -27,6 +29,8 @@ class User extends Authenticatable
         'password',
         'role',
         'status',
+        'google_id', 
+        'provider',  
     ];
 
     protected $hidden = [
@@ -61,4 +65,10 @@ class User extends Authenticatable
     {
         return $query->where('role', self::ROLE_ADMIN);
     }
+
+    public function isGoogleUser(): bool
+    {
+        return $this->provider === self::PROVIDER_GOOGLE;
+    }
+    
 }
