@@ -114,65 +114,37 @@
     </script>
 </head>
 
-<body class="bg-background text-on-surface min-h-screen transition-colors duration-300">
-    <header class="sticky top-0 z-40 w-full h-top_nav_height glass-nav border-b border-outline-variant/30 shadow-sm">
-        <div class="flex justify-between items-center px-gutter w-full max-w-container_max_width mx-auto h-full">
-            <div class="flex items-center gap-8">
-                <a class="flex items-center gap-2 font-headline-md text-headline-md font-black text-primary animate-pulse-wave"
-                    href="../index.html"><span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1;">hub</span>EVENTIFY</a>
-                <nav class="hidden md:flex items-center gap-6">
-                    <a class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors" href="../index.html">Home</a>
-                    <a class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors" href="explore.html">Explore</a>
-                    <a class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors" href="posts.html">Posts</a>
-                    <a class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors" href="notifications.html">Notifications</a>
-                </nav>
-            </div>
-            <div class="flex items-center gap-4">
-                <div class="flex items-center gap-2 text-on-surface-variant">
-                    <a class="material-symbols-outlined p-2 hover:bg-surface-container rounded-full cursor-pointer"
-                        href="notifications.html">notifications</a>
-                    <a class="material-symbols-outlined p-2 hover:bg-surface-container rounded-full cursor-pointer"
-                        href="profile.html">account_circle</a>
-                </div>
-            </div>
-        </div>
-    </header>
-    <div class="max-w-container_max_width mx-auto flex gap-gutter px-gutter py-stack_gap_lg relative">
-        <aside
-            class="hidden lg:flex flex-col gap-4 fixed left-[max(0px,calc((100%-1280px)/2))] top-[calc(72px+24px)] h-[calc(100vh-120px)] w-sidebar_width glass-sidebar border-r border-outline-variant/30 rounded-xl p-4">
-            <nav class="flex flex-col gap-2">
-                <a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-low transition-colors rounded-lg group"
-                    href="../index.html">
-                    <span class="material-symbols-outlined text-outline group-hover:text-primary">home</span>
-                    <span class="font-label-md text-label-md">Home</span>
+<body class="bg-background text-on-background min-h-screen pb-24 md:pb-0 dark:bg-[#0d1c2e] dark:text-[#f8f9ff] transition-colors duration-300">
+<nav class="fixed top-0 w-full z-50 glass-nav border-b border-outline-variant/30 dark:border-white/10 h-16 flex items-center">
+<div class="flex justify-between items-center px-container-margin-mobile md:px-container-margin-desktop w-full max-w-[1280px] mx-auto">
+<div class="flex items-center gap-8">
+<a class="flex items-center gap-3" href="../index.html" aria-label="EVENTIFY home">
+<span class="material-symbols-outlined text-primary text-[26px]" style="font-variation-settings:'FILL' 1;">hub</span>
+<span class="text-primary" style="font-family:'Inter',sans-serif;font-size:18px;line-height:22px;font-weight:900;letter-spacing:normal;">EVENTIFY</span>
+</a>
+<div class="hidden md:flex gap-6">
+<a class="font-label-md text-label-md text-on-surface-variant hover:text-primary dark:text-[#c3c6d7] dark:hover:text-primary transition-colors" href="../index.html">Home</a>
+<a class="font-label-md text-label-md text-on-surface-variant hover:text-primary dark:text-[#c3c6d7] dark:hover:text-primary transition-colors" href="explore.html">Explore</a>
+<a class="font-label-md text-label-md text-on-surface-variant hover:text-primary dark:text-[#c3c6d7] dark:hover:text-primary transition-colors" href="posts.html">Posts</a>
+<a class="font-label-md text-label-md text-primary font-bold border-b-2 border-primary pb-1 transition-all" href="my-applications.html">My Applications</a>
+<a class="font-label-md text-label-md text-on-surface-variant hover:text-primary dark:text-[#c3c6d7] dark:hover:text-primary transition-colors" href="notifications.html">Notifications</a>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<button class="theme-toggle w-9 h-9 rounded-full flex items-center justify-center text-on-surface-variant hover:text-primary hover:bg-surface-container-low dark:text-gray-300 dark:hover:text-white dark:hover:bg-white/10 transition-colors" title="Switch theme">
+    <span class="material-symbols-outlined text-[20px]">dark_mode</span>
+</button>
+<a class="hidden md:flex items-center gap-2 px-4 py-2 bg-primary/5 hover:bg-primary/10 rounded-lg text-primary dark:text-primary dark:hover:bg-primary/10 font-label-md transition-all" href="rafeeq.html">
+<span class="material-symbols-outlined text-[20px]" data-icon="smart_toy">smart_toy</span>
+                    Rafeeq AI
                 </a>
-                <a class="flex items-center gap-3 px-4 py-3 bg-primary-container/10 text-primary font-bold border-l-4 border-primary rounded-r-lg"
-                    href="my-applications.html">
-                    <span class="material-symbols-outlined"
-                        style="font-variation-settings: 'FILL' 1;">assignment_turned_in</span>
-                    <span class="font-label-md text-label-md">My Applications</span>
-                </a>
-                <a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-low transition-colors rounded-lg group"
-                    href="saved.html">
-                    <span class="material-symbols-outlined text-outline group-hover:text-primary">bookmark</span>
-                    <span class="font-label-md text-label-md">Saved</span>
-                </a>
-                <a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-low transition-colors rounded-lg group"
-                    href="profile.html">
-                    <span class="material-symbols-outlined text-outline group-hover:text-primary">account_circle</span>
-                    <span class="font-label-md text-label-md">Profile</span>
-                </a>
-            </nav>
-            <div class="mt-auto p-4 bg-surface-container-low rounded-xl border border-outline-variant/50">
-                <p class="font-label-sm text-label-sm text-primary mb-2">SUMMARY</p>
-                <div class="space-y-1 font-body-md text-body-md text-on-surface-variant">
-                    <p>3 pending review</p>
-                    <p>2 accepted</p>
-                    <p>1 not selected</p>
-                </div>
-            </div>
-        </aside>
-        <main class="flex-1 lg:ml-[304px] flex flex-col gap-stack_gap_md">
+<a class="h-10 w-10 rounded-full overflow-hidden border-2 border-primary-container block" href="profile.html">
+<img class="w-full h-full object-cover" data-alt="A clean, professional headshot of a diverse young professional man in his late 20s with a warm, confident smile. He is wearing a modern navy blue blazer over a crisp white shirt." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCaUW4ycO4zpbXU8-f7qQ8e67JQFR0kFopGobvmcyuwtb7RmtLjv8uPEEmSl-hbsk0Uo2ApZUUq0wRlZ_zn8PJ4ugNgbj5OOGiU0BEkvvm8agYRwod83fIHy3htoOWJsIvO4ldpAhRTz0oyAMispIOZSiEf-bq73m7QKJeH-ZAfVM4q8r4pOddVVra4gOVTwYxIXtrSAQ5_f0WzHxDTzUUNzi4IEbgzPPqIh4aHvXgk12witr7-3N8pVFOo07Rs0y08Ht-8bubrd2i-"/>
+</a>
+</div>
+</div>
+</nav>
+    <main class="pt-24 pb-12 px-container-margin-mobile md:px-container-margin-desktop max-w-[1280px] mx-auto flex flex-col gap-stack_gap_md">
             <section
                 class="bg-surface-container-lowest rounded-2xl p-6 md:p-8 premium-shadow border border-outline-variant/50">
                 <h1 class="font-headline-lg text-headline-lg mb-1">My Applications</h1>
@@ -290,7 +262,6 @@
                 </div>
             </div>
         </main>
-    </div>
     <nav
         class="lg:hidden fixed bottom-0 left-0 w-full bg-surface/80 backdrop-blur-xl border-t border-outline-variant z-50 px-gutter py-3 flex justify-between items-center">
         <a class="flex flex-col items-center gap-1 text-outline" href="../index.html">
@@ -330,6 +301,7 @@
             });
         });
     </script>
+<script src="../assets/js/theme.js"></script>
 </body>
 
 </html>

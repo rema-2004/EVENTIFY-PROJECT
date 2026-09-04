@@ -193,6 +193,7 @@
 <a class="font-label-md text-label-md text-primary font-bold border-b-2 border-primary pb-1 transition-all" href="index.html">Home</a>
 <a class="font-label-md text-label-md text-on-surface-variant hover:text-primary dark:text-[#c3c6d7] dark:hover:text-primary transition-colors" href="app/explore.html">Explore</a>
 <a class="font-label-md text-label-md text-on-surface-variant hover:text-primary dark:text-[#c3c6d7] dark:hover:text-primary transition-colors" href="app/posts.html">Posts</a>
+<a class="font-label-md text-label-md text-on-surface-variant hover:text-primary dark:text-[#c3c6d7] dark:hover:text-primary transition-colors" href="app/my-applications.html">My Applications</a>
 <a class="font-label-md text-label-md text-on-surface-variant hover:text-primary dark:text-[#c3c6d7] dark:hover:text-primary transition-colors" href="app/notifications.html">Notifications</a>
 </div>
 </div>
@@ -236,6 +237,7 @@
                 </button>
 </div>
 </section>
+
 <!-- AI Recommendation Section -->
 <section class="space-y-6 home-section">
 <div class="home-section-header">
@@ -726,10 +728,12 @@
         const savedLanguage = localStorage.getItem('eventify-language') || 'en';
         applyLanguage(savedLanguage);
 
-        languageToggle.addEventListener('click', () => {
-            const nextLanguage = document.documentElement.lang === 'ar' ? 'en' : 'ar';
-            applyLanguage(nextLanguage);
-        });
+        if (languageToggle) {
+            languageToggle.addEventListener('click', () => {
+                const nextLanguage = document.documentElement.lang === 'ar' ? 'en' : 'ar';
+                applyLanguage(nextLanguage);
+            });
+        }
 
         function toggleRafeeq() {
             isRafeeqOpen = !isRafeeqOpen;

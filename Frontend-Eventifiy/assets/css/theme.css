@@ -50,6 +50,29 @@ body {
     position: relative;
 }
 
+html.dark body {
+    background-image:
+        radial-gradient(circle at top left, rgba(0, 88, 190, 0.18), transparent 24%),
+        radial-gradient(circle at bottom right, rgba(107, 56, 212, 0.16), transparent 28%),
+        linear-gradient(135deg, #0d1c2e, #111827);
+}
+
+html.dark .bg-white,
+html.dark .bg-surface-container-lowest {
+    background-color: #172131 !important;
+    color: #f8f9ff !important;
+}
+
+html.dark .glass-header,
+html.dark .glass-nav {
+    background: rgba(13, 28, 46, 0.86) !important;
+    border-color: rgba(255, 255, 255, 0.08) !important;
+}
+
+html.dark .border-outline-variant {
+    border-color: rgba(255, 255, 255, 0.12) !important;
+}
+
 body::before,
 body::after {
     content: "";
