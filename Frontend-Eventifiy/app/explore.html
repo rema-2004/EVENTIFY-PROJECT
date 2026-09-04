@@ -75,10 +75,13 @@
 </head>
 <body class="bg-background text-on-background min-h-screen pb-24 md:pb-8">
 <!-- Top Navigation Bar -->
-<nav class="fixed top-0 w-full z-50 bg-surface/80 backdrop-blur-md border-b border-outline-variant/30 shadow-sm h-16 flex items-center">
+<nav class="fixed top-0 w-full z-50 glass-nav border-b border-outline-variant/30 h-16 flex items-center">
 <div class="flex justify-between items-center px-container-margin-mobile md:px-container-margin-desktop w-full max-w-[1280px] mx-auto">
 <div class="flex items-center gap-8">
-<a class="font-headline-lg-mobile text-headline-lg-mobile font-bold tracking-tight text-primary" href="../index.html">EVENTIFY</a>
+<a class="flex items-center gap-3" href="../index.html" aria-label="EVENTIFY home">
+<span class="material-symbols-outlined text-primary text-3xl" style="font-variation-settings:'FILL' 1;">hub</span>
+<span class="font-headline-md text-headline-md font-black text-primary">EVENTIFY</span>
+</a>
 <div class="hidden md:flex gap-6">
 <a class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors" href="../index.html">Home</a>
 <a class="font-label-md text-label-md text-primary font-bold border-b-2 border-primary pb-1 transition-all" href="explore.html">Explore</a>
@@ -87,12 +90,14 @@
 </div>
 </div>
 <div class="flex items-center gap-4">
+<button class="theme-toggle w-9 h-9 rounded-full flex items-center justify-center text-on-surface-variant hover:text-primary hover:bg-surface-container-low transition-colors" title="Switch theme" aria-label="Switch theme">
+<span class="material-symbols-outlined text-[20px]">dark_mode</span>
+</button>
 <a class="hidden md:flex items-center gap-2 px-4 py-2 bg-primary/5 hover:bg-primary/10 rounded-lg text-primary font-label-md transition-all" href="rafeeq.html">
-<span class="material-symbols-outlined text-[20px]">smart_toy</span>
-                    Rafeeq AI
-                </a>
-<a class="h-10 w-10 rounded-full overflow-hidden border-2 border-primary-container block" href="profile.html">
-<img class="w-full h-full object-cover" data-alt="A clean, professional headshot of a diverse young professional man in his late 20s with a warm, confident smile." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCaUW4ycO4zpbXU8-f7qQ8e67JQFR0kFopGobvmcyuwtb7RmtLjv8uPEEmSl-hbsk0Uo2ApZUUq0wRlZ_zn8PJ4ugNgbj5OOGiU0BEkvvm8agYRwod83fIHy3htoOWJsIvO4ldpAhRTz0oyAMispIOZSiEf-bq73m7QKJeH-ZAfVM4q8r4pOddVVra4gOVTwYxIXtrSAQ5_f0WzHxDTzUUNzi4IEbgzPPqIh4aHvXgk12witr7-3N8pVFOo07Rs0y08Ht-8bubrd2i-"/>
+<span class="material-symbols-outlined text-[20px]">smart_toy</span> Rafeeq AI
+</a>
+<a class="h-10 w-10 rounded-full overflow-hidden border-2 border-primary-container block" href="profile.html" aria-label="Open profile">
+<img class="w-full h-full object-cover" data-alt="Profile headshot" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCaUW4ycO4zpbXU8-f7qQ8e67JQFR0kFopGobvmcyuwtb7RmtLjv8uPEEmSl-hbsk0Uo2ApZUUq0wRlZ_zn8PJ4ugNgbj5OOGiU0BEkvvm8agYRwod83fIHy3htoOWJsIvO4ldpAhRTz0oyAMispIOZSiEf-bq73m7QKJeH-ZAfVM4q8r4pOddVVra4gOVTwYxIXtrSAQ5_f0WzHxDTzUUNzi4IEbgzPPqIh4aHvXgk12witr7-3N8pVFOo07Rs0y08Ht-8bubrd2i-"/>
 </a>
 </div>
 </div>

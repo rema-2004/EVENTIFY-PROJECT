@@ -29,6 +29,7 @@
         word-wrap: normal;
         direction: ltr;
         -webkit-font-feature-settings: 'liga';
+        font-feature-settings: 'liga';
         -webkit-font-smoothing: antialiased;
     }
     </style>
@@ -176,7 +177,13 @@
 <header class="sticky top-0 z-40 w-full h-top_nav_height glass-nav border-b border-outline-variant/30 dark:border-white/10 shadow-sm">
 <div class="flex justify-between items-center px-gutter w-full max-w-container_max_width mx-auto h-full">
 <div class="flex items-center gap-8">
-<a class="font-headline-md text-headline-md font-black text-primary animate-pulse-wave" href="../index.html">EVENTIFY</a>
+<a class="flex items-center gap-2 font-headline-md text-headline-md font-black text-primary animate-pulse-wave" href="../index.html"><span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1;">hub</span>EVENTIFY</a>
+                <nav class="hidden md:flex items-center gap-6">
+                    <a class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors" href="../index.html">Home</a>
+                    <a class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors" href="explore.html">Explore</a>
+                    <a class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors" href="posts.html">Posts</a>
+                    <a class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors" href="notifications.html">Notifications</a>
+                </nav>
 <div class="hidden md:flex relative group">
 <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline">search</span>
 <input class="bg-surface-container-low dark:bg-slate-900 border-none rounded-full pl-10 pr-4 py-2 w-64 focus:ring-2 focus:ring-primary/20 dark:text-white transition-all" placeholder="Search opportunities, people..." type="text"/>
