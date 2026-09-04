@@ -1492,10 +1492,10 @@ html:not([data-theme="dark"]) .theme-toggle .fa-sun{display:none;}
           <div class="hero-search">
             <i class="fa-solid fa-wand-magic-sparkles search-icon"></i>
             <input type="text" placeholder="" id="heroSearchInput" class="rotating-placeholder">
-            <span class="rp-text" id="rpText">Ask Rafeeq AI to find opportunities...</span>
+            <span class="rp-text" id="rpText">Sign in to search personalized opportunities...</span>
             <button class="mic-btn" aria-label="Voice search"><i class="fa-solid fa-microphone"></i></button>
             <span class="ai-badge"><i class="fa-solid fa-sparkles"></i> AI</span>
-            <button type="button" id="heroSearchButton">Search</button>
+            <button type="button" id="heroSearchButton">Sign in to Search</button>
           </div>
         </div>
         <div class="hero-right">
@@ -2410,13 +2410,11 @@ html:not([data-theme="dark"]) .theme-toggle .fa-sun{display:none;}
   const heroInput = document.getElementById('heroSearchInput');
   const heroSearchButton = document.getElementById('heroSearchButton');
   const phrases = [
-    'Ask Rafeeq AI to find opportunities...',
-    'Search hackathons in Jordan...',
-    'Find AI internships near you...',
-    'Discover cybersecurity courses...',
-    'Explore volunteering programs...',
-    'Find competitions with prizes...',
-    'Search by skill: Python, React...'
+    'Sign in to search personalized opportunities...',
+    'Sign in to find hackathons in Jordan...',
+    'Sign in to find AI internships...',
+    'Sign in to discover cybersecurity courses...',
+    'Sign in to explore volunteering programs...'
   ];
   let rpIndex = 0;
   function rotatePlaceholder(){
@@ -2429,9 +2427,7 @@ html:not([data-theme="dark"]) .theme-toggle .fa-sun{display:none;}
   }
   setInterval(rotatePlaceholder, 3000);
   heroSearchButton.addEventListener('click', () => {
-    const query = heroInput.value.trim();
-    const target = query ? '../app/explore.html?search=' + encodeURIComponent(query) : '../app/explore.html';
-    window.location.href = target;
+    window.location.href = '../auth/login.html';
   });
   heroInput.addEventListener('focus', () => rpText.style.display = 'none');
   heroInput.addEventListener('blur', () => {

@@ -124,6 +124,7 @@
 <span class="bg-surface-container-lowest border border-outline-variant px-4 py-1.5 rounded-full font-label-sm text-label-sm whitespace-nowrap text-on-surface-variant">Business</span>
 <span class="bg-surface-container-lowest border border-outline-variant px-4 py-1.5 rounded-full font-label-sm text-label-sm whitespace-nowrap text-on-surface-variant">University Only</span>
 </div>
+<p class="font-body-sm text-body-sm text-on-surface-variant" id="results-status" aria-live="polite"></p>
 </div>
 <!-- Results Grid -->
 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-gutter" id="results-grid">
@@ -219,6 +220,11 @@
 </div>
 </div>
 </div>
+<div class="hidden rounded-xl border border-dashed border-outline-variant bg-surface-container-low p-8 text-center" id="empty-state" role="status">
+<span class="material-symbols-outlined text-4xl text-outline">search_off</span>
+<h2 class="font-title-md text-title-md mt-3">No opportunities found</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1">Try a different keyword or category.</p>
+</div>
 </main>
 <!-- Mobile Navigation -->
 <nav class="fixed bottom-0 w-full rounded-t-xl z-50 md:hidden flex justify-around items-center px-4 py-2 pb-safe bg-surface shadow-[0_-4px_12px_rgba(59,130,246,0.08)]">
@@ -245,18 +251,43 @@
 </nav>
 <script>
     const tabs = document.querySelectorAll('#category-tabs button');
-    const cards = document.querySelectorAll('#results-grid > div');
+    const cards = Array.from(document.querySelectorAll('#results-grid > div'));
+    const searchInput = document.getElementById('search-input');
+    const emptyState = document.getElementById('empty-state');
+    const resultsStatus = document.getElementById('results-status');
+    let selectedCategory = 'all';
+
+    function applyFilters() {
+        const query = searchInput.value.trim().toLowerCase();
+        let visibleCount = 0;
+
+        cards.forEach(card => {
+            const matchesCategory = selectedCategory === 'all' || card.dataset.cat === selectedCategory;
+            const matchesQuery = !query || card.textContent.toLowerCase().includes(query);
+            const isVisible = matchesCategory && matchesQuery;
+            card.style.display = isVisible ? '' : 'none';
+            if (isVisible) visibleCount += 1;
+        });
+
+        resultsStatus.textContent = visibleCount + (visibleCount === 1 ? ' opportunity found' : ' opportunities found');
+        emptyState.classList.toggle('hidden', visibleCount !== 0);
+    }
+
     tabs.forEach(tab => {
         tab.addEventListener('click', () => {
             tabs.forEach(t => t.classList.remove('tab-active', 'bg-surface-container', 'text-on-surface-variant'));
             tabs.forEach(t => t.classList.add('bg-surface-container', 'text-on-surface-variant'));
             tab.classList.remove('bg-surface-container', 'text-on-surface-variant');
             tab.classList.add('tab-active');
-            const cat = tab.dataset.cat;
-            cards.forEach(card => {
-                card.style.display = (cat === 'all' || card.dataset.cat === cat) ? '' : 'none';
-            });
+            selectedCategory = tab.dataset.cat;
+            applyFilters();
         });
     });
+
+    searchInput.addEventListener('input', applyFilters);
+
+    const initialQuery = new URLSearchParams(window.location.search).get('search');
+    if (initialQuery) searchInput.value = initialQuery;
+    applyFilters();
 </script>
 </body></html>
