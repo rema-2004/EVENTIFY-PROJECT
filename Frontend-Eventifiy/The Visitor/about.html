@@ -198,6 +198,8 @@ html:not([data-theme="dark"]) .theme-toggle .fa-sun{display:none;}
 .reveal-stagger.in>*:nth-child(3){transition-delay:.15s;opacity:1;transform:translateY(0);}
 .reveal-stagger.in>*:nth-child(4){transition-delay:.2s;opacity:1;transform:translateY(0);}
 a:focus-visible,button:focus-visible{outline:2px solid var(--primary);outline-offset:3px;}
+.skip-link{position:fixed;top:12px;left:12px;z-index:10002;padding:10px 16px;border-radius:10px;background:#fff;color:var(--primary);font-weight:700;transform:translateY(-160%);transition:transform .2s;box-shadow:0 8px 24px rgba(3,10,25,.2);}
+.skip-link:focus{transform:translateY(0);}
 /* ===== DARK MODE ===== */
 html[data-theme="dark"]{--bg:#0A0E1A;--surface:#111827;--text:#F1F5F9;--text-muted:#94A3B8;--border:rgba(255,255,255,.06);--border-strong:rgba(255,255,255,.10);}
 html[data-theme="dark"] body{background:var(--bg);color:var(--text);}
@@ -211,6 +213,8 @@ html[data-theme="dark"] .footer{background:#080C15;}
 </head>
 <body>
 
+<a class="skip-link" href="#main-content">Skip to main content</a>
+
 <header class="navbar" id="navbar">
   <div class="container">
     <a href="landing.html" class="logo"><img src="../assets/images/LOGO+NAME.CHAT GPT (1).png" alt="EVENTIFY"></a>
@@ -222,6 +226,7 @@ html[data-theme="dark"] .footer{background:#080C15;}
         <li><a href="landing.html#rafeeq">Rafeeq AI</a></li>
         <li><a href="landing.html#faq">FAQ</a></li>
         <li><a class="active" href="about.html">About</a></li>
+        <li><a href="contact.html">Contact</a></li>
       </ul>
     </nav>
     <div class="nav-buttons">
@@ -229,15 +234,16 @@ html[data-theme="dark"] .footer{background:#080C15;}
       <a href="../auth/login.html" class="btn btn-outline btn-sm">Login</a>
       <a href="../auth/signup.html" class="btn btn-primary btn-sm">Get Started</a>
     </div>
-    <button class="mobile-menu" aria-label="Open menu"><i class="fa-solid fa-bars"></i></button>
+    <button class="mobile-menu" aria-label="Open menu" aria-expanded="false"><i class="fa-solid fa-bars"></i></button>
   </div>
 </header>
 
+<main id="main-content">
 <section class="page-hero">
   <div class="container">
     <span class="section-tag"><i class="fa-solid fa-hub"></i> About EVENTIFY</span>
-    <h1>Connecting ambition with opportunity.</h1>
-    <p>EVENTIFY is an AI-matched platform that helps students and graduates discover hackathons, competitions, internships, courses and events built for them — and helps organizations reach the right people.</p>
+    <h1>Making the right opportunity easier to find.</h1>
+    <p>EVENTIFY is a trusted opportunity discovery platform that connects students and graduates with hackathons, competitions, internships, courses and events matched to their goals, while helping organizations reach qualified talent.</p>
   </div>
 </section>
 
@@ -246,10 +252,10 @@ html[data-theme="dark"] .footer{background:#080C15;}
     <div class="story-grid reveal">
       <div class="story-copy">
         <span class="section-tag">Our story</span>
-        <h2 style="font-size:clamp(24px,2.8vw,34px);margin-bottom:18px;-webkit-background-clip:initial;background-clip:initial;-webkit-text-fill-color:initial;color:var(--text);">Built by people who were once on the other side of the application</h2>
-        <p>EVENTIFY started from a simple frustration: great opportunities were scattered across dozens of pages, group chats, and outdated PDFs, and the students who needed them most were the least likely to find them in time.</p>
-        <p>We set out to build a single place where opportunities find you, powered by an AI companion — Rafeeq — that learns your skills and goals instead of asking you to sift through irrelevant listings.</p>
-        <p>Today EVENTIFY supports students, graduates, and the organizations running events, from independent student clubs to established institutions.</p>
+        <h2 style="font-size:clamp(24px,2.8vw,34px);margin-bottom:18px;-webkit-background-clip:initial;background-clip:initial;-webkit-text-fill-color:initial;color:var(--text);">A clearer path from potential to progress</h2>
+        <p>Students and graduates often discover important opportunities too late because information is scattered across websites, social networks and private communities. EVENTIFY brings these opportunities together in one reliable, organized platform.</p>
+        <p>Our intelligent matching experience, supported by Rafeeq AI, understands each member's skills, interests and ambitions to surface opportunities that are genuinely relevant, not just popular.</p>
+        <p>For organizations, EVENTIFY provides a direct way to publish opportunities, build credibility through verification and connect with motivated candidates who are ready to grow.</p>
       </div>
       <div class="story-stats">
         <div class="story-stat"><h3 class="mono">12k+</h3><p>Opportunities matched</p></div>
@@ -264,61 +270,52 @@ html[data-theme="dark"] .footer{background:#080C15;}
 <section class="section-pad" style="background:var(--surface);">
   <div class="container">
     <div class="section-head center reveal">
-      <span class="section-tag" style="margin-left:auto;margin-right:auto;">What we stand for</span>
-      <h2>The values behind every feature</h2>
-      <p>These principles guide how we design the platform, from how Rafeeq recommends opportunities to how organizers manage applicants.</p>
+      <span class="section-tag" style="margin-left:auto;margin-right:auto;">Our principles</span>
+      <h2>Built around better access and better decisions</h2>
+      <p>Our principles shape every part of EVENTIFY, from the opportunities we highlight to the tools organizations use to find their next candidate.</p>
     </div>
     <div class="why-grid reveal-stagger">
       <div class="why-card">
         <div class="why-icon"><i class="fa-solid fa-bullseye"></i></div>
         <h3>Relevance over volume</h3>
-        <p>We'd rather show you three opportunities that fit than thirty that don't. Matching quality comes first.</p>
+        <p>We prioritize meaningful matches so members can spend less time searching and more time pursuing opportunities that fit their goals.</p>
       </div>
       <div class="why-card">
         <div class="why-icon"><i class="fa-solid fa-scale-balanced"></i></div>
         <h3>Fair access</h3>
-        <p>A strong opportunity should be findable by any student who qualifies for it, not just those already in the right group chat.</p>
+        <p>Valuable opportunities should be discoverable by every qualified student, regardless of their network, location or background.</p>
       </div>
       <div class="why-card">
         <div class="why-icon"><i class="fa-solid fa-shield-halved"></i></div>
         <h3>Trust and verification</h3>
-        <p>Organizations on EVENTIFY go through a verification step, so applicants know who they're actually applying to.</p>
+        <p>Verification helps members make informed decisions and gives organizations a credible, professional presence on the platform.</p>
       </div>
     </div>
   </div>
 </section>
 
-<section class="section-pad">
+<section class="section-pad" style="background:var(--surface);">
   <div class="container">
     <div class="section-head center reveal">
-      <span class="section-tag" style="margin-left:auto;margin-right:auto;">The team</span>
-      <h2>A small team building for a big audience</h2>
-      <p>EVENTIFY is developed as a graduation project, built end-to-end by a small, hands-on team.</p>
+      <span class="section-tag" style="margin-left:auto;margin-right:auto;">How it works</span>
+      <h2>From discovery to action in three simple steps</h2>
+      <p>EVENTIFY helps you move from searching for possibilities to taking the next step with confidence.</p>
     </div>
-    <div class="team-grid reveal-stagger">
-      <div class="team-card">
-        <div class="team-avatar">R</div>
-        <h4>Rema</h4>
-        <p class="role">Product &amp; Frontend</p>
-        <div class="team-social"><a href="#"><i class="fa-brands fa-linkedin-in"></i></a><a href="#"><i class="fa-brands fa-github"></i></a></div>
+    <div class="why-grid reveal-stagger">
+      <div class="why-card">
+        <div class="why-icon"><i class="fa-solid fa-compass"></i></div>
+        <h3>Discover</h3>
+        <p>Explore verified events, internships, courses and competitions gathered in one organized platform.</p>
       </div>
-      <div class="team-card">
-        <div class="team-avatar">A</div>
-        <h4>Ali</h4>
-        <p class="role">Backend &amp; Infrastructure</p>
-        <div class="team-social"><a href="#"><i class="fa-brands fa-linkedin-in"></i></a><a href="#"><i class="fa-brands fa-github"></i></a></div>
+      <div class="why-card">
+        <div class="why-icon"><i class="fa-solid fa-wand-magic-sparkles"></i></div>
+        <h3>Get matched</h3>
+        <p>Rafeeq AI uses your skills, interests and goals to highlight the opportunities most relevant to you.</p>
       </div>
-      <div class="team-card">
-        <div class="team-avatar">S</div>
-        <h4>Sara</h4>
-        <p class="role">UX &amp; Research</p>
-        <div class="team-social"><a href="#"><i class="fa-brands fa-linkedin-in"></i></a><a href="#"><i class="fa-brands fa-github"></i></a></div>
-      </div>
-      <div class="team-card">
-        <div class="team-avatar">O</div>
-        <h4>Omar</h4>
-        <p class="role">AI &amp; Matching</p>
-        <div class="team-social"><a href="#"><i class="fa-brands fa-linkedin-in"></i></a><a href="#"><i class="fa-brands fa-github"></i></a></div>
+      <div class="why-card">
+        <div class="why-icon"><i class="fa-solid fa-arrow-up-right-from-square"></i></div>
+        <h3>Take action</h3>
+        <p>Save the right opportunities, track deadlines and apply with a profile that represents your strengths.</p>
       </div>
     </div>
   </div>
@@ -327,16 +324,18 @@ html[data-theme="dark"] .footer{background:#080C15;}
 <section class="cta-section">
   <div class="container">
     <div class="cta-box reveal">
-      <span class="section-tag">Join us</span>
-      <h2>Ready to find your next opportunity?</h2>
-      <p>Create a free account and let Rafeeq start matching you with hackathons, courses, and jobs today.</p>
+      <span class="section-tag">Start with EVENTIFY</span>
+      <h2>Your next opportunity starts here</h2>
+      <p>Students can discover better-fit opportunities, while organizations can connect with motivated people ready to contribute.</p>
       <div class="cta-buttons">
-        <a href="../auth/signup.html" class="btn btn-light btn-lg" style="padding:17px 36px;font-size:15px;">Get Started Free</a>
-        <a href="../marketing/contact.html" class="btn btn-outline btn-lg" style="padding:17px 36px;font-size:15px;background:transparent;border-color:rgba(255,255,255,.4);color:#fff;">Contact Us</a>
+        <a href="../auth/signup.html" class="btn btn-light btn-lg" style="padding:17px 36px;font-size:15px;">Join as a Student</a>
+        <a href="contact.html" class="btn btn-outline btn-lg" style="padding:17px 36px;font-size:15px;background:transparent;border-color:rgba(255,255,255,.4);color:#fff;">Partner with Us</a>
       </div>
     </div>
   </div>
 </section>
+
+</main>
 
 <footer class="footer">
   <div class="container">
@@ -356,7 +355,7 @@ html[data-theme="dark"] .footer{background:#080C15;}
         <ul>
           <li><a href="about.html">About</a></li>
           <li><a href="landing.html#opportunities">Events</a></li>
-          <li><a href="landing.html#organizations">Organizations</a></li>
+          <li><a href="../auth/organization-verification.html">Organizations</a></li>
           <li><a href="landing.html#rafeeq">Rafeeq AI</a></li>
           <li><a href="landing.html#categories">Categories</a></li>
         </ul>
@@ -399,7 +398,10 @@ html[data-theme="dark"] .footer{background:#080C15;}
   const mobileBtn = document.querySelector('.mobile-menu');
   mobileBtn.addEventListener('click', () => {
     const links = document.querySelector('.nav-links');
-    links.style.display = links.style.display === 'flex' ? 'none' : 'flex';
+    const isOpen = links.style.display !== 'flex';
+    links.style.display = isOpen ? 'flex' : 'none';
+    mobileBtn.setAttribute('aria-expanded', String(isOpen));
+    mobileBtn.setAttribute('aria-label', isOpen ? 'Close menu' : 'Open menu');
     links.style.flexDirection = 'column';
     links.style.position = 'absolute';
     links.style.top = '100%';
@@ -408,6 +410,13 @@ html[data-theme="dark"] .footer{background:#080C15;}
     links.style.background = 'var(--surface)';
     links.style.padding = '20px 24px';
     links.style.borderBottom = '1px solid var(--border)';
+  });
+  document.querySelectorAll('.nav-links a').forEach(link => {
+    link.addEventListener('click', () => {
+      document.querySelector('.nav-links').style.display = 'none';
+      mobileBtn.setAttribute('aria-expanded', 'false');
+      mobileBtn.setAttribute('aria-label', 'Open menu');
+    });
   });
 
   const revealEls = document.querySelectorAll('.reveal,.reveal-stagger');

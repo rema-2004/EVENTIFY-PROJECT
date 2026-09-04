@@ -170,6 +170,8 @@ section + section{
 @media(max-width:920px){
   .nav-links,.nav-buttons{display:none;}
   .mobile-menu{display:block;}
+  .navbar.mobile-open .nav-links{display:flex;position:absolute;top:100%;left:0;right:0;flex-direction:column;gap:0;padding:20px 24px;background:var(--surface);border-bottom:1px solid var(--border);box-shadow:0 12px 24px rgba(17,24,39,.08);}
+  .navbar.mobile-open .nav-links a{padding:10px 0;color:var(--text-muted);}
 }
 
 /* ===== HERO / SLIDER ===== */
@@ -1442,7 +1444,7 @@ html:not([data-theme="dark"]) .theme-toggle .fa-sun{display:none;}
 
 <header class="navbar" id="navbar">
   <div class="container">
-    <a href="#" class="logo"><img src="../assets/images/LOGO+NAME.CHAT GPT (1).png" alt="EVENTIFY"></a>
+    <a href="landing.html" class="logo"><img src="../assets/images/LOGO+NAME.CHAT GPT (1).png" alt="EVENTIFY"></a>
     <nav>
       <ul class="nav-links">
         <li><a class="active" href="#">Home</a></li>
@@ -1450,7 +1452,8 @@ html:not([data-theme="dark"]) .theme-toggle .fa-sun{display:none;}
         <li><a href="#categories">Categories</a></li>
         <li><a href="#rafeeq">Rafeeq AI</a></li>
         <li><a href="#faq">FAQ</a></li>
-        <li><a href="#about">About</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="contact.html">Contact</a></li>
       </ul>
     </nav>
     <div class="nav-buttons">
@@ -1458,10 +1461,11 @@ html:not([data-theme="dark"]) .theme-toggle .fa-sun{display:none;}
       <a href="../auth/login.html" class="btn btn-outline btn-sm">Login</a>
       <a href="../auth/signup.html" class="btn btn-primary btn-sm">Get Started</a>
     </div>
-    <button class="mobile-menu" aria-label="Open menu"><i class="fa-solid fa-bars"></i></button>
+    <button class="mobile-menu" aria-label="Open menu" aria-expanded="false"><i class="fa-solid fa-bars"></i></button>
   </div>
 </header>
 
+<main id="main-content">
 <section class="hero" id="hero">
   <div class="slider" id="slider">
 
@@ -1491,7 +1495,7 @@ html:not([data-theme="dark"]) .theme-toggle .fa-sun{display:none;}
             <span class="rp-text" id="rpText">Ask Rafeeq AI to find opportunities...</span>
             <button class="mic-btn" aria-label="Voice search"><i class="fa-solid fa-microphone"></i></button>
             <span class="ai-badge"><i class="fa-solid fa-sparkles"></i> AI</span>
-            <button>Search</button>
+            <button type="button" id="heroSearchButton">Search</button>
           </div>
         </div>
         <div class="hero-right">
@@ -1671,26 +1675,6 @@ html:not([data-theme="dark"]) .theme-toggle .fa-sun{display:none;}
   </div>
 </section>
 
-<section class="section-pad why-section section-gap" id="about">
-  <div class="bg-glow bg-glow-1"></div>
-  <div class="bg-glow bg-glow-2"></div>
-  <div class="container" style="position:relative;z-index:1;">
-    <div class="section-head center reveal" style="margin-left:auto;margin-right:auto;">
-      <span class="section-tag">Why Eventify</span>
-      <h2>Everything you need, in one place</h2>
-      <p>A single platform that finds the right opportunity for you and takes the guesswork out of applying.</p>
-    </div>
-    <div class="why-grid reveal-stagger">
-      <div class="why-card card-3d card-shine"><div class="why-icon"><i class="fa-solid fa-brain"></i></div><h3>AI Recommendations</h3><p>Get opportunities ranked by how well they match your skills, interests and goals.</p></div>
-      <div class="why-card card-3d card-shine"><div class="why-icon"><i class="fa-solid fa-shield-halved"></i></div><h3>Verified Organizations</h3><p>Every host is reviewed, so you only see legitimate events and internships.</p></div>
-      <div class="why-card card-3d card-shine"><div class="why-icon"><i class="fa-solid fa-bolt"></i></div><h3>One-Click Apply</h3><p>Your profile is saved once — apply to any opportunity in a single tap.</p></div>
-      <div class="why-card card-3d card-shine"><div class="why-icon"><i class="fa-solid fa-award"></i></div><h3>Certificates</h3><p>Earn verified certificates you can add straight to your CV or LinkedIn.</p></div>
-      <div class="why-card card-3d card-shine"><div class="why-icon"><i class="fa-solid fa-bell"></i></div><h3>Smart Notifications</h3><p>Get notified the moment a deadline or opportunity matching you opens up.</p></div>
-      <div class="why-card card-3d card-shine"><div class="why-icon"><i class="fa-solid fa-microphone"></i></div><h3>Voice Assistant</h3><p>Ask Rafeeq AI out loud to find, filter and apply to opportunities for you.</p></div>
-    </div>
-  </div>
-</section>
-
 <section class="section-pad opp-section section-gap" id="opportunities">
   <div class="bg-glow bg-glow-3"></div>
   <div class="container" style="position:relative;z-index:1;">
@@ -1700,7 +1684,7 @@ html:not([data-theme="dark"]) .theme-toggle .fa-sun{display:none;}
         <h2>Featured Opportunities</h2>
         <p>Explore competitions, events, and workshops tailored to your interests.</p>
       </div>
-      <a href="#" class="btn btn-outline">View All <i class="fa-solid fa-arrow-right"></i></a>
+      <a href="../app/explore.html" class="btn btn-outline">View All <i class="fa-solid fa-arrow-right"></i></a>
     </div>
     <div class="opp-filters reveal">
       <button class="filter-chip active" data-filter="all">All</button>
@@ -1712,7 +1696,7 @@ html:not([data-theme="dark"]) .theme-toggle .fa-sun{display:none;}
     <div class="opp-grid reveal-stagger">
       <div class="opp-card card-3d card-shine" data-category="competition">
         <div class="opp-thumb">
-          <img src="https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&w=900&q=80" alt="AI competition event">
+          <img src="https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&w=900&q=80" alt="AI competition event" loading="lazy">
           <span class="tag">Competition</span>
           <span class="match-badge"><i class="fa-solid fa-bolt"></i> 96%</span>
         </div>
@@ -1720,18 +1704,18 @@ html:not([data-theme="dark"]) .theme-toggle .fa-sun{display:none;}
           <h3>Google AI Challenge 2026</h3>
           <div class="opp-meta">
             <span><i class="fa-solid fa-location-dot"></i> Amman, Jordan</span>
-            <span><i class="fa-solid fa-calendar"></i> Aug 14, 2026</span>
+            <span><i class="fa-solid fa-calendar"></i> Sep 14, 2026</span>
             <span><i class="fa-solid fa-users"></i> 1.2k applicants</span>
           </div>
           <div class="opp-footer">
-            <span class="applicants"><strong>3 days</strong> left</span>
-            <a href="#" class="btn btn-primary btn-sm">View Details</a>
+            <span class="applicants"><strong>10 days</strong> left</span>
+            <a href="../app/opportunity.html" class="btn btn-primary btn-sm">View Details</a>
           </div>
         </div>
       </div>
       <div class="opp-card card-3d card-shine" data-category="workshop">
         <div class="opp-thumb">
-          <img src="https://images.unsplash.com/photo-1516321497487-e288fb19713f?auto=format&fit=crop&w=900&q=80" alt="Workshop session">
+          <img src="https://images.unsplash.com/photo-1516321497487-e288fb19713f?auto=format&fit=crop&w=900&q=80" alt="Workshop session" loading="lazy">
           <span class="tag">Workshop</span>
           <span class="match-badge"><i class="fa-solid fa-bolt"></i> 92%</span>
         </div>
@@ -1739,18 +1723,18 @@ html:not([data-theme="dark"]) .theme-toggle .fa-sun{display:none;}
           <h3>Microsoft Summer Internship</h3>
           <div class="opp-meta">
             <span><i class="fa-solid fa-location-dot"></i> Remote</span>
-            <span><i class="fa-solid fa-calendar"></i> Jul 30, 2026</span>
+            <span><i class="fa-solid fa-calendar"></i> Sep 20, 2026</span>
             <span><i class="fa-solid fa-users"></i> 890 applicants</span>
           </div>
           <div class="opp-footer">
-            <span class="applicants"><strong>5 days</strong> left</span>
-            <a href="#" class="btn btn-primary btn-sm">View Details</a>
+            <span class="applicants"><strong>16 days</strong> left</span>
+            <a href="../app/opportunity.html" class="btn btn-primary btn-sm">View Details</a>
           </div>
         </div>
       </div>
       <div class="opp-card card-3d card-shine" data-category="event">
         <div class="opp-thumb">
-          <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=900&q=80" alt="Networking event">
+          <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=900&q=80" alt="Networking event" loading="lazy">
           <span class="tag">Event</span>
           <span class="match-badge"><i class="fa-solid fa-bolt"></i> 88%</span>
         </div>
@@ -1763,7 +1747,7 @@ html:not([data-theme="dark"]) .theme-toggle .fa-sun{display:none;}
           </div>
           <div class="opp-footer">
             <span class="applicants"><strong>Open</strong> enrollment</span>
-            <a href="#" class="btn btn-primary btn-sm">View Details</a>
+            <a href="../app/opportunity.html" class="btn btn-primary btn-sm">View Details</a>
           </div>
         </div>
       </div>
@@ -1841,7 +1825,7 @@ html:not([data-theme="dark"]) .theme-toggle .fa-sun{display:none;}
         <h2>Trending Right Now</h2>
         <p>Most popular opportunities this week, act fast before they close.</p>
       </div>
-      <a href="#" class="btn btn-outline">View All <i class="fa-solid fa-arrow-right"></i></a>
+      <a href="../app/explore.html" class="btn btn-outline">View All <i class="fa-solid fa-arrow-right"></i></a>
     </div>
     <div class="trending-track reveal">
       <div class="trending-card card-3d">
@@ -1854,12 +1838,12 @@ html:not([data-theme="dark"]) .theme-toggle .fa-sun{display:none;}
           <h3>Meta Hacker Cup 2026</h3>
           <div class="opp-meta">
             <span><i class="fa-solid fa-location-dot"></i> Remote</span>
-            <span><i class="fa-solid fa-calendar"></i> Jul 25, 2026</span>
+            <span><i class="fa-solid fa-calendar"></i> Sep 10, 2026</span>
             <span><i class="fa-solid fa-users"></i> 3.4k applicants</span>
           </div>
           <div class="opp-footer">
-            <span class="applicants"><strong>2 days</strong> left</span>
-            <a href="#" class="btn btn-primary btn-sm">Apply Now</a>
+            <span class="applicants"><strong>6 days</strong> left</span>
+            <a href="../app/opportunity.html" class="btn btn-primary btn-sm">Apply Now</a>
           </div>
         </div>
       </div>
@@ -1873,12 +1857,12 @@ html:not([data-theme="dark"]) .theme-toggle .fa-sun{display:none;}
           <h3>Google STEP Internship</h3>
           <div class="opp-meta">
             <span><i class="fa-solid fa-location-dot"></i> Mountain View</span>
-            <span><i class="fa-solid fa-calendar"></i> Aug 1, 2026</span>
+            <span><i class="fa-solid fa-calendar"></i> Sep 18, 2026</span>
             <span><i class="fa-solid fa-users"></i> 5.1k applicants</span>
           </div>
           <div class="opp-footer">
-            <span class="applicants"><strong>4 days</strong> left</span>
-            <a href="#" class="btn btn-primary btn-sm">Apply Now</a>
+            <span class="applicants"><strong>14 days</strong> left</span>
+            <a href="../app/opportunity.html" class="btn btn-primary btn-sm">Apply Now</a>
           </div>
         </div>
       </div>
@@ -1897,7 +1881,7 @@ html:not([data-theme="dark"]) .theme-toggle .fa-sun{display:none;}
           </div>
           <div class="opp-footer">
             <span class="applicants"><strong>Open</strong> registration</span>
-            <a href="#" class="btn btn-primary btn-sm">Register</a>
+            <a href="../app/opportunity.html" class="btn btn-primary btn-sm">Register</a>
           </div>
         </div>
       </div>
@@ -1911,12 +1895,12 @@ html:not([data-theme="dark"]) .theme-toggle .fa-sun{display:none;}
           <h3>IEEE Volunteering Program</h3>
           <div class="opp-meta">
             <span><i class="fa-solid fa-location-dot"></i> Hybrid</span>
-            <span><i class="fa-solid fa-calendar"></i> Aug 20, 2026</span>
+            <span><i class="fa-solid fa-calendar"></i> Oct 3, 2026</span>
             <span><i class="fa-solid fa-users"></i> 890 applicants</span>
           </div>
           <div class="opp-footer">
-            <span class="applicants"><strong>7 days</strong> left</span>
-            <a href="#" class="btn btn-primary btn-sm">Apply Now</a>
+            <span class="applicants"><strong>29 days</strong> left</span>
+            <a href="../app/opportunity.html" class="btn btn-primary btn-sm">Apply Now</a>
           </div>
         </div>
       </div>
@@ -1935,7 +1919,7 @@ html:not([data-theme="dark"]) .theme-toggle .fa-sun{display:none;}
           </div>
           <div class="opp-footer">
             <span class="applicants"><strong>Open</strong> enrollment</span>
-            <a href="#" class="btn btn-primary btn-sm">Enroll Now</a>
+            <a href="../app/opportunity.html" class="btn btn-primary btn-sm">Enroll Now</a>
           </div>
         </div>
       </div>
@@ -1952,39 +1936,39 @@ html:not([data-theme="dark"]) .theme-toggle .fa-sun{display:none;}
     </div>
     <div class="deadline-timeline reveal">
       <div class="deadline-item">
-        <div class="deadline-date"><div class="dd-day">18</div><div class="dd-month">Jul</div></div>
+        <div class="deadline-date"><div class="dd-day">10</div><div class="dd-month">Sep</div></div>
         <div class="deadline-info">
           <h4>Meta Hacker Cup 2026</h4>
           <p>Global coding competition by Meta. Top prizes up to $20,000.</p>
         </div>
-        <span class="deadline-urgency urgent">1 day left</span>
+        <span class="deadline-urgency urgent">6 days left</span>
       </div>
       <div class="deadline-item">
-        <div class="deadline-date"><div class="dd-day">25</div><div class="dd-month">Jul</div></div>
+        <div class="deadline-date"><div class="dd-day">14</div><div class="dd-month">Sep</div></div>
         <div class="deadline-info">
           <h4>Google AI Challenge</h4>
           <p>AI-focused hackathon with mentorship from Google engineers.</p>
         </div>
-        <span class="deadline-urgency urgent">3 days left</span>
+        <span class="deadline-urgency soon">10 days left</span>
       </div>
       <div class="deadline-item">
-        <div class="deadline-date"><div class="dd-day">30</div><div class="dd-month">Jul</div></div>
+        <div class="deadline-date"><div class="dd-day">20</div><div class="dd-month">Sep</div></div>
         <div class="deadline-info">
           <h4>Microsoft Summer Internship</h4>
           <p>Software engineering internship with hands-on project experience.</p>
         </div>
-        <span class="deadline-urgency soon">5 days left</span>
+        <span class="deadline-urgency soon">16 days left</span>
       </div>
       <div class="deadline-item">
-        <div class="deadline-date"><div class="dd-day">05</div><div class="dd-month">Aug</div></div>
+        <div class="deadline-date"><div class="dd-day">03</div><div class="dd-month">Oct</div></div>
         <div class="deadline-info">
           <h4>Cybersecurity Fundamentals Course</h4>
           <p>Online course covering network security, cryptography and forensics.</p>
         </div>
-        <span class="deadline-urgency soon">10 days left</span>
+        <span class="deadline-urgency open">29 days left</span>
       </div>
       <div class="deadline-item">
-        <div class="deadline-date"><div class="dd-day">15</div><div class="dd-month">Sep</div></div>
+        <div class="deadline-date"><div class="dd-day">10</div><div class="dd-month">Oct</div></div>
         <div class="deadline-info">
           <h4>ACM ICPC Regional Contest</h4>
           <p>Annual programming contest for university students in the Middle East.</p>
@@ -2081,7 +2065,7 @@ html:not([data-theme="dark"]) .theme-toggle .fa-sun{display:none;}
     <div class="stories-grid reveal-stagger">
       <div class="story-card card-3d">
         <div class="story-top">
-          <img class="story-photo" src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=200&q=80" alt="Lina Hassan" />
+          <img class="story-photo" src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=200&q=80" alt="Lina Hassan" loading="lazy" />
           <div>
             <h4>Lina Hassan</h4>
             <span class="story-role">Software Engineering — GJU</span>
@@ -2092,7 +2076,7 @@ html:not([data-theme="dark"]) .theme-toggle .fa-sun{display:none;}
       </div>
       <div class="story-card card-3d">
         <div class="story-top">
-          <img class="story-photo" src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=200&q=80" alt="Khaled Mansour" />
+          <img class="story-photo" src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=200&q=80" alt="Khaled Mansour" loading="lazy" />
           <div>
             <h4>Khaled Mansour</h4>
             <span class="story-role">AI &amp; Machine Learning — JUST</span>
@@ -2103,7 +2087,7 @@ html:not([data-theme="dark"]) .theme-toggle .fa-sun{display:none;}
       </div>
       <div class="story-card card-3d">
         <div class="story-top">
-          <img class="story-photo" src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=200&q=80" alt="Nour Al-Rashed" />
+          <img class="story-photo" src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=200&q=80" alt="Nour Al-Rashed" loading="lazy" />
           <div>
             <h4>Nour Al-Rashed</h4>
             <span class="story-role">Cybersecurity — HTU</span>
@@ -2173,11 +2157,13 @@ html:not([data-theme="dark"]) .theme-toggle .fa-sun{display:none;}
   </div>
 </section>
 
+</main>
+
 <footer class="footer">
   <div class="container">
     <div class="footer-grid">
       <div>
-        <a href="#" class="footer-logo"><img src="../assets/images/LOGO+NAME.CHAT GPT (1).png" alt="EVENTIFY"></a>
+        <a href="landing.html" class="footer-logo"><img src="../assets/images/LOGO+NAME.CHAT GPT (1).png" alt="EVENTIFY"></a>
         <p class="desc">Connecting students and graduates with opportunities, matched by AI.</p>
         <div class="social-links">
           <a href="#" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
@@ -2189,9 +2175,9 @@ html:not([data-theme="dark"]) .theme-toggle .fa-sun{display:none;}
       <div>
         <h4>Platform</h4>
         <ul>
-          <li><a href="#about">About</a></li>
+          <li><a href="about.html">About</a></li>
           <li><a href="#opportunities">Events</a></li>
-          <li><a href="#organizations">Organizations</a></li>
+          <li><a href="../auth/organization-verification.html">Organizations</a></li>
           <li><a href="#rafeeq">Rafeeq AI</a></li>
           <li><a href="#categories">Categories</a></li>
         </ul>
@@ -2212,7 +2198,7 @@ html:not([data-theme="dark"]) .theme-toggle .fa-sun{display:none;}
           <li><a href="#">Privacy Policy</a></li>
           <li><a href="#">Terms of Service</a></li>
           <li><a href="#">Cookie Policy</a></li>
-          <li><a href="#">Contact</a></li>
+          <li><a href="contact.html">Contact</a></li>
         </ul>
       </div>
     </div>
@@ -2287,9 +2273,20 @@ html:not([data-theme="dark"]) .theme-toggle .fa-sun{display:none;}
 
   const mobileBtn = document.querySelector('.mobile-menu');
   mobileBtn.addEventListener('click', () => {
-    document.querySelector('.navbar').classList.toggle('scrolled');
+    const navbar = document.querySelector('.navbar');
     const links = document.querySelector('.nav-links');
-    links.style.display = links.style.display === 'flex' ? 'none' : 'flex';
+    const isOpen = navbar.classList.toggle('mobile-open');
+    mobileBtn.setAttribute('aria-expanded', String(isOpen));
+    mobileBtn.setAttribute('aria-label', isOpen ? 'Close menu' : 'Open menu');
+    links.setAttribute('aria-hidden', String(!isOpen));
+  });
+  document.querySelectorAll('.nav-links a').forEach(link => {
+    link.addEventListener('click', () => {
+      document.querySelector('.navbar').classList.remove('mobile-open');
+      mobileBtn.setAttribute('aria-expanded', 'false');
+      mobileBtn.setAttribute('aria-label', 'Open menu');
+      document.querySelector('.nav-links').setAttribute('aria-hidden', 'true');
+    });
   });
 
   const revealEls = document.querySelectorAll('.reveal,.reveal-stagger,.reveal-scale,.section-fade');
@@ -2411,6 +2408,7 @@ html:not([data-theme="dark"]) .theme-toggle .fa-sun{display:none;}
   /* ===== ROTATING PLACEHOLDER ===== */
   const rpText = document.getElementById('rpText');
   const heroInput = document.getElementById('heroSearchInput');
+  const heroSearchButton = document.getElementById('heroSearchButton');
   const phrases = [
     'Ask Rafeeq AI to find opportunities...',
     'Search hackathons in Jordan...',
@@ -2430,6 +2428,11 @@ html:not([data-theme="dark"]) .theme-toggle .fa-sun{display:none;}
     }, 300);
   }
   setInterval(rotatePlaceholder, 3000);
+  heroSearchButton.addEventListener('click', () => {
+    const query = heroInput.value.trim();
+    const target = query ? '../app/explore.html?search=' + encodeURIComponent(query) : '../app/explore.html';
+    window.location.href = target;
+  });
   heroInput.addEventListener('focus', () => rpText.style.display = 'none');
   heroInput.addEventListener('blur', () => {
     if(!heroInput.value) rpText.style.display = '';
