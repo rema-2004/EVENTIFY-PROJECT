@@ -1,20 +1,22 @@
 // EVENTIFY Global Theme Controller
 
 (function () {
-    // Read theme from localStorage or default to system preference
-    const savedTheme = localStorage.getItem('theme');
+    // 'eventify-theme' is the key the visitor pages have always used; both are kept
+    // in sync so the toggle behaves the same everywhere on the site.
+    const savedTheme = localStorage.getItem('theme') || localStorage.getItem('eventify-theme');
     const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-    
-    if (savedTheme === 'dark' || (!savedTheme && systemPrefersDark)) {
-        document.documentElement.classList.add('dark');
-        document.documentElement.classList.remove('light');
-    } else {
-        document.documentElement.classList.add('light');
-        document.documentElement.classList.remove('dark');
-    }
 
+    applyTheme(savedTheme === 'dark' || (!savedTheme && systemPrefersDark));
     installThemeOverrides();
 })();
+
+function applyTheme(isDark) {
+    const root = document.documentElement;
+    root.classList.toggle('dark', isDark);
+    root.classList.toggle('light', !isDark);
+    if (isDark) root.setAttribute('data-theme', 'dark');
+    else root.removeAttribute('data-theme');
+}
 
 window.addEventListener('DOMContentLoaded', () => {
     // Initial UI state setup for toggles
@@ -31,16 +33,10 @@ window.addEventListener('DOMContentLoaded', () => {
 });
 
 function toggleTheme() {
-    const isDark = document.documentElement.classList.contains('dark');
-    if (isDark) {
-        document.documentElement.classList.remove('dark');
-        document.documentElement.classList.add('light');
-        localStorage.setItem('theme', 'light');
-    } else {
-        document.documentElement.classList.remove('light');
-        document.documentElement.classList.add('dark');
-        localStorage.setItem('theme', 'dark');
-    }
+    const next = document.documentElement.classList.contains('dark') ? 'light' : 'dark';
+    applyTheme(next === 'dark');
+    localStorage.setItem('theme', next);
+    localStorage.setItem('eventify-theme', next);
     installThemeOverrides();
     applyThemeBaseStyles();
     updateToggleButtons();
@@ -50,8 +46,8 @@ function applyThemeBaseStyles() {
     if (!document.body) return;
 
     const isDark = document.documentElement.classList.contains('dark');
-    document.body.style.setProperty('background-color', isDark ? '#0d1c2e' : '#f8f9ff', 'important');
-    document.body.style.setProperty('color', isDark ? '#f8f9ff' : '#0d1c2e', 'important');
+    document.body.style.setProperty('background-color', isDark ? '#0b0c0e' : '#fafaf8', 'important');
+    document.body.style.setProperty('color', isDark ? '#fafaf8' : '#0b0c0e', 'important');
 }
 
 function installThemeOverrides() {
@@ -60,20 +56,20 @@ function installThemeOverrides() {
     const style = document.createElement('style');
     style.id = 'eventify-theme-overrides';
     style.textContent = `
-        html.dark body { background-color: #0d1c2e !important; color: #f8f9ff !important; }
-        html.dark .bg-background, html.dark .bg-surface { background-color: #0d1c2e !important; }
-        html.dark .bg-surface-container-lowest { background-color: #172131 !important; }
-        html.dark .bg-surface-container-low { background-color: #1d2a3a !important; }
-        html.dark .bg-surface-container, html.dark .bg-surface-container-high { background-color: #253448 !important; }
-        html.dark .text-on-background, html.dark .text-on-surface { color: #f8f9ff !important; }
-        html.dark .text-on-surface-variant { color: #c3c6d7 !important; }
-        html:not(.dark) body { background-color: #f8f9ff !important; color: #0d1c2e !important; }
-        html:not(.dark) .bg-background, html:not(.dark) .bg-surface { background-color: #f8f9ff !important; }
+        html.dark body { background-color: #0b0c0e !important; color: #f5f4f1 !important; }
+        html.dark .bg-background, html.dark .bg-surface { background-color: #0b0c0e !important; }
+        html.dark .bg-surface-container-lowest { background-color: #16181c !important; }
+        html.dark .bg-surface-container-low { background-color: #1c1f24 !important; }
+        html.dark .bg-surface-container, html.dark .bg-surface-container-high { background-color: #23262c !important; }
+        html.dark .text-on-background, html.dark .text-on-surface { color: #f5f4f1 !important; }
+        html.dark .text-on-surface-variant { color: #a8a49c !important; }
+        html:not(.dark) body { background-color: #fafaf8 !important; color: #0b0c0e !important; }
+        html:not(.dark) .bg-background, html:not(.dark) .bg-surface { background-color: #fafaf8 !important; }
         html:not(.dark) .bg-surface-container-lowest { background-color: #ffffff !important; }
-        html:not(.dark) .bg-surface-container-low { background-color: #eff4ff !important; }
-        html:not(.dark) .bg-surface-container, html:not(.dark) .bg-surface-container-high { background-color: #e6eeff !important; }
-        html:not(.dark) .text-on-background, html:not(.dark) .text-on-surface { color: #0d1c2e !important; }
-        html:not(.dark) .text-on-surface-variant { color: #424754 !important; }
+        html:not(.dark) .bg-surface-container-low { background-color: #f4f3ef !important; }
+        html:not(.dark) .bg-surface-container, html:not(.dark) .bg-surface-container-high { background-color: #edebe5 !important; }
+        html:not(.dark) .text-on-background, html:not(.dark) .text-on-surface { color: #0b0c0e !important; }
+        html:not(.dark) .text-on-surface-variant { color: #4a5058 !important; }
     `;
     document.head.appendChild(style);
 }

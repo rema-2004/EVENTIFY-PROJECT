@@ -6,6 +6,15 @@
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
     <title>Nadia Farouk | EVENTIFY</title>
+<meta name="description" content="Nadia Farouk on EVENTIFY — the AI-powered hub for competitions, workshops, courses and internships."/>
+<meta property="og:title" content="Nadia Farouk | EVENTIFY"/>
+<meta property="og:description" content="Nadia Farouk on EVENTIFY — the AI-powered hub for competitions, workshops, courses and internships."/>
+<meta property="og:type" content="website"/>
+<meta property="og:image" content="../assets/images/event1.jpeg"/>
+<link rel="icon" href="../assets/images/favicon.svg" type="image/svg+xml"/>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="nav.css"/>
+<link rel="stylesheet" href="app-shell.css"/>
     <link rel="stylesheet" href="../assets/css/theme.css" />
        <script src="../assets/js/theme.js"></script>
     <style>
@@ -37,12 +46,9 @@
     </style>
 
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap"
-        rel="stylesheet" />
+<script src="../assets/js/tw-config.js"></script>
     <style>
-        body {
-            font-family: 'Inter', sans-serif;
-        }
+
 
         .material-symbols-outlined {
             font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
@@ -63,120 +69,38 @@
             box-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.08);
         }
     </style>
-    <script id="tailwind-config">
-        tailwind.config = {
-            darkMode: "class",
-            theme: {
-                extend: {
-                    "colors": {
-                        "primary-container": "#2563eb",
-                        "inverse-primary": "#b4c5ff",
-                        "secondary-container": "#8455ef",
-                        "on-surface": "#191b23",
-                        "surface-tint": "#0053db",
-                        "surface-container-lowest": "#ffffff",
-                        "on-background": "#191b23",
-                        "primary-fixed": "#dbe1ff",
-                        "on-surface-variant": "#434655",
-                        "on-tertiary-container": "#ffede6",
-                        "on-error": "#ffffff",
-                        "outline": "#737686",
-                        "secondary": "#6b38d4",
-                        "surface-dim": "#d9d9e5",
-                        "secondary-fixed-dim": "#d0bcff",
-                        "on-primary-fixed": "#00174b",
-                        "tertiary": "#943700",
-                        "surface-container-high": "#e7e7f3",
-                        "surface-container-low": "#f3f3fe",
-                        "outline-variant": "#c3c6d7",
-                        "surface-container": "#ededf9",
-                        "on-tertiary-fixed": "#360f00",
-                        "primary": "#0058be",
-                        "on-secondary": "#ffffff",
-                        "background": "#faf8ff",
-                        "on-primary": "#ffffff",
-                        "on-primary-container": "#eeefff",
-                        "surface-variant": "#e1e2ed",
-                        "surface-bright": "#faf8ff",
-                        "on-error-container": "#93000a",
-                        "on-tertiary-fixed-variant": "#7d2d00",
-                        "primary-fixed-dim": "#b4c5ff",
-                        "tertiary-fixed-dim": "#ffb596",
-                        "on-secondary-container": "#fffbff",
-                        "on-tertiary": "#ffffff",
-                        "on-secondary-fixed": "#23005c",
-                        "inverse-surface": "#2e3039",
-                        "tertiary-fixed": "#ffdbcd",
-                        "secondary-fixed": "#e9ddff",
-                        "on-secondary-fixed-variant": "#5516be",
-                        "error-container": "#ffdad6",
-                        "error": "#ba1a1a",
-                        "success": "#006947",
-                        "on-primary-fixed-variant": "#003ea8",
-                        "surface-container-highest": "#e1e2ed",
-                        "inverse-on-surface": "#f0f0fb",
-                        "surface": "#faf8ff",
-                        "tertiary-container": "#bc4800"
-                    },
-                    "borderRadius": { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" },
-                    "spacing": {
-                        "sidebar_width": "280px", "gutter": "24px", "stack_gap_sm": "8px",
-                        "container_max_width": "1280px", "stack_gap_lg": "32px", "stack_gap_md": "16px",
-                        "margin_mobile": "16px", "top_nav_height": "72px"
-                    },
-                    "fontFamily": {
-                        "label-sm": ["Inter"], "title-lg": ["Inter"], "label-md": ["Inter"],
-                        "headline-md": ["Inter"], "headline-lg": ["Inter"], "body-lg": ["Inter"],
-                        "display-lg": ["Inter"], "body-md": ["Inter"], "headline-lg-mobile": ["Inter"]
-                    },
-                    "fontSize": {
-                        "label-sm": ["12px", { "lineHeight": "16px", "fontWeight": "600" }],
-                        "title-lg": ["20px", { "lineHeight": "28px", "fontWeight": "600" }],
-                        "label-md": ["14px", { "lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "500" }],
-                        "headline-md": ["24px", { "lineHeight": "32px", "fontWeight": "600" }],
-                        "headline-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
-                        "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }],
-                        "display-lg": ["48px", { "lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
-                        "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
-                        "headline-lg-mobile": ["24px", { "lineHeight": "32px", "fontWeight": "600" }]
-                    }
-                },
-            },
-        }
-    </script>
 </head>
 
 <body class="bg-background text-on-surface min-h-screen transition-colors duration-300">
     <!-- Top Navigation -->
     <header class="sticky top-0 z-40 w-full h-top_nav_height glass-nav border-b border-outline-variant/30 shadow-sm">
         <div class="flex justify-between items-center px-gutter w-full max-w-container_max_width mx-auto h-full">
-            <div class="flex items-center gap-8">
+            <div class="flex items-center gap-4 xl:gap-8">
                 <a class="font-headline-md text-headline-md font-black text-primary animate-pulse-wave"
-                    href="../index.html"><span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1;">hub</span>EVENTIFY</a>
-                <div class="hidden md:flex relative group">
+                    href="index.html"><span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1;">hub</span>EVENTIFY</a>
+                <div class="hidden lg:flex relative group">
                     <span
                         class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline">search</span>
                     <input
-                        class="bg-surface-container-low border-none rounded-full pl-10 pr-4 py-2 w-64 focus:ring-2 focus:ring-primary/20 transition-all"
+                        class="bg-surface-container-low border-none rounded-full pl-10 pr-4 py-2 w-40 xl:w-64 focus:ring-2 focus:ring-primary/20 transition-all"
                         placeholder="Search opportunities, people..." type="text" />
                 </div>
-                <nav class="hidden md:flex items-center gap-6">
-                    <a class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors" href="../index.html">Home</a>
+                <nav class="hidden lg:flex items-center gap-3 xl:gap-6">
+                    <a class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors" href="index.html">Home</a>
                     <a class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors" href="explore.html">Explore</a>
                     <a class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors" href="posts.html">Posts</a>
-                    <a class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors" href="my-applications.html">My Applications</a>
+                    <a class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors" href="my-applications.html">My Event</a>
                     <a class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors" href="notifications.html">Notifications</a>
+                </nav>
             </div>
-            <div class="flex items-center gap-4">
-                <a class="hidden md:flex items-center gap-2 px-6 py-2 bg-primary text-on-primary rounded-full font-label-md text-label-md hover:shadow-lg transition-all"
+            <div class="flex items-center gap-2 xl:gap-4">
+                <a class="hidden lg:flex items-center gap-2 px-4 xl:px-6 py-2 bg-primary text-on-primary rounded-full font-label-md text-label-md hover:shadow-lg transition-all"
                     href="rafeeq.html">
                     Ask Rafeeq
                 </a>
                 <div class="flex items-center gap-2 text-on-surface-variant">
                     <a class="material-symbols-outlined p-2 hover:bg-surface-container rounded-full cursor-pointer"
                         href="notifications.html">notifications</a>
-                    <a class="material-symbols-outlined p-2 hover:bg-surface-container rounded-full cursor-pointer"
-                        href="messages.html">chat</a>
                     <div class="w-10 h-10 rounded-full border-2 border-primary-container overflow-hidden ml-2">
                         <a href="profile.html"><img class="w-full h-full object-cover" data-alt="Profile headshot"
                                 src="https://lh3.googleusercontent.com/aida-public/AB6AXuBNZNd9jfESR_zqyCdGqZwDbntamuVnge0Tsq-V3vcF2zyvrZSvmNGaB93G0gzrTb02wHy5s8MRNZhZH9jEmI85YogBnQiONoMP1hl-rBFILklBs2VaL0dsb1XL1iEKYTwc4tqZLh4woUaUgkPRTfZQZF5ieHDS-qLMFvAF9YnfG8jjnwrS-YfcbXwjwsWi0OAYnjGUq_7cGq2t5ReBfXzPBqfTv-lV_CfGaCpqCAVu9CKXTTurrtp70Su8ifqzsfE0bBloO3zt5iub" /></a>
@@ -194,7 +118,7 @@
             class="hidden lg:flex flex-col gap-4 fixed left-[max(0px,calc((100%-1280px)/2))] top-[calc(72px+24px)] h-[calc(100vh-120px)] w-sidebar_width glass-sidebar border-r border-outline-variant/30 rounded-xl p-4">
             <nav class="flex flex-col gap-2">
                 <a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-low transition-colors rounded-lg group"
-                    href="../index.html">
+                    href="index.html">
                     <span class="material-symbols-outlined text-outline group-hover:text-primary">home</span>
                     <span class="font-label-md text-label-md">Home</span>
                 </a>
@@ -264,10 +188,6 @@
                             id="connect-btn" type="button">
                             <span class="material-symbols-outlined text-[18px]">person_add</span> Connect
                         </button>
-                        <a class="flex-1 md:flex-none text-center px-6 py-2.5 border border-outline-variant text-primary rounded-full font-label-md text-label-md hover:bg-surface-container-low transition-colors flex items-center justify-center gap-2"
-                            href="messages.html">
-                            <span class="material-symbols-outlined text-[18px]">chat</span> Message
-                        </a>
                         <button
                             class="p-2.5 border border-outline-variant text-on-surface-variant rounded-full hover:bg-surface-container-low transition-colors"
                             id="more-actions-btn" title="More" type="button">
@@ -389,7 +309,7 @@
     <!-- Mobile Nav Anchor -->
     <nav
         class="md:hidden fixed bottom-0 left-0 w-full bg-surface/80 backdrop-blur-xl border-t border-outline-variant z-50 px-gutter py-3 flex justify-between items-center">
-        <a class="flex flex-col items-center gap-1 text-outline" href="../index.html">
+        <a class="flex flex-col items-center gap-1 text-outline" href="index.html">
             <span class="material-symbols-outlined">home</span>
             <span class="text-[10px] font-bold">Home</span>
         </a>
@@ -398,7 +318,7 @@
             <span class="text-[10px] font-bold">Posts</span>
         </a>
         <a class="bg-primary p-3 rounded-full -mt-10 shadow-lg text-on-primary block animate-pulse-wave"
-            href="create-team.html">
+            href="create-team.html" aria-label="Add">
             <span class="material-symbols-outlined">add</span>
         </a>
         <a class="flex flex-col items-center gap-1 text-outline" href="notifications.html">
@@ -428,6 +348,9 @@
             reportBtn.classList.add('opacity-60', 'cursor-default');
         });
     </script>
+<script src="../assets/js/ui-state.js"></script>
+<script src="nav.js"></script>
+<script src="../assets/js/motion.js"></script>
 </body>
 
 </html>

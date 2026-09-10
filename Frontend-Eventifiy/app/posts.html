@@ -1,8 +1,18 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html class="light" lang="en"><head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <title>Posts | EVENTIFY</title>
+<meta name="description" content="Posts on EVENTIFY — the AI-powered hub for competitions, workshops, courses and internships."/>
+<meta property="og:title" content="Posts | EVENTIFY"/>
+<meta property="og:description" content="Posts on EVENTIFY — the AI-powered hub for competitions, workshops, courses and internships."/>
+<meta property="og:type" content="website"/>
+<meta property="og:image" content="../assets/images/event1.jpeg"/>
+<link rel="icon" href="../assets/images/favicon.svg" type="image/svg+xml"/>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="nav.css"/>
+<link rel="stylesheet" href="app-shell.css"/>
+<link rel="stylesheet" href="../assets/css/theme.css"/>
 <style>
     @font-face {
         font-family: 'Material Symbols Outlined';
@@ -31,43 +41,9 @@
     </style>
 
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
-<script id="tailwind-config">
-    tailwind.config = {
-        darkMode: "class",
-        theme: {
-            extend: {
-                colors: {
-                    background: "#f8f9ff", surface: "#f8f9ff", "surface-container-lowest": "#ffffff",
-                    "surface-container-low": "#eff4ff", "surface-container": "#e6eeff", "surface-container-high": "#dce9ff",
-                    "on-background": "#0d1c2e", "on-surface": "#0d1c2e", "on-surface-variant": "#424754",
-                    outline: "#727785", "outline-variant": "#c2c6d6",
-                    primary: "#0058be", "on-primary": "#ffffff", "primary-container": "#2170e4",
-                    secondary: "#6b38d4", "on-secondary": "#ffffff", "secondary-container": "#8455ef",
-                    tertiary: "#006947", "on-tertiary": "#ffffff"
-                },
-                spacing: { gutter: "16px", "container-margin-mobile": "16px", "container-margin-desktop": "40px" },
-                fontFamily: {
-                    "headline-xl": ["Inter"], "headline-lg": ["Inter"], "headline-lg-mobile": ["Inter"],
-                    "title-md": ["Inter"], "body-lg": ["Inter"], "body-md": ["Inter"], "body-sm": ["Inter"], "label-md": ["Inter"], "label-sm": ["Inter"]
-                },
-                fontSize: {
-                    "headline-xl": ["36px", {"lineHeight": "44px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
-                    "headline-lg": ["28px", {"lineHeight": "34px", "fontWeight": "700"}],
-                    "headline-lg-mobile": ["24px", {"lineHeight": "30px", "fontWeight": "700"}],
-                    "title-md": ["18px", {"lineHeight": "26px", "fontWeight": "600"}],
-                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
-                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
-                    "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
-                    "label-md": ["14px", {"lineHeight": "20px", "fontWeight": "600"}],
-                    "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "500"}]
-                }
-            }
-        }
-    }
-</script>
+<script src="../assets/js/tw-config.js"></script>
 <style>
-    body { font-family: 'Inter', sans-serif; }
+    
     .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; vertical-align: middle; }
 </style>
 </head>
@@ -76,12 +52,12 @@
 <nav class="fixed top-0 w-full z-50 glass-nav border-b border-outline-variant/30 dark:border-white/10 h-16 flex items-center">
 <div class="flex justify-between items-center px-container-margin-mobile md:px-container-margin-desktop w-full max-w-[1280px] mx-auto">
 <div class="flex items-center gap-8">
-<a class="flex items-center gap-3" href="../index.html" aria-label="EVENTIFY home"><span class="material-symbols-outlined text-primary text-3xl" style="font-variation-settings:'FILL' 1;">hub</span><span class="font-headline-md text-headline-md font-black text-primary">EVENTIFY</span></a>
+<a class="flex items-center gap-3" href="index.html" aria-label="EVENTIFY home"><span class="material-symbols-outlined text-primary text-3xl" style="font-variation-settings:'FILL' 1;">hub</span><span class="font-headline-md text-headline-md font-black text-primary">EVENTIFY</span></a>
 <div class="hidden md:flex gap-6">
-<a class="font-label-md text-label-md text-on-surface-variant hover:text-primary dark:text-[#c3c6d7] dark:hover:text-primary transition-colors" href="../index.html">Home</a>
+<a class="font-label-md text-label-md text-on-surface-variant hover:text-primary dark:text-[#c3c6d7] dark:hover:text-primary transition-colors" href="index.html">Home</a>
 <a class="font-label-md text-label-md text-on-surface-variant hover:text-primary dark:text-[#c3c6d7] dark:hover:text-primary transition-colors" href="explore.html">Explore</a>
 <a class="font-label-md text-label-md text-primary font-bold border-b-2 border-primary pb-1 transition-all" href="posts.html">Posts</a>
-<a class="font-label-md text-label-md text-on-surface-variant hover:text-primary dark:text-[#c3c6d7] dark:hover:text-primary transition-colors" href="my-applications.html">My Applications</a>
+<a class="font-label-md text-label-md text-on-surface-variant hover:text-primary dark:text-[#c3c6d7] dark:hover:text-primary transition-colors" href="my-applications.html">My Event</a>
 <a class="font-label-md text-label-md text-on-surface-variant hover:text-primary dark:text-[#c3c6d7] dark:hover:text-primary transition-colors" href="notifications.html">Notifications</a>
 </div>
 </div>
@@ -110,7 +86,7 @@
 </div>
 <div class="grid grid-cols-1 gap-gutter">
 <div class="space-y-4">
-<div class="overflow-hidden rounded-2xl border border-outline-variant/40 bg-surface-container-lowest p-5 shadow-sm">
+<div class="ev-card spotlight ev-fade-up ev-stagger-2 ev-fade-up ev-stagger-1 overflow-hidden rounded-2xl border border-outline-variant/40 bg-surface-container-lowest p-5 shadow-sm">
 <div class="flex items-center gap-3">
 <div class="flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-full bg-primary/10">
 <span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">apartment</span>
@@ -124,7 +100,7 @@
 <p class="details mt-3 hidden text-sm leading-6 text-on-surface-variant">More details will appear here for applicants who want to learn about the challenge timeline, eligibility, and how to submit the application before the deadline.</p>
 <button class="read-more mt-4 rounded-full border border-primary/20 bg-primary/5 px-4 py-2 text-sm font-semibold text-primary transition-all" type="button">Read more</button>
 </div>
-<div class="overflow-hidden rounded-2xl border border-outline-variant/40 bg-surface-container-lowest p-5 shadow-sm">
+<div class="ev-card spotlight ev-fade-up ev-stagger-2 ev-fade-up ev-stagger-2 overflow-hidden rounded-2xl border border-outline-variant/40 bg-surface-container-lowest p-5 shadow-sm">
 <div class="flex items-center gap-3">
 <div class="flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-full bg-secondary/10">
 <span class="material-symbols-outlined text-secondary" style="font-variation-settings: 'FILL' 1;">apartment</span>
@@ -138,7 +114,7 @@
 <p class="details mt-3 hidden text-sm leading-6 text-on-surface-variant">The registration form is open for early applicants. Participants will receive a confirmation email, event access details, and guidance on what to prepare before attending.</p>
 <button class="read-more mt-4 rounded-full border border-primary/20 bg-primary/5 px-4 py-2 text-sm font-semibold text-primary transition-all" type="button">Read more</button>
 </div>
-<div class="overflow-hidden rounded-2xl border border-outline-variant/40 bg-surface-container-lowest p-5 shadow-sm">
+<div class="ev-card spotlight ev-fade-up ev-stagger-2 ev-fade-up ev-stagger-3 overflow-hidden rounded-2xl border border-outline-variant/40 bg-surface-container-lowest p-5 shadow-sm">
 <div class="flex items-center gap-3">
 <div class="flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-full bg-tertiary/10">
 <span class="material-symbols-outlined text-tertiary" style="font-variation-settings: 'FILL' 1;">apartment</span>
@@ -152,7 +128,7 @@
 <p class="details mt-3 hidden text-sm leading-6 text-on-surface-variant">This post can expand to include learning resources, event recap notes, and follow-up instructions for all participants who want more context.</p>
 <button class="read-more mt-4 rounded-full border border-primary/20 bg-primary/5 px-4 py-2 text-sm font-semibold text-primary transition-all" type="button">Read more</button>
 </div>
-<div class="overflow-hidden rounded-2xl border border-outline-variant/40 bg-surface-container-lowest p-5 shadow-sm">
+<div class="ev-card spotlight ev-fade-up ev-stagger-2 ev-fade-up ev-stagger-4 overflow-hidden rounded-2xl border border-outline-variant/40 bg-surface-container-lowest p-5 shadow-sm">
 <div class="flex items-center gap-3">
 <div class="flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-full bg-primary/10">
 <span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">emoji_events</span>
@@ -173,7 +149,7 @@ Open opportunity
 </main>
 <!-- Mobile Navigation -->
 <nav class="fixed bottom-0 w-full rounded-t-xl z-50 md:hidden flex justify-around items-center px-4 py-2 pb-safe bg-surface shadow-[0_-4px_12px_rgba(59,130,246,0.08)]">
-<a class="flex flex-col items-center justify-center text-on-surface-variant transition-transform active:scale-90" href="../index.html">
+<a class="flex flex-col items-center justify-center text-on-surface-variant transition-transform active:scale-90" href="index.html">
 <span class="material-symbols-outlined">home</span>
 <span class="font-label-sm text-label-sm">Home</span>
 </a>
@@ -214,4 +190,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 </script>
 <script src="../assets/js/theme.js"></script>
+<script src="../assets/js/ui-state.js"></script>
+<script src="nav.js"></script>
+<script src="../assets/js/motion.js"></script>
 </body></html>

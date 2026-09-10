@@ -3,6 +3,17 @@
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <title>Explore | EVENTIFY</title>
+<meta name="description" content="Explore on EVENTIFY — the AI-powered hub for competitions, workshops, courses and internships."/>
+<meta property="og:title" content="Explore | EVENTIFY"/>
+<meta property="og:description" content="Explore on EVENTIFY — the AI-powered hub for competitions, workshops, courses and internships."/>
+<meta property="og:type" content="website"/>
+<meta property="og:image" content="../assets/images/event1.jpeg"/>
+<link rel="icon" href="../assets/images/favicon.svg" type="image/svg+xml"/>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="nav.css"/>
+<link rel="stylesheet" href="app-shell.css"/>
+<script src="../assets/js/theme.js"></script>
+<link rel="stylesheet" href="../assets/css/theme.css"/>
 <style>
     @font-face {
         font-family: 'Material Symbols Outlined';
@@ -30,47 +41,44 @@
     </style>
 
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
-<script id="tailwind-config">
-    tailwind.config = {
-        darkMode: "class",
-        theme: {
-            extend: {
-                colors: {
-                    background: "#f8f9ff", surface: "#f8f9ff", "surface-container-lowest": "#ffffff",
-                    "surface-container-low": "#eff4ff", "surface-container": "#e6eeff", "surface-container-high": "#dce9ff",
-                    "on-background": "#0d1c2e", "on-surface": "#0d1c2e", "on-surface-variant": "#424754",
-                    outline: "#727785", "outline-variant": "#c2c6d6",
-                    primary: "#0058be", "on-primary": "#ffffff", "primary-container": "#2170e4",
-                    secondary: "#6b38d4", "on-secondary": "#ffffff", "secondary-container": "#8455ef",
-                    tertiary: "#006947", "on-tertiary": "#ffffff", "tertiary-container": "#00855b",
-                    error: "#ba1a1a"
-                },
-                spacing: { gutter: "16px", "container-margin-mobile": "16px", "container-margin-desktop": "40px" },
-                fontFamily: {
-                    "headline-xl": ["Inter"], "headline-lg": ["Inter"], "headline-lg-mobile": ["Inter"],
-                    "title-md": ["Inter"], "body-lg": ["Inter"], "body-md": ["Inter"], "body-sm": ["Inter"], "label-md": ["Inter"], "label-sm": ["Inter"]
-                },
-                fontSize: {
-                    "headline-xl": ["36px", {"lineHeight": "44px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
-                    "headline-lg": ["28px", {"lineHeight": "34px", "fontWeight": "700"}],
-                    "headline-lg-mobile": ["24px", {"lineHeight": "30px", "fontWeight": "700"}],
-                    "title-md": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
-                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
-                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
-                    "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
-                    "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.05em", "fontWeight": "600"}],
-                    "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "500"}]
-                }
-            }
-        }
-    }
-</script>
+<script src="../assets/js/tw-config.js"></script>
 <style>
-    body { font-family: 'Inter', sans-serif; }
     .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; vertical-align: middle; }
-    .tab-active { background: #0058be; color: #fff; }
-    .chip-active { background: #0058be; color: #fff; }
+    .tab-active { background: #FF4D2E; color: #fff; }
+    .chip-active { background: #FF4D2E; color: #fff; }
+    .save-btn { transform: scale(1); }
+    .save-btn.save-pop { animation: save-pop .45s ease; }
+    @keyframes save-pop {
+        0% { transform: scale(1); }
+        35% { transform: scale(1.35); }
+        60% { transform: scale(0.9); }
+        100% { transform: scale(1); }
+    }
+    .save-confirm {
+        position: absolute;
+        top: 6px;
+        left: 48px;
+        background: #FF4D2E;
+        color: #fff;
+        font-size: 11px;
+        font-weight: 700;
+        padding: 4px 10px;
+        border-radius: 999px;
+        white-space: nowrap;
+        opacity: 0;
+        pointer-events: none;
+        z-index: 20;
+        display: flex;
+        align-items: center;
+        gap: 4px;
+    }
+    .save-confirm.show { animation: save-confirm-fade 1.6s ease forwards; }
+    @keyframes save-confirm-fade {
+        0% { opacity: 0; transform: translateY(-4px); }
+        15% { opacity: 1; transform: translateY(0); }
+        80% { opacity: 1; transform: translateY(0); }
+        100% { opacity: 0; transform: translateY(-4px); }
+    }
 </style>
 </head>
 <body class="bg-background text-on-background min-h-screen pb-24 md:pb-8">
@@ -78,15 +86,15 @@
 <nav class="fixed top-0 w-full z-50 glass-nav border-b border-outline-variant/30 h-16 flex items-center">
 <div class="flex justify-between items-center px-container-margin-mobile md:px-container-margin-desktop w-full max-w-[1280px] mx-auto">
 <div class="flex items-center gap-8">
-<a class="flex items-center gap-3" href="../index.html" aria-label="EVENTIFY home">
+<a class="flex items-center gap-3" href="index.html" aria-label="EVENTIFY home">
 <span class="material-symbols-outlined text-primary text-3xl" style="font-variation-settings:'FILL' 1;">hub</span>
 <span class="font-headline-md text-headline-md font-black text-primary">EVENTIFY</span>
 </a>
 <div class="hidden md:flex gap-6">
-<a class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors" href="../index.html">Home</a>
+<a class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors" href="index.html">Home</a>
 <a class="font-label-md text-label-md text-primary font-bold border-b-2 border-primary pb-1 transition-all" href="explore.html">Explore</a>
 <a class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors" href="posts.html">Posts</a>
-<a class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors" href="my-applications.html">My Applications</a>
+<a class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors" href="my-applications.html">My Event</a>
 <a class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors" href="notifications.html">Notifications</a>
 </div>
 </div>
@@ -105,7 +113,7 @@
 </nav>
 <main class="pt-24 pb-12 px-container-margin-mobile md:px-container-margin-desktop max-w-[1280px] mx-auto space-y-10">
 <!-- Header & Search -->
-<div class="space-y-6">
+<div class="ev-fade-up ev-stagger-1 space-y-6">
 <div>
 <h1 class="font-headline-xl text-headline-xl">Explore Opportunities</h1>
 <p class="font-body-lg text-body-lg text-on-surface-variant mt-1">Browse every competition, event, workshop, and course — matched to you by AI.</p>
@@ -135,10 +143,11 @@
 <!-- Results Grid -->
 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-gutter" id="results-grid">
 <!-- Card 1 -->
-<div class="bg-surface-container-lowest border border-outline-variant/30 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-all group cursor-pointer" data-cat="competition" onclick="location.href='opportunity.html'">
+<div class="ev-card spotlight ev-fade-up ev-stagger-2 bg-surface-container-lowest border border-outline-variant/30 rounded-xl overflow-hidden shadow-sm group cursor-pointer" data-cat="competition" onclick="location.href='opportunity.html'">
 <div class="h-40 relative overflow-hidden">
-<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="Digital art of a global coding hackathon with glowing blue circuit lines over a futuristic city skyline." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB9CEnFNI0sa64wtdt1xcbuCO2ctuePljYf3b0mGoAfsaVbTQZl6EUEKGeq_A-lCje6-84UGOy-xM_EX1fj34sF-YWMO-_0SG4_iedT1vjYrRw5UpEFxOlngZ_cDhCxJRFxyyChSuzfbQzaifbDrY-ySQm0SZNqdXFNpNdzVSiaboP2NAJ4pYTV-P32G1lYqug8kLksnCytiGNYKiUHGIacjDYyZIZ5HHucNTeyCLWQmzn3HRdmrm8n18EIgGN0AobDjfqjTG3DQkjK"/>
+<img class="ev-card-img w-full h-full object-cover" data-alt="Digital art of a global coding hackathon with glowing blue circuit lines over a futuristic city skyline." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB9CEnFNI0sa64wtdt1xcbuCO2ctuePljYf3b0mGoAfsaVbTQZl6EUEKGeq_A-lCje6-84UGOy-xM_EX1fj34sF-YWMO-_0SG4_iedT1vjYrRw5UpEFxOlngZ_cDhCxJRFxyyChSuzfbQzaifbDrY-ySQm0SZNqdXFNpNdzVSiaboP2NAJ4pYTV-P32G1lYqug8kLksnCytiGNYKiUHGIacjDYyZIZ5HHucNTeyCLWQmzn3HRdmrm8n18EIgGN0AobDjfqjTG3DQkjK"/>
 <div class="absolute top-3 right-3 px-3 py-1 bg-secondary text-white rounded-lg font-label-sm flex items-center gap-1 shadow-lg"><span class="material-symbols-outlined text-[14px]">bolt</span> 98%</div>
+<button class="save-btn absolute top-3 left-3 w-9 h-9 rounded-full bg-white/90 backdrop-blur flex items-center justify-center text-on-surface-variant hover:text-primary shadow-lg transition-colors" data-ui-action="save" data-ui-key="global-ai-innovation-challenge" aria-label="Save for later" onclick="event.stopPropagation()"><span class="material-symbols-outlined text-[20px]">bookmark</span></button>
 </div>
 <div class="p-5 space-y-2">
 <span class="text-[10px] uppercase tracking-wider text-secondary font-bold">HACKATHON</span>
@@ -147,10 +156,11 @@
 </div>
 </div>
 <!-- Card 2 -->
-<div class="bg-surface-container-lowest border border-outline-variant/30 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-all group cursor-pointer" data-cat="workshop" onclick="location.href='opportunity.html'">
+<div class="ev-card spotlight ev-fade-up ev-stagger-2 bg-surface-container-lowest border border-outline-variant/30 rounded-xl overflow-hidden shadow-sm group cursor-pointer" data-cat="workshop" onclick="location.href='opportunity.html'">
 <div class="h-40 relative overflow-hidden">
-<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="A minimalist classroom with glass boards filled with neural network diagrams." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBcUXLF60F3KbDnIVZepTTte_yzkhe3rkuMtXTXTMQzA1gyVuzXN1NQ0DXC7XHQBDIHEA2TXLK8EoSvioCS5PoWNoZKnVI7YeLCAxqcRtKE-cfSsrD6X3yBiiGI_J0DdnCu4vgHVOf7tn5UW93gDceqUiZ4hVu5ZCvSuDbEd3Dm8uTINHyELfvrJM4AvcW6lRAm2zAmGTlp9N7rNMUMizYToAN1_rTfY1KtEjsmeIx--zlkOzEz07DRgirbjC8bnSBfxNFTTtVBYuqf"/>
+<img class="ev-card-img w-full h-full object-cover" data-alt="A minimalist classroom with glass boards filled with neural network diagrams." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBcUXLF60F3KbDnIVZepTTte_yzkhe3rkuMtXTXTMQzA1gyVuzXN1NQ0DXC7XHQBDIHEA2TXLK8EoSvioCS5PoWNoZKnVI7YeLCAxqcRtKE-cfSsrD6X3yBiiGI_J0DdnCu4vgHVOf7tn5UW93gDceqUiZ4hVu5ZCvSuDbEd3Dm8uTINHyELfvrJM4AvcW6lRAm2zAmGTlp9N7rNMUMizYToAN1_rTfY1KtEjsmeIx--zlkOzEz07DRgirbjC8bnSBfxNFTTtVBYuqf"/>
 <div class="absolute top-3 right-3 px-3 py-1 bg-secondary text-white rounded-lg font-label-sm flex items-center gap-1 shadow-lg"><span class="material-symbols-outlined text-[14px]">bolt</span> 95%</div>
+<button class="save-btn absolute top-3 left-3 w-9 h-9 rounded-full bg-white/90 backdrop-blur flex items-center justify-center text-on-surface-variant hover:text-primary shadow-lg transition-colors" data-ui-action="save" data-ui-key="deep-learning-mastery" aria-label="Save for later" onclick="event.stopPropagation()"><span class="material-symbols-outlined text-[20px]">bookmark</span></button>
 </div>
 <div class="p-5 space-y-2">
 <span class="text-[10px] uppercase tracking-wider text-primary font-bold">WORKSHOP</span>
@@ -159,10 +169,11 @@
 </div>
 </div>
 <!-- Card 3 -->
-<div class="bg-surface-container-lowest border border-outline-variant/30 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-all group cursor-pointer" data-cat="competition" onclick="location.href='opportunity.html'">
+<div class="ev-card spotlight ev-fade-up ev-stagger-2 bg-surface-container-lowest border border-outline-variant/30 rounded-xl overflow-hidden shadow-sm group cursor-pointer" data-cat="competition" onclick="location.href='opportunity.html'">
 <div class="h-40 relative overflow-hidden">
-<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="Abstract geometric 3D shapes representing code blocks in emerald green and blue." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAoXFluzheWmZ490MELdToAMEYpR_txVKV30osgae_hCJtZOTitQ7q-hlRINJEb6yu8WczfucSzRFeg7_ASopSg4PYi40bcSgLBAzpyDWcgZltV0lVaadKj9Hxg_0-MIvEynOlpWfO6oad4LDePXnQqUogQYAUOomnsxNQRm0sYppi6tcEF-XVtGAmZwLlJ7Zzvf2ojEvEnU0EwWkAE_qpAYRfUYUWLDeKx1nnQtM-6DxX8uCm13GfTKpd5tCt-XHKS5s04qO3jTwFA"/>
+<img class="ev-card-img w-full h-full object-cover" data-alt="Abstract geometric 3D shapes representing code blocks in emerald green and blue." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAoXFluzheWmZ490MELdToAMEYpR_txVKV30osgae_hCJtZOTitQ7q-hlRINJEb6yu8WczfucSzRFeg7_ASopSg4PYi40bcSgLBAzpyDWcgZltV0lVaadKj9Hxg_0-MIvEynOlpWfO6oad4LDePXnQqUogQYAUOomnsxNQRm0sYppi6tcEF-XVtGAmZwLlJ7Zzvf2ojEvEnU0EwWkAE_qpAYRfUYUWLDeKx1nnQtM-6DxX8uCm13GfTKpd5tCt-XHKS5s04qO3jTwFA"/>
 <div class="absolute top-3 right-3 px-3 py-1 bg-secondary text-white rounded-lg font-label-sm flex items-center gap-1 shadow-lg"><span class="material-symbols-outlined text-[14px]">bolt</span> 92%</div>
+<button class="save-btn absolute top-3 left-3 w-9 h-9 rounded-full bg-white/90 backdrop-blur flex items-center justify-center text-on-surface-variant hover:text-primary shadow-lg transition-colors" data-ui-action="save" data-ui-key="frontend-wizards-2024" aria-label="Save for later" onclick="event.stopPropagation()"><span class="material-symbols-outlined text-[20px]">bookmark</span></button>
 </div>
 <div class="p-5 space-y-2">
 <span class="text-[10px] uppercase tracking-wider text-secondary font-bold">COMPETITION</span>
@@ -171,9 +182,11 @@
 </div>
 </div>
 <!-- Card 4 -->
-<div class="bg-surface-container-lowest border border-outline-variant/30 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-all group cursor-pointer" data-cat="competition" onclick="location.href='opportunity.html'">
+<div class="ev-card spotlight ev-fade-up ev-stagger-2 bg-surface-container-lowest border border-outline-variant/30 rounded-xl overflow-hidden shadow-sm group cursor-pointer" data-cat="competition" onclick="location.href='opportunity.html'">
 <div class="h-40 relative overflow-hidden">
-<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="A digital render of a cybersecurity challenge with neon green grid lines on a dark background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBv-V-8GjFWlxuhqQq9nPPBCQKNIYRDy0-x7U8GZDqCxf3lpcSiGNgXTpm9Dp9vtBNtYRJM9-o_XfAV_yWpqjCDBHhA3Xin8gTKbYsCIpYqce02UMEzafn25IYfHI6hd-IasfwMRqIx3qADrfqnj7m-D_PHpWiW6GRyb70Zw9C6yT7Xu6xsRz80sxxnJdXORtOzWdcpjojOlvDh2cdJULC_KUcENGeijXkCPjAA02-axN9qR_MrffMvhq-xjwZhj4cy_sT0Lsf7llBS"/>
+<img class="ev-card-img w-full h-full object-cover" data-alt="A digital render of a cybersecurity challenge with neon green grid lines on a dark background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBv-V-8GjFWlxuhqQq9nPPBCQKNIYRDy0-x7U8GZDqCxf3lpcSiGNgXTpm9Dp9vtBNtYRJM9-o_XfAV_yWpqjCDBHhA3Xin8gTKbYsCIpYqce02UMEzafn25IYfHI6hd-IasfwMRqIx3qADrfqnj7m-D_PHpWiW6GRyb70Zw9C6yT7Xu6xsRz80sxxnJdXORtOzWdcpjojOlvDh2cdJULC_KUcENGeijXkCPjAA02-axN9qR_MrffMvhq-xjwZhj4cy_sT0Lsf7llBS"/>
+<div class="absolute top-3 right-3 px-3 py-1 bg-secondary text-white rounded-lg font-label-sm flex items-center gap-1 shadow-lg"><span class="material-symbols-outlined text-[14px]">bolt</span> 88%</div>
+<button class="save-btn absolute top-3 left-3 w-9 h-9 rounded-full bg-white/90 backdrop-blur flex items-center justify-center text-on-surface-variant hover:text-primary shadow-lg transition-colors" data-ui-action="save" data-ui-key="cyber-sentinel-ctf" aria-label="Save for later" onclick="event.stopPropagation()"><span class="material-symbols-outlined text-[20px]">bookmark</span></button>
 </div>
 <div class="p-5 space-y-2">
 <span class="text-[10px] uppercase tracking-wider text-secondary font-bold">COMPETITION</span>
@@ -182,9 +195,11 @@
 </div>
 </div>
 <!-- Card 5 -->
-<div class="bg-surface-container-lowest border border-outline-variant/30 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-all group cursor-pointer" data-cat="event" onclick="location.href='opportunity.html'">
+<div class="ev-card spotlight ev-fade-up ev-stagger-2 bg-surface-container-lowest border border-outline-variant/30 rounded-xl overflow-hidden shadow-sm group cursor-pointer" data-cat="event" onclick="location.href='opportunity.html'">
 <div class="h-40 relative overflow-hidden">
-<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="A high-tech conference hall with a stage displaying a blue and purple digital landscape." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB4XGVVgdXcQZS5VeH1XemHRZule_sQgpM4yB8dp3TMxmIjOTnb7x77AU3_AQqluVNnUoBk5iOwilGg_Cj8LHOtQPsJVDcaa2kfvpwYLdBwATyhzxwNtAS856W4G73Ol2mDobe-pFocsYIgmXPkxxqQyS3aZpjC91TuFLwh-po8QIPiLvPOm1yFqZmmNUYFn-URTuNl5djEq9B_ex_XDVvWZZOaO1ql7f1IdMFa91gP9zwnDLnSsn8-06q6CYeqKkjDxqTjq8-BsmeU"/>
+<img class="ev-card-img w-full h-full object-cover" data-alt="A high-tech conference hall with a stage displaying a blue and purple digital landscape." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB4XGVVgdXcQZS5VeH1XemHRZule_sQgpM4yB8dp3TMxmIjOTnb7x77AU3_AQqluVNnUoBk5iOwilGg_Cj8LHOtQPsJVDcaa2kfvpwYLdBwATyhzxwNtAS856W4G73Ol2mDobe-pFocsYIgmXPkxxqQyS3aZpjC91TuFLwh-po8QIPiLvPOm1yFqZmmNUYFn-URTuNl5djEq9B_ex_XDVvWZZOaO1ql7f1IdMFa91gP9zwnDLnSsn8-06q6CYeqKkjDxqTjq8-BsmeU"/>
+<div class="absolute top-3 right-3 px-3 py-1 bg-secondary text-white rounded-lg font-label-sm flex items-center gap-1 shadow-lg"><span class="material-symbols-outlined text-[14px]">bolt</span> 85%</div>
+<button class="save-btn absolute top-3 left-3 w-9 h-9 rounded-full bg-white/90 backdrop-blur flex items-center justify-center text-on-surface-variant hover:text-primary shadow-lg transition-colors" data-ui-action="save" data-ui-key="global-ai-summit-2024" aria-label="Save for later" onclick="event.stopPropagation()"><span class="material-symbols-outlined text-[20px]">bookmark</span></button>
 </div>
 <div class="p-5 space-y-2">
 <span class="text-[10px] uppercase tracking-wider text-primary font-bold">EVENT · LIVE</span>
@@ -193,9 +208,11 @@
 </div>
 </div>
 <!-- Card 6 -->
-<div class="bg-surface-container-lowest border border-outline-variant/30 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-all group cursor-pointer" data-cat="course" onclick="location.href='opportunity.html'">
+<div class="ev-card spotlight ev-fade-up ev-stagger-2 bg-surface-container-lowest border border-outline-variant/30 rounded-xl overflow-hidden shadow-sm group cursor-pointer" data-cat="course" onclick="location.href='opportunity.html'">
 <div class="h-40 relative overflow-hidden bg-gradient-to-br from-primary/20 to-secondary/20 flex items-center justify-center">
 <span class="material-symbols-outlined text-primary text-5xl">school</span>
+<div class="absolute top-3 right-3 px-3 py-1 bg-secondary text-white rounded-lg font-label-sm flex items-center gap-1 shadow-lg"><span class="material-symbols-outlined text-[14px]">bolt</span> 79%</div>
+<button class="save-btn absolute top-3 left-3 w-9 h-9 rounded-full bg-white/90 backdrop-blur flex items-center justify-center text-on-surface-variant hover:text-primary shadow-lg transition-colors" data-ui-action="save" data-ui-key="product-strategy-course" aria-label="Save for later" onclick="event.stopPropagation()"><span class="material-symbols-outlined text-[20px]">bookmark</span></button>
 </div>
 <div class="p-5 space-y-2">
 <span class="text-[10px] uppercase tracking-wider text-tertiary font-bold">COURSE</span>
@@ -204,9 +221,11 @@
 </div>
 </div>
 <!-- Card 7 -->
-<div class="bg-surface-container-lowest border border-outline-variant/30 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-all group cursor-pointer" data-cat="workshop" onclick="location.href='opportunity.html'">
+<div class="ev-card spotlight ev-fade-up ev-stagger-2 bg-surface-container-lowest border border-outline-variant/30 rounded-xl overflow-hidden shadow-sm group cursor-pointer" data-cat="workshop" onclick="location.href='opportunity.html'">
 <div class="h-40 relative overflow-hidden bg-gradient-to-br from-secondary/20 to-primary/10 flex items-center justify-center">
 <span class="material-symbols-outlined text-secondary text-5xl">terminal</span>
+<div class="absolute top-3 right-3 px-3 py-1 bg-secondary text-white rounded-lg font-label-sm flex items-center gap-1 shadow-lg"><span class="material-symbols-outlined text-[14px]">bolt</span> 91%</div>
+<button class="save-btn absolute top-3 left-3 w-9 h-9 rounded-full bg-white/90 backdrop-blur flex items-center justify-center text-on-surface-variant hover:text-primary shadow-lg transition-colors" data-ui-action="save" data-ui-key="rust-for-web-devs" aria-label="Save for later" onclick="event.stopPropagation()"><span class="material-symbols-outlined text-[20px]">bookmark</span></button>
 </div>
 <div class="p-5 space-y-2">
 <span class="text-[10px] uppercase tracking-wider text-primary font-bold">WORKSHOP</span>
@@ -215,9 +234,11 @@
 </div>
 </div>
 <!-- Card 8 -->
-<div class="bg-surface-container-lowest border border-outline-variant/30 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-all group cursor-pointer" data-cat="course" onclick="location.href='opportunity.html'">
+<div class="ev-card spotlight ev-fade-up ev-stagger-2 bg-surface-container-lowest border border-outline-variant/30 rounded-xl overflow-hidden shadow-sm group cursor-pointer" data-cat="course" onclick="location.href='opportunity.html'">
 <div class="h-40 relative overflow-hidden bg-gradient-to-br from-tertiary/20 to-primary/10 flex items-center justify-center">
 <span class="material-symbols-outlined text-tertiary text-5xl">cloud</span>
+<div class="absolute top-3 right-3 px-3 py-1 bg-secondary text-white rounded-lg font-label-sm flex items-center gap-1 shadow-lg"><span class="material-symbols-outlined text-[14px]">bolt</span> 74%</div>
+<button class="save-btn absolute top-3 left-3 w-9 h-9 rounded-full bg-white/90 backdrop-blur flex items-center justify-center text-on-surface-variant hover:text-primary shadow-lg transition-colors" data-ui-action="save" data-ui-key="devops-masterclass" aria-label="Save for later" onclick="event.stopPropagation()"><span class="material-symbols-outlined text-[20px]">bookmark</span></button>
 </div>
 <div class="p-5 space-y-2">
 <span class="text-[10px] uppercase tracking-wider text-tertiary font-bold">COURSE</span>
@@ -234,7 +255,7 @@
 </main>
 <!-- Mobile Navigation -->
 <nav class="fixed bottom-0 w-full rounded-t-xl z-50 md:hidden flex justify-around items-center px-4 py-2 pb-safe bg-surface shadow-[0_-4px_12px_rgba(59,130,246,0.08)]">
-<a class="flex flex-col items-center justify-center text-on-surface-variant transition-transform active:scale-90" href="../index.html">
+<a class="flex flex-col items-center justify-center text-on-surface-variant transition-transform active:scale-90" href="index.html">
 <span class="material-symbols-outlined">home</span>
 <span class="font-label-sm text-label-sm">Home</span>
 </a>
@@ -295,6 +316,27 @@
     const initialQuery = new URLSearchParams(window.location.search).get('search');
     if (initialQuery) searchInput.value = initialQuery;
     applyFilters();
+
+    document.querySelectorAll('.save-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            btn.classList.remove('save-pop');
+            void btn.offsetWidth;
+            btn.classList.add('save-pop');
+
+            let label = btn.parentElement.querySelector('.save-confirm');
+            if (!label) {
+                label = document.createElement('span');
+                label.className = 'save-confirm';
+                label.innerHTML = '<span class="material-symbols-outlined text-[14px]">check_circle</span>Saved';
+                btn.insertAdjacentElement('afterend', label);
+            }
+            label.classList.remove('show');
+            void label.offsetWidth;
+            label.classList.add('show');
+        });
+    });
 </script>
-<script src="../assets/js/theme.js"></script>
+<script src="../assets/js/ui-state.js"></script>
+<script src="nav.js"></script>
+<script src="../assets/js/motion.js"></script>
 </body></html>

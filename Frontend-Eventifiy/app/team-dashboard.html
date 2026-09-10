@@ -1,9 +1,19 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 
 <html class="light" lang="en"><head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <title>Team Leader Dashboard - AI Pioneers</title>
+<meta name="description" content="Team Leader Dashboard - AI Pioneers on EVENTIFY — the AI-powered hub for competitions, workshops, courses and internships."/>
+<meta property="og:title" content="Team Leader Dashboard - AI Pioneers"/>
+<meta property="og:description" content="Team Leader Dashboard - AI Pioneers on EVENTIFY — the AI-powered hub for competitions, workshops, courses and internships."/>
+<meta property="og:type" content="website"/>
+<meta property="og:image" content="../assets/images/event1.jpeg"/>
+<link rel="icon" href="../assets/images/favicon.svg" type="image/svg+xml"/>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="nav.css"/>
+<link rel="stylesheet" href="app-shell.css"/>
+<link rel="stylesheet" href="../assets/css/theme.css"/>
 <style>
     @font-face {
         font-family: 'Material Symbols Outlined';
@@ -31,104 +41,8 @@
     </style>
 
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<script src="../assets/js/tw-config.js"></script>
 <!-- Shared Component Styling & Design System Config -->
-<script id="tailwind-config">
-      tailwind.config = {
-        darkMode: "class",
-        theme: {
-          extend: {
-            "colors": {
-                    "background": "#faf8ff",
-                    "surface-container-high": "#e7e7f3",
-                    "on-surface": "#191b23",
-                    "on-surface-variant": "#434655",
-                    "secondary-fixed-dim": "#d0bcff",
-                    "tertiary-fixed": "#ffdbcd",
-                    "on-secondary": "#ffffff",
-                    "on-tertiary-fixed": "#360f00",
-                    "primary-container": "#2563eb",
-                    "surface-container-low": "#f3f3fe",
-                    "primary-fixed": "#dbe1ff",
-                    "inverse-on-surface": "#f0f0fb",
-                    "surface": "#faf8ff",
-                    "on-error": "#ffffff",
-                    "primary": "#0058be",
-                    "on-tertiary-fixed-variant": "#7d2d00",
-                    "tertiary": "#943700",
-                    "outline-variant": "#c3c6d7",
-                    "inverse-primary": "#b4c5ff",
-                    "error-container": "#ffdad6",
-                    "surface-container-highest": "#e1e2ed",
-                    "on-secondary-fixed-variant": "#5516be",
-                    "surface-tint": "#0053db",
-                    "secondary": "#6b38d4",
-                    "on-primary": "#ffffff",
-                    "tertiary-fixed-dim": "#ffb596",
-                    "tertiary-container": "#bc4800",
-                    "on-background": "#191b23",
-                    "inverse-surface": "#2e3039",
-                    "on-primary-fixed": "#00174b",
-                    "surface-container": "#ededf9",
-                    "on-primary-fixed-variant": "#003ea8",
-                    "surface-variant": "#e1e2ed",
-                    "secondary-fixed": "#e9ddff",
-                    "on-secondary-container": "#fffbff",
-                    "error": "#ba1a1a",
-                    "secondary-container": "#8455ef",
-                    "on-tertiary-container": "#ffede6",
-                    "on-primary-container": "#eeefff",
-                    "on-tertiary": "#ffffff",
-                    "surface-bright": "#faf8ff",
-                    "on-secondary-fixed": "#23005c",
-                    "surface-container-lowest": "#ffffff",
-                    "on-error-container": "#93000a",
-                    "outline": "#737686",
-                    "surface-dim": "#d9d9e5",
-                    "primary-fixed-dim": "#b4c5ff"
-            },
-            "borderRadius": {
-                    "DEFAULT": "0.25rem",
-                    "lg": "0.5rem",
-                    "xl": "0.75rem",
-                    "full": "9999px"
-            },
-            "spacing": {
-                    "container_max_width": "1280px",
-                    "stack_gap_sm": "8px",
-                    "gutter": "24px",
-                    "top_nav_height": "72px",
-                    "stack_gap_lg": "32px",
-                    "stack_gap_md": "16px",
-                    "margin_mobile": "16px",
-                    "sidebar_width": "280px"
-            },
-            "fontFamily": {
-                    "display-lg": ["Inter"],
-                    "title-lg": ["Inter"],
-                    "label-sm": ["Inter"],
-                    "headline-lg-mobile": ["Inter"],
-                    "label-md": ["Inter"],
-                    "headline-lg": ["Inter"],
-                    "body-md": ["Inter"],
-                    "headline-md": ["Inter"],
-                    "body-lg": ["Inter"]
-            },
-            "fontSize": {
-                    "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
-                    "title-lg": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
-                    "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "600"}],
-                    "headline-lg-mobile": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
-                    "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "500"}],
-                    "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
-                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
-                    "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
-                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}]
-            }
-          },
-        },
-      }
-    </script>
 <style>
         body {
             font-family: 'Inter', sans-serif;
@@ -152,7 +66,7 @@
             z-index: -1;
             margin: -2px;
             border-radius: inherit;
-            background: linear-gradient(to right, #0058be, #6b38d4);
+            background: linear-gradient(to right, #FF4D2E, #0E1116);
         }
         .hover-lift {
             transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
@@ -173,28 +87,28 @@
 <body class="bg-background text-on-surface min-h-screen">
 <!-- Top Navigation Anchor (Shared Component Mapping) -->
 <header class="w-full sticky top-0 z-50 bg-surface dark:bg-surface-dim shadow-sm glass-panel h-16 flex justify-between items-center px-4 md:px-8 max-w-7xl mx-auto">
-<a class="flex items-center gap-3" href="../index.html">
+<a class="flex items-center gap-3" href="index.html">
 <span class="material-symbols-outlined text-primary text-2xl" data-icon="hub">hub</span>
 <h1 class="font-headline-lg-mobile text-headline-lg-mobile font-bold text-primary dark:text-primary-fixed-dim">EVENTIFY</h1>
 </a>
-<div class="hidden md:flex items-center gap-8">
+<div class="hidden lg:flex items-center gap-8">
 <nav class="flex items-center gap-6">
-<a class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors" href="../index.html">Home</a>
+<a class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors" href="index.html">Home</a>
 <a class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors" href="explore.html">Explore</a>
 <a class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors" href="posts.html">Posts</a>
-<a class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors" href="my-applications.html">My Applications</a>
+<a class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors" href="my-applications.html">My Event</a>
 <a class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors" href="notifications.html">Notifications</a>
 </nav>
 <div class="flex items-center gap-4 border-l border-outline-variant pl-6">
 <button class="theme-toggle p-2 rounded-full hover:bg-surface-container-low transition-colors" type="button" aria-label="Switch theme"><span class="material-symbols-outlined text-on-surface-variant">dark_mode</span></button>
-<a class="hidden md:flex items-center gap-2 px-4 py-2 bg-primary text-on-primary rounded-full font-label-md text-label-md" href="rafeeq.html"><span class="material-symbols-outlined text-[18px]">smart_toy</span>Rafeeq AI</a>
+<a class="hidden lg:flex items-center gap-2 px-4 py-2 bg-primary text-on-primary rounded-full font-label-md text-label-md" href="rafeeq.html"><span class="material-symbols-outlined text-[18px]">smart_toy</span>Rafeeq AI</a>
 <a class="material-symbols-outlined text-on-surface-variant hover:bg-surface-container-low p-2 rounded-full transition-colors" data-icon="search" href="explore.html">search</a>
 <a class="w-10 h-10 rounded-full overflow-hidden border border-outline-variant block" href="profile.html">
 <img class="w-full h-full object-cover" data-alt="A professional headshot of a team leader in a modern tech office environment, soft natural lighting, wearing a smart casual outfit, shallow depth of field with a clean workspace in the background. The aesthetic is bright and high-end." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAeAtaen0S8dD2U-GF6vCknMSNdP1Fm90XKCSTgBiaAr3QoVAIeNsY0O5qqUHcyS2Cl5EuD2IsOSUkEQzQ8HKjcNIjaBf3XP4-CyceyGl4b5a9RKzsSw-9yQLxSUhDxCdkBYLWwrpebB_hEmRjL1OyUATaFE-PEB450Pdo2XQfapPzoXyHBrCCF78W5QsEdd38ROtQkyE7IhryhfCcSdEQ_JTzzyNjHl-STFli_IWqIfsp7EnVP4VFRrlMwW7K_d8JBrlw5j6ADxznI"/>
 </a>
 </div>
 </div>
-<button class="md:hidden material-symbols-outlined text-on-surface-variant" data-icon="menu">menu</button>
+<button class="lg:hidden material-symbols-outlined text-on-surface-variant" data-icon="menu">menu</button>
 </header>
 <main class="max-w-7xl mx-auto px-4 md:px-8 py-8 mb-24">
 <!-- Dashboard Header -->
@@ -374,7 +288,7 @@
 </main>
 <!-- Bottom Navigation Shell (Shared Component Mapping) -->
 <nav class="md:hidden fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-2 py-3 pb-safe bg-surface dark:bg-surface-dim shadow-[0_-1px_12px_rgba(59,130,246,0.08)]">
-<a class="flex flex-col items-center justify-center text-on-surface-variant py-1 px-4 hover:bg-surface-container-high transition-colors active:scale-90 duration-200" href="../index.html">
+<a class="flex flex-col items-center justify-center text-on-surface-variant py-1 px-4 hover:bg-surface-container-high transition-colors active:scale-90 duration-200" href="index.html">
 <span class="material-symbols-outlined" data-icon="home">home</span>
 <span class="font-label-sm text-label-sm">Home</span>
 </a>
@@ -428,4 +342,7 @@
         document.head.appendChild(style);
     </script>
 <script src="../assets/js/theme.js"></script>
+<script src="../assets/js/ui-state.js"></script>
+<script src="nav.js"></script>
+<script src="../assets/js/motion.js"></script>
 </body></html>

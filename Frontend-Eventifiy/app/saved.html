@@ -1,10 +1,19 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html class="light" lang="en">
 
 <head>
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
     <title>Saved | EVENTIFY</title>
+<meta name="description" content="Saved on EVENTIFY — the AI-powered hub for competitions, workshops, courses and internships."/>
+<meta property="og:title" content="Saved | EVENTIFY"/>
+<meta property="og:description" content="Saved on EVENTIFY — the AI-powered hub for competitions, workshops, courses and internships."/>
+<meta property="og:type" content="website"/>
+<meta property="og:image" content="../assets/images/event1.jpeg"/>
+<link rel="icon" href="../assets/images/favicon.svg" type="image/svg+xml"/>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="nav.css"/>
+<link rel="stylesheet" href="app-shell.css"/>
     <script src="../assets/js/theme.js"></script>
     <link rel="stylesheet" href="../assets/css/theme.css" />
     <style>
@@ -36,89 +45,10 @@
         }
     </style>
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet" />
-    <script id="tailwind-config">
-        tailwind.config = {
-            darkMode: "class",
-            theme: {
-                extend: {
-                    colors: {
-                        "background": "#faf8ff",
-                        "surface-container-high": "#e7e7f3",
-                        "on-surface": "#191b23",
-                        "on-surface-variant": "#434655",
-                        "secondary-fixed-dim": "#d0bcff",
-                        "tertiary-fixed": "#ffdbcd",
-                        "on-secondary": "#ffffff",
-                        "on-tertiary-fixed": "#360f00",
-                        "primary-container": "#2563eb",
-                        "surface-container-low": "#f3f3fe",
-                        "primary-fixed": "#dbe1ff",
-                        "inverse-on-surface": "#f0f0fb",
-                        "surface": "#faf8ff",
-                        "on-error": "#ffffff",
-                        "primary": "#0058be",
-                        "on-tertiary-fixed-variant": "#7d2d00",
-                        "tertiary": "#943700",
-                        "success": "#006947",
-                        "on-success": "#ffffff",
-                        "success-container": "#00855b",
-                        "outline-variant": "#c3c6d7",
-                        "inverse-primary": "#b4c5ff",
-                        "error-container": "#ffdad6",
-                        "surface-container-highest": "#e1e2ed",
-                        "on-secondary-fixed-variant": "#5516be",
-                        "surface-tint": "#0053db",
-                        "secondary": "#6b38d4",
-                        "on-primary": "#ffffff",
-                        "tertiary-fixed-dim": "#ffb596",
-                        "tertiary-container": "#bc4800",
-                        "on-background": "#191b23",
-                        "inverse-surface": "#2e3039",
-                        "on-primary-fixed": "#00174b",
-                        "surface-container": "#ededf9",
-                        "on-primary-fixed-variant": "#003ea8",
-                        "surface-variant": "#e1e2ed",
-                        "secondary-fixed": "#e9ddff",
-                        "on-secondary-container": "#fffbff",
-                        "error": "#ba1a1a",
-                        "on-tertiary-container": "#ffede6",
-                        "surface-bright": "#faf8ff",
-                        "on-secondary-fixed": "#23005c"
-                    },
-                    borderRadius: {
-                        DEFAULT: "0.25rem",
-                        lg: "0.5rem",
-                        xl: "0.75rem",
-                        full: "9999px"
-                    },
-                    spacing: {
-                        container_max_width: "1280px",
-                        stack_gap_sm: "8px",
-                        gutter: "24px",
-                        top_nav_height: "72px",
-                        stack_gap_lg: "32px",
-                        stack_gap_md: "16px",
-                        margin_mobile: "16px",
-                        sidebar_width: "280px"
-                    },
-                    fontFamily: {
-                        display: ["Inter"],
-                        body: ["Inter"],
-                        "title-lg": ["Inter"],
-                        "label-md": ["Inter"],
-                        "headline-md": ["Inter"],
-                        "body-md": ["Inter"]
-                    }
-                }
-            }
-        };
-    </script>
+<script src="../assets/js/tw-config.js"></script>
 </head>
 
 <body class="bg-background text-on-surface font-body-md">
-    <header class="lg:hidden glass-header sticky top-0 z-50 flex h-16 items-center justify-between px-4 shadow-sm"><a class="flex items-center gap-2" href="../index.html"><span class="material-symbols-outlined text-primary" style="font-variation-settings:'FILL' 1;">hub</span><span class="text-xl font-bold text-primary">EVENTIFY</span></a><a class="rounded-full bg-primary/10 px-3 py-1 text-label-sm font-semibold text-primary" href="my-applications.html">MY APPLICATIONS</a>
-    </header>
     <div class="min-h-screen">
         <main class="mx-auto w-full max-w-7xl px-4 py-8 pb-24 md:px-12 lg:pb-8">
             <div class="mb-6 flex items-center gap-3 text-label-md">
@@ -130,15 +60,15 @@
             <div class="mb-6 flex items-center gap-2 text-label-md"><a class="text-on-surface-variant hover:text-primary" href="profile.html">Profile</a><span class="text-outline">/</span><span>Saved</span></div>
             <div class="mb-8 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
                 <div>
-                    <h2 class="text-display-lg font-semibold">Saved opportunities</h2>
+                    <h2 class="text-headline-lg font-semibold">Saved opportunities</h2>
                     <p class="mt-1 text-on-surface-variant">Your saved competitions and opportunities are stored here for quick access.</p>
                 </div>
                 <button class="rounded-full bg-primary px-6 py-3 text-on-primary font-medium hover:bg-primary-container transition-colors">Manage saved items</button>
             </div>
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                <div class="bg-surface-container-lowest border border-outline-variant/30 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-all group cursor-pointer">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6" data-empty-when-empty data-empty-icon="bookmark" data-empty-title="Nothing saved yet" data-empty-body="Save an opportunity while you browse and it waits for you here until the deadline." data-empty-action="Browse opportunities" data-empty-href="explore.html">
+                <div class="ev-card spotlight ev-fade-up ev-stagger-2 ev-fade-up ev-stagger-1 bg-surface-container-lowest border border-outline-variant/30 rounded-xl overflow-hidden shadow-sm group cursor-pointer">
                     <div class="h-56 relative overflow-hidden">
-                        <img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB9CEnFNI0sa64wtdt1xcbuCO2ctuePljYf3b0mGoAfsaVbTQZl6EUEKGeq_A-lCje6-84UGOy-xM_EX1fj34sF-YWMO-_0SG4_iedT1vjYrRw5UpEFxOlngZ_cDhCxJRFxyyChSuzfbQzaifbDrY-ySQm0SZNqdXFNpNdzVSiaboP2NAJ4pYTV-P32G1lYqug8kLksnCytiGNYKiUHGIacjDYyZIZ5HHucNTeyCLWQmzn3HRdmrm8n18EIgGN0AobDjfqjTG3DQkjK" alt="Global AI Innovation Challenge" />
+                        <img class="ev-card-img w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB9CEnFNI0sa64wtdt1xcbuCO2ctuePljYf3b0mGoAfsaVbTQZl6EUEKGeq_A-lCje6-84UGOy-xM_EX1fj34sF-YWMO-_0SG4_iedT1vjYrRw5UpEFxOlngZ_cDhCxJRFxyyChSuzfbQzaifbDrY-ySQm0SZNqdXFNpNdzVSiaboP2NAJ4pYTV-P32G1lYqug8kLksnCytiGNYKiUHGIacjDYyZIZ5HHucNTeyCLWQmzn3HRdmrm8n18EIgGN0AobDjfqjTG3DQkjK" alt="Global AI Innovation Challenge" />
                         <div class="absolute top-3 left-3 rounded-full bg-secondary text-white px-3 py-1 text-[10px] uppercase tracking-wider font-bold">HACKATHON</div>
                         <div class="absolute top-3 right-3 rounded-full bg-primary/95 text-white px-3 py-1 text-[10px] uppercase tracking-wider font-bold">Saved</div>
                     </div>
@@ -155,9 +85,9 @@
                         </div>
                     </div>
                 </div>
-                <div class="bg-surface-container-lowest border border-outline-variant/30 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-all group cursor-pointer">
+                <div class="ev-card spotlight ev-fade-up ev-stagger-2 ev-fade-up ev-stagger-1 bg-surface-container-lowest border border-outline-variant/30 rounded-xl overflow-hidden shadow-sm group cursor-pointer">
                     <div class="h-56 relative overflow-hidden">
-                        <img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBcUXLF60F3KbDnIVZepTTte_yzkhe3rkuMtXTXTMQzA1gyVuzXN1NQ0DXC7XHQBDIHEA2TXLK8EoSvioCS5PoWNoZKnVI7YeLCAxqcRtKE-cfSsrD6X3yBiiGI_J0DdnCu4vgHVOf7tn5UW93gDceqUiZ4hVu5ZCvSuDbEd3Dm8uTINHyELfvrJM4AvcW6lRAm2zAmGTlp9N7rNMUMizYToAN1_rTfY1KtEjsmeIx--zlkOzEz07DRgirbjC8bnSBfxNFTTtVBYuqf" alt="Deep Learning Mastery" />
+                        <img class="ev-card-img w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBcUXLF60F3KbDnIVZepTTte_yzkhe3rkuMtXTXTMQzA1gyVuzXN1NQ0DXC7XHQBDIHEA2TXLK8EoSvioCS5PoWNoZKnVI7YeLCAxqcRtKE-cfSsrD6X3yBiiGI_J0DdnCu4vgHVOf7tn5UW93gDceqUiZ4hVu5ZCvSuDbEd3Dm8uTINHyELfvrJM4AvcW6lRAm2zAmGTlp9N7rNMUMizYToAN1_rTfY1KtEjsmeIx--zlkOzEz07DRgirbjC8bnSBfxNFTTtVBYuqf" alt="Deep Learning Mastery" />
                         <div class="absolute top-3 left-3 rounded-full bg-primary text-white px-3 py-1 text-[10px] uppercase tracking-wider font-bold">WORKSHOP</div>
                         <div class="absolute top-3 right-3 rounded-full bg-primary/95 text-white px-3 py-1 text-[10px] uppercase tracking-wider font-bold">Saved</div>
                     </div>
@@ -174,9 +104,9 @@
                         </div>
                     </div>
                 </div>
-                <div class="bg-surface-container-lowest border border-outline-variant/30 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-all group cursor-pointer">
+                <div class="ev-card spotlight ev-fade-up ev-stagger-2 ev-fade-up ev-stagger-1 bg-surface-container-lowest border border-outline-variant/30 rounded-xl overflow-hidden shadow-sm group cursor-pointer">
                     <div class="h-56 relative overflow-hidden">
-                        <img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAoXFluzheWmZ490MELdToAMEYpR_txVKV30osgae_hCJtZOTitQ7q-hlRINJEb6yu8WczfucSzRFeg7_ASopSg4PYi40bcSgLBAzpyDWcgZltV0lVaadKj9Hxg_0-MIvEynOlpWfO6oad4LDePXnQqUogQYAUOomnsxNQRm0sYppi6tcEF-XVtGAmZwLlJ7Zzvf2ojEvEnU0EwWkAE_qpAYRfUYUWLDeKx1nnQtM-6DxX8uCm13GfTKpd5tCt-XHKS5s04qO3jTwFA" alt="Frontend Wizards 2024" />
+                        <img class="ev-card-img w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAoXFluzheWmZ490MELdToAMEYpR_txVKV30osgae_hCJtZOTitQ7q-hlRINJEb6yu8WczfucSzRFeg7_ASopSg4PYi40bcSgLBAzpyDWcgZltV0lVaadKj9Hxg_0-MIvEynOlpWfO6oad4LDePXnQqUogQYAUOomnsxNQRm0sYppi6tcEF-XVtGAmZwLlJ7Zzvf2ojEvEnU0EwWkAE_qpAYRfUYUWLDeKx1nnQtM-6DxX8uCm13GfTKpd5tCt-XHKS5s04qO3jTwFA" alt="Frontend Wizards 2024" />
                         <div class="absolute top-3 left-3 rounded-full bg-secondary text-white px-3 py-1 text-[10px] uppercase tracking-wider font-bold">COMPETITION</div>
                         <div class="absolute top-3 right-3 rounded-full bg-primary/95 text-white px-3 py-1 text-[10px] uppercase tracking-wider font-bold">Saved</div>
                     </div>
@@ -196,6 +126,30 @@
             </div>
         </main>
     </div>
+<script>
+    document.querySelectorAll('[data-empty-when-empty] > div').forEach(card => {
+        const removeBtn = [...card.querySelectorAll('button')].find(b => b.textContent.trim() === 'Remove from saved');
+        if (!removeBtn) return;
+        removeBtn.addEventListener('click', e => {
+            e.stopPropagation();
+            const list = card.parentElement;
+            card.remove();
+            if (!list.children.length) {
+                const empty = document.createElement('div');
+                empty.className = 'empty-state';
+                empty.setAttribute('data-empty-state', '');
+                empty.innerHTML = `
+                    <span class="empty-state__icon"><span class="material-symbols-outlined" aria-hidden="true">${list.dataset.emptyIcon || 'inbox'}</span></span>
+                    <h3>${list.dataset.emptyTitle || 'Nothing here yet'}</h3>
+                    <p>${list.dataset.emptyBody || 'Once there is something to show, it will appear here.'}</p>
+                    ${list.dataset.emptyAction && list.dataset.emptyHref ? `<a class="btn-primary" href="${list.dataset.emptyHref}">${list.dataset.emptyAction}</a>` : ''}`;
+                list.appendChild(empty);
+            }
+        });
+    });
+</script>
+<script src="../assets/js/ui-state.js"></script>
+<script src="../assets/js/motion.js"></script>
 </body>
 
 </html>
