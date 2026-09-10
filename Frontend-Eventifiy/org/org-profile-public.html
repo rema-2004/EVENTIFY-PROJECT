@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>TechGenius Labs | EVENTIFY</title>
+    <script src="../assets/js/theme.js"></script>
+    <link rel="stylesheet" href="../assets/css/theme.css" />
+    <style>
+        @font-face {
+            font-family: 'Material Symbols Outlined';
+            font-style: normal;
+            font-weight: 100 700;
+            font-display: block;
+            src: url('../assets/fonts/material-symbols-outlined.woff2') format('woff2');
+        }
+        .material-symbols-outlined {
+            font-family: 'Material Symbols Outlined';
+            font-weight: normal;
+            font-style: normal;
+            font-size: 24px;
+            line-height: 1;
+            letter-spacing: normal;
+            text-transform: none;
+            display: inline-block;
+            white-space: nowrap;
+            overflow: hidden;
+            word-wrap: normal;
+            direction: ltr;
+            -webkit-font-feature-settings: 'liga';
+            -webkit-font-smoothing: antialiased;
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap"
+        rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "background": "#faf8ff", "surface-container-high": "#e7e7f3", "on-surface": "#191b23",
+                        "on-surface-variant": "#434655", "primary-container": "#2563eb", "surface-container-low": "#f3f3fe",
+                        "surface": "#faf8ff", "primary": "#0058be", "tertiary": "#943700",
+                        "success": "#006947", "success-container": "#00855b", "outline-variant": "#c3c6d7",
+                        "surface-container-highest": "#e1e2ed", "secondary": "#6b38d4", "on-primary": "#ffffff",
+                        "surface-container": "#ededf9", "secondary-container": "#8455ef", "on-primary-container": "#eeefff",
+                        "on-tertiary": "#ffffff", "surface-bright": "#faf8ff", "surface-container-lowest": "#ffffff",
+                        "outline": "#737686"
+                    },
+                    borderRadius: { DEFAULT: "0.25rem", lg: "0.5rem", xl: "0.75rem", full: "9999px" },
+                    spacing: { container_max_width: "1280px", gutter: "24px", top_nav_height: "72px" },
+                    fontFamily: {
+                        "display-lg": ["Inter"], "title-lg": ["Inter"], "label-sm": ["Inter"], "headline-lg-mobile": ["Inter"],
+                        "label-md": ["Inter"], "headline-lg": ["Inter"], "body-md": ["Inter"], "headline-md": ["Inter"], "body-lg": ["Inter"]
+                    },
+                    fontSize: {
+                        "display-lg": ["48px", { lineHeight: "56px", letterSpacing: "-0.02em", fontWeight: "700" }],
+                        "title-lg": ["20px", { lineHeight: "28px", fontWeight: "600" }],
+                        "label-sm": ["12px", { lineHeight: "16px", fontWeight: "600" }],
+                        "headline-lg-mobile": ["24px", { lineHeight: "32px", fontWeight: "600" }],
+                        "label-md": ["14px", { lineHeight: "20px", letterSpacing: "0.01em", fontWeight: "500" }],
+                        "headline-lg": ["32px", { lineHeight: "40px", letterSpacing: "-0.01em", fontWeight: "600" }],
+                        "body-md": ["16px", { lineHeight: "24px", fontWeight: "400" }],
+                        "headline-md": ["24px", { lineHeight: "32px", fontWeight: "600" }],
+                        "body-lg": ["18px", { lineHeight: "28px", fontWeight: "400" }]
+                    }
+                }
+            }
+        };
+    </script>
+</head>
+
+<body class="min-h-screen bg-background text-on-surface font-body-md">
+    <!-- Public top bar (visitor-facing, not the internal organizer sidebar shell) -->
+    <header class="sticky top-0 z-50 w-full h-top_nav_height glass-header border-b border-outline-variant/30 flex items-center px-gutter">
+        <div class="flex justify-between items-center w-full max-w-container_max_width mx-auto">
+            <a class="flex items-center gap-2" href="../marketing/landing.html">
+                <span class="material-symbols-outlined text-primary text-3xl" style="font-variation-settings:'FILL' 1;">hub</span>
+                <span class="text-xl font-bold text-primary">EVENTIFY</span>
+            </a>
+            <div class="flex items-center gap-3">
+                <span class="hidden sm:inline-flex rounded-full bg-primary/10 px-3 py-1 text-label-sm font-semibold text-primary">Public organization profile</span>
+                <a class="org-btn-secondary" href="../auth/login.html">Log in</a>
+                <a class="org-btn-primary" href="../auth/signup.html">Get Started</a>
+            </div>
+        </div>
+    </header>
+    <main class="mx-auto w-full max-w-7xl px-4 py-8 md:px-12">
+        <section class="mb-6 overflow-hidden rounded-[32px] border border-outline-variant/40 bg-surface-container-lowest shadow-sm">
+            <div class="h-40 bg-gradient-to-r from-[#071a3d] via-[#1746a2] to-[#7c3aed]"></div>
+            <div class="p-6 md:p-8">
+                <div class="-mt-16 mb-6 flex flex-col gap-6 lg:flex-row lg:items-end">
+                    <div class="flex h-24 w-24 items-center justify-center rounded-[24px] border-4 border-white/90 bg-gradient-to-br from-primary via-primary to-secondary text-3xl font-bold text-white shadow-[0_12px_30px_rgba(0,0,0,0.18)]">OR</div>
+                    <div class="flex-1">
+                        <div class="rounded-[24px] border border-outline-variant/40 bg-white/80 p-4 shadow-sm backdrop-blur-sm">
+                            <div class="flex flex-wrap items-center gap-3">
+                                <h1 class="text-headline-lg font-semibold text-on-surface">TechGenius Labs</h1>
+                                <span class="rounded-full bg-success/10 px-3 py-1 text-label-sm font-semibold text-success">Verified institution</span>
+                                <span class="rounded-full bg-primary/10 px-3 py-1 text-label-sm font-semibold text-primary">Training and innovation center</span>
+                            </div>
+                            <p class="mt-2 text-body-md text-on-surface-variant">This organization is dedicated to delivering high-quality programs, training opportunities, and development initiatives that support students, professionals, and community partners.</p>
+                        </div>
+                    </div>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="org-pill">Founded 2024</span>
+                        <span class="org-pill">Amman, Jordan</span>
+                        <span class="org-pill">Verified by Eventify</span>
+                    </div>
+                </div>
+                <div class="flex flex-wrap gap-3 mb-6">
+                    <a class="org-btn-primary" href="../auth/signup.html"><span class="material-symbols-outlined">visibility</span>View open opportunities</a>
+                    <button class="org-btn-secondary" id="follow-btn" type="button"><span class="material-symbols-outlined" id="follow-icon">add</span><span id="follow-label">Follow organization</span></button>
+                </div>
+                <div class="grid gap-4 md:grid-cols-3">
+                    <div class="soft-card rounded-[24px] p-5">
+                        <p class="text-display-lg font-bold text-on-surface">24</p>
+                        <p class="mt-1 text-label-md text-on-surface-variant">Active programs</p>
+                    </div>
+                    <div class="soft-card rounded-[24px] p-5">
+                        <p class="text-display-lg font-bold text-on-surface">1.9k</p>
+                        <p class="mt-1 text-label-md text-on-surface-variant">Applicants reached</p>
+                    </div>
+                    <div class="soft-card rounded-[24px] p-5">
+                        <p class="text-display-lg font-bold text-on-surface">4.8</p>
+                        <p class="mt-1 text-label-md text-on-surface-variant">Community rating</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div class="grid grid-cols-1 gap-6 xl:grid-cols-[1.45fr_0.95fr]">
+            <div class="space-y-6">
+                <section class="soft-card rounded-[28px] p-6">
+                    <div class="mb-4 flex items-center justify-between">
+                        <div>
+                            <p class="text-label-sm font-semibold uppercase tracking-wide text-primary">About the organization</p>
+                            <h3 class="mt-1 text-title-lg font-semibold text-on-surface">What the organization stands for</h3>
+                        </div>
+                        <span class="rounded-full bg-primary/10 px-3 py-1 text-label-sm font-semibold text-primary">Mission driven</span>
+                    </div>
+                    <div class="grid gap-6 lg:grid-cols-2">
+                        <div class="rounded-[22px] border border-outline-variant/40 bg-surface-container-low p-4">
+                            <p class="text-sm font-semibold uppercase tracking-wide text-on-surface-variant">Mission</p>
+                            <p class="mt-2 text-body-md text-on-surface">We design and deliver structured, career-oriented learning pathways that strengthen knowledge, build professional capabilities, and connect participants with meaningful opportunities.</p>
+                        </div>
+                        <div class="rounded-[22px] border border-outline-variant/40 bg-surface-container-low p-4">
+                            <p class="text-sm font-semibold uppercase tracking-wide text-on-surface-variant">Core domains</p>
+                            <ul class="mt-2 space-y-2 text-body-md text-on-surface-variant">
+                                <li>• Artificial intelligence and data science</li>
+                                <li>• Cloud infrastructure and DevOps</li>
+                                <li>• Product development and entrepreneurship</li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="soft-card rounded-[28px] p-6">
+                    <div class="mb-4 flex items-center justify-between">
+                        <div>
+                            <p class="text-label-sm font-semibold uppercase tracking-wide text-primary">Open now</p>
+                            <h3 class="mt-1 text-title-lg font-semibold text-on-surface">Programs and initiatives</h3>
+                        </div>
+                    </div>
+                    <div class="space-y-3">
+                        <div class="flex flex-col justify-between gap-3 rounded-[20px] border border-outline-variant/40 bg-surface-container-low p-4 md:flex-row md:items-center">
+                            <div>
+                                <p class="font-semibold text-on-surface">Global AI Innovation Challenge</p>
+                                <p class="text-label-md text-on-surface-variant">Live · Remote · 98 applicants</p>
+                            </div>
+                            <a class="text-label-md font-medium text-primary" href="../auth/signup.html">Apply now</a>
+                        </div>
+                        <div class="flex flex-col justify-between gap-3 rounded-[20px] border border-outline-variant/40 bg-surface-container-low p-4 md:flex-row md:items-center">
+                            <div>
+                                <p class="font-semibold text-on-surface">DevOps Masterclass</p>
+                                <p class="text-label-md text-on-surface-variant">Opens soon · Online</p>
+                            </div>
+                            <a class="text-label-md font-medium text-primary" href="../auth/signup.html">Get notified</a>
+                        </div>
+                        <div class="flex flex-col justify-between gap-3 rounded-[20px] border border-outline-variant/40 bg-surface-container-low p-4 md:flex-row md:items-center">
+                            <div>
+                                <p class="font-semibold text-on-surface">Cloud Career Bootcamp</p>
+                                <p class="text-label-md text-on-surface-variant">6-week certificate</p>
+                            </div>
+                            <a class="text-label-md font-medium text-primary" href="../auth/signup.html">Apply now</a>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <div class="space-y-6">
+                <section class="soft-card rounded-[28px] p-6">
+                    <p class="text-label-sm font-semibold uppercase tracking-wide text-primary">Institutional details</p>
+                    <h3 class="mt-1 text-title-lg font-semibold text-on-surface">Contact and location</h3>
+                    <div class="mt-4 space-y-4 text-label-md text-on-surface-variant">
+                        <div class="rounded-[18px] bg-surface-container-low p-3">
+                            <p class="text-sm font-semibold uppercase tracking-wide text-on-surface">Website</p>
+                            <p class="mt-1 text-body-md text-on-surface">www.techgenius.io</p>
+                        </div>
+                        <div class="rounded-[18px] bg-surface-container-low p-3">
+                            <p class="text-sm font-semibold uppercase tracking-wide text-on-surface">Location</p>
+                            <p class="mt-1 text-body-md text-on-surface">Amman, Jordan</p>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="soft-card rounded-[28px] p-6">
+                    <p class="text-label-sm font-semibold uppercase tracking-wide text-primary">Verification</p>
+                    <h3 class="mt-1 text-title-lg font-semibold text-on-surface">Trust status</h3>
+                    <div class="mt-4 space-y-3">
+                        <div class="rounded-[18px] border border-success/20 bg-success/10 p-3">
+                            <p class="font-semibold text-success">Verified institution</p>
+                            <p class="mt-1 text-label-md text-success/90">Reviewed and approved by the Eventify administration team</p>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </main>
+    <script>
+        const followBtn = document.getElementById('follow-btn');
+        const followIcon = document.getElementById('follow-icon');
+        const followLabel = document.getElementById('follow-label');
+        followBtn.addEventListener('click', () => {
+            const isFollowing = followBtn.dataset.state === 'following';
+            if (isFollowing) {
+                followBtn.dataset.state = '';
+                followIcon.textContent = 'add';
+                followLabel.textContent = 'Follow organization';
+            } else {
+                followBtn.dataset.state = 'following';
+                followIcon.textContent = 'check';
+                followLabel.textContent = 'Following';
+            }
+        });
+    </script>
+</body>
+
+</html>

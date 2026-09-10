@@ -1,20 +1,9 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 
 <html class="light" lang="en"><head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport"/>
 <title>Notifications | Eventify AI</title>
-<meta name="description" content="Notifications | Eventify AI on EVENTIFY — the AI-powered hub for competitions, workshops, courses and internships."/>
-<meta property="og:title" content="Notifications | Eventify AI"/>
-<meta property="og:description" content="Notifications | Eventify AI on EVENTIFY — the AI-powered hub for competitions, workshops, courses and internships."/>
-<meta property="og:type" content="website"/>
-<meta property="og:image" content="../assets/images/event1.jpeg"/>
-<link rel="icon" href="../assets/images/favicon.svg" type="image/svg+xml"/>
-<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet"/>
-<link rel="stylesheet" href="nav.css"/>
-<link rel="stylesheet" href="app-shell.css"/>
-<script src="../assets/js/theme.js"></script>
-<link rel="stylesheet" href="../assets/css/theme.css"/>
 <style>
     @font-face {
         font-family: 'Material Symbols Outlined';
@@ -43,10 +32,106 @@
 
 <!-- Tailwind CSS -->
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<script src="../assets/js/tw-config.js"></script>
 <!-- Google Fonts: Inter -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
 <!-- Material Symbols -->
 <!-- Theme Configuration -->
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface-container-highest": "#e1e2ed",
+                    "surface-container-low": "#f3f3fe",
+                    "on-secondary-fixed": "#23005c",
+                    "primary-fixed": "#dbe1ff",
+                    "tertiary": "#943700",
+                    "on-secondary": "#ffffff",
+                    "on-surface-variant": "#434655",
+                    "on-error": "#ffffff",
+                    "background": "#faf8ff",
+                    "on-primary-fixed-variant": "#003ea8",
+                    "inverse-on-surface": "#f0f0fb",
+                    "outline": "#737686",
+                    "on-error-container": "#93000a",
+                    "on-surface": "#191b23",
+                    "outline-variant": "#c3c6d7",
+                    "secondary-fixed": "#e9ddff",
+                    "on-secondary-container": "#fffbff",
+                    "surface": "#faf8ff",
+                    "surface-variant": "#e1e2ed",
+                    "surface-container-lowest": "#ffffff",
+                    "tertiary-fixed": "#ffdbcd",
+                    "on-tertiary-fixed": "#360f00",
+                    "surface-container": "#ededf9",
+                    "on-tertiary-container": "#ffede6",
+                    "on-primary": "#ffffff",
+                    "error": "#ba1a1a",
+                    "surface-tint": "#0053db",
+                    "on-secondary-fixed-variant": "#5516be",
+                    "tertiary-fixed-dim": "#ffb596",
+                    "primary-container": "#2563eb",
+                    "on-tertiary": "#ffffff",
+                    "inverse-primary": "#b4c5ff",
+                    "primary": "#0058be",
+                    "surface-bright": "#faf8ff",
+                    "tertiary-container": "#bc4800",
+                    "on-tertiary-fixed-variant": "#7d2d00",
+                    "error-container": "#ffdad6",
+                    "surface-container-high": "#e7e7f3",
+                    "on-primary-container": "#eeefff",
+                    "secondary-container": "#8455ef",
+                    "on-primary-fixed": "#00174b",
+                    "surface-dim": "#d9d9e5",
+                    "secondary": "#6b38d4",
+                    "primary-fixed-dim": "#b4c5ff",
+                    "on-background": "#191b23",
+                    "inverse-surface": "#2e3039",
+                    "secondary-fixed-dim": "#d0bcff"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "stack_gap_sm": "8px",
+                    "stack_gap_lg": "32px",
+                    "container_max_width": "1280px",
+                    "stack_gap_md": "16px",
+                    "gutter": "24px",
+                    "sidebar_width": "280px",
+                    "top_nav_height": "72px",
+                    "margin_mobile": "16px"
+            },
+            "fontFamily": {
+                    "body-md": ["Inter"],
+                    "body-lg": ["Inter"],
+                    "display-lg": ["Inter"],
+                    "label-md": ["Inter"],
+                    "headline-md": ["Inter"],
+                    "headline-lg": ["Inter"],
+                    "title-lg": ["Inter"],
+                    "label-sm": ["Inter"],
+                    "headline-lg-mobile": ["Inter"]
+            },
+            "fontSize": {
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                    "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "500"}],
+                    "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                    "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "title-lg": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                    "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "600"}],
+                    "headline-lg-mobile": ["24px", {"lineHeight": "32px", "fontWeight": "600"}]
+            }
+          },
+        },
+      }
+    </script>
 <style>
         .material-symbols-outlined {
             font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
@@ -54,7 +139,7 @@
         .active-dot {
             width: 8px;
             height: 8px;
-            background-color: #FF4D2E;
+            background-color: #0053db;
             border-radius: 50%;
         }
         .glass-nav {
@@ -79,7 +164,7 @@
 <!-- Top Navigation Anchor -->
 <header class="sticky top-0 w-full z-50 glass-nav border-b border-outline-variant/30 shadow-sm flex items-center justify-between px-margin_mobile h-top_nav_height">
 <div class="flex items-center gap-4">
-<a class="material-symbols-outlined text-primary p-2 active:scale-95 duration-200" data-icon="arrow_back" href="index.html">arrow_back</a>
+<a class="material-symbols-outlined text-primary p-2 active:scale-95 duration-200" data-icon="arrow_back" href="../index.html">arrow_back</a>
 <h1 class="font-headline-md text-headline-md text-on-surface">Notifications</h1>
 </div>
 <a class="material-symbols-outlined text-primary p-2 active:scale-95 duration-200" data-icon="settings" href="profile.html">settings</a>
@@ -87,16 +172,16 @@
 <main class="max-w-container_max_width mx-auto pb-32">
 <!-- Filter Tabs Section -->
 <section class="px-margin_mobile py-4 sticky top-[72px] z-40 bg-surface/95 backdrop-blur-md">
-<div class="flex gap-stack_gap_md overflow-x-auto no-scrollbar py-2" id="notif-filter-group" role="group" aria-label="Filter notifications">
-<button type="button" class="px-6 py-2 rounded-full bg-primary text-on-primary font-label-md text-label-md shadow-md shadow-primary/20 transition-all" data-filter="all" aria-pressed="true">All</button>
-<button type="button" class="px-6 py-2 rounded-full bg-surface-container text-on-surface-variant font-label-md text-label-md hover:bg-surface-variant transition-colors" data-filter="unread" aria-pressed="false">Unread</button>
-<button type="button" class="px-6 py-2 rounded-full bg-surface-container text-on-surface-variant font-label-md text-label-md hover:bg-surface-variant transition-colors" data-filter="mentions" aria-pressed="false">Mentions</button>
+<div class="flex gap-stack_gap_md overflow-x-auto no-scrollbar py-2">
+<button class="px-6 py-2 rounded-full bg-primary text-on-primary font-label-md text-label-md shadow-md shadow-primary/20 transition-all">All</button>
+<button class="px-6 py-2 rounded-full bg-surface-container text-on-surface-variant font-label-md text-label-md hover:bg-surface-variant transition-colors">Unread</button>
+<button class="px-6 py-2 rounded-full bg-surface-container text-on-surface-variant font-label-md text-label-md hover:bg-surface-variant transition-colors">Mentions</button>
 </div>
 </section>
 <!-- Notification List -->
-<div class="px-margin_mobile flex flex-col gap-4 mt-2" id="notif-list">
+<div class="px-margin_mobile flex flex-col gap-4 mt-2">
 <!-- AI Recommendation Card -->
-<div class="ev-card spotlight ev-fade-up ev-stagger-2 ev-fade-up ev-stagger-1 group relative bg-surface-container-lowest p-5 rounded-xl border border-outline-variant/50 flex gap-4 cursor-pointer" data-notif data-status="unread" onclick="location.href='opportunity.html'">
+<div class="group relative bg-surface-container-lowest p-5 rounded-xl border border-outline-variant/50 bento-card-hover flex gap-4 cursor-pointer" onclick="location.href='opportunity.html'">
 <div class="flex-shrink-0 w-12 h-12 rounded-full bg-secondary-container/10 flex items-center justify-center border border-secondary-container/20">
 <span class="material-symbols-outlined text-secondary" data-icon="auto_awesome" style="font-variation-settings: 'FILL' 1;">auto_awesome</span>
 </div>
@@ -117,7 +202,7 @@
 <div class="absolute left-0 top-0 bottom-0 w-1 bg-secondary rounded-l-xl"></div>
 </div>
 <!-- Deadline Reminder Card -->
-<div class="ev-card spotlight ev-fade-up ev-stagger-2 ev-fade-up ev-stagger-2 group relative bg-surface-container-lowest p-5 rounded-xl border border-outline-variant/50 flex gap-4 cursor-pointer" data-notif data-status="unread" onclick="location.href='opportunity.html'">
+<div class="group relative bg-surface-container-lowest p-5 rounded-xl border border-outline-variant/50 bento-card-hover flex gap-4 cursor-pointer" onclick="location.href='opportunity.html'">
 <div class="flex-shrink-0 w-12 h-12 rounded-full bg-error-container/10 flex items-center justify-center border border-error-container/20">
 <span class="material-symbols-outlined text-error" data-icon="alarm" style="font-variation-settings: 'FILL' 1;">alarm</span>
 </div>
@@ -134,7 +219,7 @@
 <div class="absolute left-0 top-0 bottom-0 w-1 bg-error rounded-l-xl"></div>
 </div>
 <!-- Application Update Card -->
-<div class="ev-card spotlight ev-fade-up ev-stagger-2 ev-fade-up ev-stagger-3 group bg-surface-container-lowest p-5 rounded-xl border border-outline-variant/50 flex gap-4 cursor-pointer" data-notif data-status="read" onclick="location.href='opportunity.html'">
+<div class="group bg-surface-container-lowest p-5 rounded-xl border border-outline-variant/50 bento-card-hover flex gap-4 cursor-pointer" onclick="location.href='opportunity.html'">
 <div class="flex-shrink-0 w-12 h-12 rounded-full bg-primary-container/10 flex items-center justify-center border border-primary-container/20">
 <span class="material-symbols-outlined text-primary" data-icon="check_circle" style="font-variation-settings: 'FILL' 1;">check_circle</span>
 </div>
@@ -147,7 +232,7 @@
 </div>
 </div>
 <!-- Organization Post -->
-<div class="ev-card spotlight ev-fade-up ev-stagger-2 ev-fade-up ev-stagger-4 group bg-surface-container-lowest p-5 rounded-xl border border-outline-variant/50 flex gap-4 cursor-pointer" data-notif data-status="read" onclick="location.href='posts.html'">
+<div class="group bg-surface-container-lowest p-5 rounded-xl border border-outline-variant/50 bento-card-hover flex gap-4 cursor-pointer" onclick="location.href='posts.html'">
 <div class="flex-shrink-0 w-12 h-12 rounded-full overflow-hidden border-2 border-surface shadow-sm bg-primary/10 flex items-center justify-center">
 <span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">apartment</span>
 </div>
@@ -165,7 +250,7 @@
 </div>
 </div>
 <!-- Social Activity: Friend Request -->
-<div class="group bg-surface-container-lowest p-5 rounded-xl border border-outline-variant/50 bento-card-hover flex gap-4 cursor-pointer" data-notif data-status="read" data-mention="true" onclick="location.href='profile.html'">
+<div class="group bg-surface-container-lowest p-5 rounded-xl border border-outline-variant/50 bento-card-hover flex gap-4 cursor-pointer" onclick="location.href='profile.html'">
 <div class="flex-shrink-0 w-12 h-12 rounded-full overflow-hidden border-2 border-surface shadow-sm">
 <img class="w-full h-full object-cover" data-alt="Close up profile picture of a young professional male designer with a creative look, wearing stylish glasses, high-end studio lighting with subtle blue and purple accents in the background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB2GbQS-NWZy4s11NQjIQnQlE6RA8qo3lCvQgA9R_t2cD0_3acPrckEE0p1mNr11PNtBvzZabEH08T5SS3l8_yxv1z0CKApqpBF0FeUemSWMeTsU1gyATXMZKQKcr4zB-0ZK4lP2_VXAh9cWXQJu__mUeBUD8Kyg9A3OhPaCTW6Qf5PA0ZiNCOnYnHiuu0bcvuLxY7-WgnAFp6LK_4cDOeuu71FvYU_WLyMu9GWA_8GV8mKc6ZKD0u1z-MckDKeRNePjzQ2G1fU2JqK"/>
 </div>
@@ -184,7 +269,7 @@
 </div>
 </div>
 <!-- Organization Post -->
-<div class="group bg-surface-container-lowest p-5 rounded-xl border border-outline-variant/50 bento-card-hover flex gap-4 cursor-pointer" data-notif data-status="read" onclick="location.href='posts.html'">
+<div class="group bg-surface-container-lowest p-5 rounded-xl border border-outline-variant/50 bento-card-hover flex gap-4 cursor-pointer" onclick="location.href='posts.html'">
 <div class="flex-shrink-0 w-12 h-12 rounded-full bg-tertiary-fixed flex items-center justify-center border border-tertiary/20">
 <span class="material-symbols-outlined text-tertiary" data-icon="campaign" style="font-variation-settings: 'FILL' 1;">campaign</span>
 </div>
@@ -198,11 +283,10 @@
 </div>
 </div>
 </div>
-<p class="text-center text-on-surface-variant py-10" id="notif-empty" hidden>No notifications in this filter.</p>
 </main>
 <!-- Bottom Navigation Bar -->
 <nav class="lg:hidden fixed bottom-0 left-0 w-full z-50 glass-nav border-t border-outline-variant/20 flex justify-around items-center px-4 py-2 pb-safe shadow-lg">
-<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-colors" href="index.html">
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-colors" href="../index.html">
 <span class="material-symbols-outlined" data-icon="home">home</span>
 <span class="font-label-sm text-label-sm">Home</span>
 </a>
@@ -239,58 +323,24 @@
                     dot.style.opacity = '0';
                     setTimeout(() => dot.remove(), 200);
                 }
-                if (card.dataset.status === 'unread') {
-                    card.dataset.status = 'read';
-                    if (typeof refreshNotifFilter === 'function') refreshNotifFilter();
-                }
-
+                
                 // Visual feedback
                 card.classList.add('bg-surface-container');
                 setTimeout(() => card.classList.remove('bg-surface-container'), 100);
             });
         });
 
-        // Tab selection + filtering logic
-        var notifGroup = document.getElementById('notif-filter-group');
-        var notifList = document.getElementById('notif-list');
-        var notifEmpty = document.getElementById('notif-empty');
-
-        function refreshNotifFilter() {
-            if (!notifGroup || !notifList) return;
-            var activeBtn = notifGroup.querySelector('[aria-pressed="true"]');
-            var filter = activeBtn ? activeBtn.dataset.filter : 'all';
-            var cards = notifList.querySelectorAll('[data-notif]');
-            var visibleCount = 0;
-
-            cards.forEach(function (card) {
-                var match = filter === 'all'
-                    || (filter === 'unread' && card.dataset.status === 'unread')
-                    || (filter === 'mentions' && card.dataset.mention === 'true');
-                card.style.display = match ? '' : 'none';
-                if (match) visibleCount++;
-            });
-
-            if (notifEmpty) notifEmpty.hidden = visibleCount !== 0;
-        }
-
-        if (notifGroup) {
-            notifGroup.addEventListener('click', function (e) {
-                var tab = e.target.closest('[data-filter]');
-                if (!tab) return;
-                notifGroup.querySelectorAll('[data-filter]').forEach(function (t) {
-                    var isActive = t === tab;
-                    t.setAttribute('aria-pressed', String(isActive));
-                    t.classList.toggle('bg-primary', isActive);
-                    t.classList.toggle('text-on-primary', isActive);
-                    t.classList.toggle('shadow-primary/20', isActive);
-                    t.classList.toggle('bg-surface-container', !isActive);
-                    t.classList.toggle('text-on-surface-variant', !isActive);
+        // Tab selection logic
+        const tabs = document.querySelectorAll('section button');
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                tabs.forEach(t => {
+                    t.classList.remove('bg-primary', 'text-on-primary', 'shadow-primary/20');
+                    t.classList.add('bg-surface-container', 'text-on-surface-variant');
                 });
-                refreshNotifFilter();
+                tab.classList.remove('bg-surface-container', 'text-on-surface-variant');
+                tab.classList.add('bg-primary', 'text-on-primary', 'shadow-primary/20');
             });
-        }
+        });
     </script>
-<script src="../assets/js/ui-state.js"></script>
-<script src="nav.js"></script>
-<script src="../assets/js/motion.js"></script>
 </body></html>

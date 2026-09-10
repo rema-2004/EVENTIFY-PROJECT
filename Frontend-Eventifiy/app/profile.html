@@ -1,18 +1,9 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 
 <html class="light" lang="en"><head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <title>Profile | EVENTIFY</title>
-<meta name="description" content="Profile on EVENTIFY — the AI-powered hub for competitions, workshops, courses and internships."/>
-<meta property="og:title" content="Profile | EVENTIFY"/>
-<meta property="og:description" content="Profile on EVENTIFY — the AI-powered hub for competitions, workshops, courses and internships."/>
-<meta property="og:type" content="website"/>
-<meta property="og:image" content="../assets/images/event1.jpeg"/>
-<link rel="icon" href="../assets/images/favicon.svg" type="image/svg+xml"/>
-<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet"/>
-<link rel="stylesheet" href="nav.css"/>
-<link rel="stylesheet" href="app-shell.css"/>
 <!-- Global Theme Handler (Prevents FOUC in dark mode) -->
 <script src="../assets/js/theme.js"></script>
 <link rel="stylesheet" href="../assets/css/theme.css"/>
@@ -44,9 +35,9 @@
     </style>
 
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<script src="../assets/js/tw-config.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
 <style>
-        
+        body { font-family: 'Inter', sans-serif; }
         .material-symbols-outlined {
             font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
         }
@@ -76,7 +67,7 @@
             inset: -1px;
             border-radius: 17px;
             padding: 1px;
-            background: linear-gradient(135deg, #FF4D2E, #8455ef);
+            background: linear-gradient(135deg, #0058be, #8455ef);
             -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
             mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
             -webkit-mask-composite: xor;
@@ -84,30 +75,126 @@
             pointer-events: none;
         }
     </style>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "primary-container": "#2563eb",
+                    "inverse-primary": "#b4c5ff",
+                    "secondary-container": "#8455ef",
+                    "on-surface": "#191b23",
+                    "surface-tint": "#0053db",
+                    "surface-container-lowest": "#ffffff",
+                    "on-background": "#191b23",
+                    "primary-fixed": "#dbe1ff",
+                    "on-surface-variant": "#434655",
+                    "on-tertiary-container": "#ffede6",
+                    "on-error": "#ffffff",
+                    "outline": "#737686",
+                    "secondary": "#6b38d4",
+                    "surface-dim": "#d9d9e5",
+                    "secondary-fixed-dim": "#d0bcff",
+                    "on-primary-fixed": "#00174b",
+                    "tertiary": "#943700",
+                    "surface-container-high": "#e7e7f3",
+                    "surface-container-low": "#f3f3fe",
+                    "outline-variant": "#c3c6d7",
+                    "surface-container": "#ededf9",
+                    "on-tertiary-fixed": "#360f00",
+                    "primary": "#0058be",
+                    "on-secondary": "#ffffff",
+                    "background": "#faf8ff",
+                    "on-primary": "#ffffff",
+                    "on-primary-container": "#eeefff",
+                    "surface-variant": "#e1e2ed",
+                    "surface-bright": "#faf8ff",
+                    "on-error-container": "#93000a",
+                    "on-tertiary-fixed-variant": "#7d2d00",
+                    "primary-fixed-dim": "#b4c5ff",
+                    "tertiary-fixed-dim": "#ffb596",
+                    "on-secondary-container": "#fffbff",
+                    "on-tertiary": "#ffffff",
+                    "on-secondary-fixed": "#23005c",
+                    "inverse-surface": "#2e3039",
+                    "tertiary-fixed": "#ffdbcd",
+                    "secondary-fixed": "#e9ddff",
+                    "on-secondary-fixed-variant": "#5516be",
+                    "error-container": "#ffdad6",
+                    "error": "#ba1a1a",
+                    "on-primary-fixed-variant": "#003ea8",
+                    "surface-container-highest": "#e1e2ed",
+                    "inverse-on-surface": "#f0f0fb",
+                    "surface": "#faf8ff",
+                    "tertiary-container": "#bc4800"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "sidebar_width": "280px",
+                    "gutter": "24px",
+                    "stack_gap_sm": "8px",
+                    "container_max_width": "1280px",
+                    "stack_gap_lg": "32px",
+                    "stack_gap_md": "16px",
+                    "margin_mobile": "16px",
+                    "top_nav_height": "72px"
+            },
+            "fontFamily": {
+                    "label-sm": ["Inter"],
+                    "title-lg": ["Inter"],
+                    "label-md": ["Inter"],
+                    "headline-md": ["Inter"],
+                    "headline-lg": ["Inter"],
+                    "body-lg": ["Inter"],
+                    "display-lg": ["Inter"],
+                    "body-md": ["Inter"],
+                    "headline-lg-mobile": ["Inter"]
+            },
+            "fontSize": {
+                    "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "600"}],
+                    "title-lg": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                    "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "500"}],
+                    "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                    "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                    "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "headline-lg-mobile": ["24px", {"lineHeight": "32px", "fontWeight": "600"}]
+            }
+          },
+        },
+      }
+    </script>
 </head>
 <body class="bg-background text-on-surface dark:bg-[#0d1c2e] dark:text-[#f8f9ff] min-h-screen transition-colors duration-300">
 <!-- Top Navigation -->
 <header class="sticky top-0 z-40 w-full h-top_nav_height glass-nav border-b border-outline-variant/30 dark:border-white/10 shadow-sm">
-<div class="flex justify-between items-center px-4 sm:px-gutter w-full max-w-container_max_width mx-auto h-full">
+<div class="flex justify-between items-center px-gutter w-full max-w-container_max_width mx-auto h-full">
 <div class="flex items-center gap-8">
-<a class="flex items-center gap-2 font-headline-md text-headline-md font-black text-primary animate-pulse-wave" href="index.html"><span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1;">hub</span>EVENTIFY</a>
-
-<div class="hidden lg:flex relative group">
+<a class="flex items-center gap-2 font-headline-md text-headline-md font-black text-primary animate-pulse-wave" href="../index.html"><span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1;">hub</span>EVENTIFY</a>
+           
+<div class="hidden md:flex relative group">
 <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline">search</span>
 <input class="bg-surface-container-low dark:bg-slate-900 border-none rounded-full pl-10 pr-4 py-2 w-64 focus:ring-2 focus:ring-primary/20 dark:text-white transition-all" placeholder="Search opportunities, people..." type="text"/>
 </div>
 </div>
-<div class="flex items-center gap-2 sm:gap-4">
-<button class="theme-toggle w-8 h-8 sm:w-9 sm:h-9 rounded-full flex items-center justify-center text-on-surface-variant hover:text-primary hover:bg-surface-container-low dark:text-gray-300 dark:hover:text-white dark:hover:bg-white/10 transition-colors" title="Switch theme">
+<div class="flex items-center gap-4">
+<button class="theme-toggle w-9 h-9 rounded-full flex items-center justify-center text-on-surface-variant hover:text-primary hover:bg-surface-container-low dark:text-gray-300 dark:hover:text-white dark:hover:bg-white/10 transition-colors" title="Switch theme">
     <span class="material-symbols-outlined text-[20px]">dark_mode</span>
 </button>
-<a class="hidden lg:flex items-center gap-2 px-6 py-2 bg-primary text-on-primary rounded-full font-label-md text-label-md hover:shadow-lg transition-all" href="rafeeq.html">
+<a class="hidden md:flex items-center gap-2 px-6 py-2 bg-primary text-on-primary rounded-full font-label-md text-label-md hover:shadow-lg transition-all" href="rafeeq.html">
                     Ask Rafeeq
                 </a>
-<div class="flex items-center gap-1 sm:gap-2 text-on-surface-variant dark:text-gray-300">
-<a class="hidden sm:inline-block material-symbols-outlined p-2 hover:bg-surface-container dark:hover:bg-slate-800 rounded-full cursor-pointer" href="notifications.html">notifications</a>
-<a class="hidden sm:inline-block material-symbols-outlined p-2 hover:bg-surface-container dark:hover:bg-slate-800 rounded-full cursor-pointer" href="#account-settings">settings</a>
-<div class="w-8 h-8 sm:w-10 sm:h-10 rounded-full border-2 border-primary-container overflow-hidden ml-1 sm:ml-2">
+<div class="flex items-center gap-2 text-on-surface-variant dark:text-gray-300">
+<a class="material-symbols-outlined p-2 hover:bg-surface-container dark:hover:bg-slate-800 rounded-full cursor-pointer" href="notifications.html">notifications</a>
+<a class="material-symbols-outlined p-2 hover:bg-surface-container dark:hover:bg-slate-800 rounded-full cursor-pointer" href="#account-settings">settings</a>
+<div class="w-10 h-10 rounded-full border-2 border-primary-container overflow-hidden ml-2">
 <img class="w-full h-full object-cover" data-alt="Profile headshot" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBNZNd9jfESR_zqyCdGqZwDbntamuVnge0Tsq-V3vcF2zyvrZSvmNGaB93G0gzrTb02wHy5s8MRNZhZH9jEmI85YogBnQiONoMP1hl-rBFILklBs2VaL0dsb1XL1iEKYTwc4tqZLh4woUaUgkPRTfZQZF5ieHDS-qLMFvAF9YnfG8jjnwrS-YfcbXwjwsWi0OAYnjGUq_7cGq2t5ReBfXzPBqfTv-lV_CfGaCpqCAVu9CKXTTurrtp70Su8ifqzsfE0bBloO3zt5iub"/>
 </div>
 </div>
@@ -118,13 +205,13 @@
 <!-- Left Sidebar Navigation -->
 <aside class="hidden lg:flex flex-col gap-4 fixed left-[max(0px,calc((100%-1280px)/2))] top-[calc(72px+24px)] h-[calc(100vh-120px)] w-sidebar_width glass-sidebar border-r border-outline-variant/30 rounded-xl p-4">
 <nav class="flex flex-col gap-2">
-<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-low transition-colors rounded-lg group" href="index.html">
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-low transition-colors rounded-lg group" href="../index.html">
 <span class="material-symbols-outlined text-outline group-hover:text-primary">home</span>
 <span class="font-label-md text-label-md">Home</span>
 </a>
 <a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-low transition-colors rounded-lg group" href="my-applications.html">
 <span class="material-symbols-outlined text-outline group-hover:text-primary">assignment_turned_in</span>
-<span class="font-label-md text-label-md">My Event</span>
+<span class="font-label-md text-label-md">My Applications</span>
 </a>
 <a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-low transition-colors rounded-lg group" href="posts.html">
 <span class="material-symbols-outlined text-outline group-hover:text-primary">campaign</span>
@@ -152,9 +239,9 @@
 <!-- Main Content Area -->
 <main class="flex-1 lg:ml-[304px] lg:mr-[304px] flex flex-col gap-stack_gap_md">
 <!-- Profile Header -->
-<section class="ev-fade-up ev-stagger-1 bg-surface-container-lowest rounded-2xl overflow-hidden premium-shadow border border-outline-variant/50">
+<section class="bg-surface-container-lowest rounded-2xl overflow-hidden premium-shadow border border-outline-variant/50">
 <div class="h-48 w-full bg-cover bg-center relative" data-alt="A sophisticated abstract background featuring smooth flowing waves of deep royal blue and vibrant violet. The textures resemble high-end silk or liquid glass, with soft light reflections. The mood is professional, calm, and technologically advanced, suitable for a premium social network header." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBeHOaLhImSXpSf94lw-SYxPYBwlc5gBXk7btOOFAhqx_oZFBSKtgn_P2pIGvFfCBhoMLxLxt6nkAaVv6TstLXm2DSDLS1AOT6QH_IRGTfXo2OtjjsArXHvWKur1GZZ2eDK6qHuSbQcfxMGo0fzNj2QnZzFWPIyhuDuCUdRosBAChWJFtM6RTcO8__ey71pVTFe5E9QEaseLBt6QNApMCSG2FDAAUMEE4xtjtfwbTwTctscv_cpXmi6Kt9_szB4pNw3Yn5KbAGVUlRw')">
-<button class="absolute top-4 right-4 bg-surface/80 backdrop-blur-md p-2 rounded-full text-on-surface-variant hover:text-primary transition-colors" aria-label="Edit">
+<button class="absolute top-4 right-4 bg-surface/80 backdrop-blur-md p-2 rounded-full text-on-surface-variant hover:text-primary transition-colors">
 <span class="material-symbols-outlined">edit</span>
 </button>
 </div>
@@ -188,33 +275,33 @@
 </section>
 <!-- Dashboard Stats -->
 <section class="grid grid-cols-1 md:grid-cols-3 gap-stack_gap_md">
-<div class="ev-card spotlight ev-fade-up ev-stagger-2 bg-surface-container-lowest p-6 rounded-2xl border border-outline-variant/50 premium-shadow group">
+<div class="bg-surface-container-lowest p-6 rounded-2xl border border-outline-variant/50 premium-shadow group hover:-translate-y-1 transition-transform">
 <div class="flex justify-between items-start mb-4">
 <span class="material-symbols-outlined text-primary p-2 bg-primary/10 rounded-lg">emoji_events</span>
 <span class="font-label-sm text-label-sm text-outline">+2 this year</span>
 </div>
-<p class="font-headline-lg text-headline-lg text-on-surface">7</p>
+<p class="font-display-lg text-display-lg text-on-surface">7</p>
 <p class="font-label-md text-label-md text-on-surface-variant">Competitions Joined</p>
 </div>
-<div class="ev-card spotlight ev-fade-up ev-stagger-2 bg-surface-container-lowest p-6 rounded-2xl border border-outline-variant/50 premium-shadow group">
+<div class="bg-surface-container-lowest p-6 rounded-2xl border border-outline-variant/50 premium-shadow group hover:-translate-y-1 transition-transform">
 <div class="flex justify-between items-start mb-4">
 <span class="material-symbols-outlined text-secondary p-2 bg-secondary/10 rounded-lg">bookmark_added</span>
 <span class="font-label-sm text-label-sm text-outline">New</span>
 </div>
-<p class="font-headline-lg text-headline-lg text-on-surface">18</p>
+<p class="font-display-lg text-display-lg text-on-surface">18</p>
 <p class="font-label-md text-label-md text-on-surface-variant">Saved Opportunities</p>
 </div>
-<div class="ev-card spotlight ev-fade-up ev-stagger-2 bg-surface-container-lowest p-6 rounded-2xl border border-outline-variant/50 premium-shadow group">
+<div class="bg-surface-container-lowest p-6 rounded-2xl border border-outline-variant/50 premium-shadow group hover:-translate-y-1 transition-transform">
 <div class="flex justify-between items-start mb-4">
 <span class="material-symbols-outlined text-tertiary p-2 bg-tertiary/10 rounded-lg">group</span>
 <span class="font-label-sm text-label-sm text-outline">Top 5%</span>
 </div>
-<p class="font-headline-lg text-headline-lg text-on-surface">4</p>
+<p class="font-display-lg text-display-lg text-on-surface">4</p>
 <p class="font-label-md text-label-md text-on-surface-variant">Teams Led</p>
 </div>
 </section>
 <!-- Experience Section -->
-<section class="ev-fade-up ev-stagger-2 bg-surface-container-lowest p-8 rounded-2xl border border-outline-variant/50 premium-shadow">
+<section class="bg-surface-container-lowest p-8 rounded-2xl border border-outline-variant/50 premium-shadow">
 <div class="flex justify-between items-center mb-6">
 <h3 class="font-headline-md text-headline-md">Experience</h3>
 <span class="material-symbols-outlined text-outline cursor-pointer hover:text-primary">add</span>
@@ -245,7 +332,7 @@
 </div>
 </section>
 <!-- Skills Section -->
-<section class="ev-fade-up ev-stagger-3 bg-surface-container-lowest p-8 rounded-2xl border border-outline-variant/50 premium-shadow mt-stack_gap_md">
+<section class="bg-surface-container-lowest p-8 rounded-2xl border border-outline-variant/50 premium-shadow mt-stack_gap_md">
 <h3 class="font-title-lg text-title-lg mb-6">Skills</h3>
 <p class="font-body-md text-body-md text-on-surface-variant mb-6">Showcase the participant's core skills and strengths learned through the platform.</p>
 <div class="flex flex-wrap gap-3">
@@ -402,20 +489,14 @@ View certificate
 <span class="font-label-md text-label-md dark:text-gray-200">Theme</span>
 </div>
 <div class="flex bg-surface-container-high dark:bg-slate-800 rounded-full p-1">
-<button id="profile-light-btn" class="w-8 h-8 rounded-full bg-white shadow-sm flex items-center justify-center text-primary" onclick="toggleTheme()" aria-label="Switch to light mode">
+<button id="profile-light-btn" class="w-8 h-8 rounded-full bg-white shadow-sm flex items-center justify-center text-primary" onclick="toggleTheme()">
 <span class="material-symbols-outlined text-[18px]">light_mode</span>
 </button>
-<button id="profile-dark-btn" class="w-8 h-8 rounded-full flex items-center justify-center text-outline hover:text-on-surface dark:hover:text-white" onclick="toggleTheme()" aria-label="Switch to dark mode">
+<button id="profile-dark-btn" class="w-8 h-8 rounded-full flex items-center justify-center text-outline hover:text-on-surface dark:hover:text-white" onclick="toggleTheme()">
 <span class="material-symbols-outlined text-[18px]">dark_mode</span>
 </button>
 </div>
 </div>
-</div>
-<div class="mt-2 pt-2 border-t border-outline-variant/30 dark:border-white/10">
-<a class="flex items-center gap-3 w-full p-3 rounded-lg transition-colors text-error hover:bg-error/10" href="../auth/login.html">
-<span class="material-symbols-outlined text-[18px] text-error" aria-hidden="true">logout</span>
-<span class="font-label-md text-label-md font-medium">Sign out</span>
-</a>
 </div>
 <div class="mt-auto p-4 rounded-xl bg-primary/5 dark:bg-primary/10 border border-primary/10 dark:border-primary/20">
 <div class="flex items-center gap-2 mb-2">
@@ -425,9 +506,10 @@ View certificate
 <p class="font-label-sm text-label-sm text-on-surface-variant dark:text-gray-300">Your profile strength is <span class="text-primary font-bold">Expert</span>. Adding 2 more certifications could increase reach by 25%.</p>
 </div>
 </aside>
+</div>
 <!-- Mobile Nav Anchor -->
 <nav class="md:hidden fixed bottom-0 left-0 w-full bg-surface/80 dark:bg-slate-900/90 backdrop-blur-xl border-t border-outline-variant dark:border-white/10 z-50 px-gutter py-3 flex justify-between items-center">
-<a class="flex flex-col items-center gap-1 text-outline dark:text-gray-400" href="index.html">
+<a class="flex flex-col items-center gap-1 text-outline dark:text-gray-400" href="../index.html">
 <span class="material-symbols-outlined">home</span>
 <span class="text-[10px] font-bold">Home</span>
 </a>
@@ -435,7 +517,7 @@ View certificate
 <span class="material-symbols-outlined">campaign</span>
 <span class="text-[10px] font-bold">Posts</span>
 </a>
-<a class="bg-primary p-3 rounded-full -mt-10 shadow-lg text-on-primary block animate-pulse-wave" href="create-team.html" aria-label="Add">
+<a class="bg-primary p-3 rounded-full -mt-10 shadow-lg text-on-primary block animate-pulse-wave" href="create-team.html">
 <span class="material-symbols-outlined">add</span>
 </a>
 <a class="flex flex-col items-center gap-1 text-outline dark:text-gray-400" href="notifications.html">
@@ -471,7 +553,4 @@ View certificate
             });
         });
     </script>
-<script src="../assets/js/ui-state.js"></script>
-<script src="nav.js"></script>
-<script src="../assets/js/motion.js"></script>
 </body></html>

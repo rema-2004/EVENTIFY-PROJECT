@@ -1,20 +1,9 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 
 <html class="light" lang="en"><head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <title>Eventify - Participation Type</title>
-<meta name="description" content="Eventify - Participation Type on EVENTIFY — the AI-powered hub for competitions, workshops, courses and internships."/>
-<meta property="og:title" content="Eventify - Participation Type"/>
-<meta property="og:description" content="Eventify - Participation Type on EVENTIFY — the AI-powered hub for competitions, workshops, courses and internships."/>
-<meta property="og:type" content="website"/>
-<meta property="og:image" content="../assets/images/event1.jpeg"/>
-<link rel="icon" href="../assets/images/favicon.svg" type="image/svg+xml"/>
-<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet"/>
-<link rel="stylesheet" href="nav.css"/>
-<link rel="stylesheet" href="app-shell.css"/>
-<script src="../assets/js/theme.js"></script>
-<link rel="stylesheet" href="../assets/css/theme.css"/>
 <style>
     @font-face {
         font-family: 'Material Symbols Outlined';
@@ -44,15 +33,111 @@
 
 <!-- Material Symbols -->
 <!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
 <!-- Tailwind CSS -->
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<script src="../assets/js/tw-config.js"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "background": "#faf8ff",
+                    "surface-container-high": "#e7e7f3",
+                    "on-surface": "#191b23",
+                    "on-surface-variant": "#434655",
+                    "secondary-fixed-dim": "#d0bcff",
+                    "tertiary-fixed": "#ffdbcd",
+                    "on-secondary": "#ffffff",
+                    "on-tertiary-fixed": "#360f00",
+                    "primary-container": "#2563eb",
+                    "surface-container-low": "#f3f3fe",
+                    "primary-fixed": "#dbe1ff",
+                    "inverse-on-surface": "#f0f0fb",
+                    "surface": "#faf8ff",
+                    "on-error": "#ffffff",
+                    "primary": "#0058be",
+                    "on-tertiary-fixed-variant": "#7d2d00",
+                    "tertiary": "#943700",
+                    "outline-variant": "#c3c6d7",
+                    "inverse-primary": "#b4c5ff",
+                    "error-container": "#ffdad6",
+                    "surface-container-highest": "#e1e2ed",
+                    "on-secondary-fixed-variant": "#5516be",
+                    "surface-tint": "#0053db",
+                    "secondary": "#6b38d4",
+                    "on-primary": "#ffffff",
+                    "tertiary-fixed-dim": "#ffb596",
+                    "tertiary-container": "#bc4800",
+                    "on-background": "#191b23",
+                    "inverse-surface": "#2e3039",
+                    "on-primary-fixed": "#00174b",
+                    "surface-container": "#ededf9",
+                    "on-primary-fixed-variant": "#003ea8",
+                    "surface-variant": "#e1e2ed",
+                    "secondary-fixed": "#e9ddff",
+                    "on-secondary-container": "#fffbff",
+                    "error": "#ba1a1a",
+                    "secondary-container": "#8455ef",
+                    "on-tertiary-container": "#ffede6",
+                    "on-primary-container": "#eeefff",
+                    "on-tertiary": "#ffffff",
+                    "surface-bright": "#faf8ff",
+                    "on-secondary-fixed": "#23005c",
+                    "surface-container-lowest": "#ffffff",
+                    "on-error-container": "#93000a",
+                    "outline": "#737686",
+                    "surface-dim": "#d9d9e5",
+                    "primary-fixed-dim": "#b4c5ff"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "container_max_width": "1280px",
+                    "stack_gap_sm": "8px",
+                    "gutter": "24px",
+                    "top_nav_height": "72px",
+                    "stack_gap_lg": "32px",
+                    "stack_gap_md": "16px",
+                    "margin_mobile": "16px",
+                    "sidebar_width": "280px"
+            },
+            "fontFamily": {
+                    "display-lg": ["Inter"],
+                    "title-lg": ["Inter"],
+                    "label-sm": ["Inter"],
+                    "headline-lg-mobile": ["Inter"],
+                    "label-md": ["Inter"],
+                    "headline-lg": ["Inter"],
+                    "body-md": ["Inter"],
+                    "headline-md": ["Inter"],
+                    "body-lg": ["Inter"]
+            },
+            "fontSize": {
+                    "display-lg": ["48px", { "lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                    "title-lg": ["20px", { "lineHeight": "28px", "fontWeight": "600" }],
+                    "label-sm": ["12px", { "lineHeight": "16px", "fontWeight": "600" }],
+                    "headline-lg-mobile": ["24px", { "lineHeight": "32px", "fontWeight": "600" }],
+                    "label-md": ["14px", { "lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "500" }],
+                    "headline-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+                    "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                    "headline-md": ["24px", { "lineHeight": "32px", "fontWeight": "600" }],
+                    "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }]
+            }
+          },
+        },
+      }
+    </script>
 <style>
         .material-symbols-outlined {
             font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
         }
         .active-card {
-            border: 2px solid #FF4D2E;
+            border: 2px solid #0058be;
             background-color: #f3f3fe;
             transform: translateY(-4px);
         }
@@ -73,13 +158,13 @@
 <body class="bg-background text-on-background min-h-screen font-body-md flex flex-col">
 <!-- Header (Suppressed Nav Shell Logic for Task-Focused Page) -->
 <header class="glass-header sticky top-0 z-50 w-full h-16 border-b border-outline-variant/30 flex items-center px-6">
-<a class="flex items-center gap-2" href="index.html">
+<a class="flex items-center gap-2" href="../index.html">
 <span class="material-symbols-outlined text-primary text-3xl">hub</span>
 <span class="font-headline-lg-mobile text-headline-lg-mobile font-bold text-primary">EVENTIFY</span>
 </a>
-<a class="ml-auto mr-3 font-label-md text-label-md text-primary" href="my-applications.html">My Event</a>
+<a class="ml-auto mr-3 font-label-md text-label-md text-primary" href="my-applications.html">My Applications</a>
 <div class="ml-auto">
-<a class="p-2 hover:bg-surface-container-low rounded-full transition-colors block" href="opportunity.html" aria-label="Close">
+<a class="p-2 hover:bg-surface-container-low rounded-full transition-colors block" href="opportunity.html">
 <span class="material-symbols-outlined text-on-surface-variant">close</span>
 </a>
 </div>
@@ -100,7 +185,7 @@
 <!-- Participation Options Grid -->
 <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
 <!-- Solo Card -->
-<button class="participation-card flex flex-col items-start p-6 rounded-xl bg-surface border border-outline-variant hover:border-primary/50 hover:bg-surface-container-low transition-all duration-300 text-left soft-shadow group relative" data-next="registration-success.html" onclick="selectOption(this)">
+<button class="participation-card flex flex-col items-start p-6 rounded-xl bg-surface border border-outline-variant hover:border-primary/50 hover:bg-surface-container-low transition-all duration-300 text-left soft-shadow group relative" data-next="opportunity.html" onclick="selectOption(this)">
 <div class="absolute top-4 right-4 opacity-0 group-[.active-card]:opacity-100 transition-opacity">
 <span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">check_circle</span>
 </div>
@@ -163,7 +248,7 @@
 <div class="flex items-center gap-4">
 <span class="font-label-md text-label-md text-on-surface-variant">© 2024 Global AI Innovation Hackathon</span>
 <span class="w-1 h-1 rounded-full bg-outline-variant"></span>
-<a class="font-label-md text-label-md text-primary hover:underline" href="../The%20Visitor/about.html">Privacy Policy</a>
+<a class="font-label-md text-label-md text-primary hover:underline" href="../marketing/about.html">Privacy Policy</a>
 </div>
 <div class="flex items-center gap-6">
 <span class="material-symbols-outlined text-on-surface-variant hover:text-primary cursor-pointer transition-colors" data-icon="share">share</span>
@@ -205,7 +290,4 @@
             if (nextDestination) window.location.href = nextDestination;
         });
     </script>
-<script src="../assets/js/ui-state.js"></script>
-<script src="nav.js"></script>
-<script src="../assets/js/motion.js"></script>
 </body></html>

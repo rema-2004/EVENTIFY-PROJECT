@@ -1,19 +1,8 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html class="light" lang="en"><head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <title>Rafeeq AI | EVENTIFY</title>
-<meta name="description" content="Rafeeq AI on EVENTIFY — the AI-powered hub for competitions, workshops, courses and internships."/>
-<meta property="og:title" content="Rafeeq AI | EVENTIFY"/>
-<meta property="og:description" content="Rafeeq AI on EVENTIFY — the AI-powered hub for competitions, workshops, courses and internships."/>
-<meta property="og:type" content="website"/>
-<meta property="og:image" content="../assets/images/event1.jpeg"/>
-<link rel="icon" href="../assets/images/favicon.svg" type="image/svg+xml"/>
-<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet"/>
-<link rel="stylesheet" href="nav.css"/>
-<link rel="stylesheet" href="app-shell.css"/>
-<script src="../assets/js/theme.js"></script>
-<link rel="stylesheet" href="../assets/css/theme.css"/>
 <style>
     @font-face {
         font-family: 'Material Symbols Outlined';
@@ -41,33 +30,63 @@
     </style>
 
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<script src="../assets/js/tw-config.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+    tailwind.config = {
+        darkMode: "class",
+        theme: {
+            extend: {
+                colors: {
+                    background: "#f8f9ff", surface: "#f8f9ff", "surface-container-lowest": "#ffffff",
+                    "surface-container-low": "#eff4ff", "surface-container": "#e6eeff", "surface-container-high": "#dce9ff",
+                    "on-background": "#0d1c2e", "on-surface": "#0d1c2e", "on-surface-variant": "#424754",
+                    outline: "#727785", "outline-variant": "#c2c6d6",
+                    primary: "#0058be", "on-primary": "#ffffff", "primary-container": "#2170e4",
+                    secondary: "#6b38d4", "on-secondary": "#ffffff", "secondary-container": "#8455ef",
+                    tertiary: "#006947"
+                },
+                spacing: { "container-margin-mobile": "16px", "container-margin-desktop": "40px" },
+                fontFamily: {
+                    "headline-lg-mobile": ["Inter"], "headline-md": ["Inter"], "title-md": ["Inter"],
+                    "body-lg": ["Inter"], "body-md": ["Inter"], "body-sm": ["Inter"], "label-md": ["Inter"], "label-sm": ["Inter"]
+                },
+                fontSize: {
+                    "headline-lg-mobile": ["24px", {"lineHeight": "30px", "fontWeight": "700"}],
+                    "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "700"}],
+                    "title-md": ["18px", {"lineHeight": "26px", "fontWeight": "600"}],
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                    "label-md": ["14px", {"lineHeight": "20px", "fontWeight": "600"}],
+                    "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "500"}]
+                }
+            }
+        }
+    }
+</script>
 <style>
-    
+    body { font-family: 'Inter', sans-serif; }
     .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; vertical-align: middle; }
-    .rafeeq-gradient { background: linear-gradient(135deg, #FF4D2E 0%, #0E1116 100%); }
-    .bubble-ai { background: #ffffff; border: 1px solid #c2c6d6; color: #0d1c2e; }
-    html.dark .bubble-ai { background: #1d2a3a; border-color: rgba(255,255,255,.14); color: #f8f9ff; }
-    html.dark .mode-active { background: #FF4D2E; color: #ffffff; }
-    .bubble-user { background: #FF4D2E; color: #fff; }
-    .mode-active { background: #fff; color: #FF4D2E; box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
+    .rafeeq-gradient { background: linear-gradient(135deg, #0058be 0%, #6b38d4 100%); }
+    .bubble-ai { background: #ffffff; border: 1px solid #c2c6d6; }
+    .bubble-user { background: #0058be; color: #fff; }
+    .mode-active { background: #fff; color: #0058be; box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
 </style>
 </head>
 <body class="bg-background text-on-background min-h-screen flex flex-col">
 <!-- Top Bar -->
 <header class="sticky top-0 z-50 w-full h-16 bg-surface/90 backdrop-blur-md border-b border-outline-variant/30 flex items-center px-container-margin-mobile md:px-container-margin-desktop">
-<div class="flex flex-wrap justify-between items-center gap-y-2 w-full max-w-[900px] mx-auto">
-<a class="flex items-center gap-2 text-on-surface-variant hover:text-primary transition-colors" href="index.html">
+<div class="flex justify-between items-center w-full max-w-[900px] mx-auto">
+<a class="flex items-center gap-2 text-on-surface-variant hover:text-primary transition-colors" href="../index.html">
 <span class="material-symbols-outlined">arrow_back</span>
 <span class="font-label-md text-label-md">Back</span>
 </a>
-<a class="hidden sm:inline-flex font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors" href="my-applications.html">My Event</a>
+<a class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors" href="my-applications.html">My Applications</a>
 <div class="flex items-center gap-2">
 <div class="w-9 h-9 rounded-full rafeeq-gradient flex items-center justify-center">
 <span class="material-symbols-outlined text-white text-[20px]">smart_toy</span>
 </div>
 <span class="font-title-md text-title-md">Rafeeq</span>
-<span class="demo-badge" title="Sample conversation — no live AI service is connected">Demo</span>
 </div>
 <div class="flex bg-surface-container rounded-full p-1">
 <button class="mode-active px-4 py-1.5 rounded-full font-label-sm text-label-sm transition-all" id="text-mode-btn">Text</button>
@@ -77,7 +96,6 @@
 </header>
 <!-- Chat Area -->
 <main class="flex-1 max-w-[900px] w-full mx-auto px-container-margin-mobile md:px-container-margin-desktop py-8 flex flex-col gap-6" id="chat-log">
-<p class="self-center text-center font-body-sm text-body-sm text-on-surface-variant">This is a demo conversation that shows how Rafeeq works. Replies are pre-written, not generated live.</p>
 <div class="flex gap-3 max-w-[80%]">
 <div class="w-9 h-9 rounded-full rafeeq-gradient flex items-center justify-center flex-shrink-0">
 <span class="material-symbols-outlined text-white text-[18px]">smart_toy</span>
@@ -110,8 +128,8 @@
 <!-- Text Input Bar -->
 <div class="sticky bottom-0 w-full bg-surface/95 backdrop-blur-md border-t border-outline-variant/30 p-4" id="text-input-bar">
 <form class="max-w-[900px] mx-auto flex items-center gap-3" onsubmit="event.preventDefault();">
-<input class="flex-1 min-w-0 h-12 px-5 bg-surface-container-lowest border border-outline-variant rounded-full focus:ring-2 focus:ring-primary focus:border-transparent transition-all font-body-md" placeholder="Ask Rafeeq anything about opportunities…" type="text"/>
-<button class="w-12 h-12 rafeeq-gradient rounded-full flex items-center justify-center text-white shadow-md hover:scale-105 transition-transform flex-shrink-0" type="submit" aria-label="Send message">
+<input class="flex-1 h-12 px-5 bg-surface-container-lowest border border-outline-variant rounded-full focus:ring-2 focus:ring-primary focus:border-transparent transition-all font-body-md" placeholder="Ask Rafeeq anything about opportunities…" type="text"/>
+<button class="w-12 h-12 rafeeq-gradient rounded-full flex items-center justify-center text-white shadow-md hover:scale-105 transition-transform flex-shrink-0" type="submit">
 <span class="material-symbols-outlined">send</span>
 </button>
 </form>
@@ -154,7 +172,4 @@
     voiceBtn.addEventListener('click', showVoice);
     document.getElementById('switch-to-text').addEventListener('click', showText);
 </script>
-<script src="../assets/js/ui-state.js"></script>
-<script src="nav.js"></script>
-<script src="../assets/js/motion.js"></script>
 </body></html>

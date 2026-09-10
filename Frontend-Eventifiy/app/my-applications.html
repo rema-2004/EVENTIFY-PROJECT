@@ -5,16 +5,7 @@
 <head>
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-    <title>My Event | EVENTIFY</title>
-<meta name="description" content="My Event on EVENTIFY — the AI-powered hub for competitions, workshops, courses and internships."/>
-<meta property="og:title" content="My Event | EVENTIFY"/>
-<meta property="og:description" content="My Event on EVENTIFY — the AI-powered hub for competitions, workshops, courses and internships."/>
-<meta property="og:type" content="website"/>
-<meta property="og:image" content="../assets/images/event1.jpeg"/>
-<link rel="icon" href="../assets/images/favicon.svg" type="image/svg+xml"/>
-<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet"/>
-<link rel="stylesheet" href="nav.css"/>
-<link rel="stylesheet" href="app-shell.css"/>
+    <title>My Applications | EVENTIFY</title>
     <link rel="stylesheet" href="../assets/css/theme.css" />
     <style>
         @font-face {
@@ -44,9 +35,12 @@
     </style>
 
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<script src="../assets/js/tw-config.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap"
+        rel="stylesheet" />
     <style>
-
+        body {
+            font-family: 'Inter', sans-serif;
+        }
 
         .material-symbols-outlined {
             font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
@@ -76,21 +70,63 @@
             box-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.08);
         }
     </style>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "primary-container": "#2563eb", "secondary-container": "#8455ef", "on-surface": "#191b23",
+                        "surface-container-lowest": "#ffffff", "on-background": "#191b23", "on-surface-variant": "#434655",
+                        "outline": "#737686", "secondary": "#6b38d4", "tertiary": "#943700",
+                        "surface-container-high": "#e7e7f3", "surface-container-low": "#f3f3fe", "outline-variant": "#c3c6d7",
+                        "surface-container": "#ededf9", "primary": "#0058be", "on-secondary": "#ffffff",
+                        "background": "#faf8ff", "on-primary": "#ffffff", "surface-variant": "#e1e2ed",
+                        "error": "#ba1a1a", "on-error": "#ffffff", "error-container": "#ffdad6",
+                        "success": "#006947", "success-container": "#d7f2e6", "on-success-container": "#00522f",
+                        "surface": "#faf8ff", "tertiary-container": "#bc4800"
+                    },
+                    "borderRadius": { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" },
+                    "spacing": {
+                        "sidebar_width": "280px", "gutter": "24px", "stack_gap_sm": "8px",
+                        "container_max_width": "1280px", "stack_gap_lg": "32px", "stack_gap_md": "16px",
+                        "margin_mobile": "16px", "top_nav_height": "72px"
+                    },
+                    "fontFamily": {
+                        "label-sm": ["Inter"], "title-lg": ["Inter"], "label-md": ["Inter"],
+                        "headline-md": ["Inter"], "headline-lg": ["Inter"], "body-lg": ["Inter"],
+                        "display-lg": ["Inter"], "body-md": ["Inter"], "headline-lg-mobile": ["Inter"]
+                    },
+                    "fontSize": {
+                        "label-sm": ["12px", { "lineHeight": "16px", "fontWeight": "600" }],
+                        "title-lg": ["20px", { "lineHeight": "28px", "fontWeight": "600" }],
+                        "label-md": ["14px", { "lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "500" }],
+                        "headline-md": ["24px", { "lineHeight": "32px", "fontWeight": "600" }],
+                        "headline-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+                        "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }],
+                        "display-lg": ["48px", { "lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "headline-lg-mobile": ["24px", { "lineHeight": "32px", "fontWeight": "600" }]
+                    }
+                },
+            },
+        }
+    </script>
 </head>
 
 <body class="bg-background text-on-background min-h-screen pb-24 md:pb-0 dark:bg-[#0d1c2e] dark:text-[#f8f9ff] transition-colors duration-300">
 <nav class="fixed top-0 w-full z-50 glass-nav border-b border-outline-variant/30 dark:border-white/10 h-16 flex items-center">
 <div class="flex justify-between items-center px-container-margin-mobile md:px-container-margin-desktop w-full max-w-[1280px] mx-auto">
 <div class="flex items-center gap-8">
-<a class="flex items-center gap-3" href="index.html" aria-label="EVENTIFY home">
-<span class="material-symbols-outlined text-primary text-3xl" style="font-variation-settings:'FILL' 1;">hub</span>
-<span class="font-headline-md text-headline-md font-black text-primary">EVENTIFY</span>
+<a class="flex items-center gap-3" href="../index.html" aria-label="EVENTIFY home">
+<span class="material-symbols-outlined text-primary text-[26px]" style="font-variation-settings:'FILL' 1;">hub</span>
+<span class="text-primary" style="font-family:'Inter',sans-serif;font-size:18px;line-height:22px;font-weight:900;letter-spacing:normal;">EVENTIFY</span>
 </a>
 <div class="hidden md:flex gap-6">
-<a class="font-label-md text-label-md text-on-surface-variant hover:text-primary dark:text-[#c3c6d7] dark:hover:text-primary transition-colors" href="index.html">Home</a>
+<a class="font-label-md text-label-md text-on-surface-variant hover:text-primary dark:text-[#c3c6d7] dark:hover:text-primary transition-colors" href="../index.html">Home</a>
 <a class="font-label-md text-label-md text-on-surface-variant hover:text-primary dark:text-[#c3c6d7] dark:hover:text-primary transition-colors" href="explore.html">Explore</a>
 <a class="font-label-md text-label-md text-on-surface-variant hover:text-primary dark:text-[#c3c6d7] dark:hover:text-primary transition-colors" href="posts.html">Posts</a>
-<a class="font-label-md text-label-md text-primary font-bold border-b-2 border-primary pb-1 transition-all" href="my-applications.html">My Event</a>
+<a class="font-label-md text-label-md text-primary font-bold border-b-2 border-primary pb-1 transition-all" href="my-applications.html">My Applications</a>
 <a class="font-label-md text-label-md text-on-surface-variant hover:text-primary dark:text-[#c3c6d7] dark:hover:text-primary transition-colors" href="notifications.html">Notifications</a>
 </div>
 </div>
@@ -111,7 +147,7 @@
     <main class="pt-24 pb-12 px-container-margin-mobile md:px-container-margin-desktop max-w-[1280px] mx-auto flex flex-col gap-stack_gap_md">
             <section
                 class="bg-surface-container-lowest rounded-2xl p-6 md:p-8 premium-shadow border border-outline-variant/50">
-                <h1 class="font-headline-lg text-headline-lg mb-1">My Event</h1>
+                <h1 class="font-headline-lg text-headline-lg mb-1">My Applications</h1>
                 <p class="font-body-md text-body-md text-on-surface-variant">Every opportunity you've applied to, in one
                     place — track where each one stands.</p>
             </section>
@@ -132,7 +168,7 @@
             </div>
             <!-- Applications List -->
             <div class="flex flex-col gap-4" id="applications-list">
-                <div class="ev-card spotlight ev-fade-up ev-stagger-2 ev-fade-up ev-stagger-1 bg-surface-container-lowest p-5 rounded-xl border border-outline-variant/50 flex flex-col sm:flex-row sm:items-center gap-4"
+                <div class="bg-surface-container-lowest p-5 rounded-xl border border-outline-variant/50 bento-card-hover flex flex-col sm:flex-row sm:items-center gap-4"
                     data-status="pending">
                     <div class="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
                         <span class="material-symbols-outlined text-primary">emoji_events</span>
@@ -142,12 +178,12 @@
                         <p class="font-label-sm text-label-sm text-outline">TechGenius Labs • Applied Jul 12, 2026</p>
                     </div>
                     <span
-                        class="ev-badge bg-tertiary/10 text-tertiary whitespace-nowrap">Pending
+                        class="px-3 py-1.5 rounded-full bg-tertiary/10 text-tertiary font-label-sm text-label-sm whitespace-nowrap">Pending
                         Review</span>
                     <a class="px-4 py-2 rounded-full border border-outline-variant font-label-sm text-label-sm hover:bg-surface-container-low transition-colors whitespace-nowrap"
                         href="opportunity.html">View</a>
                 </div>
-                <div class="ev-card spotlight ev-fade-up ev-stagger-2 ev-fade-up ev-stagger-2 bg-surface-container-lowest p-5 rounded-xl border border-outline-variant/50 flex flex-col sm:flex-row sm:items-center gap-4"
+                <div class="bg-surface-container-lowest p-5 rounded-xl border border-outline-variant/50 bento-card-hover flex flex-col sm:flex-row sm:items-center gap-4"
                     data-status="pending">
                     <div class="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
                         <span class="material-symbols-outlined text-primary">terminal</span>
@@ -157,12 +193,12 @@
                         <p class="font-label-sm text-label-sm text-outline">TechGenius Labs • Applied Jul 9, 2026</p>
                     </div>
                     <span
-                        class="ev-badge bg-tertiary/10 text-tertiary whitespace-nowrap">Pending
+                        class="px-3 py-1.5 rounded-full bg-tertiary/10 text-tertiary font-label-sm text-label-sm whitespace-nowrap">Pending
                         Review</span>
                     <a class="px-4 py-2 rounded-full border border-outline-variant font-label-sm text-label-sm hover:bg-surface-container-low transition-colors whitespace-nowrap"
                         href="opportunity.html">View</a>
                 </div>
-                <div class="ev-card spotlight ev-fade-up ev-stagger-2 ev-fade-up ev-stagger-3 bg-surface-container-lowest p-5 rounded-xl border border-outline-variant/50 flex flex-col sm:flex-row sm:items-center gap-4"
+                <div class="bg-surface-container-lowest p-5 rounded-xl border border-outline-variant/50 bento-card-hover flex flex-col sm:flex-row sm:items-center gap-4"
                     data-status="pending">
                     <div class="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
                         <span class="material-symbols-outlined text-primary">groups</span>
@@ -172,12 +208,12 @@
                         <p class="font-label-sm text-label-sm text-outline">DevCommunity Hub • Applied Jul 4, 2026</p>
                     </div>
                     <span
-                        class="ev-badge bg-tertiary/10 text-tertiary whitespace-nowrap">Pending
+                        class="px-3 py-1.5 rounded-full bg-tertiary/10 text-tertiary font-label-sm text-label-sm whitespace-nowrap">Pending
                         Review</span>
                     <a class="px-4 py-2 rounded-full border border-outline-variant font-label-sm text-label-sm hover:bg-surface-container-low transition-colors whitespace-nowrap"
                         href="opportunity.html">View</a>
                 </div>
-                <div class="ev-card spotlight ev-fade-up ev-stagger-2 ev-fade-up ev-stagger-4 bg-surface-container-lowest p-5 rounded-xl border border-outline-variant/50 flex flex-col sm:flex-row sm:items-center gap-4"
+                <div class="bg-surface-container-lowest p-5 rounded-xl border border-outline-variant/50 bento-card-hover flex flex-col sm:flex-row sm:items-center gap-4"
                     data-status="accepted">
                     <div class="w-12 h-12 rounded-full bg-success/10 flex items-center justify-center flex-shrink-0">
                         <span class="material-symbols-outlined text-success"
@@ -189,11 +225,11 @@
                             2026</p>
                     </div>
                     <span
-                        class="ev-badge bg-success/10 text-success whitespace-nowrap">Accepted</span>
+                        class="px-3 py-1.5 rounded-full bg-success/10 text-success font-label-sm text-label-sm whitespace-nowrap">Accepted</span>
                     <a class="px-4 py-2 rounded-full border border-outline-variant font-label-sm text-label-sm hover:bg-surface-container-low transition-colors whitespace-nowrap"
                         href="opportunity.html">View</a>
                 </div>
-                <div class="ev-card spotlight ev-fade-up ev-stagger-2 ev-fade-up ev-stagger-5 bg-surface-container-lowest p-5 rounded-xl border border-outline-variant/50 flex flex-col sm:flex-row sm:items-center gap-4"
+                <div class="bg-surface-container-lowest p-5 rounded-xl border border-outline-variant/50 bento-card-hover flex flex-col sm:flex-row sm:items-center gap-4"
                     data-status="accepted">
                     <div class="w-12 h-12 rounded-full bg-success/10 flex items-center justify-center flex-shrink-0">
                         <span class="material-symbols-outlined text-success"
@@ -204,11 +240,11 @@
                         <p class="font-label-sm text-label-sm text-outline">DevCommunity Hub • Applied Jun 20, 2026</p>
                     </div>
                     <span
-                        class="ev-badge bg-success/10 text-success whitespace-nowrap">Accepted</span>
+                        class="px-3 py-1.5 rounded-full bg-success/10 text-success font-label-sm text-label-sm whitespace-nowrap">Accepted</span>
                     <a class="px-4 py-2 rounded-full border border-outline-variant font-label-sm text-label-sm hover:bg-surface-container-low transition-colors whitespace-nowrap"
                         href="opportunity.html">View</a>
                 </div>
-                <div class="ev-card spotlight ev-fade-up ev-stagger-2 bg-surface-container-lowest p-5 rounded-xl border border-outline-variant/50 flex flex-col sm:flex-row sm:items-center gap-4 opacity-80"
+                <div class="bg-surface-container-lowest p-5 rounded-xl border border-outline-variant/50 bento-card-hover flex flex-col sm:flex-row sm:items-center gap-4 opacity-80"
                     data-status="rejected">
                     <div class="w-12 h-12 rounded-full bg-error/10 flex items-center justify-center flex-shrink-0">
                         <span class="material-symbols-outlined text-error">cancel</span>
@@ -219,7 +255,7 @@
                         </p>
                     </div>
                     <span
-                        class="ev-badge bg-error/10 text-error whitespace-nowrap">Not
+                        class="px-3 py-1.5 rounded-full bg-error/10 text-error font-label-sm text-label-sm whitespace-nowrap">Not
                         Selected</span>
                     <a class="px-4 py-2 rounded-full border border-outline-variant font-label-sm text-label-sm hover:bg-surface-container-low transition-colors whitespace-nowrap"
                         href="opportunity.html">View</a>
@@ -228,7 +264,7 @@
         </main>
     <nav
         class="lg:hidden fixed bottom-0 left-0 w-full bg-surface/80 backdrop-blur-xl border-t border-outline-variant z-50 px-gutter py-3 flex justify-between items-center">
-        <a class="flex flex-col items-center gap-1 text-outline" href="index.html">
+        <a class="flex flex-col items-center gap-1 text-outline" href="../index.html">
             <span class="material-symbols-outlined">home</span>
             <span class="text-[10px] font-bold">Home</span>
         </a>
@@ -266,9 +302,6 @@
         });
     </script>
 <script src="../assets/js/theme.js"></script>
-<script src="../assets/js/ui-state.js"></script>
-<script src="nav.js"></script>
-<script src="../assets/js/motion.js"></script>
 </body>
 
 </html>
