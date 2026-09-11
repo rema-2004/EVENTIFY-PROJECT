@@ -68,7 +68,12 @@
     --z-toast: 120;
 }
 
+html {
+    color-scheme: light;
+}
+
 html.dark {
+    color-scheme: dark;
     --ink: #f5f4f1;
     --ink-2: #a8a49c;
     --bg: #0b0c0e;
@@ -211,17 +216,22 @@ textarea:focus-visible {
 
 .card:hover { transform: translateY(-4px); box-shadow: var(--shadow-card-hover); }
 
-.input-primary {
+.input-primary,
+input.input-primary,
+select.input-primary,
+textarea.input-primary {
     width: 100%;
     border-radius: var(--radius-sm);
     border: 1px solid var(--border-strong);
-    background: var(--surface);
-    color: var(--text);
+    background: var(--surface) !important;
+    color: var(--text) !important;
     padding: 0.7rem 0.9rem;
     font-family: var(--font-body);
     font-size: 14px;
     transition: border-color var(--transition), box-shadow var(--transition);
 }
+
+.input-primary::placeholder { color: var(--text-muted); opacity: 1; }
 
 .input-primary:focus {
     outline: none;
