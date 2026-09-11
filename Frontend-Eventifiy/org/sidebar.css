@@ -1,0 +1,3 @@
+/* Shared organizer sidebar — org pages now use admin.css's flat sidebar
+   components (.admin-accent-sidebar / .nav-group / .nav-link / .admin-badge,
+   see admin/admin.css) so no organizer-specific sidebar rules are needed here. */

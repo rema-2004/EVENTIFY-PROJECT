@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Applicants | EVENTIFY</title>
+<meta name="description" content="Applicants on EVENTIFY — the AI-powered hub for competitions, workshops, courses and internships."/>
+<meta property="og:title" content="Applicants | EVENTIFY"/>
+<meta property="og:description" content="Applicants on EVENTIFY — the AI-powered hub for competitions, workshops, courses and internships."/>
+<meta property="og:type" content="website"/>
+<meta property="og:image" content="../assets/images/event1.jpeg"/>
+<link rel="icon" href="../assets/images/favicon.svg" type="image/svg+xml"/>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="sidebar.css"/>
+<link rel="stylesheet" href="../admin/admin.css"/>
+<link rel="stylesheet" href="org-dashboard.css"/>
+<link rel="stylesheet" href="org-applicants.css"/>
+<script src="../assets/js/theme.js"></script>
+<script src="../assets/js/org-topbar.js"></script>
+<link rel="stylesheet" href="../assets/css/theme.css"/>
+<style>
+    @font-face {
+        font-family: 'Material Symbols Outlined';
+        font-style: normal;
+        font-weight: 100 700;
+        font-display: block;
+        src: url('../assets/fonts/material-symbols-outlined.woff2') format('woff2');
+    }
+    .material-symbols-outlined {
+        font-family: 'Material Symbols Outlined';
+        font-weight: normal;
+        font-style: normal;
+        font-size: 24px;
+        line-height: 1;
+        letter-spacing: normal;
+        text-transform: none;
+        display: inline-block;
+        white-space: nowrap;
+        overflow: hidden;
+        word-wrap: normal;
+        direction: ltr;
+        -webkit-font-feature-settings: 'liga';
+        -webkit-font-smoothing: antialiased;
+        font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        vertical-align: middle;
+    }
+</style>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script src="../assets/js/tw-config.js"></script>
+</head>
+<body class="min-h-screen bg-background text-on-surface font-body-md">
+<header class="lg:hidden w-full sticky top-0 z-40 flex justify-between items-center px-4 h-16 bg-surface border-b border-border shadow-sm">
+    <a class="flex items-center gap-2" href="../index.html">
+        <span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">hub</span>
+        <span class="font-bold text-headline-lg-mobile text-primary" style="font-family:var(--font-display)">EVENTIFY</span>
+    </a>
+    <div class="flex items-center gap-2">
+        <button class="theme-toggle icon-btn" type="button" title="Switch theme" aria-label="Switch theme" style="width:36px;height:36px">
+            <span class="material-symbols-outlined" style="font-size:18px">dark_mode</span>
+        </button>
+        <span class="admin-badge">Organizer</span>
+        <button class="mobile-hamburger" id="org-hamburger" aria-label="Open navigation" aria-expanded="false">
+            <span class="material-symbols-outlined" style="font-size:22px">menu</span>
+        </button>
+    </div>
+</header>
+<div class="flex min-h-screen">
+    <aside class="admin-accent-sidebar hidden lg:flex flex-col w-[280px] h-screen sticky top-0 bg-surface border-r border-border z-50 p-6">
+        <a class="flex items-center gap-3 mb-2" href="../index.html">
+            <span class="material-symbols-outlined text-primary text-3xl" style="font-variation-settings: 'FILL' 1;">hub</span>
+            <span class="font-bold text-headline-md text-primary" style="font-family:var(--font-display)">EVENTIFY</span>
+        </a>
+        <span class="admin-badge mb-8 w-fit">Organizer console</span>
+        <nav class="flex flex-1 flex-col gap-1" aria-label="Organizer sections">
+            <div class="nav-group">
+                <a class="nav-link" href="org-dashboard.html"><span class="material-symbols-outlined" aria-hidden="true">dashboard</span>Dashboard</a>
+                <a class="nav-link" href="org-posts.html"><span class="material-symbols-outlined" aria-hidden="true">campaign</span>Posts</a>
+                <a class="nav-link" href="org-profile.html"><span class="material-symbols-outlined" aria-hidden="true">apartment</span>Organization Profile</a>
+                <a class="nav-link" href="org-opportunities.html"><span class="material-symbols-outlined" aria-hidden="true">event_note</span>My Opportunities</a>
+                <a class="nav-link" href="org-create-event.html"><span class="material-symbols-outlined" aria-hidden="true">add_circle</span>Create Event</a>
+                <a class="nav-link" href="org-applicants.html" aria-current="page"><span class="material-symbols-outlined" aria-hidden="true">group</span>Applicants</a>
+                <a class="nav-link" href="org-report-center.html"><span class="material-symbols-outlined" aria-hidden="true">bar_chart</span>Reports</a>
+                <a class="nav-link" href="org-settings.html"><span class="material-symbols-outlined" aria-hidden="true">settings</span>Settings</a>
+            </div>
+        </nav>
+        <div class="mt-auto rounded-2xl bg-surface-container p-4">
+            <p class="mb-2 text-label-sm font-label-sm text-on-surface-variant">ORGANIZATION</p>
+            <p class="mb-1 font-label-md text-label-md text-on-surface font-semibold">TechGenius Labs</p>
+            <p class="text-label-sm font-label-sm text-success">Verified organizer since 2024</p>
+        </div>
+    </aside>
+    <main class="flex-1 w-full px-4 md:px-10 pt-6 pb-24 lg:pb-8">
+        <!-- Global Top Header: page title (left) + global controls (right) -->
+        <div class="org-topbar">
+            <h1 id="applicants-title" class="org-topbar__title">Applicants &middot; Global AI Innovation Challenge</h1>
+            <div class="org-topbar__right">
+                <div class="org-dropdown">
+                    <button class="icon-btn" id="org-notif-toggle" type="button" aria-label="Notifications (3 unread)" aria-expanded="false">
+                        <span class="material-symbols-outlined">notifications</span><span class="icon-btn__dot"></span>
+                    </button>
+                    <div class="org-dropdown__panel org-dropdown__panel--notif" id="org-notif-panel" hidden role="menu" aria-label="Notifications">
+                        <div class="flex items-center justify-between px-3 py-2 border-b border-outline-variant/40 mb-1">
+                            <span class="font-semibold text-xs text-on-surface">Notifications</span>
+                            <span class="text-[11px] font-semibold text-primary bg-primary/10 px-2 py-0.5 rounded-full">3 unread</span>
+                        </div>
+                        <div class="space-y-1">
+                            <a class="org-dropdown__item" href="org-applicants.html">
+                                <span class="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0" style="background:var(--surface-2);color:var(--accent)">
+                                    <span class="material-symbols-outlined text-[18px]" aria-hidden="true">person_add</span>
+                                </span>
+                                <span class="flex-1 min-w-0"><span class="block font-medium text-xs leading-snug">Ahmed Ali applied to Global AI Innovation Challenge</span><span class="org-dropdown__meta">2 hours ago</span></span>
+                            </a>
+                            <a class="org-dropdown__item" href="org-opportunities.html">
+                                <span class="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0" style="background:var(--surface-2);color:var(--accent)">
+                                    <span class="material-symbols-outlined text-[18px]" aria-hidden="true">hourglass_top</span>
+                                </span>
+                                <span class="flex-1 min-w-0"><span class="block font-medium text-xs leading-snug">DevOps Masterclass is awaiting approval</span><span class="org-dropdown__meta">Yesterday</span></span>
+                            </a>
+                            <a class="org-dropdown__item" href="org-applicants.html">
+                                <span class="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0" style="background:var(--surface-2);color:var(--accent)">
+                                    <span class="material-symbols-outlined text-[18px]" aria-hidden="true">star</span>
+                                </span>
+                                <span class="flex-1 min-w-0"><span class="block font-medium text-xs leading-snug">Frontend Wizards received a new 5-star rating</span><span class="org-dropdown__meta">2 days ago</span></span>
+                            </a>
+                        </div>
+                        <div class="pt-2 mt-1 border-t border-outline-variant/40">
+                            <a href="org-applicants.html" class="block text-center text-xs font-semibold text-primary hover:underline py-1">View all activity &rarr;</a>
+                        </div>
+                    </div>
+                </div>
+                <button class="theme-toggle icon-btn" type="button" title="Switch theme" aria-label="Switch theme">
+                    <span class="material-symbols-outlined">dark_mode</span>
+                </button>
+                <div class="org-dropdown">
+                    <button class="dash-profile" id="org-profile-toggle" type="button" aria-label="Organization menu" aria-expanded="false">
+                        <span class="dash-profile__avatar">TG</span>
+                        <span style="font-size:13px;font-weight:600">TechGenius Labs</span>
+                        <span class="material-symbols-outlined" style="font-size:18px;color:var(--text-muted)">expand_more</span>
+                    </button>
+                    <div class="org-dropdown__panel org-dropdown__panel--profile" id="org-profile-panel" hidden role="menu" aria-label="Organization menu">
+                        <div class="px-3 py-2 border-b border-outline-variant/40 mb-1">
+                            <p class="font-semibold text-xs text-on-surface">TechGenius Labs</p>
+                            <p class="text-[11px] text-on-surface-variant truncate">Verified organizer since 2024</p>
+                        </div>
+                        <a class="org-dropdown__item" href="org-profile.html"><span class="material-symbols-outlined text-[18px] text-on-surface-variant" aria-hidden="true">apartment</span><span>Organization Profile</span></a>
+                        <a class="org-dropdown__item" href="org-settings.html"><span class="material-symbols-outlined text-[18px] text-on-surface-variant" aria-hidden="true">settings</span><span>Settings</span></a>
+                        <div class="my-1 border-t border-outline-variant/40"></div>
+                        <a class="org-dropdown__item text-error hover:bg-error/10" href="../auth/login.html"><span class="material-symbols-outlined text-[18px] text-error" aria-hidden="true">logout</span><span class="text-error font-medium">Sign out</span></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page Header: breadcrumb, page-specific actions -->
+        <div class="org-page-header">
+            <nav class="breadcrumb-nav" aria-label="Breadcrumb">
+                <a href="org-dashboard.html">Dashboard</a>
+                <span class="breadcrumb-sep">/</span>
+                <span class="breadcrumb-current">Applicants</span>
+            </nav>
+            <div class="org-page-header__actions">
+                <!-- Reusable Organizer Event Selector Component -->
+                <div class="org-event-dropdown">
+                    <button class="org-event-btn" id="org-event-toggle" type="button" aria-haspopup="listbox" aria-expanded="false" aria-label="Switch selected opportunity">
+                        <span class="event-icon"><span class="material-symbols-outlined" aria-hidden="true">event_note</span></span>
+                        <span class="org-event-btn__name" id="org-event-selected-name">Global AI Innovation Challenge</span>
+                        <span class="material-symbols-outlined chevron-icon" aria-hidden="true">expand_more</span>
+                    </button>
+                    <div class="org-event-panel" id="org-event-panel" hidden role="listbox" aria-label="Select opportunity">
+                        <button type="button" class="org-event-item active" data-event-id="evt-1" role="option" aria-selected="true">
+                            <span class="item-name">Global AI Innovation Challenge</span>
+                            <span class="item-meta">98 applicants</span>
+                        </button>
+                        <button type="button" class="org-event-item" data-event-id="evt-2" role="option" aria-selected="false">
+                            <span class="item-name">Frontend Wizards</span>
+                            <span class="item-meta">150 applicants</span>
+                        </button>
+                        <button type="button" class="org-event-item" data-event-id="evt-3" role="option" aria-selected="false">
+                            <span class="item-name">Startup Challenge</span>
+                            <span class="item-meta">84 applicants</span>
+                        </button>
+                        <button type="button" class="org-event-item" data-event-id="evt-4" role="option" aria-selected="false">
+                            <span class="item-name">DevOps Masterclass</span>
+                            <span class="item-meta">72 applicants</span>
+                        </button>
+                        <button type="button" class="org-event-item" data-event-id="evt-5" role="option" aria-selected="false">
+                            <span class="item-name">Cloud Native Bootcamp</span>
+                            <span class="item-meta">42 applicants</span>
+                        </button>
+                    </div>
+                </div>
+                <!-- Native select for seamless underlying data compatibility -->
+                <select id="applicants-event-select" class="sr-only" aria-hidden="true" tabindex="-1">
+                    <option value="evt-1">Global AI Innovation Challenge</option>
+                    <option value="evt-2">Frontend Wizards</option>
+                    <option value="evt-3">Startup Challenge</option>
+                    <option value="evt-4">DevOps Masterclass</option>
+                    <option value="evt-5">Cloud Native Bootcamp</option>
+                </select>
+                <span class="badge badge--pending" style="font-size:12px">Review applicants</span>
+            </div>
+        </div>
+
+        <!-- Status Filter Tabs -->
+        <div class="applicants-filters" role="group" aria-label="Filter applicants by review status">
+            <button class="filter-btn active" data-filter="all" type="button" aria-pressed="true">
+                All <span class="filter-count" data-count="all">98</span>
+            </button>
+            <button class="filter-btn" data-filter="pending" type="button" aria-pressed="false">
+                Pending <span class="filter-count" data-count="pending">17</span>
+            </button>
+            <button class="filter-btn" data-filter="accepted" type="button" aria-pressed="false">
+                Accepted <span class="filter-count" data-count="accepted">72</span>
+            </button>
+            <button class="filter-btn" data-filter="rejected" type="button" aria-pressed="false">
+                Rejected <span class="filter-count" data-count="rejected">9</span>
+            </button>
+        </div>
+
+        <!-- Applicants Table Panel -->
+        <section class="applicants-panel">
+            <div class="table-scroll">
+                <table class="applicants-table" id="applicants-table">
+                    <caption class="sr-only">Applicants for selected opportunity</caption>
+                    <thead>
+                        <tr>
+                            <th>Applicant</th>
+                            <th>AI Match</th>
+                            <th>Skills</th>
+                            <th>Status</th>
+                            <th style="text-align:right">Decision</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="applicant-row" data-status="pending" data-id="app-1">
+                            <td>
+                                <div class="applicant-entity">
+                                    <div class="applicant-avatar">A</div>
+                                    <div>
+                                        <a class="applicant-name" href="org-applicant-details.html">Alex Rivera</a>
+                                        <p class="applicant-headline">3 yrs experience &middot; Computer Vision</p>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <span class="match-score match-score--strong" title="AI Match Score: 94%">94% match</span>
+                            </td>
+                            <td>
+                                <div class="skills-list">
+                                    <span class="skill-chip">Python</span>
+                                    <span class="skill-chip">PyTorch</span>
+                                    <span class="skill-chip">React</span>
+                                </div>
+                            </td>
+                            <td class="status-cell">
+                                <span class="badge badge--pending">Pending</span>
+                            </td>
+                            <td class="decision-cell" style="text-align:right">
+                                <div class="decision-actions">
+                                    <button type="button" class="btn-accept" aria-label="Accept Alex Rivera">
+                                        <span class="material-symbols-outlined" style="font-size:16px">check</span> Accept
+                                    </button>
+                                    <button type="button" class="btn-reject" aria-label="Reject Alex Rivera">
+                                        <span class="material-symbols-outlined" style="font-size:16px">close</span> Reject
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr class="applicant-row" data-status="pending" data-id="app-2">
+                            <td>
+                                <div class="applicant-entity">
+                                    <div class="applicant-avatar">N</div>
+                                    <div>
+                                        <a class="applicant-name" href="org-applicant-details.html">Nadia Farouk</a>
+                                        <p class="applicant-headline">Final-year CS student</p>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <span class="match-score match-score--strong" title="AI Match Score: 88%">88% match</span>
+                            </td>
+                            <td>
+                                <div class="skills-list">
+                                    <span class="skill-chip">Python</span>
+                                    <span class="skill-chip">ML</span>
+                                </div>
+                            </td>
+                            <td class="status-cell">
+                                <span class="badge badge--pending">Pending</span>
+                            </td>
+                            <td class="decision-cell" style="text-align:right">
+                                <div class="decision-actions">
+                                    <button type="button" class="btn-accept" aria-label="Accept Nadia Farouk">
+                                        <span class="material-symbols-outlined" style="font-size:16px">check</span> Accept
+                                    </button>
+                                    <button type="button" class="btn-reject" aria-label="Reject Nadia Farouk">
+                                        <span class="material-symbols-outlined" style="font-size:16px">close</span> Reject
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr class="applicant-row" data-status="accepted" data-id="app-3">
+                            <td>
+                                <div class="applicant-entity">
+                                    <div class="applicant-avatar">M</div>
+                                    <div>
+                                        <a class="applicant-name" href="org-applicant-details.html">Marcus Lee</a>
+                                        <p class="applicant-headline">Product Designer</p>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <span class="match-score match-score--moderate" title="AI Match Score: 76%">76% match</span>
+                            </td>
+                            <td>
+                                <div class="skills-list">
+                                    <span class="skill-chip">UI/UX</span>
+                                    <span class="skill-chip">Three.js</span>
+                                </div>
+                            </td>
+                            <td class="status-cell">
+                                <span class="badge badge--approved">Accepted</span>
+                            </td>
+                            <td class="decision-cell" style="text-align:right">
+                                <span class="decision-state">
+                                    <span class="material-symbols-outlined">check_circle</span>Reviewed
+                                </span>
+                            </td>
+                        </tr>
+                        <tr class="applicant-row" data-status="accepted" data-id="app-4">
+                            <td>
+                                <div class="applicant-entity">
+                                    <div class="applicant-avatar">E</div>
+                                    <div>
+                                        <a class="applicant-name" href="org-applicant-details.html">Elena Rodriguez</a>
+                                        <p class="applicant-headline">Data Analyst</p>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <span class="match-score match-score--strong" title="AI Match Score: 81%">81% match</span>
+                            </td>
+                            <td>
+                                <div class="skills-list">
+                                    <span class="skill-chip">Python</span>
+                                    <span class="skill-chip">Data Viz</span>
+                                </div>
+                            </td>
+                            <td class="status-cell">
+                                <span class="badge badge--approved">Accepted</span>
+                            </td>
+                            <td class="decision-cell" style="text-align:right">
+                                <span class="decision-state">
+                                    <span class="material-symbols-outlined">check_circle</span>Reviewed
+                                </span>
+                            </td>
+                        </tr>
+                        <tr class="applicant-row" data-status="rejected" data-id="app-5">
+                            <td>
+                                <div class="applicant-entity">
+                                    <div class="applicant-avatar">K</div>
+                                    <div>
+                                        <a class="applicant-name" href="org-applicant-details.html">Kevin Park</a>
+                                        <p class="applicant-headline">Mobile Developer</p>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <span class="match-score match-score--neutral" title="AI Match Score: 55%">55% match</span>
+                            </td>
+                            <td>
+                                <div class="skills-list">
+                                    <span class="skill-chip">Flutter</span>
+                                </div>
+                            </td>
+                            <td class="status-cell">
+                                <span class="badge badge--rejected">Rejected</span>
+                            </td>
+                            <td class="decision-cell" style="text-align:right">
+                                <span class="decision-state">
+                                    <span class="material-symbols-outlined">mail</span>Notified
+                                </span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Empty State when status filter yields 0 results -->
+            <div class="applicants-empty" id="applicants-empty-state" hidden>
+                <div class="applicants-empty__icon">
+                    <span class="material-symbols-outlined" style="font-size:26px" aria-hidden="true">group_off</span>
+                </div>
+                <h3 class="applicants-empty__title">No applicants in this category</h3>
+                <p class="applicants-empty__desc">There are no applicants matching the selected status filter.</p>
+                <button type="button" class="btn-secondary mt-2" id="applicants-empty-reset">Show all applicants</button>
+            </div>
+        </section>
+    </main>
+</div>
+
+<!-- Mobile Navigation Drawer -->
+<div class="mobile-nav-overlay" id="org-mobile-overlay"></div>
+<nav class="mobile-nav-drawer" id="org-mobile-drawer" aria-label="Organizer navigation">
+    <button class="mobile-nav-close" id="org-nav-close" aria-label="Close navigation"><span class="material-symbols-outlined" style="font-size:20px">close</span></button>
+    <a class="flex items-center gap-3 mb-2" href="../index.html">
+        <span class="material-symbols-outlined text-primary text-3xl" style="font-variation-settings: 'FILL' 1;">hub</span>
+        <span class="font-bold text-headline-md text-primary" style="font-family:var(--font-display)">EVENTIFY</span>
+    </a>
+    <span class="admin-badge mb-6 w-fit">Organizer console</span>
+    <div class="nav-group flex flex-1 flex-col gap-1">
+        <a class="nav-link" href="org-dashboard.html"><span class="material-symbols-outlined" aria-hidden="true">dashboard</span>Dashboard</a>
+        <a class="nav-link" href="org-posts.html"><span class="material-symbols-outlined" aria-hidden="true">campaign</span>Posts</a>
+        <a class="nav-link" href="org-profile.html"><span class="material-symbols-outlined" aria-hidden="true">apartment</span>Organization Profile</a>
+        <a class="nav-link" href="org-opportunities.html"><span class="material-symbols-outlined" aria-hidden="true">event_note</span>My Opportunities</a>
+        <a class="nav-link" href="org-create-event.html"><span class="material-symbols-outlined" aria-hidden="true">add_circle</span>Create Event</a>
+        <a class="nav-link" href="org-applicants.html" aria-current="page"><span class="material-symbols-outlined" aria-hidden="true">group</span>Applicants</a>
+        <a class="nav-link" href="org-report-center.html"><span class="material-symbols-outlined" aria-hidden="true">bar_chart</span>Reports</a>
+        <a class="nav-link" href="org-settings.html"><span class="material-symbols-outlined" aria-hidden="true">settings</span>Settings</a>
+    </div>
+    <div class="mt-auto rounded-2xl bg-surface-container p-4">
+        <p class="mb-2 text-label-sm font-label-sm text-on-surface-variant">ORGANIZATION</p>
+        <p class="mb-1 font-label-md text-label-md text-on-surface font-semibold">TechGenius Labs</p>
+        <p class="text-label-sm font-label-sm text-success">Verified organizer since 2024</p>
+    </div>
+</nav>
+
+<script src="../assets/js/ui-state.js"></script>
+<script src="../assets/js/motion.js"></script>
+<script src="org-applicants.js"></script>
+</body>
+</html>

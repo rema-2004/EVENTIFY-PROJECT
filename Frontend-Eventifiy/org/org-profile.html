@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Organization Profile | EVENTIFY</title>
+    <meta name="description" content="Organization Profile on EVENTIFY — the AI-powered hub for competitions, workshops, courses and internships."/>
+    <meta property="og:title" content="Organization Profile | EVENTIFY"/>
+    <meta property="og:description" content="Organization Profile on EVENTIFY — the AI-powered hub for competitions, workshops, courses and internships."/>
+    <meta property="og:type" content="website"/>
+    <meta property="og:image" content="../assets/images/event1.jpeg"/>
+    <link rel="icon" href="../assets/images/favicon.svg" type="image/svg+xml"/>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet"/>
+    <link rel="stylesheet" href="sidebar.css"/>
+    <link rel="stylesheet" href="../admin/admin.css"/>
+    <link rel="stylesheet" href="org-profile.css"/>
+    <script src="../assets/js/theme.js"></script>
+    <script src="../assets/js/org-topbar.js"></script>
+    <link rel="stylesheet" href="../assets/css/theme.css"/>
+    <style>
+        @font-face {
+            font-family: 'Material Symbols Outlined';
+            font-style: normal;
+            font-weight: 100 700;
+            font-display: block;
+            src: url('../assets/fonts/material-symbols-outlined.woff2') format('woff2');
+        }
+        .material-symbols-outlined {
+            font-family: 'Material Symbols Outlined';
+            font-weight: normal;
+            font-style: normal;
+            font-size: 24px;
+            line-height: 1;
+            letter-spacing: normal;
+            text-transform: none;
+            display: inline-block;
+            white-space: nowrap;
+            overflow: hidden;
+            word-wrap: normal;
+            direction: ltr;
+            -webkit-font-feature-settings: 'liga';
+            -webkit-font-smoothing: antialiased;
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+    </style>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script src="../assets/js/tw-config.js"></script>
+</head>
+
+<body class="min-h-screen bg-background text-on-surface font-body-md">
+    <!-- Mobile Header -->
+    <header class="lg:hidden w-full sticky top-0 z-40 flex justify-between items-center px-4 h-16 bg-surface border-b border-border shadow-sm">
+        <a class="flex items-center gap-2" href="../index.html">
+            <span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">hub</span>
+            <span class="font-bold text-headline-lg-mobile text-primary" style="font-family:var(--font-display)">EVENTIFY</span>
+        </a>
+        <div class="flex items-center gap-2">
+            <button class="theme-toggle icon-btn" type="button" title="Switch theme" aria-label="Switch theme" style="width:36px;height:36px">
+                <span class="material-symbols-outlined" style="font-size:18px">dark_mode</span>
+            </button>
+            <span class="admin-badge">Organizer</span>
+            <button class="mobile-hamburger" id="org-hamburger" aria-label="Open navigation" aria-expanded="false">
+                <span class="material-symbols-outlined" style="font-size:22px">menu</span>
+            </button>
+        </div>
+    </header>
+
+    <div class="flex min-h-screen">
+        <!-- Desktop Sidebar -->
+        <aside class="admin-accent-sidebar hidden lg:flex flex-col w-[280px] h-screen sticky top-0 bg-surface border-r border-border z-50 p-6">
+            <a class="flex items-center gap-3 mb-2" href="../index.html">
+                <span class="material-symbols-outlined text-primary text-3xl" style="font-variation-settings: 'FILL' 1;">hub</span>
+                <span class="font-bold text-headline-md text-primary" style="font-family:var(--font-display)">EVENTIFY</span>
+            </a>
+            <span class="admin-badge mb-8 w-fit">Organizer console</span>
+            <nav class="flex flex-1 flex-col gap-1" aria-label="Organizer sections">
+                <div class="nav-group">
+                    <a class="nav-link" href="org-dashboard.html"><span class="material-symbols-outlined" aria-hidden="true">dashboard</span>Dashboard</a>
+                    <a class="nav-link" href="org-posts.html"><span class="material-symbols-outlined" aria-hidden="true">campaign</span>Posts</a>
+                    <a class="nav-link" href="org-profile.html" aria-current="page"><span class="material-symbols-outlined" aria-hidden="true">apartment</span>Organization Profile</a>
+                    <a class="nav-link" href="org-opportunities.html"><span class="material-symbols-outlined" aria-hidden="true">event_note</span>My Opportunities</a>
+                    <a class="nav-link" href="org-create-event.html"><span class="material-symbols-outlined" aria-hidden="true">add_circle</span>Create Event</a>
+                    <a class="nav-link" href="org-applicants.html"><span class="material-symbols-outlined" aria-hidden="true">group</span>Applicants</a>
+                    <a class="nav-link" href="org-report-center.html"><span class="material-symbols-outlined" aria-hidden="true">bar_chart</span>Reports</a>
+                    <a class="nav-link" href="org-settings.html"><span class="material-symbols-outlined" aria-hidden="true">settings</span>Settings</a>
+                </div>
+            </nav>
+            <div class="mt-auto rounded-2xl bg-surface-container p-4">
+                <p class="mb-2 text-label-sm font-label-sm text-on-surface-variant">ORGANIZATION</p>
+                <p class="mb-1 font-label-md text-label-md text-on-surface font-semibold">TechGenius Labs</p>
+                <p class="text-label-sm font-label-sm text-success">Verified organizer since 2024</p>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="w-full flex-1 px-4 pt-6 pb-24 md:px-10 lg:pb-8">
+            <!-- Global Top Header: page title (left) + global controls (right) -->
+            <div class="org-topbar">
+                <h1 class="org-topbar__title">Organization Profile</h1>
+                <div class="org-topbar__right">
+                    <div class="org-dropdown">
+                        <button class="icon-btn" id="org-notif-toggle" type="button" aria-label="Notifications (3 unread)" aria-expanded="false">
+                            <span class="material-symbols-outlined">notifications</span><span class="icon-btn__dot"></span>
+                        </button>
+                        <div class="org-dropdown__panel org-dropdown__panel--notif" id="org-notif-panel" hidden role="menu" aria-label="Notifications">
+                            <div class="flex items-center justify-between px-3 py-2 border-b border-outline-variant/40 mb-1">
+                                <span class="font-semibold text-xs text-on-surface">Notifications</span>
+                                <span class="text-[11px] font-semibold text-primary bg-primary/10 px-2 py-0.5 rounded-full">3 unread</span>
+                            </div>
+                            <div class="space-y-1">
+                                <a class="org-dropdown__item" href="org-applicants.html">
+                                    <span class="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0" style="background:var(--surface-2);color:var(--accent)">
+                                        <span class="material-symbols-outlined text-[18px]" aria-hidden="true">person_add</span>
+                                    </span>
+                                    <span class="flex-1 min-w-0"><span class="block font-medium text-xs leading-snug">Ahmed Ali applied to Global AI Innovation Challenge</span><span class="org-dropdown__meta">2 hours ago</span></span>
+                                </a>
+                                <a class="org-dropdown__item" href="org-opportunities.html">
+                                    <span class="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0" style="background:var(--surface-2);color:var(--accent)">
+                                        <span class="material-symbols-outlined text-[18px]" aria-hidden="true">hourglass_top</span>
+                                    </span>
+                                    <span class="flex-1 min-w-0"><span class="block font-medium text-xs leading-snug">DevOps Masterclass is awaiting approval</span><span class="org-dropdown__meta">Yesterday</span></span>
+                                </a>
+                                <a class="org-dropdown__item" href="org-applicants.html">
+                                    <span class="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0" style="background:var(--surface-2);color:var(--accent)">
+                                        <span class="material-symbols-outlined text-[18px]" aria-hidden="true">star</span>
+                                    </span>
+                                    <span class="flex-1 min-w-0"><span class="block font-medium text-xs leading-snug">Frontend Wizards received a new 5-star rating</span><span class="org-dropdown__meta">2 days ago</span></span>
+                                </a>
+                            </div>
+                            <div class="pt-2 mt-1 border-t border-outline-variant/40">
+                                <a href="org-applicants.html" class="block text-center text-xs font-semibold text-primary hover:underline py-1">View all activity &rarr;</a>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="theme-toggle icon-btn" type="button" title="Switch theme" aria-label="Switch theme">
+                        <span class="material-symbols-outlined">dark_mode</span>
+                    </button>
+                    <div class="org-dropdown">
+                        <button class="dash-profile" id="org-profile-toggle" type="button" aria-label="Organization menu" aria-expanded="false">
+                            <span class="dash-profile__avatar">TG</span>
+                            <span style="font-size:13px;font-weight:600">TechGenius Labs</span>
+                            <span class="material-symbols-outlined" style="font-size:18px;color:var(--text-muted)">expand_more</span>
+                        </button>
+                        <div class="org-dropdown__panel org-dropdown__panel--profile" id="org-profile-panel" hidden role="menu" aria-label="Organization menu">
+                            <div class="px-3 py-2 border-b border-outline-variant/40 mb-1">
+                                <p class="font-semibold text-xs text-on-surface">TechGenius Labs</p>
+                                <p class="text-[11px] text-on-surface-variant truncate">Verified organizer since 2024</p>
+                            </div>
+                            <a class="org-dropdown__item" href="org-profile.html"><span class="material-symbols-outlined text-[18px] text-on-surface-variant" aria-hidden="true">apartment</span><span>Organization Profile</span></a>
+                            <a class="org-dropdown__item" href="org-settings.html"><span class="material-symbols-outlined text-[18px] text-on-surface-variant" aria-hidden="true">settings</span><span>Settings</span></a>
+                            <div class="my-1 border-t border-outline-variant/40"></div>
+                            <a class="org-dropdown__item text-error hover:bg-error/10" href="../auth/login.html"><span class="material-symbols-outlined text-[18px] text-error" aria-hidden="true">logout</span><span class="text-error font-medium">Sign out</span></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Page Header: breadcrumb, title, description, page-specific actions -->
+            <div class="org-page-header">
+                <div class="flex items-center gap-2 text-sm mb-2">
+                    <a class="text-on-surface-variant hover:text-primary transition-colors" href="org-dashboard.html">Dashboard</a>
+                    <span class="text-outline">/</span>
+                    <span class="font-semibold text-on-surface">Organization Profile</span>
+                </div>
+                <p class="profile-page-desc">An official public profile presenting the organization&rsquo;s mission, programs, and verified credibility to students, partners, and institutional stakeholders.</p>
+                <div class="org-page-header__actions">
+                    <a class="btn-secondary" href="org-settings.html">
+                        <span class="material-symbols-outlined" style="font-size:18px">settings</span> Manage profile
+                    </a>
+                    <a class="btn-primary" href="org-opportunities.html">
+                        <span class="material-symbols-outlined" style="font-size:18px">visibility</span> View opportunities
+                    </a>
+                </div>
+            </div>
+
+            <!-- Organization Showcase Hero -->
+            <section class="org-showcase-card">
+                <div class="org-showcase-banner"></div>
+                <div class="org-showcase-body">
+                    <div class="org-identity-bar">
+                        <div class="org-avatar-box">TG</div>
+                        <div class="org-identity-info">
+                            <div class="flex flex-wrap items-center gap-2.5 mb-2">
+                                <h2 class="org-identity-title">TechGenius Labs</h2>
+                                <span class="org-badge-verified">
+                                    <span class="material-symbols-outlined" style="font-size:14px">verified</span> Verified institution
+                                </span>
+                                <span class="org-badge-type">Training and innovation center</span>
+                            </div>
+                            <p class="text-body-md text-on-surface-variant">This organization is dedicated to delivering high-quality programs, training opportunities, and development initiatives that support students, professionals, and community partners.</p>
+                        </div>
+                        <div class="org-pills-row">
+                            <span class="org-pill"><span class="material-symbols-outlined">calendar_month</span> Founded 2024</span>
+                            <span class="org-pill"><span class="material-symbols-outlined">location_on</span> Amman, Jordan</span>
+                            <span class="org-pill"><span class="material-symbols-outlined">verified_user</span> Verified by Eventify</span>
+                        </div>
+                    </div>
+
+                    <!-- 3 Key Metric Stats -->
+                    <div class="org-metrics-grid">
+                        <div class="org-metric-card">
+                            <div class="org-metric-num">24</div>
+                            <div class="org-metric-label">Active programs</div>
+                        </div>
+                        <div class="org-metric-card">
+                            <div class="org-metric-num">1.9k</div>
+                            <div class="org-metric-label">Applicants reached</div>
+                        </div>
+                        <div class="org-metric-card">
+                            <div class="org-metric-num">4.8</div>
+                            <div class="org-metric-label">Community rating</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 2-Column Content Layout -->
+            <div class="org-content-grid">
+                <!-- Left Column -->
+                <div class="space-y-6">
+                    <!-- About Organization -->
+                    <section class="org-section-card">
+                        <div class="mb-4 flex items-center justify-between">
+                            <div>
+                                <span class="org-section-eyebrow">About the organization</span>
+                                <h3 class="org-section-title">What the organization stands for</h3>
+                            </div>
+                            <span class="rounded-full bg-primary/10 px-3 py-1 text-label-sm font-semibold text-primary">Mission driven</span>
+                        </div>
+                        <div class="grid gap-4 md:grid-cols-2">
+                            <div class="rounded-xl border border-border bg-surface-2 p-4">
+                                <p class="text-xs font-semibold uppercase tracking-wider text-on-surface-variant">Mission</p>
+                                <p class="mt-2 text-body-md text-on-surface">We design and deliver structured, career-oriented learning pathways that strengthen knowledge, build professional capabilities, and connect participants with meaningful opportunities.</p>
+                            </div>
+                            <div class="rounded-xl border border-border bg-surface-2 p-4">
+                                <p class="text-xs font-semibold uppercase tracking-wider text-on-surface-variant">Core domains</p>
+                                <ul class="mt-2 space-y-2 text-body-md text-on-surface-variant">
+                                    <li class="flex items-center gap-2"><span class="text-primary font-bold">•</span> Artificial intelligence and data science</li>
+                                    <li class="flex items-center gap-2"><span class="text-primary font-bold">•</span> Cloud infrastructure and DevOps</li>
+                                    <li class="flex items-center gap-2"><span class="text-primary font-bold">•</span> Product development and entrepreneurship</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Featured Programs -->
+                    <section class="org-section-card">
+                        <div class="mb-4 flex items-center justify-between">
+                            <div>
+                                <span class="org-section-eyebrow">Featured programs</span>
+                                <h3 class="org-section-title">Programs and initiatives</h3>
+                            </div>
+                            <a class="text-label-md font-medium text-primary hover:underline flex items-center gap-1" href="org-opportunities.html">
+                                View all <span class="material-symbols-outlined" style="font-size:16px">arrow_forward</span>
+                            </a>
+                        </div>
+                        <div class="space-y-3">
+                            <div class="org-program-item">
+                                <div>
+                                    <p class="font-semibold text-on-surface">Global AI Innovation Challenge</p>
+                                    <p class="text-label-md text-on-surface-variant">
+                                        <span class="inline-flex items-center gap-1 text-primary font-semibold">● Live</span> · Remote · <span style="font-family:var(--font-mono)">98</span> applicants
+                                    </p>
+                                </div>
+                                <a class="org-program-link" href="org-applicants.html?event=evt-001">
+                                    View applicants <span class="material-symbols-outlined" style="font-size:16px">chevron_right</span>
+                                </a>
+                            </div>
+                            <div class="org-program-item">
+                                <div>
+                                    <p class="font-semibold text-on-surface">DevOps Masterclass</p>
+                                    <p class="text-label-md text-on-surface-variant">
+                                        <span class="inline-flex items-center gap-1 text-amber-500 font-semibold">⏳ Pending approval</span> · Online
+                                    </p>
+                                </div>
+                                <a class="org-program-link" href="org-opportunities.html">
+                                    See details <span class="material-symbols-outlined" style="font-size:16px">chevron_right</span>
+                                </a>
+                            </div>
+                            <div class="org-program-item">
+                                <div>
+                                    <p class="font-semibold text-on-surface">Cloud Career Bootcamp</p>
+                                    <p class="text-label-md text-on-surface-variant">
+                                        <span class="inline-flex items-center gap-1 text-on-surface-variant font-semibold">📝 Draft</span> · 6-week certificate
+                                    </p>
+                                </div>
+                                <a class="org-program-link" href="org-opportunities.html">
+                                    Open program <span class="material-symbols-outlined" style="font-size:16px">chevron_right</span>
+                                </a>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+
+                <!-- Right Column -->
+                <div class="space-y-6">
+                    <!-- Institutional Details -->
+                    <section class="org-section-card">
+                        <span class="org-section-eyebrow">Institutional details</span>
+                        <h3 class="org-section-title mb-4">Contact and location</h3>
+                        <div class="space-y-3">
+                            <div class="org-info-block">
+                                <p class="text-xs font-semibold uppercase tracking-wider text-on-surface-variant">Website</p>
+                                <a class="org-info-link mt-1" href="https://www.techgenius.io" target="_blank" rel="noopener noreferrer">
+                                    www.techgenius.io <span class="material-symbols-outlined" style="font-size:16px">open_in_new</span>
+                                </a>
+                            </div>
+                            <div class="org-info-block">
+                                <p class="text-xs font-semibold uppercase tracking-wider text-on-surface-variant">Work email</p>
+                                <a class="org-info-link mt-1" href="mailto:contact@techgenius.io">
+                                    contact@techgenius.io <span class="material-symbols-outlined" style="font-size:16px">mail</span>
+                                </a>
+                            </div>
+                            <div class="org-info-block">
+                                <p class="text-xs font-semibold uppercase tracking-wider text-on-surface-variant">Location</p>
+                                <p class="mt-1 text-body-md font-medium text-on-surface">Amman, Jordan</p>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Verification Status -->
+                    <section class="org-section-card">
+                        <span class="org-section-eyebrow">Verification</span>
+                        <h3 class="org-section-title mb-4">Trust status</h3>
+                        <div class="space-y-3">
+                            <div class="org-trust-highlight">
+                                <p class="font-semibold text-success flex items-center gap-1.5">
+                                    <span class="material-symbols-outlined" style="font-size:18px">verified</span> Verified institution
+                                </p>
+                                <p class="mt-1 text-label-md text-success/90">Reviewed and approved by the Eventify administration team</p>
+                            </div>
+                            <div class="org-trust-item">
+                                <span class="font-medium text-on-surface text-sm">Business license</span>
+                                <span class="badge badge--approved">Approved</span>
+                            </div>
+                            <div class="org-trust-item">
+                                <span class="font-medium text-on-surface text-sm">Domain email</span>
+                                <span class="badge badge--approved">Approved</span>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Mobile Navigation Drawer -->
+    <div class="mobile-nav-overlay" id="org-mobile-overlay"></div>
+    <nav class="mobile-nav-drawer" id="org-mobile-drawer" aria-label="Organizer navigation">
+        <button class="mobile-nav-close" id="org-nav-close" aria-label="Close navigation"><span class="material-symbols-outlined" style="font-size:20px">close</span></button>
+        <a class="flex items-center gap-3 mb-2" href="../index.html">
+            <span class="material-symbols-outlined text-primary text-3xl" style="font-variation-settings: 'FILL' 1;">hub</span>
+            <span class="font-bold text-headline-md text-primary" style="font-family:var(--font-display)">EVENTIFY</span>
+        </a>
+        <span class="admin-badge mb-6 w-fit">Organizer console</span>
+        <div class="nav-group flex flex-1 flex-col gap-1">
+            <a class="nav-link" href="org-dashboard.html"><span class="material-symbols-outlined" aria-hidden="true">dashboard</span>Dashboard</a>
+            <a class="nav-link" href="org-posts.html"><span class="material-symbols-outlined" aria-hidden="true">campaign</span>Posts</a>
+            <a class="nav-link" href="org-profile.html" aria-current="page"><span class="material-symbols-outlined" aria-hidden="true">apartment</span>Organization Profile</a>
+            <a class="nav-link" href="org-opportunities.html"><span class="material-symbols-outlined" aria-hidden="true">event_note</span>My Opportunities</a>
+            <a class="nav-link" href="org-create-event.html"><span class="material-symbols-outlined" aria-hidden="true">add_circle</span>Create Event</a>
+            <a class="nav-link" href="org-applicants.html"><span class="material-symbols-outlined" aria-hidden="true">group</span>Applicants</a>
+            <a class="nav-link" href="org-report-center.html"><span class="material-symbols-outlined" aria-hidden="true">bar_chart</span>Reports</a>
+            <a class="nav-link" href="org-settings.html"><span class="material-symbols-outlined" aria-hidden="true">settings</span>Settings</a>
+        </div>
+        <div class="mt-auto rounded-2xl bg-surface-container p-4">
+            <p class="mb-2 text-label-sm font-label-sm text-on-surface-variant">ORGANIZATION</p>
+            <p class="mb-1 font-label-md text-label-md text-on-surface font-semibold">TechGenius Labs</p>
+            <p class="text-label-sm font-label-sm text-success">Verified organizer since 2024</p>
+        </div>
+    </nav>
+
+    <script>
+        // Mobile Drawer Controller
+        document.addEventListener('DOMContentLoaded', () => {
+            const hamburger = document.getElementById('org-hamburger');
+            const drawer = document.getElementById('org-mobile-drawer');
+            const overlay = document.getElementById('org-mobile-overlay');
+            const closeBtn = document.getElementById('org-nav-close');
+
+            const toggleDrawer = (open) => {
+                if (!drawer || !overlay) return;
+                drawer.classList.toggle('open', open);
+                overlay.classList.toggle('open', open);
+                if (hamburger) hamburger.setAttribute('aria-expanded', String(open));
+                document.body.style.overflow = open ? 'hidden' : '';
+            };
+
+            if (hamburger) hamburger.addEventListener('click', () => toggleDrawer(true));
+            if (closeBtn) closeBtn.addEventListener('click', () => toggleDrawer(false));
+            if (overlay) overlay.addEventListener('click', () => toggleDrawer(false));
+        });
+    </script>
+</body>
+</html>

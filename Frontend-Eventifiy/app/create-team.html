@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Create Your Team - Eventify</title>
+<meta name="description" content="Create Your Team - Eventify on EVENTIFY — the AI-powered hub for competitions, workshops, courses and internships."/>
+<meta property="og:title" content="Create Your Team - Eventify"/>
+<meta property="og:description" content="Create Your Team - Eventify on EVENTIFY — the AI-powered hub for competitions, workshops, courses and internships."/>
+<meta property="og:type" content="website"/>
+<meta property="og:image" content="../assets/images/event1.jpeg"/>
+<link rel="icon" href="../assets/images/favicon.svg" type="image/svg+xml"/>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="nav.css"/>
+<link rel="stylesheet" href="app-shell.css"/>
+<script src="../assets/js/theme.js"></script>
+<link rel="stylesheet" href="../assets/css/theme.css"/>
+<style>
+    @font-face {
+        font-family: 'Material Symbols Outlined';
+        font-style: normal;
+        font-weight: 100 700;
+        font-display: block;
+        src: url('../assets/fonts/material-symbols-outlined.woff2') format('woff2');
+    }
+    .material-symbols-outlined {
+        font-family: 'Material Symbols Outlined';
+        font-weight: normal;
+        font-style: normal;
+        font-size: 24px;
+        line-height: 1;
+        letter-spacing: normal;
+        text-transform: none;
+        display: inline-block;
+        white-space: nowrap;
+        overflow: hidden;
+        word-wrap: normal;
+        direction: ltr;
+        -webkit-font-feature-settings: 'liga';
+        -webkit-font-smoothing: antialiased;
+    }
+    </style>
+
+<!-- Google Fonts: Inter -->
+<!-- Material Symbols Outlined -->
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script src="../assets/js/tw-config.js"></script>
+<!-- Tailwind Config -->
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        .glass-header {
+            background: rgba(250, 248, 255, 0.8);
+            backdrop-filter: blur(12px);
+        }
+        .step-gradient {
+            background: linear-gradient(90deg, #FF4D2E 0%, #0E1116 100%);
+        }
+        .soft-shadow {
+            box-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.08);
+        }
+        input:focus, textarea:focus, select:focus {
+            outline: none !important;
+            border-color: #FF4D2E !important;
+            box-shadow: 0 0 0 3px rgba(255, 77, 46, 0.1) !important;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-surface font-body-md overflow-x-hidden">
+<!-- Header (Unified Task-Flow Chrome — matches participation-type.html) -->
+<header class="glass-header sticky top-0 z-50 w-full h-16 border-b border-outline-variant/30 flex items-center px-6">
+<a class="flex items-center gap-2" href="index.html">
+<span class="material-symbols-outlined text-primary text-3xl">hub</span>
+<span class="font-headline-lg-mobile text-headline-lg-mobile font-bold text-primary">EVENTIFY</span>
+</a>
+<a class="ml-auto mr-3 font-label-md text-label-md text-primary" href="my-applications.html">My Event</a>
+<div class="ml-auto">
+<a class="p-2 hover:bg-surface-container-low rounded-full transition-colors block" href="participation-type.html" aria-label="Close">
+<span class="material-symbols-outlined text-on-surface-variant">close</span>
+</a>
+</div>
+</header>
+<div class="min-h-[calc(100vh-64px)] flex flex-col">
+<!-- Main Content Area -->
+<main class="w-full max-w-7xl mx-auto px-4 md:px-gutter py-10 flex flex-col items-center flex-grow">
+<!-- Form Header & Progress -->
+<div class="w-full max-w-2xl mb-10 text-center md:text-left ev-fade-up ev-stagger-1">
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-6">
+<div>
+<h1 class="font-headline-lg text-headline-lg mb-2">Create Your Team</h1>
+<p class="text-on-surface-variant font-body-md">Assemble the perfect crew for your next breakthrough project.</p>
+</div>
+<div class="flex flex-col items-center md:items-end gap-2">
+<span class="font-label-sm text-label-sm text-primary uppercase tracking-wider">Step 2 of 3</span>
+<div class="w-32 h-1.5 bg-surface-container-highest rounded-full overflow-hidden">
+<div class="h-full step-gradient w-[66%]"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Main Form Card -->
+<div class="w-full max-w-2xl bg-surface-container-lowest p-8 rounded-xl soft-shadow border border-outline-variant/30 ev-fade-up ev-stagger-2">
+<form class="flex flex-col gap-8" onsubmit="event.preventDefault();">
+<!-- Team Identity Section -->
+<section class="flex flex-col gap-6">
+<div class="grid grid-cols-1 gap-6">
+<div class="flex flex-col gap-2">
+<label class="font-label-md text-label-md text-on-surface" for="team-name">Team Name</label>
+<input class="input-primary h-12" id="team-name" placeholder="e.g. Phoenix Innovators" required="" type="text"/>
+</div>
+<div class="flex flex-col gap-2">
+<label class="font-label-md text-label-md text-on-surface" for="team-desc">Team Description</label>
+<textarea class="input-primary resize-none" id="team-desc" placeholder="Briefly describe your team's mission and goals..." required="" rows="4"></textarea>
+</div>
+</div>
+</section>
+<!-- Team Configuration -->
+<section class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<div class="flex flex-col gap-2">
+<label class="font-label-md text-label-md text-on-surface" for="max-members">Maximum Members</label>
+<div class="relative">
+<select class="input-primary h-12 appearance-none" id="max-members">
+<option value="2">2 Members</option>
+<option selected="" value="4">4 Members</option>
+<option value="6">6 Members</option>
+<option value="8">8 Members</option>
+<option value="10+">10+ Members</option>
+</select>
+<span class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-on-surface-variant" data-icon="expand_more">expand_more</span>
+</div>
+</div>
+<!-- Visibility Toggle -->
+<div class="flex items-center justify-between p-4 bg-surface-container-low rounded-lg border border-outline-variant/50">
+<div class="flex flex-col">
+<span class="font-label-md text-label-md">Looking for Members</span>
+<span class="font-label-sm text-label-sm uppercase text-on-surface-variant">Visible in Explore</span>
+</div>
+<label class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" type="checkbox" value=""/>
+<div class="w-11 h-6 bg-surface-container-highest peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+</label>
+</div>
+</section>
+<!-- Skills Multi-Select (Chips) -->
+<section class="flex flex-col gap-4">
+<div class="flex items-center justify-between">
+<label class="font-label-md text-label-md text-on-surface">Required Skills</label>
+<span class="font-label-sm text-label-sm uppercase text-primary bg-primary-fixed px-2 py-0.5 rounded">AI Suggestions Available</span>
+</div>
+<div class="flex flex-wrap gap-2 p-4 bg-white border border-outline-variant rounded-lg min-h-[64px]">
+<!-- React Chip -->
+<div class="flex items-center gap-1.5 bg-primary-fixed text-on-primary-fixed px-3 py-1.5 rounded-full font-label-sm text-label-sm">
+<span>React</span>
+<button class="hover:text-error transition-colors" type="button" aria-label="Close"><span class="material-symbols-outlined !text-[16px]" data-icon="close">close</span></button>
+</div>
+<!-- Tailwind Chip -->
+<div class="flex items-center gap-1.5 bg-primary-fixed text-on-primary-fixed px-3 py-1.5 rounded-full font-label-sm text-label-sm">
+<span>Tailwind</span>
+<button class="hover:text-error transition-colors" type="button" aria-label="Close"><span class="material-symbols-outlined !text-[16px]" data-icon="close">close</span></button>
+</div>
+<!-- AI Models Chip -->
+<div class="flex items-center gap-1.5 bg-tertiary-fixed text-on-tertiary-fixed px-3 py-1.5 rounded-full font-label-sm text-label-sm">
+<span>AI Models</span>
+<button class="hover:text-error transition-colors" type="button" aria-label="Close"><span class="material-symbols-outlined !text-[16px]" data-icon="close">close</span></button>
+</div>
+<input class="flex-1 min-w-[120px] border-none p-0 focus:ring-0 text-label-md bg-transparent" placeholder="Add more..." type="text"/>
+</div>
+</section>
+<!-- Form Actions -->
+<div class="flex items-center justify-between pt-6 border-t border-outline-variant ev-fade-up ev-stagger-3">
+<a class="px-6 py-3 text-on-surface-variant font-label-md hover:bg-surface-container-low rounded-xl transition-all active:scale-95" href="participation-type.html">Back</a>
+<button class="btn-primary px-10 py-3" onclick="window.location.href='team-dashboard.html'" type="submit">Create Team</button>
+</div>
+</form>
+</div>
+<!-- Secondary Visual Context (AI Recommendation Preview) -->
+<div class="w-full max-w-2xl mt-10 grid grid-cols-1 md:grid-cols-2 gap-4 ev-fade-up ev-stagger-4">
+<div class="p-6 rounded-xl border border-dashed border-outline-variant flex items-center gap-4 opacity-70">
+<div class="w-12 h-12 rounded-full bg-surface-container-highest flex items-center justify-center">
+<span class="material-symbols-outlined text-outline" data-icon="lightbulb">lightbulb</span>
+</div>
+<div>
+<p class="font-label-md text-on-surface-variant">Pro Tip</p>
+<p class="font-body-sm text-body-sm text-outline">Teams with 4+ members have 35% higher success rate.</p>
+</div>
+</div>
+<div class="p-6 rounded-xl border border-dashed border-outline-variant flex items-center gap-4 opacity-70">
+<div class="w-12 h-12 rounded-full bg-surface-container-highest flex items-center justify-center">
+<span class="material-symbols-outlined text-outline" data-icon="auto_awesome">auto_awesome</span>
+</div>
+<div>
+<p class="font-label-md text-on-surface-variant">Auto-Match</p>
+<p class="font-body-sm text-body-sm text-outline">AI will notify potential members after creation.</p>
+</div>
+</div>
+</div>
+</main>
+<footer class="footer">
+<div class="container max-w-[1280px] mx-auto px-container-margin-mobile md:px-container-margin-desktop">
+<div class="footer-grid">
+<div>
+<a href="index.html" class="footer-logo" aria-label="EVENTIFY home"><span class="material-symbols-outlined text-4xl" style="font-variation-settings:'FILL' 1;">hub</span><span class="font-headline-md text-headline-md font-black">EVENTIFY</span></a>
+<p class="desc">Your AI-powered hub for jobs, competitions, events, workshops, and growth opportunities.</p>
+<div class="social-links">
+<a href="#" aria-label="Facebook"><span class="material-symbols-outlined text-[18px]">thumb_up</span></a>
+<a href="#" aria-label="Instagram"><span class="material-symbols-outlined text-[18px]">photo_camera</span></a>
+<a href="#" aria-label="LinkedIn"><span class="material-symbols-outlined text-[18px]">business_center</span></a>
+<a href="#" aria-label="Email"><span class="material-symbols-outlined text-[18px]">mail</span></a>
+</div>
+</div>
+<div>
+<h4>Explore</h4>
+<ul>
+<li><a href="index.html">Home</a></li>
+<li><a href="explore.html">Explore</a></li>
+<li><a href="posts.html">Posts</a></li>
+<li><a href="my-applications.html">My Event</a></li>
+<li><a href="notifications.html">Notifications</a></li>
+</ul>
+</div>
+<div>
+<h4>Support</h4>
+<ul>
+<li><a href="../The%20Visitor/about.html">About</a></li>
+<li><a href="../The%20Visitor/landing.html#faq">FAQ</a></li>
+<li><a href="../The%20Visitor/contact.html">Contact</a></li>
+</ul>
+</div>
+</div>
+<div class="footer-bottom"><span>&copy; 2026 EVENTIFY. All rights reserved.</span><span>&middot;</span><a href="../auth/privacy.html">Privacy</a><span>&middot;</span><a href="../auth/terms.html">Terms</a></div>
+</div>
+</footer>
+</div>
+<!-- Mobile Navigation Shell (Shared Component) -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-2 py-3 pb-safe bg-surface dark:bg-surface-dim shadow-[0_-1px_12px_rgba(59,130,246,0.08)]">
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-surface-variant py-1 px-4 hover:bg-surface-container-high active:scale-90 duration-200" href="index.html">
+<span class="material-symbols-outlined" data-icon="home">home</span>
+<span class="font-label-sm text-label-sm">Home</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-surface-variant py-1 px-4 hover:bg-surface-container-high active:scale-90 duration-200" href="explore.html">
+<span class="material-symbols-outlined" data-icon="explore">explore</span>
+<span class="font-label-sm text-label-sm">Explore</span>
+</a>
+<a class="flex flex-col items-center justify-center bg-secondary-container text-on-secondary-container rounded-xl py-1 px-4 active:scale-90 duration-200" href="profile.html">
+<span class="material-symbols-outlined" data-icon="person">person</span>
+<span class="font-label-sm text-label-sm">Profile</span>
+</a>
+</nav>
+<script>
+        // Micro-interaction for toggle and chips
+        document.addEventListener('DOMContentLoaded', () => {
+            const form = document.querySelector('form');
+            const chips = document.querySelectorAll('.rounded-full button');
+            
+            chips.forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.currentTarget.parentElement.style.opacity = '0';
+                    setTimeout(() => e.currentTarget.parentElement.remove(), 200);
+                });
+            });
+
+            // Handle hover lift effect for inputs
+            const inputs = document.querySelectorAll('input, textarea, select');
+            inputs.forEach(input => {
+                input.addEventListener('focus', () => {
+                    input.closest('.flex-col').style.transform = 'translateY(-2px)';
+                    input.closest('.flex-col').style.transition = 'transform 0.2s ease';
+                });
+                input.addEventListener('blur', () => {
+                    input.closest('.flex-col').style.transform = 'translateY(0)';
+                });
+            });
+        });
+    </script>
+<script src="../assets/js/ui-state.js"></script>
+<script src="nav.js"></script>
+<script src="../assets/js/motion.js"></script>
+</body></html>
