@@ -1,0 +1,45 @@
+<svg viewBox="0 0 1000 800" xmlns="http://www.w3.org/2000/svg">
+  <!-- Define gradients -->
+  <defs>
+    <linearGradient id="blueGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0058BE;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#6B38D4;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+
+  <!-- Network circles with icons -->
+  <!-- Top center - Trophy/Achievement -->
+  <circle cx="500" cy="150" r="60" fill="url(#blueGradient)"/>
+  <text x="500" y="165" font-size="60" fill="white" text-anchor="middle" font-family="Arial">🏆</text>
+
+  <!-- Left - Education/Cap -->
+  <circle cx="280" cy="320" r="50" fill="#0058BE"/>
+  <text x="280" y="335" font-size="50" fill="white" text-anchor="middle" font-family="Arial">🎓</text>
+
+  <!-- Right - Calendar/Event -->
+  <circle cx="720" cy="320" r="50" fill="#6B38D4"/>
+  <text x="720" y="335" font-size="50" fill="white" text-anchor="middle" font-family="Arial">📅</text>
+
+  <!-- Bottom left - Team/People -->
+  <circle cx="300" cy="550" r="45" fill="#0058BE"/>
+  <text x="300" y="562" font-size="45" fill="white" text-anchor="middle" font-family="Arial">👥</text>
+
+  <!-- Bottom right - Chat/Message -->
+  <circle cx="700" cy="550" r="45" fill="#6B38D4"/>
+  <text x="700" y="562" font-size="45" fill="white" text-anchor="middle" font-family="Arial">💬</text>
+
+  <!-- Center large circle with E -->
+  <circle cx="500" cy="380" r="80" fill="url(#blueGradient)"/>
+  <text x="500" y="420" font-size="120" font-weight="bold" fill="white" text-anchor="middle" font-family="Arial, sans-serif">E</text>
+
+  <!-- Connecting lines (network effect) -->
+  <line x1="500" y1="230" x2="280" y2="320" stroke="#0058BE" stroke-width="3" opacity="0.6"/>
+  <line x1="500" y1="230" x2="720" y2="320" stroke="#6B38D4" stroke-width="3" opacity="0.6"/>
+  <line x1="500" y1="460" x2="300" y2="550" stroke="#0058BE" stroke-width="3" opacity="0.6"/>
+  <line x1="500" y1="460" x2="700" y2="550" stroke="#6B38D4" stroke-width="3" opacity="0.6"/>
+  <line x1="280" y1="320" x2="300" y2="550" stroke="#0058BE" stroke-width="2" opacity="0.4"/>
+  <line x1="720" y1="320" x2="700" y2="550" stroke="#6B38D4" stroke-width="2" opacity="0.4"/>
+
+  <!-- Text below -->
+  <text x="500" y="720" font-size="80" font-weight="bold" fill="#0058BE" text-anchor="middle" font-family="Arial, sans-serif" letter-spacing="5">EVENTIFY</text>
+</svg>

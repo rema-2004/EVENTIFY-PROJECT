@@ -1,0 +1,402 @@
+/* EVENTIFY Organizer Create Event Stylesheet
+   Built strictly using EVENTIFY theme tokens (DESIGN.md). */
+
+/* ===== Layout & Containers ===== */
+.wizard-form-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 32px;
+    box-shadow: var(--shadow-card);
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+@media (max-width: 640px) {
+    .wizard-form-card {
+        padding: 20px;
+    }
+}
+
+/* ===== Stepper Progress Bar ===== */
+.wizard-stepper {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 16px;
+}
+
+.wizard-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 14px;
+    border-radius: var(--radius-pill);
+    font-family: var(--font-body);
+    font-size: 12.5px;
+    font-weight: 600;
+    border: 1px solid var(--border);
+    background: var(--surface-2);
+    color: var(--text-muted);
+    transition: all var(--transition);
+}
+
+.wizard-chip.active {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #ffffff;
+}
+
+.wizard-chip.completed {
+    background: var(--surface-2);
+    border-color: var(--border-strong);
+    color: var(--text);
+}
+
+.wizard-chip .chip-num {
+    font-family: var(--font-mono);
+    font-weight: 700;
+    font-size: 11px;
+    display: grid;
+    place-items: center;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: rgba(14, 17, 22, 0.08);
+    color: inherit;
+}
+
+.wizard-chip.active .chip-num {
+    background: rgba(255, 255, 255, 0.25);
+    color: #ffffff;
+}
+
+.stepper-sep {
+    color: var(--border-strong);
+    font-size: 14px;
+}
+
+/* ===== Form Controls & Fields ===== */
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.form-label {
+    font-family: var(--font-body);
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text);
+}
+
+/* background-color/border-color/color are set as !important longhands (not the
+   "border"/"background" shorthands) because the Tailwind CDN's forms plugin
+   (loaded via ?plugins=forms) injects its own reset for inputs/selects/textareas
+   using attribute selectors like [type='text'] — identical (0,1,0) specificity to
+   a single class, so on a tie the later-in-DOM Tailwind stylesheet wins and pins
+   a light, hard-coded background/border regardless of html.dark. !important is
+   the only reliable way to guarantee these theme-token colors win in both modes
+   without touching Tailwind's own appearance/background-image (select chevron). */
+.form-input,
+.form-textarea {
+    width: 100%;
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius);
+    background-color: var(--surface) !important;
+    color: var(--text) !important;
+    border-color: var(--border-strong) !important;
+    font-family: var(--font-body);
+    font-size: 14px;
+    padding: 12px 16px;
+    outline: none;
+    box-shadow: 0 1px 2px rgba(14, 17, 22, 0.02);
+    transition: border-color var(--transition), box-shadow var(--transition);
+}
+
+.form-input:focus,
+.form-textarea:focus {
+    border-color: var(--accent) !important;
+    box-shadow: 0 0 0 3px rgba(255, 77, 46, 0.12) !important;
+}
+
+.form-input::placeholder,
+.form-textarea::placeholder {
+    color: var(--text-muted) !important;
+}
+
+.form-textarea {
+    resize: vertical;
+    min-height: 90px;
+    line-height: 1.5;
+}
+
+/* ===== Custom Category Dropdown ===== */
+.org-cat-dropdown {
+    position: relative;
+    width: 100%;
+}
+
+.org-cat-btn {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    width: 100%;
+    height: 48px;
+    padding: 10px 16px;
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius);
+    background: var(--surface);
+    color: var(--text);
+    font-family: var(--font-body);
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    box-shadow: 0 1px 2px rgba(14, 17, 22, 0.02);
+    transition: border-color var(--transition), box-shadow var(--transition);
+}
+
+.org-cat-btn:hover {
+    border-color: var(--accent);
+}
+
+.org-cat-btn:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+}
+
+.org-cat-btn .btn-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.org-cat-btn .cat-icon {
+    font-size: 18px;
+    color: var(--accent);
+}
+
+.org-cat-btn .chevron-icon {
+    font-size: 18px;
+    color: var(--text-muted);
+    transition: transform var(--transition);
+}
+
+.org-cat-btn[aria-expanded="true"] .chevron-icon {
+    transform: rotate(180deg);
+}
+
+.org-cat-panel {
+    position: absolute;
+    top: calc(100% + 6px);
+    left: 0;
+    right: 0;
+    z-index: 50;
+    background: var(--surface);
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-elevated);
+    padding: 6px;
+    animation: org-cat-menu-in 0.2s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.org-cat-panel[hidden] {
+    display: none;
+}
+
+@keyframes org-cat-menu-in {
+    from {
+        opacity: 0;
+        transform: translateY(-4px) scale(0.98);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.org-cat-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 10px 14px;
+    border-radius: var(--radius-sm);
+    font-family: var(--font-body);
+    font-size: 13.5px;
+    font-weight: 500;
+    color: var(--text);
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    text-align: left;
+    transition: background-color var(--transition), color var(--transition);
+}
+
+.org-cat-item:hover,
+.org-cat-item:focus-visible {
+    background: var(--surface-2);
+    color: var(--text);
+    outline: none;
+}
+
+.org-cat-item.active {
+    background: var(--surface-2);
+    color: var(--accent);
+    font-weight: 600;
+}
+
+.org-cat-item .active-check {
+    font-size: 16px;
+    color: var(--accent);
+    display: none;
+}
+
+.org-cat-item.active .active-check {
+    display: block;
+}
+
+/* ===== Cover Image Dropzone ===== */
+.upload-dropzone {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 32px 24px;
+    border: 2px dashed var(--border-strong);
+    border-radius: var(--radius-lg);
+    background: var(--surface-2);
+    cursor: pointer;
+    text-align: center;
+    transition: border-color var(--transition), background-color var(--transition);
+}
+
+.upload-dropzone:hover {
+    border-color: var(--accent);
+    background: color-mix(in srgb, var(--accent) 3%, var(--surface-2));
+}
+
+.upload-dropzone__icon {
+    display: grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    border-radius: var(--radius-sm);
+    background: var(--accent-soft);
+    color: var(--accent);
+    font-size: 22px;
+    margin-bottom: 2px;
+}
+
+html.dark .upload-dropzone__icon {
+    background: rgba(255, 77, 46, 0.16);
+}
+
+.upload-dropzone__label {
+    font-family: var(--font-body);
+    font-size: 13.5px;
+    font-weight: 600;
+    color: var(--text);
+}
+
+.upload-dropzone__hint {
+    font-size: 12px;
+    color: var(--text-muted);
+}
+
+/* ===== Review Summary Cards (Step 2) ===== */
+.review-card {
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 16px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.review-label {
+    font-family: var(--font-body);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+}
+
+.review-value {
+    font-family: var(--font-body);
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text);
+    word-break: break-word;
+    line-height: 1.4;
+}
+
+/* ===== Step 3 Publish State ===== */
+.publish-success-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 12px;
+    padding: 40px 24px;
+}
+
+.publish-icon {
+    display: grid;
+    place-items: center;
+    width: 56px;
+    height: 56px;
+    border-radius: var(--radius);
+    background: rgba(30, 122, 79, 0.1);
+    color: #1e7a4f;
+    font-size: 32px;
+    margin-bottom: 8px;
+}
+
+html.dark .publish-icon {
+    background: rgba(30, 122, 79, 0.2);
+    color: #6ddba4;
+}
+
+/* ===== Action Bar ===== */
+.wizard-actions {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    border-top: 1px solid var(--border);
+    padding-top: 20px;
+    margin-top: 8px;
+    flex-wrap: wrap;
+}
+
+.wizard-cancel-link {
+    font-family: var(--font-body);
+    font-size: 13.5px;
+    font-weight: 600;
+    color: var(--text-muted);
+    text-decoration: none;
+    padding: 8px 16px;
+    border-radius: var(--radius-pill);
+    transition: color var(--transition), background-color var(--transition);
+}
+
+.wizard-cancel-link:hover {
+    color: var(--text);
+    background: var(--surface-2);
+}
+
+/* ===== Focus Visible ===== */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+}

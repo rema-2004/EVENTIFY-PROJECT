@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>My Opportunities | EVENTIFY</title>
+    <meta name="description"
+        content="My Opportunities on EVENTIFY — the AI-powered hub for competitions, workshops, courses and internships." />
+    <meta property="og:title" content="My Opportunities | EVENTIFY" />
+    <meta property="og:description"
+        content="My Opportunities on EVENTIFY — the AI-powered hub for competitions, workshops, courses and internships." />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="../assets/images/event1.jpeg" />
+    <link rel="icon" href="../assets/images/favicon.svg" type="image/svg+xml" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap"
+        rel="stylesheet" />
+    <link rel="stylesheet" href="sidebar.css" />
+    <link rel="stylesheet" href="../admin/admin.css" />
+    <link rel="stylesheet" href="org-dashboard.css" />
+    <link rel="stylesheet" href="org-opportunities.css" />
+    <script src="../assets/js/theme.js"></script>
+    <script src="../assets/js/org-topbar.js"></script>
+    <link rel="stylesheet" href="../assets/css/theme.css" />
+    <style>
+        @font-face {
+            font-family: 'Material Symbols Outlined';
+            font-style: normal;
+            font-weight: 100 700;
+            font-display: block;
+            src: url('../assets/fonts/material-symbols-outlined.woff2') format('woff2');
+        }
+
+        .material-symbols-outlined {
+            font-family: 'Material Symbols Outlined';
+            font-weight: normal;
+            font-style: normal;
+            font-size: 24px;
+            line-height: 1;
+            letter-spacing: normal;
+            text-transform: none;
+            display: inline-block;
+            white-space: nowrap;
+            overflow: hidden;
+            word-wrap: normal;
+            direction: ltr;
+            -webkit-font-feature-settings: 'liga';
+            -webkit-font-smoothing: antialiased;
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+    </style>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script src="../assets/js/tw-config.js"></script>
+</head>
+
+<body class="min-h-screen bg-background text-on-surface font-body-md">
+    <header
+        class="lg:hidden w-full sticky top-0 z-40 flex justify-between items-center px-4 h-16 bg-surface border-b border-border shadow-sm">
+        <a class="flex items-center gap-2" href="../index.html">
+            <span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">hub</span>
+            <span class="font-bold text-headline-lg-mobile text-primary"
+                style="font-family:var(--font-display)">EVENTIFY</span>
+        </a>
+        <div class="flex items-center gap-2">
+            <button class="theme-toggle icon-btn" type="button" title="Switch theme" aria-label="Switch theme"
+                style="width:36px;height:36px">
+                <span class="material-symbols-outlined" style="font-size:18px">dark_mode</span>
+            </button>
+            <span class="admin-badge">Organizer</span>
+            <button class="mobile-hamburger" id="org-hamburger" aria-label="Open navigation" aria-expanded="false">
+                <span class="material-symbols-outlined" style="font-size:22px">menu</span>
+            </button>
+        </div>
+    </header>
+    <div class="flex min-h-screen">
+        <aside
+            class="admin-accent-sidebar hidden lg:flex flex-col w-[280px] h-screen sticky top-0 bg-surface border-r border-border z-50 p-6">
+            <a class="flex items-center gap-3 mb-2" href="../index.html">
+                <span class="material-symbols-outlined text-primary text-3xl"
+                    style="font-variation-settings: 'FILL' 1;">hub</span>
+                <span class="font-bold text-headline-md text-primary"
+                    style="font-family:var(--font-display)">EVENTIFY</span>
+            </a>
+            <span class="admin-badge mb-8 w-fit">Organizer console</span>
+            <nav class="flex flex-1 flex-col gap-1" aria-label="Organizer sections">
+                <div class="nav-group">
+                    <a class="nav-link" href="org-dashboard.html"><span class="material-symbols-outlined"
+                            aria-hidden="true">dashboard</span>Dashboard</a>
+                    <a class="nav-link" href="org-posts.html"><span class="material-symbols-outlined"
+                            aria-hidden="true">campaign</span>Posts</a>
+                    <a class="nav-link" href="org-profile.html"><span class="material-symbols-outlined"
+                            aria-hidden="true">apartment</span>Organization Profile</a>
+                    <a class="nav-link" href="org-opportunities.html" aria-current="page"><span
+                            class="material-symbols-outlined" aria-hidden="true">event_note</span>My Opportunities</a>
+                    <a class="nav-link" href="org-create-event.html"><span class="material-symbols-outlined"
+                            aria-hidden="true">add_circle</span>Create Event</a>
+                    <a class="nav-link" href="org-applicants.html"><span class="material-symbols-outlined"
+                            aria-hidden="true">group</span>Applicants</a>
+                    <a class="nav-link" href="org-report-center.html"><span class="material-symbols-outlined"
+                            aria-hidden="true">bar_chart</span>Reports</a>
+                    <a class="nav-link" href="org-settings.html"><span class="material-symbols-outlined"
+                            aria-hidden="true">settings</span>Settings</a>
+                </div>
+            </nav>
+            <div class="mt-auto rounded-2xl bg-surface-container p-4">
+                <p class="mb-2 text-label-sm font-label-sm text-on-surface-variant">ORGANIZATION</p>
+                <p class="mb-1 font-label-md text-label-md text-on-surface font-semibold">TechGenius Labs</p>
+                <p class="text-label-sm font-label-sm text-success">Verified organizer since 2024</p>
+            </div>
+        </aside>
+        <main class="flex-1 w-full px-4 md:px-10 pt-6 pb-24 lg:pb-8">
+            <!-- Global Top Header: page title (left) + global controls (right) -->
+            <div class="org-topbar">
+                <h1 class="org-topbar__title">My Opportunities</h1>
+                <div class="org-topbar__right">
+                    <div class="org-dropdown">
+                        <button class="icon-btn" id="org-notif-toggle" type="button"
+                            aria-label="Notifications (3 unread)" aria-expanded="false">
+                            <span class="material-symbols-outlined">notifications</span><span
+                                class="icon-btn__dot"></span>
+                        </button>
+                        <div class="org-dropdown__panel org-dropdown__panel--notif" id="org-notif-panel" hidden
+                            role="menu" aria-label="Notifications">
+                            <div
+                                class="flex items-center justify-between px-3 py-2 border-b border-outline-variant/40 mb-1">
+                                <span class="font-semibold text-xs text-on-surface">Notifications</span>
+                                <span
+                                    class="text-[11px] font-semibold text-primary bg-primary/10 px-2 py-0.5 rounded-full">3
+                                    unread</span>
+                            </div>
+                            <div class="space-y-1">
+                                <a class="org-dropdown__item" href="org-applicants.html">
+                                    <span class="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0"
+                                        style="background:var(--surface-2);color:var(--accent)">
+                                        <span class="material-symbols-outlined text-[18px]"
+                                            aria-hidden="true">person_add</span>
+                                    </span>
+                                    <span class="flex-1 min-w-0"><span
+                                            class="block font-medium text-xs leading-snug">Ahmed Ali applied to Global
+                                            AI Innovation Challenge</span><span class="org-dropdown__meta">2 hours
+                                            ago</span></span>
+                                </a>
+                                <a class="org-dropdown__item" href="org-opportunities.html">
+                                    <span class="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0"
+                                        style="background:var(--surface-2);color:var(--accent)">
+                                        <span class="material-symbols-outlined text-[18px]"
+                                            aria-hidden="true">hourglass_top</span>
+                                    </span>
+                                    <span class="flex-1 min-w-0"><span
+                                            class="block font-medium text-xs leading-snug">DevOps Masterclass is
+                                            awaiting approval</span><span
+                                            class="org-dropdown__meta">Yesterday</span></span>
+                                </a>
+                                <a class="org-dropdown__item" href="org-applicants.html">
+                                    <span class="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0"
+                                        style="background:var(--surface-2);color:var(--accent)">
+                                        <span class="material-symbols-outlined text-[18px]"
+                                            aria-hidden="true">star</span>
+                                    </span>
+                                    <span class="flex-1 min-w-0"><span
+                                            class="block font-medium text-xs leading-snug">Frontend Wizards received a
+                                            new 5-star rating</span><span class="org-dropdown__meta">2 days
+                                            ago</span></span>
+                                </a>
+                            </div>
+                            <div class="pt-2 mt-1 border-t border-outline-variant/40">
+                                <a href="org-applicants.html"
+                                    class="block text-center text-xs font-semibold text-primary hover:underline py-1">View
+                                    all activity &rarr;</a>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="theme-toggle icon-btn" type="button" title="Switch theme" aria-label="Switch theme">
+                        <span class="material-symbols-outlined">dark_mode</span>
+                    </button>
+                    <div class="org-dropdown">
+                        <button class="dash-profile" id="org-profile-toggle" type="button"
+                            aria-label="Organization menu" aria-expanded="false">
+                            <span class="dash-profile__avatar">TG</span>
+                            <span style="font-size:13px;font-weight:600">TechGenius Labs</span>
+                            <span class="material-symbols-outlined"
+                                style="font-size:18px;color:var(--text-muted)">expand_more</span>
+                        </button>
+                        <div class="org-dropdown__panel org-dropdown__panel--profile" id="org-profile-panel" hidden
+                            role="menu" aria-label="Organization menu">
+                            <div class="px-3 py-2 border-b border-outline-variant/40 mb-1">
+                                <p class="font-semibold text-xs text-on-surface">TechGenius Labs</p>
+                                <p class="text-[11px] text-on-surface-variant truncate">Verified organizer since 2024
+                                </p>
+                            </div>
+                            <a class="org-dropdown__item" href="org-profile.html"><span
+                                    class="material-symbols-outlined text-[18px] text-on-surface-variant"
+                                    aria-hidden="true">apartment</span><span>Organization Profile</span></a>
+                            <a class="org-dropdown__item" href="org-settings.html"><span
+                                    class="material-symbols-outlined text-[18px] text-on-surface-variant"
+                                    aria-hidden="true">settings</span><span>Settings</span></a>
+                            <div class="my-1 border-t border-outline-variant/40"></div>
+                            <a class="org-dropdown__item text-error hover:bg-error/10" href="../auth/login.html"><span
+                                    class="material-symbols-outlined text-[18px] text-error"
+                                    aria-hidden="true">logout</span><span class="text-error font-medium">Sign
+                                    out</span></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Page Header: breadcrumb, title, description, page-specific actions -->
+            <div class="org-page-header">
+                <div class="flex items-center gap-2 text-sm mb-2">
+                    <a class="text-on-surface-variant hover:text-primary transition-colors"
+                        href="org-dashboard.html">Dashboard</a>
+                    <span class="text-outline">/</span>
+                    <span class="font-semibold text-on-surface">My Opportunities</span>
+                </div>
+                <p class="profile-page-desc">Track every draft, submission, approval, and ended opportunity.</p>
+                <div class="org-page-header__actions">
+                    <a class="btn-primary" href="org-create-event.html">
+                        <span class="material-symbols-outlined" style="font-size:18px;vertical-align:middle">add</span>
+                        Create opportunity
+                    </a>
+                </div>
+            </div>
+
+            <!-- KPI Summary Cards -->
+            <div class="opp-stat-grid" aria-label="Opportunities status summary">
+                <div class="stat-card" data-kpi-filter="live" title="Filter by Live opportunities">
+                    <div class="stat-card__top">
+                        <span class="stat-card__label">Live</span>
+                        <span class="stat-card__icon"><span class="material-symbols-outlined"
+                                aria-hidden="true">play_circle</span></span>
+                    </div>
+                    <p class="stat-card__value" id="kpi-live-val">1</p>
+                </div>
+                <div class="stat-card" data-kpi-filter="pending" title="Filter by Pending opportunities">
+                    <div class="stat-card__top">
+                        <span class="stat-card__label">Pending</span>
+                        <span class="stat-card__icon"><span class="material-symbols-outlined"
+                                aria-hidden="true">hourglass_top</span></span>
+                    </div>
+                    <p class="stat-card__value" id="kpi-pending-val">1</p>
+                </div>
+                <div class="stat-card" data-kpi-filter="upcoming" title="Filter by Upcoming opportunities">
+                    <div class="stat-card__top">
+                        <span class="stat-card__label">Upcoming</span>
+                        <span class="stat-card__icon"><span class="material-symbols-outlined"
+                                aria-hidden="true">event_upcoming</span></span>
+                    </div>
+                    <p class="stat-card__value" id="kpi-upcoming-val">1</p>
+                </div>
+                <div class="stat-card" data-kpi-filter="ended" title="Filter by Ended opportunities">
+                    <div class="stat-card__top">
+                        <span class="stat-card__label">Ended</span>
+                        <span class="stat-card__icon"><span class="material-symbols-outlined"
+                                aria-hidden="true">task_alt</span></span>
+                    </div>
+                    <p class="stat-card__value" id="kpi-ended-val">2</p>
+                </div>
+            </div>
+
+            <!-- Search & Filter Controls -->
+            <div class="opp-controls">
+                <div class="opp-filter-tabs" role="group" aria-label="Filter opportunities by status">
+                    <button type="button" class="opp-filter-btn" data-filter="all" aria-pressed="true">
+                        All <span class="filter-count">5</span>
+                    </button>
+                    <button type="button" class="opp-filter-btn" data-filter="live" aria-pressed="false">
+                        Live <span class="filter-count">1</span>
+                    </button>
+                    <button type="button" class="opp-filter-btn" data-filter="pending" aria-pressed="false">
+                        Pending <span class="filter-count">1</span>
+                    </button>
+                    <button type="button" class="opp-filter-btn" data-filter="upcoming" aria-pressed="false">
+                        Upcoming <span class="filter-count">1</span>
+                    </button>
+                    <button type="button" class="opp-filter-btn" data-filter="ended" aria-pressed="false">
+                        Ended <span class="filter-count">2</span>
+                    </button>
+                </div>
+                <div class="opp-search">
+                    <span class="material-symbols-outlined" aria-hidden="true">search</span>
+                    <input type="search" id="opp-search-input" placeholder="Search opportunities..."
+                        aria-label="Search opportunities by name or category" />
+                    <button type="button" class="opp-search-clear" id="opp-search-clear" aria-label="Clear search"
+                        hidden>
+                        <span class="material-symbols-outlined" style="font-size:18px">close</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Opportunities Table Panel -->
+            <section class="opp-panel">
+                <div class="table-scroll">
+                    <table class="opp-table" id="opp-table">
+                        <caption class="sr-only">List of your organization's opportunities</caption>
+                        <thead>
+                            <tr>
+                                <th>Opportunity</th>
+                                <th>Status</th>
+                                <th>Deadline</th>
+                                <th>Applicants</th>
+                                <th style="text-align:right">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="opp-tbody">
+                            <tr data-status="live" data-id="evt-1">
+                                <td>
+                                    <div class="opp-entity">
+                                        <img src="../assets/images/event1.jpeg" alt="" class="opp-entity__img"
+                                            onerror="this.style.display='none'" />
+                                        <div>
+                                            <p class="opp-entity__name">Global AI Innovation Challenge</p>
+                                            <p class="opp-entity__meta">Hackathon &middot; Remote &middot; Teams of 2-4
+                                            </p>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td><span class="badge badge--active">Live</span></td>
+                                <td class="mono whitespace-nowrap">Oct 20, 2026</td>
+                                <td class="whitespace-nowrap"><span class="mono">98</span> applicants</td>
+                                <td>
+                                    <div class="org-row-actions">
+                                        <a href="org-applicants.html?event=evt-1" class="org-action--primary"
+                                            aria-label="View applicants for Global AI Innovation Challenge">Applicants</a>
+                                        <a href="org-create-event.html"
+                                            aria-label="Edit Global AI Innovation Challenge">Edit</a>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr data-status="pending" data-id="evt-4">
+                                <td>
+                                    <div class="opp-entity">
+                                        <img src="../assets/images/event2.jpeg" alt="" class="opp-entity__img"
+                                            onerror="this.style.display='none'" />
+                                        <div>
+                                            <p class="opp-entity__name">DevOps Masterclass</p>
+                                            <p class="opp-entity__meta">Workshop &middot; Online &middot; Cloud
+                                                Engineering</p>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td><span class="badge badge--pending">Pending Approval</span></td>
+                                <td class="mono whitespace-nowrap">Nov 3, 2026</td>
+                                <td class="whitespace-nowrap"><span class="mono">72</span> applicants</td>
+                                <td>
+                                    <div class="org-row-actions">
+                                        <a href="org-applicants.html?event=evt-4" class="org-action--primary"
+                                            aria-label="View applicants for DevOps Masterclass">Applicants</a>
+                                        <a href="org-create-event.html" aria-label="Edit DevOps Masterclass">Edit</a>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr data-status="upcoming" data-id="evt-3">
+                                <td>
+                                    <div class="opp-entity">
+                                        <img src="../assets/images/event3.jpeg" alt="" class="opp-entity__img"
+                                            onerror="this.style.display='none'" />
+                                        <div>
+                                            <p class="opp-entity__name">Startup Challenge</p>
+                                            <p class="opp-entity__meta">Competition &middot; Entrepreneurship</p>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td><span class="badge badge--upcoming">Upcoming</span></td>
+                                <td class="mono whitespace-nowrap">Nov 25, 2026</td>
+                                <td class="whitespace-nowrap"><span class="mono">84</span> applicants</td>
+                                <td>
+                                    <div class="org-row-actions">
+                                        <a href="org-applicants.html?event=evt-3" class="org-action--primary"
+                                            aria-label="View applicants for Startup Challenge">Applicants</a>
+                                        <a href="org-create-event.html" aria-label="Edit Startup Challenge">Edit</a>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr data-status="ended" data-id="evt-2">
+                                <td>
+                                    <div class="opp-entity">
+                                        <img src="../assets/images/event4.jpeg" alt="" class="opp-entity__img"
+                                            onerror="this.style.display='none'" />
+                                        <div>
+                                            <p class="opp-entity__name">Frontend Wizards</p>
+                                            <p class="opp-entity__meta">Hackathon &middot; Web Development</p>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td><span class="badge badge--completed">Ended</span></td>
+                                <td class="mono whitespace-nowrap">Closed</td>
+                                <td class="whitespace-nowrap"><span class="mono">150</span> applicants</td>
+                                <td>
+                                    <div class="org-row-actions">
+                                        <a href="org-applicants.html?event=evt-2"
+                                            aria-label="View applicants for Frontend Wizards">Applicants</a>
+                                        <a href="org-report-center.html" class="org-action--primary"
+                                            aria-label="View report for Frontend Wizards">View report</a>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr data-status="ended" data-id="evt-5">
+                                <td>
+                                    <div class="opp-entity">
+                                        <img src="../assets/images/event5.jpeg" alt="" class="opp-entity__img"
+                                            onerror="this.style.display='none'" />
+                                        <div>
+                                            <p class="opp-entity__name">Cloud Native Bootcamp</p>
+                                            <p class="opp-entity__meta">Course &middot; Infrastructure</p>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td><span class="badge badge--completed">Ended</span></td>
+                                <td class="mono whitespace-nowrap">Closed</td>
+                                <td class="whitespace-nowrap"><span class="mono">42</span> applicants</td>
+                                <td>
+                                    <div class="org-row-actions">
+                                        <a href="org-applicants.html?event=evt-5"
+                                            aria-label="View applicants for Cloud Native Bootcamp">Applicants</a>
+                                        <a href="org-report-center.html" class="org-action--primary"
+                                            aria-label="View report for Cloud Native Bootcamp">View report</a>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Empty State when filter/search yields 0 results -->
+                <div class="opp-empty" id="opp-empty-state" hidden>
+                    <div class="opp-empty__icon">
+                        <span class="material-symbols-outlined" style="font-size:26px"
+                            aria-hidden="true">search_off</span>
+                    </div>
+                    <h3 class="opp-empty__title">No opportunities found</h3>
+                    <p class="opp-empty__desc">No opportunities match your current filter or search criteria.</p>
+                    <button type="button" class="btn-secondary mt-2" id="opp-empty-reset">Clear filters</button>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Mobile Navigation Drawer -->
+    <div class="mobile-nav-overlay" id="org-mobile-overlay"></div>
+    <nav class="mobile-nav-drawer" id="org-mobile-drawer" aria-label="Organizer navigation">
+        <button class="mobile-nav-close" id="org-nav-close" aria-label="Close navigation"><span
+                class="material-symbols-outlined" style="font-size:20px">close</span></button>
+        <a class="flex items-center gap-3 mb-2" href="../index.html">
+            <span class="material-symbols-outlined text-primary text-3xl"
+                style="font-variation-settings: 'FILL' 1;">hub</span>
+            <span class="font-bold text-headline-md text-primary"
+                style="font-family:var(--font-display)">EVENTIFY</span>
+        </a>
+        <span class="admin-badge mb-6 w-fit">Organizer console</span>
+        <div class="nav-group flex flex-1 flex-col gap-1">
+            <a class="nav-link" href="org-dashboard.html"><span class="material-symbols-outlined"
+                    aria-hidden="true">dashboard</span>Dashboard</a>
+            <a class="nav-link" href="org-posts.html"><span class="material-symbols-outlined"
+                    aria-hidden="true">campaign</span>Posts</a>
+            <a class="nav-link" href="org-profile.html"><span class="material-symbols-outlined"
+                    aria-hidden="true">apartment</span>Organization Profile</a>
+            <a class="nav-link" href="org-opportunities.html" aria-current="page"><span
+                    class="material-symbols-outlined" aria-hidden="true">event_note</span>My Opportunities</a>
+            <a class="nav-link" href="org-create-event.html"><span class="material-symbols-outlined"
+                    aria-hidden="true">add_circle</span>Create Event</a>
+            <a class="nav-link" href="org-applicants.html"><span class="material-symbols-outlined"
+                    aria-hidden="true">group</span>Applicants</a>
+            <a class="nav-link" href="org-report-center.html"><span class="material-symbols-outlined"
+                    aria-hidden="true">bar_chart</span>Reports</a>
+            <a class="nav-link" href="org-settings.html"><span class="material-symbols-outlined"
+                    aria-hidden="true">settings</span>Settings</a>
+        </div>
+        <div class="mt-auto rounded-2xl bg-surface-container p-4">
+            <p class="mb-2 text-label-sm font-label-sm text-on-surface-variant">ORGANIZATION</p>
+            <p class="mb-1 font-label-md text-label-md text-on-surface font-semibold">TechGenius Labs</p>
+            <p class="text-label-sm font-label-sm text-success">Verified organizer since 2024</p>
+        </div>
+    </nav>
+
+    <script src="../assets/js/ui-state.js"></script>
+    <script src="../assets/js/motion.js"></script>
+    <script src="org-opportunities.js"></script>
+</body>
+
+</html>
