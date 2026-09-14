@@ -293,8 +293,8 @@
         if (!ctx || !window.Chart) return;
         const total = categories.reduce((s, c) => s + c.count, 0);
         const totalLabel = $('#org-categories-total');
-        if (totalLabel) totalLabel.textContent = `${total} events across ${categories.length} categories`;
-        const palette = ['#FF4D2E', '#1E7A4F', '#2A4FBE', '#8A5A00', '#B3261E', '#4A5058', '#0E1116'];
+        if (totalLabel) totalLabel.textContent = `${total} competitions across ${categories.length} categories`;
+        const palette = ['#FF4D2E', '#2A4FBE', '#1E7A4F', '#8A5A00'];
         charts.categories = new Chart(ctx, {
             type: 'doughnut',
             data: {
@@ -315,7 +315,15 @@
                         position: 'bottom',
                         labels: { boxWidth: 10, boxHeight: 10, borderRadius: 2, useBorderRadius: true, font: { family: 'Inter', size: 10 }, color: ink(0.7) }
                     },
-                    tooltip: getTooltipOptions()
+                    tooltip: {
+                        ...getTooltipOptions(),
+                        callbacks: {
+                            label: (ctx) => {
+                                const pct = total ? ((ctx.parsed / total) * 100).toFixed(1) : '0.0';
+                                return ` ${ctx.label}: ${ctx.parsed} competitions (${pct}%)`;
+                            }
+                        }
+                    }
                 }
             }
         });
