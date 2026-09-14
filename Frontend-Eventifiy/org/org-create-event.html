@@ -196,17 +196,17 @@
                                 <button type="button" class="org-cat-btn" id="org-category-toggle" aria-haspopup="listbox" aria-expanded="false" aria-label="Select event category">
                                     <div class="btn-left">
                                         <span class="material-symbols-outlined cat-icon" aria-hidden="true">category</span>
-                                        <span id="org-category-selected-name">Hackathon</span>
+                                        <span id="org-category-selected-name">Competition</span>
                                     </div>
                                     <span class="material-symbols-outlined chevron-icon" aria-hidden="true">expand_more</span>
                                 </button>
                                 <div class="org-cat-panel" id="org-category-panel" hidden role="listbox" aria-label="Event categories">
-                                    <button type="button" class="org-cat-item active" data-value="Hackathon" role="option" aria-selected="true">
-                                        <span>Hackathon</span>
+                                    <button type="button" class="org-cat-item active" data-value="Competition" role="option" aria-selected="true">
+                                        <span>Competition</span>
                                         <span class="material-symbols-outlined active-check" aria-hidden="true">check</span>
                                     </button>
-                                    <button type="button" class="org-cat-item" data-value="Competition" role="option" aria-selected="false">
-                                        <span>Competition</span>
+                                    <button type="button" class="org-cat-item" data-value="Event" role="option" aria-selected="false">
+                                        <span>Event</span>
                                         <span class="material-symbols-outlined active-check" aria-hidden="true">check</span>
                                     </button>
                                     <button type="button" class="org-cat-item" data-value="Workshop" role="option" aria-selected="false">
@@ -217,19 +217,14 @@
                                         <span>Course</span>
                                         <span class="material-symbols-outlined active-check" aria-hidden="true">check</span>
                                     </button>
-                                    <button type="button" class="org-cat-item" data-value="Conference" role="option" aria-selected="false">
-                                        <span>Conference</span>
-                                        <span class="material-symbols-outlined active-check" aria-hidden="true">check</span>
-                                    </button>
                                 </div>
                             </div>
                             <!-- Underlying Select for full form & script synchronization -->
                             <select id="ev-type" name="category" class="sr-only" aria-hidden="true" tabindex="-1">
-                                <option value="Hackathon">Hackathon</option>
                                 <option value="Competition">Competition</option>
+                                <option value="Event">Event</option>
                                 <option value="Workshop">Workshop</option>
                                 <option value="Course">Course</option>
-                                <option value="Conference">Conference</option>
                             </select>
                         </div>
 
