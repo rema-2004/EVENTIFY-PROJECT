@@ -104,8 +104,9 @@
                     ],
                     chart: {
                         type: 'doughnut',
-                        labels: ['Competitions', 'Workshops', 'Courses', 'Conferences'],
-                        datasets: [{ data: [38, 29, 22, 11] }]
+                        // Must match the categories on admin-dashboard.html's "By category" chart
+                        labels: ['Event', 'Workshop', 'Competition', 'Course'],
+                        datasets: [{ data: [112, 96, 84, 56] }]
                     },
                     table: {
                         headers: ['Event', 'Category', 'Applicants', 'Rating'],

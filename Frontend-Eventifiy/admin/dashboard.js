@@ -224,8 +224,6 @@
                 }
             }]
         });
-        $('#categories-total').textContent = `${num(totalCats)} competitions across ${data.categories.length} categories`;
-
     }
 
     function renderPlatformGrowth(growth) {

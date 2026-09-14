@@ -225,7 +225,7 @@
             requests,
             successfulMatches,
             matchRate: Math.round((successfulMatches / requests) * 1000) / 10,
-            topCategory: 'Hackathon'
+            topCategory: 'Event'
         };
     }
 
@@ -268,11 +268,10 @@
     function categories() {
         // Must match the categories listed on admin-categories.html exactly
         return [
-            { label: 'Hackathon',   value: 128 },
+            { label: 'Event',       value: 112 },
             { label: 'Workshop',    value: 96  },
-            { label: 'Course',      value: 56  },
-            { label: 'Conference',  value: 47  },
-            { label: 'Competition', value: 84  }
+            { label: 'Competition', value: 84  },
+            { label: 'Course',      value: 56  }
         ];
     }
 

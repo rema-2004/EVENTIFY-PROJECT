@@ -304,7 +304,7 @@
                 labels: chart.labels,
                 datasets: chart.datasets.map((d, i) => Object.assign({
                     borderColor: '#FF4D2E',
-                    backgroundColor: isDoughnut ? ['#FF4D2E', '#2A4FBE', '#1E7A4F', '#8A5A00'] : 'rgba(255,77,46,0.15)',
+                    backgroundColor: isDoughnut ? ['#FF4D2E', '#0E1116', '#1D4ED8', '#1E7A4F'] : 'rgba(255,77,46,0.15)',
                     fill: !isDoughnut,
                     tension: 0.35
                 }, d))
