@@ -155,9 +155,9 @@
                     table: {
                         headers: ['Organization', 'Type', 'Verified', 'Applicants Reached'],
                         rows: [
-                            ['TechGenius Labs', 'Technology Training Center', 'Yes', 1900],
+                            ['TechGenius Labs', 'Company', 'Yes', 1900],
                             ['DevCommunity Hub', 'Company', 'Yes', 1210],
-                            ['DesignHub Amman', 'Student club', 'No', 438]
+                            ['DesignHub Amman', 'Student Club', 'No', 438]
                         ]
                     }
                 };
