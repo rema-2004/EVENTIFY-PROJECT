@@ -22,6 +22,9 @@
     const catPanel = document.getElementById('org-category-panel');
     const catSelectedName = document.getElementById('org-category-selected-name');
     const nativeCatSelect = document.getElementById('ev-type');
+    const competitionFields = document.getElementById('ev-competition-fields');
+    const COMPETITION_ONLY_FIELDS = ['prize', 'teamSize'];
+    const COMPETITION_CATEGORY = 'Competition';
 
     const LABELS = {
         title: 'Event title',
@@ -40,9 +43,27 @@
     const toast = (message, tone) =>
         window.EventifyUI ? window.EventifyUI.toast(message, tone) : alert(message);
 
+    function isCompetitionCategory() {
+        return nativeCatSelect ? nativeCatSelect.value === COMPETITION_CATEGORY : false;
+    }
+
+    function syncCompetitionFieldsVisibility() {
+        if (!competitionFields) return;
+        const show = isCompetitionCategory();
+        competitionFields.style.display = show ? '' : 'none';
+        if (!show) {
+            COMPETITION_ONLY_FIELDS.forEach(name => {
+                const field = form.elements[name];
+                if (field) field.value = '';
+            });
+        }
+    }
+
     function values() {
         const data = {};
+        const includeCompetitionFields = isCompetitionCategory();
         Object.keys(LABELS).forEach(name => {
+            if (!includeCompetitionFields && COMPETITION_ONLY_FIELDS.includes(name)) return;
             const field = form.elements[name];
             if (field) data[name] = field.value.trim();
         });
@@ -105,6 +126,7 @@
                 if (val) {
                     nativeCatSelect.value = val;
                     syncCategoryUI(val);
+                    syncCompetitionFieldsVisibility();
                     saveDraft();
                 }
                 catPanel.setAttribute('hidden', '');
@@ -114,6 +136,7 @@
 
         nativeCatSelect.addEventListener('change', () => {
             syncCategoryUI(nativeCatSelect.value);
+            syncCompetitionFieldsVisibility();
         });
 
         document.addEventListener('click', (e) => {
@@ -126,7 +149,10 @@
 
     function renderReview() {
         const data = values();
-        review.innerHTML = Object.entries(LABELS).map(([name, label]) => `
+        const includeCompetitionFields = isCompetitionCategory();
+        review.innerHTML = Object.entries(LABELS)
+            .filter(([name]) => includeCompetitionFields || !COMPETITION_ONLY_FIELDS.includes(name))
+            .map(([name, label]) => `
             <div class="review-card">
                 <dt class="review-label">${label}</dt>
                 <dd class="review-value">${data[name] ? escapeHtml(data[name]) : '<span style="color:var(--text-muted)">Not provided</span>'}</dd>
@@ -245,5 +271,6 @@
     wireCategoryDropdown();
     wireMobileNav();
     restoreDraft();
+    syncCompetitionFieldsVisibility();
     show(1);
 })();
