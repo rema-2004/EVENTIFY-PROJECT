@@ -2,7 +2,9 @@
 
 use App\Http\Controllers\Api\V1\AuthController;
 use App\Http\Controllers\Api\V1\OrgAuthController;
+use App\Http\Controllers\Api\V1\EventController;
 use App\Http\Controllers\Api\V1\Admin\OrganizationManagementController;
+use App\Http\Controllers\Api\V1\Organization\EventController as OrgEventController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -18,7 +20,6 @@ use Illuminate\Support\Facades\Route;
 Route::prefix('v1')->group(function () {
 
     // — Public auth routes ——————————————————————————————————————————
-    // Rate-limited to prevent brute-force login attempts and registration spam.
     Route::middleware('throttle:5,1')->group(function () {
         // User Auth
         Route::post('/register', [AuthController::class, 'register']);
@@ -35,10 +36,21 @@ Route::prefix('v1')->group(function () {
         Route::get('/me', [AuthController::class, 'me']);
     });
 
+    // — Public Events routes (no auth required) ——————————————————————
+    Route::get('/events', [EventController::class, 'index']);
+    Route::get('/events/{event}', [EventController::class, 'show']);
+
     // — Protected Organization routes (require Organization Bearer token) ———
     Route::middleware('auth:organization')->group(function () {
         Route::post('/org/logout', [OrgAuthController::class, 'logout']);
         Route::get('/org/me', [OrgAuthController::class, 'me']);
+
+        // Organization's own events
+        Route::get('/org/events', [OrgEventController::class, 'index']);
+        Route::get('/org/events/{event}', [OrgEventController::class, 'show']);
+        Route::post('/org/events', [OrgEventController::class, 'store']);
+        Route::patch('/org/events/{event}', [OrgEventController::class, 'update']);
+        Route::delete('/org/events/{event}', [OrgEventController::class, 'destroy']);
     });
 
     // — Protected Admin routes (require Bearer token + role=admin) ————————

@@ -24,12 +24,21 @@ class Event extends Model
     public const TYPE_COURSE = 'course';
 
     // ── Status constants ──────────────────────────────────────
+    // "status" = admin workflow state (draft/pending_review/published/...).
     public const STATUS_DRAFT = 'draft';
     public const STATUS_PENDING_REVIEW = 'pending_review';
     public const STATUS_PUBLISHED = 'published';
     public const STATUS_REJECTED = 'rejected';
     public const STATUS_CANCELLED = 'cancelled';
     public const STATUS_COMPLETED = 'completed';
+
+    // ── Display status constants ──────────────────────────────
+    // "display status" = computed LIVE from dates, only meaningful when
+    // status = published. NEVER stored in the database — always derived
+    // at request time so it's instantly accurate with no scheduled job.
+    public const DISPLAY_UPCOMING = 'upcoming';
+    public const DISPLAY_LIVE = 'live';
+    public const DISPLAY_ENDED = 'ended';
 
     protected $fillable = [
         'organization_id',
@@ -85,11 +94,6 @@ class Event extends Model
         return $this->hasOne(Competition::class, 'id');
     }
 
-    public function isCompetition(): bool
-{
-    return $this->type === 'competition';
-}
-
     // ── Status helpers ────────────────────────────────────────
     public function isPublished(): bool
     {
@@ -103,9 +107,52 @@ class Event extends Model
 
     public function isRegistrationOpen(): bool
     {
-        return $this->isPublished()
-            && $this->registration_deadline
-            && $this->registration_deadline->isFuture();
+        if (! $this->isPublished()) {
+            return false;
+        }
+
+        // No deadline set = registration considered open indefinitely,
+        // not closed. Null here means "no limit", not "expired".
+        if (is_null($this->registration_deadline)) {
+            return true;
+        }
+
+        return $this->registration_deadline->isFuture();
+    }
+
+    public function isCompetition(): bool
+    {
+        return $this->type === self::TYPE_COMPETITION;
+    }
+
+    /**
+     * The user-facing status, computed live from dates.
+     * Only meaningful for published events — returns null for
+     * draft / pending_review / rejected / cancelled events, since
+     * "Upcoming/Live/Ended" only applies to events the public can see.
+     */
+    public function displayStatus(): ?string
+    {
+        if (! $this->isPublished()) {
+            return null;
+        }
+
+        if (! $this->start_date || ! $this->end_date) {
+            return null; // dates not set yet — shouldn't normally happen for published events
+        }
+
+        $now = now();
+
+        if ($this->start_date->greaterThan($now)) {
+            return self::DISPLAY_UPCOMING;
+        }
+
+        if ($this->end_date->lessThan($now)) {
+            return self::DISPLAY_ENDED;
+        }
+
+        // start_date <= now <= end_date (inclusive both ends)
+        return self::DISPLAY_LIVE;
     }
 
     // ── Query scopes ──────────────────────────────────────────
@@ -126,12 +173,40 @@ class Event extends Model
 
     public function scopeUpcoming(Builder $query): Builder
     {
-        return $query->where('start_date', '>', now());
+        return $query->published()->where('start_date', '>', now());
+    }
+
+    public function scopeLive(Builder $query): Builder
+    {
+        return $query->published()
+            ->where('start_date', '<=', now())
+            ->where('end_date', '>=', now());
+    }
+
+    public function scopeEnded(Builder $query): Builder
+    {
+        return $query->published()->where('end_date', '<', now());
     }
 
     public function scopeRegistrationOpen(Builder $query): Builder
     {
         return $query->published()
-            ->where('registration_deadline', '>', now());
+            ->where(function (Builder $q) {
+                $q->whereNull('registration_deadline')
+                    ->orWhere('registration_deadline', '>', now());
+            });
+    }
+
+    /**
+     * Combined filter scope for the future public Events listing endpoint.
+     * Usage: Event::filter(['type' => 'workshop', 'search' => 'AI'])->get();
+     */
+    public function scopeFilter(Builder $query, array $filters): Builder
+    {
+        return $query
+            ->when($filters['type'] ?? null, fn (Builder $q, string $type) => $q->ofType($type))
+            ->when($filters['search'] ?? null, fn (Builder $q, string $search) =>
+                $q->where('title', 'like', "%{$search}%")
+            );
     }
 }
