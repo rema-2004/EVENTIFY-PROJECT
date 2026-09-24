@@ -390,7 +390,7 @@ export default function Landing() {
           </div>
           <div className="nav-buttons">
             <button className="lang-toggle" type="button" aria-label={t('nav.toggleLanguage')} onClick={toggleLanguage}>
-              {language === 'ar' ? 'EN' : 'AR'}
+              {language === 'ar' ? 'AR' : 'EN'}
             </button>
             <button className="theme-toggle btn btn-icon" id="themeToggle" aria-label="Toggle dark mode">
               <i className="fa-solid fa-moon"></i>

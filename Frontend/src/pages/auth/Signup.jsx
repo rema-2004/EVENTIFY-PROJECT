@@ -202,7 +202,7 @@ export default function Signup() {
                             <input
                                 className="ev-input h-12 px-4 bg-surface-container-lowest border border-outline-variant rounded-md transition-all"
                                 id="phone"
-                                placeholder="+1 555 123 4567"
+                                placeholder="+962 7 9012 3456"
                                 type="tel"
                                 value={phone}
                                 onChange={(e) => setPhone(e.target.value)}

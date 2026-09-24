@@ -33,7 +33,7 @@ export default function Navbar() {
                         aria-label={t('nav.toggleLanguage')}
                         onClick={toggleLanguage}
                     >
-                        {language === 'ar' ? 'EN' : 'AR'}
+                        {language === 'ar' ? 'AR' : 'EN'}
                     </button>
                     <button className="theme-toggle" id="themeToggle" type="button" aria-label={t('nav.toggleTheme')}>
                         <i className="fa-solid fa-moon"></i>
