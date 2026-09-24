@@ -1,6 +1,5 @@
-import { createContext, useCallback, useContext, useEffect, useState } from 'react'
-
-const ThemeContext = createContext(undefined)
+import { useCallback, useEffect, useState } from 'react'
+import { ThemeContext } from './theme-context'
 
 // Both keys have historically been used across the static pages; keep them
 // in sync so a preference saved by either code path still applies.
@@ -55,10 +54,4 @@ export function ThemeProvider({ children }) {
             {children}
         </ThemeContext.Provider>
     )
-}
-
-export function useTheme() {
-    const ctx = useContext(ThemeContext)
-    if (!ctx) throw new Error('useTheme must be used within a ThemeProvider')
-    return ctx
 }

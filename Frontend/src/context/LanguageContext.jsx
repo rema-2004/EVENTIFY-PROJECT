@@ -1,8 +1,7 @@
-import { createContext, useCallback, useContext, useEffect } from 'react'
+import { useCallback, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { RTL_LANGUAGES } from '../i18n'
-
-const LanguageContext = createContext(undefined)
+import { LanguageContext } from './language-context'
 
 function applyDirection(lang) {
     const dir = RTL_LANGUAGES.includes(lang) ? 'rtl' : 'ltr'
@@ -37,10 +36,4 @@ export function LanguageProvider({ children }) {
             {children}
         </LanguageContext.Provider>
     )
-}
-
-export function useLanguage() {
-    const ctx = useContext(LanguageContext)
-    if (!ctx) throw new Error('useLanguage must be used within a LanguageProvider')
-    return ctx
 }

@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
-import { useLanguage } from '../../context/LanguageContext'
+import { useLanguage } from '../../hooks/useLanguage'
 import './Landing.css'
 
 export default function Landing() {

@@ -5,7 +5,6 @@
 // this specific codebase (Tailwind classes, Material Symbols spans, data-* attrs, FA icons).
 
 const fs = require('fs')
-const path = require('path')
 const parse5 = require('parse5')
 const ROUTES = require('./routes-map.cjs')
 

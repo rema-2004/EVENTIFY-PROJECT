@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
-import { useLanguage } from '../../context/LanguageContext'
+import { useLanguage } from '../../hooks/useLanguage'
 
 // Theme toggling is wired globally in ThemeProvider (any ".theme-toggle" click), matching
 // the delegated click-listener pattern the original theme.js used site-wide.
