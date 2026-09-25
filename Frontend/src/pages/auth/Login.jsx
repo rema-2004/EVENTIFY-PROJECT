@@ -36,7 +36,6 @@ function Visual({ t }) {
 const ROLES = [
     { id: 'participant', icon: 'person', dest: '/app', field: { type: 'tel', autoComplete: 'tel', icon: 'call' } },
     { id: 'organization', icon: 'apartment', dest: '/org', field: { type: 'email', autoComplete: 'username', icon: 'business' } },
-    { id: 'admin', icon: 'admin_panel_settings', dest: '/admin', field: { type: 'email', autoComplete: 'username', icon: 'shield_person' } },
 ]
 
 export default function Login() {
@@ -113,7 +112,7 @@ export default function Login() {
 
                 <div className="mb-6">
                     <span className="font-label-md text-label-md block mb-2">{t('auth.login.roleLabel')}</span>
-                    <div className="grid grid-cols-3 gap-2" role="radiogroup" aria-label={t('auth.login.roleLabel')}>
+                    <div className="grid grid-cols-2 gap-2" role="radiogroup" aria-label={t('auth.login.roleLabel')}>
                         {ROLES.map((r) => (
                             <button
                                 key={r.id}
