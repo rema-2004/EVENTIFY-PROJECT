@@ -34,7 +34,7 @@ function Visual({ t }) {
 }
 
 const ROLES = [
-    { id: 'participant', icon: 'person', dest: '/app', field: { type: 'tel', autoComplete: 'tel', icon: 'call' } },
+    { id: 'participant', icon: 'person', dest: '/app', field: { type: 'text', autoComplete: 'username', icon: 'contact_mail' } },
     { id: 'organization', icon: 'apartment', dest: '/org', field: { type: 'email', autoComplete: 'username', icon: 'business' } },
 ]
 
@@ -57,7 +57,7 @@ export default function Login() {
         const v = value.trim()
         if (!v) return t('auth.common.required')
         if (role === 'participant') {
-            if (!isPhone(v)) return t('auth.common.invalidPhone')
+            if (!isEmail(v) && !isPhone(v)) return t('auth.common.invalidEmailOrPhone')
             return ''
         }
         if (!isEmail(v)) return t('auth.common.invalidEmail')
