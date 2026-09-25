@@ -2,6 +2,9 @@
 
 use App\Http\Controllers\Api\V1\AuthController;
 use App\Http\Controllers\Api\V1\OrgAuthController;
+use App\Http\Controllers\Api\V1\EventController;
+use App\Http\Controllers\Api\V1\Admin\OrganizationManagementController;
+use App\Http\Controllers\Api\V1\Organization\EventController as OrgEventController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -17,7 +20,6 @@ use Illuminate\Support\Facades\Route;
 Route::prefix('v1')->group(function () {
 
     // — Public auth routes ——————————————————————————————————————————
-    // Rate-limited to prevent brute-force login attempts and registration spam.
     Route::middleware('throttle:5,1')->group(function () {
         // User Auth
         Route::post('/register', [AuthController::class, 'register']);
@@ -34,10 +36,33 @@ Route::prefix('v1')->group(function () {
         Route::get('/me', [AuthController::class, 'me']);
     });
 
+    // — Public Events routes (no auth required) ——————————————————————
+    Route::get('/events', [EventController::class, 'index']);
+    Route::get('/events/{event}', [EventController::class, 'show']);
+
     // — Protected Organization routes (require Organization Bearer token) ———
     Route::middleware('auth:organization')->group(function () {
         Route::post('/org/logout', [OrgAuthController::class, 'logout']);
         Route::get('/org/me', [OrgAuthController::class, 'me']);
+
+        // Organization's own events
+        Route::get('/org/events', [OrgEventController::class, 'index']);
+        Route::get('/org/events/{event}', [OrgEventController::class, 'show']);
+        Route::post('/org/events', [OrgEventController::class, 'store']);
+        Route::patch('/org/events/{event}', [OrgEventController::class, 'update']);
+        Route::delete('/org/events/{event}', [OrgEventController::class, 'destroy']);
+    });
+
+    // — Protected Admin routes (require Bearer token + role=admin) ————————
+    // Uses the SAME auth:sanctum guard as regular users (admin is a role
+    // on the users table, not a separate account type), plus the
+    // 'is.admin' middleware which blocks anyone who isn't role=admin.
+    Route::prefix('admin')->middleware(['auth:sanctum', 'is.admin'])->group(function () {
+        Route::get('/organizations', [OrganizationManagementController::class, 'index']);
+        Route::get('/organizations/{organization}', [OrganizationManagementController::class, 'show']);
+        Route::get('/organizations/{organization}/license', [OrganizationManagementController::class, 'downloadLicense']);
+        Route::patch('/organizations/{organization}/approve', [OrganizationManagementController::class, 'approve']);
+        Route::patch('/organizations/{organization}/reject', [OrganizationManagementController::class, 'reject']);
     });
 
 });
