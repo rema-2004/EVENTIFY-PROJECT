@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>EVENTIFY | AI-Powered Opportunity Hub</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
+    <!-- Prevents flash-of-wrong-theme/direction before React mounts -->
+    <script>
+      (function () {
+        var saved = localStorage.getItem('theme') || localStorage.getItem('eventify-theme');
+        var systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        var isDark = saved === 'dark' || (!saved && systemPrefersDark);
+        var root = document.documentElement;
+        root.classList.toggle('dark', isDark);
+        root.classList.toggle('light', !isDark);
+        if (isDark) root.setAttribute('data-theme', 'dark');
+
+        var lang = localStorage.getItem('eventify-lang') || (navigator.language || '').slice(0, 2);
+        if (lang !== 'ar') lang = 'en';
+        root.lang = lang;
+        root.dir = lang === 'ar' ? 'rtl' : 'ltr';
+      })();
+    </script>
+    <script type="module" crossorigin src="/assets/index-DPXehJjO.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index-DoRZCUlX.css">
+  </head>
+  <body>
+    <div id="root"></div>
+  </body>
+</html>
