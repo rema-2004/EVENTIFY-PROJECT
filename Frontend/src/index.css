@@ -2,3 +2,46 @@
 @import './styles/theme.css';
 @import './styles/theme-overrides.css';
 @import './styles/icons.css';
+
+.global-language-switcher {
+    position: fixed;
+    inset-inline-end: 16px;
+    bottom: 16px;
+    z-index: 80;
+    display: inline-flex;
+    gap: 2px;
+    padding: 3px;
+    border: 1px solid var(--border-strong, #c9c9c9);
+    border-radius: 999px;
+    background: var(--surface, #fff);
+    box-shadow: 0 3px 12px rgba(14, 17, 22, 0.16);
+}
+
+.global-language-switcher button {
+    min-width: 36px;
+    height: 30px;
+    padding: 0 8px;
+    border: 0;
+    border-radius: 999px;
+    background: transparent;
+    color: var(--text-muted, #555);
+    font: inherit;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.global-language-switcher button[aria-pressed="true"] {
+    background: var(--primary, #ff4d2e);
+    color: var(--on-primary, #fff);
+}
+
+@media (min-width: 768px) {
+    .global-language-switcher--above-app-nav {
+        bottom: 16px;
+    }
+}
+
+.global-language-switcher--above-app-nav {
+    bottom: calc(84px + env(safe-area-inset-bottom) + 12px);
+}
