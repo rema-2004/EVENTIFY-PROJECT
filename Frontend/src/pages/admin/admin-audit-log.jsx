@@ -1,4 +1,9 @@
+import { useEffect } from 'react'
+import './admin-audit-log.js'
+
 export default function AdminAuditLog() {
+    useEffect(() => window.initAdminAuditLog(), [])
+
     return (
         <>
             <meta charSet="utf-8" />
