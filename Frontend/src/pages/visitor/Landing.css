@@ -564,15 +564,14 @@ section[id]{scroll-margin-top:90px;}
 }
 .testi-wrap{position:relative;max-width:1100px;margin:0 auto;}
 .testi-track{overflow:hidden;}
-.testi-slides{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;align-items:start;transform:none !important;}
+.testi-slides{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;align-items:stretch;transform:none !important;}
 @media(max-width:900px){.testi-slides{grid-template-columns:1fr;}}
-.testi-slide{min-width:0;padding:0;}
-.testi-slide:nth-child(2){margin-top:28px;}
-.testi-slide:nth-child(3){margin-top:56px;}
+.testi-slide{min-width:0;padding:0;display:flex;}
 @media(max-width:900px){.testi-slide{margin-top:0 !important;}}
 .testi-card{
   background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);
   padding:44px 40px;text-align:left;position:relative;overflow:hidden;transition:border-color .25s ease;
+  display:flex;flex-direction:column;width:100%;
 }
 
 .testi-card::after{
@@ -594,7 +593,7 @@ section[id]{scroll-margin-top:90px;}
 .testi-card .testi-achievement{
   display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:600;
   color:var(--secondary);background:rgba(14, 17, 22, .06);padding:4px 12px;border-radius:100px;
-  margin-top:8px;
+  margin-top:auto;align-self:flex-start;
 }
 .testi-dots{display:none;}
 .testi-dots button{width:8px;height:8px;border-radius:50%;background:var(--border-strong);transition:all .3s;}
