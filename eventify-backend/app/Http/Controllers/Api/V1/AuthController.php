@@ -12,7 +12,6 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\JsonResponse;
 
-
 class AuthController extends Controller
 {
     use ApiResponse;
@@ -22,12 +21,13 @@ class AuthController extends Controller
      */
     public function register(RegisterRequest $request): JsonResponse
     {
+        // استخدام validated لجلب البيانات الآمنة فقط
         $validated = $request->validated();
 
         $user = User::create([
-            'name'     => $validated['name'],
-            'email'    => $validated['email'],
-            'phone'    => $validated['phone'] ?? null,
+            'name' => $validated['name'],
+            'email' => $validated['email'],
+            'phone' => $validated['phone'] ?? null,
             'password' => Hash::make($validated['password']),
             // role/status are NEVER accepted from client input.
         ]);
@@ -35,7 +35,7 @@ class AuthController extends Controller
         $token = $user->createToken('eventify-token')->plainTextToken;
 
         return $this->success([
-            'user'  => new UserResource($user),
+            'user' => new UserResource($user),
             'token' => $token,
         ], 'Registered successfully', 201);
     }
@@ -47,7 +47,8 @@ class AuthController extends Controller
     {
         $validated = $request->validated();
 
-        $user = User::where('email', $validated['email'])->first();
+        // The identifier can be an email OR a phone number.
+        $user = User::findByLogin($request->identifier());
 
         if (! $user || ! Hash::check($validated['password'], $user->password)) {
             return $this->error('Invalid credentials', 401);
@@ -63,7 +64,7 @@ class AuthController extends Controller
         $token = $user->createToken('eventify-token')->plainTextToken;
 
         return $this->success([
-            'user'  => new UserResource($user),
+            'user' => new UserResource($user),
             'token' => $token,
         ], 'Logged in successfully');
     }
@@ -73,7 +74,12 @@ class AuthController extends Controller
      */
     public function logout(): JsonResponse
 {
-    request()->user()->currentAccessToken()->delete();
+    /** @var \App\Models\User $user */
+    $user = Auth::user();
+
+    /** @var \Laravel\Sanctum\PersonalAccessToken $token */
+    $token = $user->currentAccessToken();
+    $token->delete();
 
     return $this->success(data: null, message: 'Logged out successfully');
 }
