@@ -109,7 +109,11 @@ export default function OrganizationVerification() {
                                 <h4 className="font-title-md text-title-md mt-5">{t('auth.orgVerification.uploadTitle')}</h4>
                                 <p className="font-body-md text-body-md text-on-surface-variant mt-2">{t('auth.orgVerification.uploadDesc')}</p>
                                 <p className="font-body-sm text-body-sm text-on-surface-variant mt-2 opacity-75">PDF • JPG • PNG (Max 10MB)</p>
-                                <input type="file" className="mt-6 w-full max-w-full font-body-sm text-body-sm file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-primary/10 file:text-primary hover:file:bg-primary/20 transition-all cursor-pointer" accept=".pdf,.png,.jpg,.jpeg" />
+                                <input
+                                    type="file"
+                                    className="mt-6 w-full max-w-full font-body-sm text-body-sm bg-transparent border-0 border-none outline-none shadow-none focus:outline-none focus:ring-0 focus:border-0 focus:shadow-none file:me-4 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-primary/10 file:text-primary hover:file:bg-primary/20 file:cursor-pointer transition-all cursor-pointer"
+                                    accept=".pdf,.png,.jpg,.jpeg"
+                                />
                             </div>
 
                             <h3 className="font-headline-md text-headline-md mt-12 mb-6">📝 {t('auth.orgVerification.descTitle')}</h3>

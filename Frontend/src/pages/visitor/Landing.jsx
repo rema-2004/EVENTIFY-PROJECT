@@ -332,18 +332,6 @@ export default function Landing() {
       })
     })
 
-    /* ===== WEEKLY OPPORTUNITY DIGEST ===== */
-    const digestForm = $('#digestForm')
-    const digestEmail = $('#digestEmail')
-    const digestSuccess = $('#digestSuccess')
-    on(digestForm, 'submit', (e) => {
-      e.preventDefault()
-      const val = (digestEmail?.value || '').trim()
-      if (!val) return
-      if (digestForm) digestForm.style.display = 'none'
-      if (digestSuccess) digestSuccess.style.display = 'flex'
-    })
-
     return () => cleanups.forEach((fn) => fn())
   }, [navigate, t])
 
@@ -1494,34 +1482,6 @@ export default function Landing() {
                 </Link>
               </div>
             </div>
-            {/* ===== WEEKLY OPPORTUNITY DIGEST ===== */}
-            <div className="digest-banner reveal" style={{"marginTop": "48px"}}>
-              <div className="digest-inner">
-                <div className="digest-icon">
-                  <i className="fa-solid fa-envelope-open-text"></i>
-                </div>
-                <div className="digest-text">
-                  <h4>
-                    {t('landing.s186')}
-                  </h4>
-                  <p>
-                    {t('landing.s187')}
-                  </p>
-                </div>
-                <form className="digest-form" id="digestForm">
-                  <input type="email" id="digestEmail" placeholder="Enter your email address..." required aria-label="Your email address" />
-                  <button className="btn btn-primary" type="submit" id="digestSubmit">
-                    {t('landing.s188')}
-                  </button>
-                </form>
-              </div>
-              <div className="digest-success" id="digestSuccess" style={{"display": "none"}}>
-                <i className="fa-solid fa-circle-check"></i>
-                {' '}
-                {t('landing.s189')}
-                {' '}
-              </div>
-            </div>
           </div>
         </section>
         {/* ===== CATEGORIES ===== */}
@@ -2106,9 +2066,9 @@ export default function Landing() {
               </div>
               <div className="cta-stats">
                 <div className="cta-stat">
-                  <h3>
+                  <h4>
                     {t('landing.s287')}
-                  </h3>
+                  </h4>
                   <p>
                     {t('landing.s288')}
                   </p>

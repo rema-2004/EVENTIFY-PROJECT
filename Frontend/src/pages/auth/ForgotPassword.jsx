@@ -72,10 +72,10 @@ export default function ForgotPassword() {
         <AuthLayout visual={<Visual t={t} />}>
             {!sent ? (
                 <div className="relative z-10 max-w-md w-full mx-auto auth-card border border-white/40 rounded-[20px] p-6 sm:p-8">
-                    <Link className="inline-flex items-center gap-1 text-on-surface-variant hover:text-primary font-label-md text-label-md mb-5 transition-colors" to="/auth/login">
+                    <Link className="flex w-fit items-center gap-1 text-on-surface-variant hover:text-primary font-label-md text-label-md mb-5 transition-colors" to="/auth/login">
                         <span className="material-symbols-outlined text-[18px]">arrow_back</span> {t('auth.forgotPassword.backToLogin')}
                     </Link>
-                    <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 text-primary text-sm font-semibold mb-5">
+                    <div className="flex w-fit items-center gap-2 px-3 py-1 rounded-full bg-primary/10 text-primary text-sm font-semibold mb-5">
                         <span className="material-symbols-outlined text-[18px]">lock_reset</span>
                         {t('auth.forgotPassword.badge')}
                     </div>

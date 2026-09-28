@@ -5,6 +5,8 @@ import AuthLayout from '../../layouts/AuthLayout'
 
 const isEmail = (v) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)
 const isPhone = (v) => /^[+]?([0-9][\s-()]*){7,15}$/.test(v)
+const ADMIN_EMAIL = 'admin@eventify.com'
+const ADMIN_PASSWORD = 'admin123'
 
 function Visual({ t }) {
     return (
@@ -34,9 +36,8 @@ function Visual({ t }) {
 }
 
 const ROLES = [
-    { id: 'participant', icon: 'person', dest: '/app', field: { type: 'tel', autoComplete: 'tel', icon: 'call' } },
-    { id: 'organization', icon: 'apartment', dest: '/org', field: { type: 'email', autoComplete: 'username', icon: 'business' } },
-    { id: 'admin', icon: 'admin_panel_settings', dest: '/admin', field: { type: 'email', autoComplete: 'username', icon: 'shield_person' } },
+    { id: 'participant', icon: 'person', dest: '/app', field: { type: 'text', autoComplete: 'username', icon: 'contact_mail' } },
+    { id: 'organization', icon: 'apartment', dest: '/org/dashboard', field: { type: 'email', autoComplete: 'username', icon: 'business' } },
 ]
 
 export default function Login() {
@@ -58,7 +59,7 @@ export default function Login() {
         const v = value.trim()
         if (!v) return t('auth.common.required')
         if (role === 'participant') {
-            if (!isPhone(v)) return t('auth.common.invalidPhone')
+            if (!isEmail(v) && !isPhone(v)) return t('auth.common.invalidEmailOrPhone')
             return ''
         }
         if (!isEmail(v)) return t('auth.common.invalidEmail')
@@ -92,10 +93,14 @@ export default function Login() {
             return
         }
 
+        const destination = idValue === ADMIN_EMAIL && pwValue === ADMIN_PASSWORD
+            ? '/admin/dashboard'
+            : roleConfig.dest
+
         setSubmitting(true)
         window.setTimeout(() => {
             setSubmitting(false)
-            navigate(roleConfig.dest)
+            navigate(destination)
         }, 800)
     }
 
@@ -113,7 +118,7 @@ export default function Login() {
 
                 <div className="mb-6">
                     <span className="font-label-md text-label-md block mb-2">{t('auth.login.roleLabel')}</span>
-                    <div className="grid grid-cols-3 gap-2" role="radiogroup" aria-label={t('auth.login.roleLabel')}>
+                    <div className="grid grid-cols-2 gap-2" role="radiogroup" aria-label={t('auth.login.roleLabel')}>
                         {ROLES.map((r) => (
                             <button
                                 key={r.id}
