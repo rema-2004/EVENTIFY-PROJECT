@@ -178,7 +178,7 @@ p:not([class*="max-w"]):not(.desc) { max-width: 68ch; }
 .btn-ghost:focus-visible,
 a:focus-visible,
 button:focus-visible,
-input:focus-visible,
+input:not([type="file"]):focus-visible,
 select:focus-visible,
 textarea:focus-visible {
     outline: 2px solid var(--primary);
@@ -728,7 +728,7 @@ html.dark .glass-sidebar {
     font-weight: 600;
 }
 
-input,
+input:not([type="file"]):not([type="checkbox"]):not([type="radio"]),
 select,
 textarea {
     border: 1px solid rgba(14, 17, 22, 0.22);
@@ -737,13 +737,27 @@ textarea {
     transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
 }
 
-input:focus,
+input:not([type="file"]):not([type="checkbox"]):not([type="radio"]):focus,
 select:focus,
 textarea:focus {
     outline: none;
     border-color: #ff4d2e;
     box-shadow: 0 0 0 3px rgba(255, 77, 46, 0.12);
     transform: translateY(-1px);
+}
+
+input[type="file"] {
+    border: none;
+    background-color: transparent;
+    box-shadow: none;
+}
+
+input[type="file"]:focus,
+input[type="file"]:focus-visible {
+    outline: none;
+    border: none;
+    box-shadow: none;
+    transform: none;
 }
 
 button,
@@ -778,7 +792,7 @@ a[role="button"]:active,
 
 a:focus-visible,
 button:focus-visible,
-input:focus-visible,
+input:not([type="file"]):focus-visible,
 select:focus-visible,
 textarea:focus-visible,
 [tabindex]:focus-visible {
