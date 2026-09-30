@@ -1,4 +1,6 @@
-(function () {
+export function initOrgOpportunities() {
+    const eventController = new AbortController();
+    const listen = (target, type, handler) => target?.addEventListener(type, handler, { signal: eventController.signal });
     const $ = (sel, root) => (root || document).querySelector(sel);
     const $$ = (sel, root) => Array.from((root || document).querySelectorAll(sel));
 
@@ -71,7 +73,7 @@
     function wireFilters() {
         const tabs = $$('.opp-filter-btn');
         tabs.forEach(btn => {
-            btn.addEventListener('click', () => {
+            listen(btn, 'click', () => {
                 tabs.forEach(b => b.setAttribute('aria-pressed', 'false'));
                 btn.setAttribute('aria-pressed', 'true');
                 activeFilter = btn.dataset.filter || 'all';
@@ -83,7 +85,7 @@
         const kpiCards = $$('.opp-stat-grid .stat-card[data-kpi-filter]');
         kpiCards.forEach(card => {
             card.style.cursor = 'pointer';
-            card.addEventListener('click', () => {
+            listen(card, 'click', () => {
                 const f = card.dataset.kpiFilter;
                 const targetBtn = $(`.opp-filter-btn[data-filter="${f}"]`);
                 if (targetBtn) {
@@ -99,7 +101,7 @@
         const emptyResetBtn = $('#opp-empty-reset');
 
         if (searchInput) {
-            searchInput.addEventListener('input', (e) => {
+            listen(searchInput, 'input', (e) => {
                 searchQuery = e.target.value;
                 if (clearBtn) {
                     if (searchQuery.length > 0) {
@@ -127,7 +129,7 @@
         }
 
         if (clearBtn) {
-            clearBtn.addEventListener('click', () => {
+            listen(clearBtn, 'click', () => {
                 if (searchInput) {
                     searchInput.value = '';
                     searchQuery = '';
@@ -139,7 +141,7 @@
         }
 
         if (emptyResetBtn) {
-            emptyResetBtn.addEventListener('click', resetAll);
+            listen(emptyResetBtn, 'click', resetAll);
         }
     }
 
@@ -165,21 +167,20 @@
             if (hamburger) hamburger.setAttribute('aria-expanded', 'false');
         }
 
-        if (hamburger) hamburger.addEventListener('click', openDrawer);
-        if (closeBtn) closeBtn.addEventListener('click', closeDrawer);
-        if (overlay) overlay.addEventListener('click', closeDrawer);
+        listen(hamburger, 'click', openDrawer);
+        listen(closeBtn, 'click', closeDrawer);
+        listen(overlay, 'click', closeDrawer);
 
-        document.addEventListener('keydown', (e) => {
+        listen(document, 'keydown', (e) => {
             if (e.key === 'Escape') {
                 closeDrawer();
             }
         });
     }
 
-    document.addEventListener('DOMContentLoaded', () => {
-        updateCounts();
-        wireFilters();
-        wireSearch();
-        wireMobileNav();
-    });
-})();
+    updateCounts();
+    wireFilters();
+    wireSearch();
+    wireMobileNav();
+    return () => eventController.abort();
+}

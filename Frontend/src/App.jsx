@@ -16,6 +16,7 @@ import OrganizationPending from './pages/auth/OrganizationPending'
 import Privacy from './pages/auth/Privacy'
 import Terms from './pages/auth/Terms'
 import AppLayout from './pages/app/AppLayout'
+import WorkspaceLocalization from './i18n/WorkspaceLocalization'
 import AppHome from './pages/app/index'
 import Explore from './pages/app/explore'
 import Opportunity from './pages/app/opportunity'
@@ -167,6 +168,7 @@ export default function App() {
     const showLanguageSwitcher = /^\/(auth|app|org|admin)(\/|$)/.test(pathname)
     return (
         <>
+            <WorkspaceLocalization />
             {showLanguageSwitcher && <LanguageSwitcher aboveAppNavigation={pathname.startsWith('/app')} />}
             <Routes>
                 <Route path="/" element={<Landing />} />

@@ -1,4 +1,6 @@
-(function () {
+export function initOrgApplicants() {
+    const eventController = new AbortController();
+    const listen = (target, type, handler) => target?.addEventListener(type, handler, { signal: eventController.signal });
     const $ = (sel, root) => (root || document).querySelector(sel);
     const $$ = (sel, root) => Array.from((root || document).querySelectorAll(sel));
 
@@ -60,7 +62,7 @@
         if (!eventToggle || !eventPanel) return;
 
         // Toggle dropdown open/close
-        eventToggle.addEventListener('click', (e) => {
+        listen(eventToggle, 'click', (e) => {
             e.stopPropagation();
             const isHidden = eventPanel.hasAttribute('hidden');
             if (isHidden) {
@@ -74,7 +76,7 @@
 
         // Click item in dropdown
         $$('.org-event-item', eventPanel).forEach(item => {
-            item.addEventListener('click', (e) => {
+            listen(item, 'click', (e) => {
                 e.stopPropagation();
                 const evId = item.dataset.eventId;
                 if (evId) {
@@ -87,13 +89,13 @@
 
         // Native select change event listener for backward compatibility
         if (eventSelect) {
-            eventSelect.addEventListener('change', () => {
+            listen(eventSelect, 'change', () => {
                 applyEvent(eventSelect.value);
             });
         }
 
         // Outside click closes panel
-        document.addEventListener('click', (e) => {
+        listen(document, 'click', (e) => {
             if (!eventPanel.contains(e.target) && e.target !== eventToggle) {
                 eventPanel.setAttribute('hidden', '');
                 eventToggle.setAttribute('aria-expanded', 'false');
@@ -126,7 +128,7 @@
         }
 
         filterButtons.forEach((button) => {
-            button.addEventListener('click', () => {
+            listen(button, 'click', () => {
                 currentFilter = button.dataset.filter || 'all';
 
                 filterButtons.forEach((btn) => {
@@ -142,7 +144,7 @@
         // "Clear filters" in empty state
         const emptyReset = $('#applicants-empty-reset');
         if (emptyReset) {
-            emptyReset.addEventListener('click', () => {
+            listen(emptyReset, 'click', () => {
                 const allBtn = $('.filter-btn[data-filter="all"]');
                 if (allBtn) allBtn.click();
             });
@@ -210,12 +212,12 @@
                 }
             }
 
-            acceptBtn.addEventListener('click', (e) => {
+            listen(acceptBtn, 'click', (e) => {
                 e.preventDefault();
                 resolve('accepted');
             });
 
-            rejectBtn.addEventListener('click', (e) => {
+            listen(rejectBtn, 'click', (e) => {
                 e.preventDefault();
                 resolve('rejected');
             });
@@ -244,11 +246,11 @@
             if (hamburger) hamburger.setAttribute('aria-expanded', 'false');
         }
 
-        if (hamburger) hamburger.addEventListener('click', openDrawer);
-        if (closeBtn) closeBtn.addEventListener('click', closeDrawer);
-        if (overlay) overlay.addEventListener('click', closeDrawer);
+        listen(hamburger, 'click', openDrawer);
+        listen(closeBtn, 'click', closeDrawer);
+        listen(overlay, 'click', closeDrawer);
 
-        document.addEventListener('keydown', (e) => {
+        listen(document, 'keydown', (e) => {
             if (e.key === 'Escape') {
                 closeDrawer();
                 if (eventPanel) {
@@ -259,17 +261,15 @@
         });
     }
 
-    document.addEventListener('DOMContentLoaded', () => {
-        // Initial URL parameter resolution
-        const initialEventId = new URLSearchParams(location.search).get('event');
-        if (initialEventId && EVENTS[initialEventId]) {
-            currentEventId = initialEventId;
-        }
+    const initialEventId = new URLSearchParams(location.search).get('event');
+    if (initialEventId && EVENTS[initialEventId]) {
+        currentEventId = initialEventId;
+    }
 
-        wireEventSelector();
-        applyEvent(currentEventId);
-        wireFilterButtons();
-        wireDecisions();
-        wireMobileNav();
-    });
-})();
+    wireEventSelector();
+    applyEvent(currentEventId);
+    wireFilterButtons();
+    wireDecisions();
+    wireMobileNav();
+    return () => eventController.abort();
+}

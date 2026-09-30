@@ -5,7 +5,10 @@ export default function AppHome() {
     const navigate = useNavigate()
     const openOpportunity = () => navigate('/app/opportunity')
     const [isRafeeqOpen, setIsRafeeqOpen] = useState(false)
+    const [eventFilter, setEventFilter] = useState('all')
     const toggleRafeeq = () => setIsRafeeqOpen((isOpen) => !isOpen)
+    const eventFilterButtonClass = (filter) =>
+        `pb-4 font-label-md transition-colors ${eventFilter === filter ? 'text-primary border-b-2 border-primary' : 'text-on-surface-variant dark:text-[#c3c6d7] hover:text-primary'}`
     return (
         <>
             <meta charSet="utf-8" />
@@ -710,41 +713,46 @@ export default function AppHome() {
                         >
                             <button
                                 type="button"
-                                className="pb-4 font-label-md text-primary border-b-2 border-primary"
+                                className={eventFilterButtonClass('all')}
                                 data-event-filter="all"
-                                aria-pressed="true"
+                                aria-pressed={eventFilter === 'all'}
+                                onClick={() => setEventFilter('all')}
                             >
                                 All
                             </button>
                             <button
                                 type="button"
-                                className="pb-4 font-label-md text-on-surface-variant dark:text-[#c3c6d7] hover:text-primary transition-colors"
+                                className={eventFilterButtonClass('competition')}
                                 data-event-filter="competition"
-                                aria-pressed="false"
+                                aria-pressed={eventFilter === 'competition'}
+                                onClick={() => setEventFilter('competition')}
                             >
                                 Competition
                             </button>
                             <button
                                 type="button"
-                                className="pb-4 font-label-md text-on-surface-variant dark:text-[#c3c6d7] hover:text-primary transition-colors"
+                                className={eventFilterButtonClass('event')}
                                 data-event-filter="event"
-                                aria-pressed="false"
+                                aria-pressed={eventFilter === 'event'}
+                                onClick={() => setEventFilter('event')}
                             >
                                 Event
                             </button>
                             <button
                                 type="button"
-                                className="pb-4 font-label-md text-on-surface-variant dark:text-[#c3c6d7] hover:text-primary transition-colors"
+                                className={eventFilterButtonClass('workshop')}
                                 data-event-filter="workshop"
-                                aria-pressed="false"
+                                aria-pressed={eventFilter === 'workshop'}
+                                onClick={() => setEventFilter('workshop')}
                             >
                                 Workshop
                             </button>
                             <button
                                 type="button"
-                                className="pb-4 font-label-md text-on-surface-variant dark:text-[#c3c6d7] hover:text-primary transition-colors"
+                                className={eventFilterButtonClass('course')}
                                 data-event-filter="course"
-                                aria-pressed="false"
+                                aria-pressed={eventFilter === 'course'}
+                                onClick={() => setEventFilter('course')}
                             >
                                 Course
                             </button>
@@ -758,6 +766,7 @@ export default function AppHome() {
                         <div
                             className="md:col-span-8 bg-surface-container-lowest dark:bg-slate-900/60 border border-outline-variant/30 dark:border-white/10 rounded-xl overflow-hidden shadow-sm flex flex-col md:flex-row md:min-h-[22rem] premium-card cursor-pointer"
                             data-event-category="event"
+                            style={{ display: eventFilter === 'all' || eventFilter === 'event' ? undefined : 'none' }}
                             onClick={openOpportunity}
                         >
                             <div className="md:w-1/2 overflow-hidden">
@@ -805,6 +814,7 @@ export default function AppHome() {
                             <div
                                 className="bg-surface-container-lowest dark:bg-slate-900/60 border border-outline-variant/30 dark:border-white/10 rounded-xl p-6 flex gap-4 items-center cursor-pointer hover:border-primary/50 dark:hover:border-primary/50 transition-colors"
                                 data-event-category="course"
+                                style={{ display: eventFilter === 'all' || eventFilter === 'course' ? undefined : 'none' }}
                                 onClick={openOpportunity}
                             >
                                 <div className="w-16 h-16 rounded-xl bg-primary-container/20 dark:bg-primary-container/10 flex flex-col items-center justify-center text-primary">
@@ -826,6 +836,7 @@ export default function AppHome() {
                             <div
                                 className="bg-surface-container-lowest dark:bg-slate-900/60 border border-outline-variant/30 dark:border-white/10 rounded-xl p-6 flex gap-4 items-center cursor-pointer hover:border-primary/50 dark:hover:border-primary/50 transition-colors"
                                 data-event-category="workshop"
+                                style={{ display: eventFilter === 'all' || eventFilter === 'workshop' ? undefined : 'none' }}
                                 onClick={openOpportunity}
                             >
                                 <div className="w-16 h-16 rounded-xl bg-secondary-container/20 dark:bg-white/10 flex flex-col items-center justify-center text-secondary dark:text-white">
@@ -847,6 +858,7 @@ export default function AppHome() {
                             <div
                                 className="bg-surface-container-lowest dark:bg-slate-900/60 border border-outline-variant/30 dark:border-white/10 rounded-xl p-6 flex gap-4 items-center cursor-pointer hover:border-primary/50 dark:hover:border-primary/50 transition-colors"
                                 data-event-category="workshop"
+                                style={{ display: eventFilter === 'all' || eventFilter === 'workshop' ? undefined : 'none' }}
                                 onClick={openOpportunity}
                             >
                                 <div className="w-16 h-16 rounded-xl bg-tertiary-container/20 dark:bg-white/10 flex flex-col items-center justify-center text-tertiary dark:text-gray-200">
@@ -868,6 +880,7 @@ export default function AppHome() {
                             <div
                                 className="bg-surface-container-lowest dark:bg-slate-900/60 border border-outline-variant/30 dark:border-white/10 rounded-xl p-6 flex gap-4 items-center cursor-pointer hover:border-primary/50 dark:hover:border-primary/50 transition-colors"
                                 data-event-category="competition"
+                                style={{ display: eventFilter === 'all' || eventFilter === 'competition' ? undefined : 'none' }}
                                 onClick={openOpportunity}
                             >
                                 <div className="w-16 h-16 rounded-xl bg-tertiary-container/20 dark:bg-white/10 flex flex-col items-center justify-center text-tertiary dark:text-gray-200">

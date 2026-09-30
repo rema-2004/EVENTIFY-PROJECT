@@ -1,5 +1,9 @@
 /* Admin Reports page — rendering, filtering, sorting, pagination, CRUD (mock only). */
-(function () {
+import Chart from 'chart.js/auto'
+
+export function initAdminReports() {
+    const eventController = new AbortController();
+    const listen = (target, type, handler) => target?.addEventListener(type, handler, { signal: eventController.signal });
     const PAGE_SIZE = 8;
     const store = window.AdminReportsPage;
     if (!store) return;
@@ -231,14 +235,14 @@
         nameInput.focus();
     }
 
-    $('#period-select').addEventListener('change', (e) => {
+    listen($('#period-select'), 'change', (e) => {
         customRange.hidden = e.target.value !== 'custom';
     });
 
-    $('#btn-create-cancel').addEventListener('click', () => createDialog.close());
-    createDialog.addEventListener('click', (e) => { if (e.target === createDialog) createDialog.close(); });
+    listen($('#btn-create-cancel'), 'click', () => createDialog.close());
+    listen(createDialog, 'click', (e) => { if (e.target === createDialog) createDialog.close(); });
 
-    $('#create-report-form').addEventListener('submit', (e) => {
+    listen($('#create-report-form'), 'submit', (e) => {
         e.preventDefault();
         const periodSelect = $('#period-select');
         const periodLabel = periodSelect.options[periodSelect.selectedIndex].text;
@@ -261,9 +265,9 @@
         deleteDialog.showModal();
     }
 
-    $('#btn-delete-cancel').addEventListener('click', () => deleteDialog.close());
-    deleteDialog.addEventListener('click', (e) => { if (e.target === deleteDialog) deleteDialog.close(); });
-    $('#btn-delete-confirm').addEventListener('click', () => {
+    listen($('#btn-delete-cancel'), 'click', () => deleteDialog.close());
+    listen(deleteDialog, 'click', (e) => { if (e.target === deleteDialog) deleteDialog.close(); });
+    listen($('#btn-delete-confirm'), 'click', () => {
         if (pendingDeleteId) deleteReport(pendingDeleteId);
         deleteDialog.close();
     });
@@ -296,7 +300,7 @@
     function renderPreviewChart(chart) {
         if (charts.preview) { charts.preview.destroy(); }
         const ctx = $('#preview-chart');
-        if (!ctx || !window.Chart) return;
+        if (!ctx) return;
         const isDoughnut = chart.type === 'doughnut';
         charts.preview = new Chart(ctx, {
             type: chart.type,
@@ -321,24 +325,26 @@
         });
     }
 
-    $('#btn-preview-close').addEventListener('click', () => previewDialog.close());
-    previewDialog.addEventListener('click', (e) => { if (e.target === previewDialog) previewDialog.close(); });
+    listen($('#btn-preview-close'), 'click', () => previewDialog.close());
+    listen(previewDialog, 'click', (e) => { if (e.target === previewDialog) previewDialog.close(); });
 
-    $('#btn-download-csv').addEventListener('click', () => {
+    const downloadPreviewCsv = () => {
         if (!activePreviewReport) return;
         const content = store.buildPreview(activePreviewReport.type, activePreviewReport.period);
         const rows = [content.table.headers, ...content.table.rows];
-        const csv = rows.map(r => r.join(',')).join('\n');
+        const csv = rows.map(row => row.map(value => `"${String(value).replaceAll('"', '""')}"`).join(',')).join('\r\n');
         triggerDownload(activePreviewReport.name.replace(/\s+/g, '_') + '.csv', csv, 'text/csv');
         showToast('Report file is ready');
-    });
-
-    ['#btn-download-pdf', '#btn-download-excel'].forEach(sel => {
-        $(sel).addEventListener('click', () => showToast('Report file is ready'));
+    }
+    listen($('#btn-download-csv'), 'click', downloadPreviewCsv);
+    listen($('#btn-download-excel'), 'click', downloadPreviewCsv);
+    listen($('#btn-download-pdf'), 'click', () => {
+        if (!activePreviewReport) return;
+        window.print();
     });
 
     /* --- table row actions (event delegation) -------------------------------- */
-    tbody.addEventListener('click', (e) => {
+    listen(tbody, 'click', (e) => {
         const menuBtn = e.target.closest('[data-action="more"]');
         if (menuBtn) {
             const panel = menuBtn.parentElement.querySelector('.row-menu__panel');
@@ -369,25 +375,25 @@
         }
     });
 
-    document.addEventListener('click', (e) => {
+    listen(document, 'click', (e) => {
         if (!e.target.closest('.row-menu')) $$('.row-menu__panel').forEach(p => p.hidden = true);
     });
 
     /* --- header wiring ------------------------------------------------------- */
-    $('#report-search').addEventListener('input', (e) => searchReports(e.target.value));
-    $('#btn-apply-filters').addEventListener('click', filterReports);
-    $('#btn-create-report').addEventListener('click', () => openCreateReportModal());
-    $$('.btn-quick-create').forEach(btn => btn.addEventListener('click', () => openCreateReportModal(btn.dataset.type)));
+    listen($('#report-search'), 'input', (e) => searchReports(e.target.value));
+    listen($('#btn-apply-filters'), 'click', filterReports);
+    listen($('#btn-create-report'), 'click', () => openCreateReportModal());
+    $$('.btn-quick-create').forEach(btn => listen(btn, 'click', () => openCreateReportModal(btn.dataset.type)));
 
-    $$('.dash-table th[data-sort]').forEach(th => th.addEventListener('click', () => sortReports(th.dataset.sort)));
+    $$('.dash-table th[data-sort]').forEach(th => listen(th, 'click', () => sortReports(th.dataset.sort)));
 
-    pagination.addEventListener('click', (e) => {
+    listen(pagination, 'click', (e) => {
         const btn = e.target.closest('button[data-page]');
         if (!btn || btn.disabled) return;
         paginateReports(Number(btn.dataset.page));
     });
 
-    $('#btn-refresh').addEventListener('click', () => {
+    listen($('#btn-refresh'), 'click', () => {
         tableWrap.hidden = true;
         emptyState.hidden = true;
         skeleton.hidden = false;
@@ -398,8 +404,12 @@
         }, 600);
     });
 
-    $('#empty-create-btn').addEventListener('click', () => openCreateReportModal());
+    listen($('#empty-create-btn'), 'click', () => openCreateReportModal());
 
     /* --- init ------------------------------------------------------------ */
     renderReports();
-})();
+    return () => {
+        eventController.abort();
+        Object.values(charts).forEach(chart => chart.destroy());
+    };
+}

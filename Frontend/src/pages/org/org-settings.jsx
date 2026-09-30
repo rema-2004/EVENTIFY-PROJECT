@@ -1,4 +1,7 @@
+import { useOrgPageControls } from './useOrgPageControls.js'
+
 export default function OrgSettings() {
+    useOrgPageControls()
     return (
         <>
             <meta charSet="utf-8" />
@@ -443,7 +446,7 @@ export default function OrgSettings() {
                                     />
                                 </div>
                                 <div className="md:col-span-2 flex justify-end">
-                                    <button type="button" className="btn-primary">
+                                    <button type="submit" className="btn-primary">
                                         Save changes
                                     </button>
                                 </div>

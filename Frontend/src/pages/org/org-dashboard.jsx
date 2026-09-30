@@ -1,7 +1,9 @@
 import { useEffect } from 'react'
 import './org-dashboard.js'
+import { useOrgPageControls } from './useOrgPageControls.js'
 
 export default function OrgDashboard() {
+    useOrgPageControls({ mobileNavigation: false })
     useEffect(() => window.initOrgDashboard(), [])
 
     return (

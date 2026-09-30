@@ -1,4 +1,15 @@
+import { useState } from 'react'
+
 export default function Teams() {
+    const [selectedSkill, setSelectedSkill] = useState('all')
+    const [searchQuery, setSearchQuery] = useState('')
+    const skillButtonClass = (skill) =>
+        `flex items-center gap-2 px-6 py-3 rounded-2xl text-label-md font-label-md whitespace-nowrap transition-all ${selectedSkill === skill ? 'bg-secondary-container text-on-secondary-container shadow-sm' : 'border border-outline-variant bg-surface-container-lowest hover:bg-surface-container-high'}`
+    const matchesTeam = (name, description, skills) => {
+        const matchesSkill = selectedSkill === 'all' || skills.includes(selectedSkill)
+        const text = `${name} ${description} ${skills.join(' ')}`.toLocaleLowerCase()
+        return matchesSkill && text.includes(searchQuery.trim().toLocaleLowerCase())
+    }
     return (
         <>
             <meta charSet="utf-8" />
@@ -115,10 +126,12 @@ export default function Teams() {
                                     className="w-full pl-12 pr-4 py-3 rounded-2xl border border-outline-variant bg-surface-container-lowest focus:ring-2 focus:ring-primary focus:border-transparent transition-all outline-none text-body-md"
                                     placeholder="Search by team name or project idea..."
                                     type="text"
+                                    value={searchQuery}
+                                    onChange={(event) => setSearchQuery(event.target.value)}
                                 />
                             </div>
                             <div className="flex gap-2 overflow-x-auto pb-2 md:pb-0">
-                                <button className="flex items-center gap-2 px-6 py-3 rounded-2xl border border-outline-variant bg-surface-container-lowest hover:bg-surface-container-high transition-all text-label-md font-label-md whitespace-nowrap">
+                                <button className={skillButtonClass('all')} type="button" aria-pressed={selectedSkill === 'all'} onClick={() => setSelectedSkill('all')}>
                                     <span
                                         className="material-symbols-outlined text-primary"
                                         data-icon="filter_list"
@@ -127,13 +140,13 @@ export default function Teams() {
                                     </span>
                                     All Skills
                                 </button>
-                                <button className="flex items-center gap-2 px-6 py-3 rounded-2xl bg-secondary-container text-on-secondary-container text-label-md font-label-md whitespace-nowrap shadow-sm">
+                                <button className={skillButtonClass('Python')} type="button" aria-pressed={selectedSkill === 'Python'} onClick={() => setSelectedSkill('Python')}>
                                     Python
                                 </button>
-                                <button className="flex items-center gap-2 px-6 py-3 rounded-2xl border border-outline-variant bg-surface-container-lowest hover:bg-surface-container-high transition-all text-label-md font-label-md whitespace-nowrap">
+                                <button className={skillButtonClass('UI/UX')} type="button" aria-pressed={selectedSkill === 'UI/UX'} onClick={() => setSelectedSkill('UI/UX')}>
                                     UI/UX
                                 </button>
-                                <button className="flex items-center gap-2 px-6 py-3 rounded-2xl border border-outline-variant bg-surface-container-lowest hover:bg-surface-container-high transition-all text-label-md font-label-md whitespace-nowrap">
+                                <button className={skillButtonClass('AI')} type="button" aria-pressed={selectedSkill === 'AI'} onClick={() => setSelectedSkill('AI')}>
                                     AI
                                 </button>
                             </div>
@@ -150,7 +163,7 @@ export default function Teams() {
                         data-empty-href="create-team.html"
                     >
                         {/* Card 1: Featured/AI Recommended */}
-                        <div className="ai-border md:col-span-2 lg:col-span-2">
+                        <div className="ai-border md:col-span-2 lg:col-span-2" style={{ display: matchesTeam('NeuroNex', 'Building a decentralized LLM orchestrator for sustainable edge computing. We need visionary thinkers.', ['Python', 'PyTorch', 'UI/UX', 'AI']) ? undefined : 'none' }}>
                             <div className="p-8 h-full flex flex-col md:flex-row gap-8 bg-white rounded-2xl">
                                 <div className="flex-shrink-0">
                                     <div className="w-32 h-32 rounded-3xl bg-primary-fixed flex items-center justify-center overflow-hidden">
@@ -236,7 +249,7 @@ export default function Teams() {
                             </div>
                         </div>
                         {/* Card 2 */}
-                        <div className="bg-white p-6 rounded-2xl border border-outline-variant card-lift flex flex-col h-full">
+                        <div className="bg-white p-6 rounded-2xl border border-outline-variant card-lift flex flex-col h-full" style={{ display: matchesTeam('CloudScale', 'Optimizing serverless architectures for heavy traffic spikes.', ['AWS', 'Node.js']) ? undefined : 'none' }}>
                             <div className="flex items-start justify-between mb-6">
                                 <div className="w-16 h-16 rounded-2xl bg-secondary-fixed flex items-center justify-center overflow-hidden">
                                     <img
@@ -286,7 +299,7 @@ export default function Teams() {
                             </div>
                         </div>
                         {/* Card 3 */}
-                        <div className="bg-white p-6 rounded-2xl border border-outline-variant card-lift flex flex-col h-full">
+                        <div className="bg-white p-6 rounded-2xl border border-outline-variant card-lift flex flex-col h-full" style={{ display: matchesTeam('PixelPerfect', 'Designing the next generation of social interaction through spatial web.', ['UI/UX', 'Three.js']) ? undefined : 'none' }}>
                             <div className="flex items-start justify-between mb-6">
                                 <div className="w-16 h-16 rounded-2xl bg-tertiary-fixed-dim flex items-center justify-center overflow-hidden">
                                     <img
@@ -337,7 +350,7 @@ export default function Teams() {
                             </div>
                         </div>
                         {/* Card 4 */}
-                        <div className="bg-white p-6 rounded-2xl border border-outline-variant card-lift flex flex-col h-full">
+                        <div className="bg-white p-6 rounded-2xl border border-outline-variant card-lift flex flex-col h-full" style={{ display: matchesTeam('DataStream', 'Real-time analytics for carbon footprint monitoring.', ['Python', 'Data Viz']) ? undefined : 'none' }}>
                             <div className="flex items-start justify-between mb-6">
                                 <div className="w-16 h-16 rounded-2xl bg-surface-container-highest flex items-center justify-center overflow-hidden">
                                     <img
@@ -387,7 +400,7 @@ export default function Teams() {
                             </div>
                         </div>
                         {/* Card 5 */}
-                        <div className="bg-white p-6 rounded-2xl border border-outline-variant card-lift flex flex-col h-full">
+                        <div className="bg-white p-6 rounded-2xl border border-outline-variant card-lift flex flex-col h-full" style={{ display: matchesTeam('SwiftDev', 'Mobile-first banking for the underbanked communities.', ['Flutter', 'AI']) ? undefined : 'none' }}>
                             <div className="flex items-start justify-between mb-6">
                                 <div className="w-16 h-16 rounded-2xl bg-primary-container/20 flex items-center justify-center overflow-hidden">
                                     <img

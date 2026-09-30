@@ -2,11 +2,15 @@
    Create / search / filter / sort / paginate / preview / delete reports for
    this organization's own events. Mirrors admin/admin-reports.js's pattern,
    rescoped to org-only report types via window.OrgReportsData. */
-(function () {
+import Chart from 'chart.js/auto'
+
+export function initOrgReportCenter() {
     const $ = (sel, root) => (root || document).querySelector(sel);
     const $$ = (sel, root) => Array.from((root || document).querySelectorAll(sel));
     const store = window.OrgReportsData;
     if (!store) return;
+    const eventController = new AbortController();
+    const listen = (target, type, handler) => target?.addEventListener(type, handler, { signal: eventController.signal });
 
     let charts = {};
 
@@ -15,6 +19,11 @@
 
     function showToast(message, tone = 'success') {
         if (window.EventifyUI) window.EventifyUI.toast(message, tone);
+    }
+
+    function markReportsUpdated() {
+        const updated = $('#org-reports-updated');
+        if (updated) updated.textContent = ` Updated ${new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`;
     }
 
     function triggerDownload(filename, content, mimeType = 'text/plain') {
@@ -32,7 +41,7 @@
     /* --- state --------------------------------------------------------- */
     const PAGE_SIZE = 6;
     let orgReports = (store.organizationReports || []).slice();
-    const state = { query: '', type: 'all', event: 'all', status: 'all', sortKey: 'date', sortDir: 'desc', page: 1 };
+    const state = { query: '', type: 'all', event: 'all', status: 'all', range: 'month', customStart: '', customEnd: '', sortKey: 'date', sortDir: 'desc', page: 1 };
     const STATUS_BADGE = { Completed: 'reports-badge--live', Processing: 'reports-badge--pending', Failed: 'reports-badge--ended', Scheduled: 'reports-badge--upcoming' };
 
     const QUICK_CREATE = [
@@ -43,12 +52,50 @@
         { type: 'Overall Organization Report', icon: 'apartment', title: 'Organization Report', desc: 'A full summary across all your events.' }
     ];
 
+    function reportsInSelectedRange() {
+        const now = new Date();
+        const toIsoDate = date => {
+            const year = date.getFullYear();
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const day = String(date.getDate()).padStart(2, '0');
+            return `${year}-${month}-${day}`;
+        };
+        const end = toIsoDate(now);
+        let start = '';
+
+        if (state.range === 'today') {
+            start = end;
+        } else if (state.range === 'week') {
+            const date = new Date(now);
+            date.setDate(date.getDate() - 6);
+            start = toIsoDate(date);
+        } else if (state.range === 'month') {
+            start = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-01`;
+        } else if (state.range === 'quarter') {
+            const date = new Date(now);
+            date.setMonth(date.getMonth() - 3);
+            start = toIsoDate(date);
+        } else if (state.range === 'year') {
+            start = `${now.getFullYear()}-01-01`;
+        } else if (state.range === 'custom') {
+            start = state.customStart;
+            return orgReports.filter(report =>
+                (!start || report.date >= start) && (!state.customEnd || report.date <= state.customEnd),
+            );
+        } else {
+            return orgReports;
+        }
+
+        return orgReports.filter(report => report.date >= start && report.date <= end);
+    }
+
     /* --- stat cards + quick create -------------------------------------- */
     function renderStatCards() {
-        const total = orgReports.length;
+        const rangeReports = reportsInSelectedRange();
+        const total = rangeReports.length;
         const thisMonth = orgReports.filter(r => r.date.startsWith('2026-09')).length;
-        const completed = orgReports.filter(r => r.status === 'Completed').length;
-        const scheduled = orgReports.filter(r => r.status === 'Scheduled').length;
+        const completed = rangeReports.filter(r => r.status === 'Completed').length;
+        const scheduled = rangeReports.filter(r => r.status === 'Scheduled').length;
         $('#org-stat-total').textContent = total;
         $('#org-stat-month').textContent = thisMonth;
         $('#org-stat-completed').textContent = completed;
@@ -75,7 +122,7 @@
 
     /* --- table rendering --------------------------------------------------- */
     function visibleReports() {
-        let list = orgReports.filter(r => {
+        let list = reportsInSelectedRange().filter(r => {
             const matchesQuery = !state.query || r.name.toLowerCase().includes(state.query) || r.type.toLowerCase().includes(state.query);
             const matchesType = state.type === 'all' || r.type === state.type;
             const matchesEvent = state.event === 'all' || r.event === state.event;
@@ -178,7 +225,7 @@
     function reportCsv(report) {
         const content = store.buildOrgReportPreview(report.type, report.event);
         const rows = [content.table.headers, ...content.table.rows];
-        return rows.map(r => r.join(',')).join('\n');
+        return rows.map(row => row.map(value => `"${String(value).replaceAll('"', '""')}"`).join(',')).join('\r\n');
     }
 
     /* --- create modal --- */
@@ -225,7 +272,7 @@
     function renderPreviewChart(chart) {
         if (charts.preview) charts.preview.destroy();
         const ctx = $('#org-preview-chart');
-        if (!ctx || !window.Chart) return;
+        if (!ctx) return;
         const isDoughnut = chart.type === 'doughnut';
         charts.preview = new Chart(ctx, {
             type: chart.type,
@@ -253,18 +300,49 @@
 
     /* --- wiring --------------------------------------------------------- */
     function wire() {
-        $('#org-report-search').addEventListener('input', (e) => { state.query = e.target.value.trim().toLowerCase(); state.page = 1; renderReports(); });
-        $('#org-report-filter-type').addEventListener('change', (e) => { state.type = e.target.value; state.page = 1; renderReports(); });
-        $('#org-report-filter-event').addEventListener('change', (e) => {
+        listen($('#org-report-search'), 'input', (e) => { state.query = e.target.value.trim().toLowerCase(); state.page = 1; renderReports(); });
+        listen($('#org-report-range'), 'change', (e) => {
+            state.range = e.target.value;
+            const customRange = $('#org-report-custom-range');
+            if (customRange) customRange.hidden = e.target.value !== 'custom';
+            if (e.target.value !== 'custom') {
+                state.page = 1;
+                renderReports();
+            }
+            markReportsUpdated();
+            showToast(`Report range: ${e.target.options[e.target.selectedIndex].text}`);
+        });
+        listen($('#org-report-range-apply'), 'click', () => {
+            const start = $('#org-report-range-start')?.value || '';
+            const end = $('#org-report-range-end')?.value || '';
+            if (!start || !end || start > end) {
+                showToast('Choose a valid start and end date', 'error');
+                return;
+            }
+            state.customStart = start;
+            state.customEnd = end;
+            state.page = 1;
+            renderReports();
+            markReportsUpdated();
+            showToast('Custom report range applied');
+        });
+        listen($('#btn-export-org-reports'), 'click', () => {
+            const rows = [['Report', 'Type', 'Event', 'Period', 'Created', 'Format', 'Status'], ...visibleReports().map(report => [report.name, report.type, report.event, report.period, report.date, report.format, report.status])];
+            const csv = rows.map(row => row.map(value => `"${String(value).replaceAll('"', '""')}"`).join(',')).join('\r\n');
+            triggerDownload('eventify-organizer-reports.csv', `\uFEFF${csv}`, 'text/csv;charset=utf-8');
+            showToast('Reports exported');
+        });
+        listen($('#org-report-filter-type'), 'change', (e) => { state.type = e.target.value; state.page = 1; renderReports(); });
+        listen($('#org-report-filter-event'), 'change', (e) => {
             const text = e.target.options[e.target.selectedIndex].text;
             state.event = text === 'All Events' ? 'all' : text;
             state.page = 1;
             renderReports();
         });
-        $('#org-report-filter-status').addEventListener('change', (e) => { state.status = e.target.value; state.page = 1; renderReports(); });
+        listen($('#org-report-filter-status'), 'change', (e) => { state.status = e.target.value; state.page = 1; renderReports(); });
 
         $$('.reports-table th[data-sort]').forEach(th => {
-            th.addEventListener('click', () => {
+            listen(th, 'click', () => {
                 const key = th.dataset.sort;
                 if (state.sortKey === key) state.sortDir = state.sortDir === 'asc' ? 'desc' : 'asc';
                 else { state.sortKey = key; state.sortDir = 'asc'; }
@@ -273,14 +351,14 @@
             });
         });
 
-        $('#org-reports-pagination').addEventListener('click', (e) => {
+        listen($('#org-reports-pagination'), 'click', (e) => {
             const btn = e.target.closest('button[data-page]');
             if (!btn || btn.disabled) return;
             state.page = Number(btn.dataset.page);
             renderReports();
         });
 
-        $('#org-reports-tbody').addEventListener('click', (e) => {
+        listen($('#org-reports-tbody'), 'click', (e) => {
             const btn = e.target.closest('[data-action]');
             if (!btn) return;
             const id = btn.closest('tr[data-id]').dataset.id;
@@ -291,12 +369,12 @@
             else if (action === 'delete') confirmDelete(id);
         });
 
-        $('#btn-create-org-report').addEventListener('click', () => openCreateModal());
-        $('#org-empty-create-btn').addEventListener('click', () => openCreateModal());
-        $('#btn-create-org-report-cancel').addEventListener('click', () => createDialog.close());
-        createDialog.addEventListener('click', (e) => { if (e.target === createDialog) createDialog.close(); });
+        listen($('#btn-create-org-report'), 'click', () => openCreateModal());
+        listen($('#org-empty-create-btn'), 'click', () => openCreateModal());
+        listen($('#btn-create-org-report-cancel'), 'click', () => createDialog.close());
+        listen(createDialog, 'click', (e) => { if (e.target === createDialog) createDialog.close(); });
 
-        $('#create-org-report-form').addEventListener('submit', (e) => {
+        listen($('#create-org-report-form'), 'submit', (e) => {
             e.preventDefault();
             const name = $('#org-new-report-name').value.trim() || 'Untitled Report';
             const type = $('#org-new-report-type').value;
@@ -308,35 +386,45 @@
             openPreview(report);
         });
 
-        $('#btn-delete-org-report-cancel').addEventListener('click', () => deleteDialog.close());
-        deleteDialog.addEventListener('click', (e) => { if (e.target === deleteDialog) deleteDialog.close(); });
-        $('#btn-delete-org-report-confirm').addEventListener('click', () => { if (pendingDeleteId) deleteReport(pendingDeleteId); deleteDialog.close(); });
+        listen($('#btn-delete-org-report-cancel'), 'click', () => deleteDialog.close());
+        listen(deleteDialog, 'click', (e) => { if (e.target === deleteDialog) deleteDialog.close(); });
+        listen($('#btn-delete-org-report-confirm'), 'click', () => { if (pendingDeleteId) deleteReport(pendingDeleteId); deleteDialog.close(); });
 
-        $('#btn-org-preview-close').addEventListener('click', () => previewDialog.close());
-        previewDialog.addEventListener('click', (e) => { if (e.target === previewDialog) previewDialog.close(); });
+        listen($('#btn-org-preview-close'), 'click', () => previewDialog.close());
+        listen(previewDialog, 'click', (e) => { if (e.target === previewDialog) previewDialog.close(); });
 
-        $('#btn-org-download-csv').addEventListener('click', () => {
+        listen($('#btn-org-download-csv'), 'click', () => {
             if (!activePreviewReport) return;
             triggerDownload(activePreviewReport.name.replace(/\s+/g, '_') + '.csv', reportCsv(activePreviewReport), 'text/csv');
             showToast('Report file is ready');
         });
-        ['#btn-org-download-pdf', '#btn-org-download-excel'].forEach(sel => {
-            $(sel).addEventListener('click', () => showToast('Report file is ready'));
+        listen($('#btn-org-download-pdf'), 'click', () => {
+            if (!activePreviewReport) return;
+            showToast('Choose Save as PDF in the print dialog');
+            window.print();
+        });
+        listen($('#btn-org-download-excel'), 'click', () => {
+            if (!activePreviewReport) return;
+            const filename = activePreviewReport.name.replace(/\s+/g, '_') + '.csv';
+            triggerDownload(filename, `\uFEFF${reportCsv(activePreviewReport)}`, 'text/csv;charset=utf-8');
+            showToast('Excel-compatible CSV downloaded');
         });
 
-        $('#btn-refresh-org-reports').addEventListener('click', () => {
+        listen($('#btn-refresh-org-reports'), 'click', () => {
             $('#org-reports-table-wrap').hidden = true;
             $('#org-reports-empty').hidden = true;
             $('#org-reports-skeleton').hidden = false;
             setTimeout(() => {
                 $('#org-reports-skeleton').hidden = true;
                 renderReports();
+                markReportsUpdated();
                 showToast('Reports refreshed');
             }, 600);
         });
 
-        new MutationObserver(() => { if (previewDialog.open) renderPreviewChart(store.buildOrgReportPreview(activePreviewReport.type, activePreviewReport.event)); })
-            .observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
+        const themeObserver = new MutationObserver(() => { if (previewDialog.open) renderPreviewChart(store.buildOrgReportPreview(activePreviewReport.type, activePreviewReport.event)); });
+        themeObserver.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
+        eventController.signal.addEventListener('abort', () => themeObserver.disconnect(), { once: true });
 
         wireMobileNav();
     }
@@ -363,18 +451,21 @@
             if (hamburger) hamburger.setAttribute('aria-expanded', 'false');
         }
 
-        if (hamburger) hamburger.addEventListener('click', openDrawer);
-        if (closeBtn) closeBtn.addEventListener('click', closeDrawer);
-        if (overlay) overlay.addEventListener('click', closeDrawer);
+        listen(hamburger, 'click', openDrawer);
+        listen(closeBtn, 'click', closeDrawer);
+        listen(overlay, 'click', closeDrawer);
 
-        document.addEventListener('keydown', (e) => {
+        listen(document, 'keydown', (e) => {
             if (e.key === 'Escape') closeDrawer();
         });
     }
 
-    document.addEventListener('DOMContentLoaded', () => {
-        wire();
-        renderQuickCreate();
-        renderReports();
-    });
-})();
+    wire();
+    renderQuickCreate();
+    renderReports();
+    markReportsUpdated();
+    return () => {
+        eventController.abort();
+        Object.values(charts).forEach(chart => chart.destroy());
+    };
+}

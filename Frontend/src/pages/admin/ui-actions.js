@@ -16,7 +16,7 @@
         if (!button) return;
 
         // Rows are grids on the list pages and cards on the review pages.
-        const row = button.closest('[class*="grid-cols-12"], tr, li, article, [class*="rounded-2xl"], .section-card');
+        const row = button.closest('[data-review-container], [class*="grid-cols-12"], tr, li, article, [class*="rounded-2xl"], .section-card');
 
         // Delete removes the row outright instead of swapping a status chip.
         if (button.dataset.uiAction === 'delete') {

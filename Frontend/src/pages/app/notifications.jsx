@@ -1,7 +1,14 @@
+import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 export default function Notifications() {
     const navigate = useNavigate()
+    const [filter, setFilter] = useState('all')
+    const filterButtonClass = (value) =>
+        `notification-filter-button ${filter === value ? 'is-active' : ''}`
+    const notificationStyle = (status, isMention = false) => ({
+        display: filter === 'all' || (filter === 'unread' && status === 'unread') || (filter === 'mentions' && isMention) ? undefined : 'none',
+    })
     return (
         <>
             <meta charSet="utf-8" />
@@ -49,75 +56,223 @@ export default function Notifications() {
             />
             <style
                 dangerouslySetInnerHTML={{
-                    __html: "\n    body {\n      min-height: max(884px, 100dvh);\n    }\n  "
+                    __html: "\n    body {\n      min-height: 100vh;\n      background: #faf9f7;\n    }\n  "
                 }}
             />
             {/* Top Navigation Anchor */}
-            <header className="sticky top-0 w-full z-50 glass-nav border-b border-outline-variant/30 shadow-sm flex items-center justify-between px-margin_mobile h-top_nav_height">
-                <div className="flex items-center gap-4">
+            <header className="notification-header sticky top-0 w-full z-50 flex items-center justify-between">
+                <div className="notification-header-title flex items-center">
                     <a
-                        className="material-symbols-outlined text-primary p-2 active:scale-95 duration-200"
+                        className="notification-back-link material-symbols-outlined active:scale-95 duration-200"
                         data-icon="arrow_back"
                         href="index.html"
                     >
                         arrow_back
                     </a>
-                    <h1 className="font-headline-lg text-headline-lg text-on-surface">
+                    <h1 className="notification-title">
                         Notifications
                     </h1>
                 </div>
                 <a
-                    className="material-symbols-outlined text-primary p-2 active:scale-95 duration-200"
+                    className="notification-settings-link material-symbols-outlined active:scale-95 duration-200"
                     data-icon="settings"
                     href="profile.html"
                 >
                     settings
                 </a>
             </header>
-            <main className="max-w-container_max_width mx-auto pb-32">
+            <main className="notifications-page notification-main">
                 {/* Filter Tabs Section */}
-                <section className="px-margin_mobile py-4 sticky top-[72px] z-40 bg-surface/95 backdrop-blur-md">
+                <section className="notification-filter-section">
                     <div
-                        className="flex gap-stack_gap_md overflow-x-auto no-scrollbar py-2"
+                        className="notification-filter-row flex overflow-x-auto no-scrollbar"
                         id="notif-filter-group"
                         role="group"
                         aria-label="Filter notifications"
                     >
                         <button
                             type="button"
-                            className="px-6 py-2 rounded-full bg-primary text-on-primary font-label-md text-label-md shadow-md shadow-primary/20 transition-all"
+                            className={filterButtonClass('all')}
                             data-filter="all"
-                            aria-pressed="true"
+                            aria-pressed={filter === 'all'}
+                            onClick={() => setFilter('all')}
                         >
                             All
                         </button>
                         <button
                             type="button"
-                            className="px-6 py-2 rounded-full bg-surface-container text-on-surface-variant font-label-md text-label-md hover:bg-surface-variant transition-colors"
+                            className={filterButtonClass('unread')}
                             data-filter="unread"
-                            aria-pressed="false"
+                            aria-pressed={filter === 'unread'}
+                            onClick={() => setFilter('unread')}
                         >
                             Unread
                         </button>
                         <button
                             type="button"
-                            className="px-6 py-2 rounded-full bg-surface-container text-on-surface-variant font-label-md text-label-md hover:bg-surface-variant transition-colors"
+                            className={filterButtonClass('mentions')}
                             data-filter="mentions"
-                            aria-pressed="false"
+                            aria-pressed={filter === 'mentions'}
+                            onClick={() => setFilter('mentions')}
                         >
                             Mentions
                         </button>
                     </div>
                 </section>
                 {/* Notification List */}
-                <div className="px-margin_mobile flex flex-col gap-4 mt-2" id="notif-list">
+                <div className="notification-list flex flex-col" id="notif-list">
                     {/* AI Recommendation Card */}
                     <div
-                        className="ev-card spotlight ev-fade-up ev-stagger-2 ev-fade-up ev-stagger-1 group relative bg-surface-container-lowest p-5 rounded-xl border border-outline-variant/50 flex gap-4 cursor-pointer"
+                        className="notification-card ev-card spotlight ev-fade-up ev-stagger-2 ev-fade-up ev-stagger-1 group relative bg-surface-container-lowest p-5 rounded-xl border border-outline-variant/50 flex gap-4 cursor-pointer"
                         data-notif=""
                         data-status="unread"
+                        style={notificationStyle('unread')}
                         onClick={() => navigate('/app/opportunity')}
                     >
+                        <style>{`
+                                    .notifications-page {
+                                        background: #faf9f7;
+                                        color: #171717;
+                                    }
+                                    .notification-header {
+                                        height: 50px;
+                                        padding: 0 20px;
+                                        background: #fcfbff;
+                                        border-bottom: 1px solid #ebe9e8;
+                                        box-shadow: none;
+                                        backdrop-filter: none;
+                                    }
+                                    .notification-header-title {
+                                        gap: 18px;
+                                    }
+                                    .notification-back-link,
+                                    .notification-settings-link {
+                                        padding: 0;
+                                        font-size: 17px;
+                                        color: #ff4d2e;
+                                    }
+                                    .notification-title {
+                                        margin: 0;
+                                        color: #101114;
+                                        font-family: Outfit, sans-serif;
+                                        font-size: 30px;
+                                        font-weight: 700;
+                                        line-height: 1;
+                                    }
+                                    .notification-main {
+                                        width: min(840px, calc(100% - 32px));
+                                        margin: 0 auto;
+                                        padding-bottom: 48px;
+                                    }
+                                    .notification-filter-section {
+                                        position: static;
+                                        padding: 15px 0 20px;
+                                        background: transparent;
+                                        backdrop-filter: none;
+                                    }
+                                    .notification-filter-row {
+                                        gap: 14px;
+                                        padding: 0;
+                                    }
+                                    .notification-filter-button {
+                                        flex: 0 0 auto;
+                                        height: 24px;
+                                        padding: 0 15px;
+                                        border: 0;
+                                        border-radius: 999px;
+                                        background: #eeece6;
+                                        color: #55565c;
+                                        font-family: Inter, sans-serif;
+                                        font-size: 9px;
+                                        font-weight: 600;
+                                        line-height: 24px;
+                                        white-space: nowrap;
+                                        transition: background-color 150ms ease, color 150ms ease;
+                                    }
+                                    .notification-filter-button.is-active {
+                                        background: #ff4d2e;
+                                        color: #fff;
+                                        box-shadow: none;
+                                    }
+                                    .notification-list {
+                                        gap: 11px;
+                                        margin-top: 0;
+                                    }
+                                    .notification-card {
+                                        height: 114px;
+                                        min-height: 114px;
+                                        padding: 20px;
+                                        gap: 18px;
+                                        align-items: center;
+                                        border: 1px solid #ebe9e5;
+                                        border-radius: 12px;
+                                        background: #fff;
+                                        box-shadow: none;
+                                    }
+                                    .notification-card > div:first-of-type {
+                                        width: 32px;
+                                        height: 32px;
+                                        flex: 0 0 32px;
+                                    }
+                                    .notification-card > div:first-of-type .material-symbols-outlined {
+                                        font-size: 17px;
+                                    }
+                                    .notification-card > div:nth-of-type(2) {
+                                        min-width: 0;
+                                    }
+                                    .notification-card .font-label-sm {
+                                        font-size: 9px;
+                                        line-height: 1.3;
+                                    }
+                                    .notification-card .font-body-md {
+                                        font-size: 11px;
+                                        line-height: 1.4;
+                                    }
+                                    .notification-card .active-dot {
+                                        width: 5px;
+                                        height: 5px;
+                                    }
+                                    .notification-card [class*="px-3"][class*="py-1"] {
+                                        padding: 3px 9px;
+                                        font-size: 9px;
+                                        line-height: 12px;
+                                    }
+                                    .notification-card .italic {
+                                        margin-top: 7px;
+                                        padding: 9px;
+                                        font-size: 9px;
+                                        line-height: 14px;
+                                    }
+                                    .notification-card .absolute {
+                                        width: 3px;
+                                    }
+                                    .notification-card button {
+                                        min-height: 24px;
+                                        padding: 0 10px;
+                                        font-size: 9px;
+                                        line-height: 24px;
+                                    }
+                                    @media (max-width: 600px) {
+                                        .notification-header {
+                                            padding: 0 14px;
+                                        }
+                                        .notification-title {
+                                            font-size: 25px;
+                                        }
+                                        .notification-main {
+                                            width: calc(100% - 28px);
+                                        }
+                                        .notification-card {
+                                            height: auto;
+                                            min-height: 114px;
+                                            padding: 14px;
+                                            gap: 12px;
+                                        }
+                                        .notification-card .font-body-md {
+                                            padding-right: 0;
+                                        }
+                                    }
+                                `}</style>
                         <div className="flex-shrink-0 w-12 h-12 rounded-full bg-secondary-container/10 flex items-center justify-center border border-secondary-container/20">
                             <span
                                 className="material-symbols-outlined text-secondary"
@@ -157,9 +312,10 @@ export default function Notifications() {
                     </div>
                     {/* Deadline Reminder Card */}
                     <div
-                        className="ev-card spotlight ev-fade-up ev-stagger-2 ev-fade-up ev-stagger-2 group relative bg-surface-container-lowest p-5 rounded-xl border border-outline-variant/50 flex gap-4 cursor-pointer"
+                        className="notification-card ev-card spotlight ev-fade-up ev-stagger-2 ev-fade-up ev-stagger-2 group relative bg-surface-container-lowest p-5 rounded-xl border border-outline-variant/50 flex gap-4 cursor-pointer"
                         data-notif=""
                         data-status="unread"
+                        style={notificationStyle('unread')}
                         onClick={() => navigate('/app/opportunity')}
                     >
                         <div className="flex-shrink-0 w-12 h-12 rounded-full bg-error-container/10 flex items-center justify-center border border-error-container/20">
@@ -192,9 +348,10 @@ export default function Notifications() {
                     </div>
                     {/* Application Update Card */}
                     <div
-                        className="ev-card spotlight ev-fade-up ev-stagger-2 ev-fade-up ev-stagger-3 group bg-surface-container-lowest p-5 rounded-xl border border-outline-variant/50 flex gap-4 cursor-pointer"
+                        className="notification-card ev-card spotlight ev-fade-up ev-stagger-2 ev-fade-up ev-stagger-3 group bg-surface-container-lowest p-5 rounded-xl border border-outline-variant/50 flex gap-4 cursor-pointer"
                         data-notif=""
                         data-status="read"
+                        style={notificationStyle('read')}
                         onClick={() => navigate('/app/opportunity')}
                     >
                         <div className="flex-shrink-0 w-12 h-12 rounded-full bg-primary-container/10 flex items-center justify-center border border-primary-container/20">
@@ -224,9 +381,10 @@ export default function Notifications() {
                     </div>
                     {/* Organization Post */}
                     <div
-                        className="ev-card spotlight ev-fade-up ev-stagger-2 ev-fade-up ev-stagger-4 group bg-surface-container-lowest p-5 rounded-xl border border-outline-variant/50 flex gap-4 cursor-pointer"
+                        className="notification-card ev-card spotlight ev-fade-up ev-stagger-2 ev-fade-up ev-stagger-4 group bg-surface-container-lowest p-5 rounded-xl border border-outline-variant/50 flex gap-4 cursor-pointer"
                         data-notif=""
                         data-status="read"
+                        style={notificationStyle('read')}
                         onClick={() => navigate('/app/posts')}
                     >
                         <div className="flex-shrink-0 w-12 h-12 rounded-full overflow-hidden border-2 border-surface shadow-sm bg-primary/10 flex items-center justify-center">
@@ -258,10 +416,11 @@ export default function Notifications() {
                     </div>
                     {/* Social Activity: Friend Request */}
                     <div
-                        className="group bg-surface-container-lowest p-5 rounded-xl border border-outline-variant/50 bento-card-hover flex gap-4 cursor-pointer"
+                        className="notification-card group bg-surface-container-lowest p-5 rounded-xl border border-outline-variant/50 bento-card-hover flex gap-4 cursor-pointer"
                         data-notif=""
                         data-status="read"
                         data-mention="true"
+                        style={notificationStyle('read', true)}
                         onClick={() => navigate('/app/profile')}
                     >
                         <div className="flex-shrink-0 w-12 h-12 rounded-full overflow-hidden border-2 border-surface shadow-sm">
@@ -273,7 +432,7 @@ export default function Notifications() {
                         </div>
                         <div className="flex-1 flex flex-col gap-1">
                             <div className="flex justify-between items-start">
-                                <div className="flex items-center gap-1">
+                                <div className="flex items-center gap-1 font-body-md text-body-md">
                                     <span className="font-semibold text-on-surface">Alex Rivera</span>
                                     <span className="text-on-surface-variant">
                                         sent you a friend request
@@ -284,7 +443,11 @@ export default function Notifications() {
                                 </span>
                             </div>
                             <div className="mt-3 flex gap-2">
-                                <button className="flex-1 bg-primary text-on-primary py-2 rounded-full font-label-md text-label-md active:scale-95 duration-150 transition-all">
+                                <button
+                                    className="flex-1 py-2 rounded-full font-label-md text-label-md active:scale-95 duration-150 transition-all"
+                                    style={{ backgroundColor: '#ff4d2e', color: '#fff' }}
+                                    onClick={(event) => event.stopPropagation()}
+                                >
                                     Accept
                                 </button>
                                 <button className="flex-1 bg-surface-container text-on-surface-variant py-2 rounded-full font-label-md text-label-md active:scale-95 duration-150 transition-all">
@@ -295,9 +458,10 @@ export default function Notifications() {
                     </div>
                     {/* Organization Post */}
                     <div
-                        className="group bg-surface-container-lowest p-5 rounded-xl border border-outline-variant/50 bento-card-hover flex gap-4 cursor-pointer"
+                        className="notification-card group bg-surface-container-lowest p-5 rounded-xl border border-outline-variant/50 bento-card-hover flex gap-4 cursor-pointer"
                         data-notif=""
                         data-status="read"
+                        style={notificationStyle('read')}
                         onClick={() => navigate('/app/posts')}
                     >
                         <div className="flex-shrink-0 w-12 h-12 rounded-full bg-tertiary-fixed flex items-center justify-center border border-tertiary/20">

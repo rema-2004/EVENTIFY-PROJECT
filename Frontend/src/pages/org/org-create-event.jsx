@@ -1,4 +1,11 @@
+import { useEffect } from 'react'
+import { initOrgCreateEvent } from './org-create-event-controller.js'
+import { useOrgPageControls } from './useOrgPageControls.js'
+
 export default function OrgCreateEvent() {
+    useOrgPageControls()
+    useEffect(() => initOrgCreateEvent(), [])
+
     return (
         <>
             <meta charSet="utf-8" />
@@ -680,13 +687,6 @@ export default function OrgCreateEvent() {
                                     Cancel
                                 </a>
                                 <div className="flex items-center gap-3">
-                                    <button
-                                        className="btn-secondary hidden"
-                                        id="wizard-back"
-                                        type="button"
-                                    >
-                                        Back
-                                    </button>
                                     <button className="btn-secondary" id="wizard-draft" type="button">
                                         Save Draft
                                     </button>
@@ -697,14 +697,6 @@ export default function OrgCreateEvent() {
                                         style={{ minWidth: 130 }}
                                     >
                                         Next
-                                    </button>
-                                    <button
-                                        className="btn-primary hidden"
-                                        id="wizard-publish"
-                                        type="button"
-                                        style={{ minWidth: 130 }}
-                                    >
-                                        Publish
                                     </button>
                                 </div>
                             </div>

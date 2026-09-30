@@ -171,11 +171,18 @@
 .org-cat-btn .btn-left {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 8px;
 }
 
 .org-cat-btn .cat-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 20px;
+    width: 20px;
+    height: 20px;
     font-size: 18px;
+    line-height: 1;
     color: var(--accent);
 }
 

@@ -1,4 +1,12 @@
+import { useEffect } from 'react'
+import './admin-reports-data.js'
+import { initAdminReports } from './admin-reports.js'
+import { useAdminPageControls } from './useAdminPageControls.js'
+
 export default function AdminReports() {
+    useAdminPageControls()
+    useEffect(() => initAdminReports(), [])
+
     return (
         <>
             <meta charSet="utf-8" />

@@ -45,3 +45,13 @@
 .global-language-switcher--above-app-nav {
     bottom: calc(84px + env(safe-area-inset-bottom) + 12px);
 }
+
+html[dir="rtl"] .admin-accent-sidebar,
+html[dir="rtl"] .org-accent-sidebar {
+    border-right: 0;
+    border-left: 1px solid var(--border, rgba(14, 17, 22, 0.1));
+}
+
+html[dir="rtl"] .text-left {
+    text-align: right;
+}

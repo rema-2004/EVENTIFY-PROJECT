@@ -4,7 +4,11 @@ import { RTL_LANGUAGES } from '../i18n'
 import { LanguageContext } from './language-context'
 
 function applyDirection(lang) {
-    const dir = RTL_LANGUAGES.includes(lang) ? 'rtl' : 'ltr'
+    const normalizedLanguage = lang?.toLowerCase()
+    const isRtl = RTL_LANGUAGES.some(
+        (rtlLanguage) => normalizedLanguage === rtlLanguage || normalizedLanguage?.startsWith(`${rtlLanguage}-`),
+    )
+    const dir = isRtl ? 'rtl' : 'ltr'
     document.documentElement.dir = dir
     document.documentElement.lang = lang
 }
@@ -28,7 +32,9 @@ export function LanguageProvider({ children }) {
         <LanguageContext.Provider
             value={{
                 language: i18n.language,
-                isRtl: RTL_LANGUAGES.includes(i18n.language),
+                isRtl: RTL_LANGUAGES.some((rtlLanguage) =>
+                    i18n.language?.toLowerCase().startsWith(rtlLanguage),
+                ),
                 setLanguage,
                 toggleLanguage,
             }}

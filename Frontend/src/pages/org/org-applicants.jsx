@@ -1,4 +1,11 @@
+import { useEffect } from 'react'
+import { initOrgApplicants } from './org-applicants.js'
+import { useOrgPageControls } from './useOrgPageControls.js'
+
 export default function OrgApplicants() {
+    useOrgPageControls({ mobileNavigation: false })
+    useEffect(() => initOrgApplicants(), [])
+
     return (
         <>
             <meta charSet="utf-8" />

@@ -1,4 +1,7 @@
+import { useAdminPageControls } from './useAdminPageControls.js'
+
 export default function AdminEventReviewDetails() {
+    useAdminPageControls()
     return (
         <>
             <meta charSet="utf-8" />
@@ -303,11 +306,11 @@ export default function AdminEventReviewDetails() {
                                 readiness.
                             </p>
                         </div>
-                        <div className="flex gap-3">
-                            <button type="button" className="btn-danger-outline">
+                        <div className="flex gap-3" data-review-container="">
+                            <button type="button" className="btn-danger-outline" data-ui-action="reject">
                                 Reject with reason
                             </button>
-                            <button type="button" className="btn-success">
+                            <button type="button" className="btn-success" data-ui-action="approve">
                                 Approve publish
                             </button>
                         </div>

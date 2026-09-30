@@ -1,4 +1,9 @@
+import { useOrgPageControls } from './useOrgPageControls.js'
+import { useOrgPosts } from './useOrgPosts.js'
+
 export default function OrgPosts() {
+    useOrgPageControls()
+    useOrgPosts()
     return (
         <>
             <meta charSet="utf-8" />

@@ -1,4 +1,7 @@
+import { useAdminPageControls } from './useAdminPageControls.js'
+
 export default function AdminCategories() {
+    useAdminPageControls()
     return (
         <>
             <meta charSet="utf-8" />

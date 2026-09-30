@@ -1,5 +1,7 @@
 /* Admin Audit Log page — rendering, filtering, sorting, pagination, export (mock only). */
-(function () {
+export function initAdminAuditLog() {
+    const eventController = new AbortController();
+    const listen = (target, type, handler) => target?.addEventListener(type, handler, { signal: eventController.signal });
     const store = window.AdminAuditLogData;
     if (!store) return;
 
@@ -264,10 +266,10 @@
 
     function closeActivityDetails() { detailsDialog.close(); }
 
-    $('#btn-details-close').addEventListener('click', closeActivityDetails);
-    detailsDialog.addEventListener('click', (e) => { if (e.target === detailsDialog) closeActivityDetails(); });
+    listen($('#btn-details-close'), 'click', closeActivityDetails);
+    listen(detailsDialog, 'click', (e) => { if (e.target === detailsDialog) closeActivityDetails(); });
 
-    tbody.addEventListener('click', (e) => {
+    listen(tbody, 'click', (e) => {
         const btn = e.target.closest('[data-action="view"]');
         if (!btn) return;
         const row = btn.closest('tr[data-id]');
@@ -322,29 +324,29 @@
     }
 
     /* --- wiring ---------------------------------------------------------------- */
-    $('#audit-search').addEventListener('input', (e) => { state.query = e.target.value.trim().toLowerCase(); state.page = 1; renderAuditLogs(); });
-    $('#audit-filter-user').addEventListener('change', (e) => { state.user = e.target.value; state.page = 1; renderAuditLogs(); });
-    $('#audit-filter-type').addEventListener('change', (e) => { state.type = e.target.value; state.page = 1; renderAuditLogs(); });
-    $('#audit-filter-role').addEventListener('change', (e) => { state.role = e.target.value; state.page = 1; renderAuditLogs(); });
-    $('#audit-filter-status').addEventListener('change', (e) => { state.status = e.target.value; state.page = 1; renderAuditLogs(); });
-    $('#audit-filter-location').addEventListener('change', (e) => { state.location = e.target.value; state.page = 1; renderAuditLogs(); });
-    $('#audit-filter-range').addEventListener('change', (e) => {
+    listen($('#audit-search'), 'input', (e) => { state.query = e.target.value.trim().toLowerCase(); state.page = 1; renderAuditLogs(); });
+    listen($('#audit-filter-user'), 'change', (e) => { state.user = e.target.value; state.page = 1; renderAuditLogs(); });
+    listen($('#audit-filter-type'), 'change', (e) => { state.type = e.target.value; state.page = 1; renderAuditLogs(); });
+    listen($('#audit-filter-role'), 'change', (e) => { state.role = e.target.value; state.page = 1; renderAuditLogs(); });
+    listen($('#audit-filter-status'), 'change', (e) => { state.status = e.target.value; state.page = 1; renderAuditLogs(); });
+    listen($('#audit-filter-location'), 'change', (e) => { state.location = e.target.value; state.page = 1; renderAuditLogs(); });
+    listen($('#audit-filter-range'), 'change', (e) => {
         state.range = e.target.value;
         $('#audit-custom-range').hidden = state.range !== 'custom';
         state.page = 1;
         renderAuditLogs();
     });
-    $('#audit-range-start').addEventListener('change', (e) => { state.customStart = e.target.value; state.page = 1; renderAuditLogs(); });
-    $('#audit-range-end').addEventListener('change', (e) => { state.customEnd = e.target.value; state.page = 1; renderAuditLogs(); });
+    listen($('#audit-range-start'), 'change', (e) => { state.customStart = e.target.value; state.page = 1; renderAuditLogs(); });
+    listen($('#audit-range-end'), 'change', (e) => { state.customEnd = e.target.value; state.page = 1; renderAuditLogs(); });
 
-    $('#btn-advanced-toggle').addEventListener('click', () => {
+    listen($('#btn-advanced-toggle'), 'click', () => {
         const panel = $('#audit-advanced-panel');
         panel.hidden = !panel.hidden;
     });
     [['#audit-adv-ip', 'ip'], ['#audit-adv-device', 'device'], ['#audit-adv-browser', 'browser'], ['#audit-adv-os', 'os'], ['#audit-adv-session', 'sessionId']]
-        .forEach(([sel, key]) => $(sel).addEventListener('input', (e) => { state.adv[key] = e.target.value.trim(); state.page = 1; renderAuditLogs(); }));
+        .forEach(([sel, key]) => listen($(sel), 'input', (e) => { state.adv[key] = e.target.value.trim(); state.page = 1; renderAuditLogs(); }));
 
-    $$('.dash-table th[data-sort]').forEach(th => th.addEventListener('click', () => {
+    $$('.dash-table th[data-sort]').forEach(th => listen(th, 'click', () => {
         const column = th.dataset.sort;
         if (state.sortKey === column) state.sortDir = state.sortDir === 'asc' ? 'desc' : 'asc';
         else { state.sortKey = column; state.sortDir = 'asc'; }
@@ -355,31 +357,32 @@
         renderAuditLogs();
     }));
 
-    pagination.addEventListener('click', (e) => {
+    listen(pagination, 'click', (e) => {
         const btn = e.target.closest('button[data-page]');
         if (!btn || btn.disabled) return;
         state.page = Number(btn.dataset.page);
         renderAuditLogs();
     });
 
-    $('#audit-rows-per-page').addEventListener('change', (e) => { state.pageSize = Number(e.target.value); state.page = 1; renderAuditLogs(); });
+    listen($('#audit-rows-per-page'), 'change', (e) => { state.pageSize = Number(e.target.value); state.page = 1; renderAuditLogs(); });
 
-    $('#btn-reset-filters').addEventListener('click', resetFilters);
-    $('#empty-reset-btn').addEventListener('click', resetFilters);
-    $('#btn-refresh').addEventListener('click', showLoading);
+    listen($('#btn-reset-filters'), 'click', resetFilters);
+    listen($('#empty-reset-btn'), 'click', resetFilters);
+    listen($('#btn-refresh'), 'click', showLoading);
 
     const exportMenu = $('#export-menu');
-    $('#btn-export').addEventListener('click', (e) => { e.stopPropagation(); exportMenu.hidden = !exportMenu.hidden; });
-    exportMenu.addEventListener('click', (e) => {
+    listen($('#btn-export'), 'click', (e) => { e.stopPropagation(); exportMenu.hidden = !exportMenu.hidden; });
+    listen(exportMenu, 'click', (e) => {
         const btn = e.target.closest('[data-format]');
         if (!btn) return;
         exportAuditLogs(btn.dataset.format);
         exportMenu.hidden = true;
     });
-    document.addEventListener('click', (e) => { if (!e.target.closest('.row-menu')) exportMenu.hidden = true; });
+    listen(document, 'click', (e) => { if (!e.target.closest('.row-menu')) exportMenu.hidden = true; });
 
     /* --- init ------------------------------------------------------------ */
     populateFilters();
     renderAuditLogs();
     renderSecurityActivity();
-})();
+    return () => eventController.abort();
+}

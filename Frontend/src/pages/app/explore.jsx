@@ -1,8 +1,15 @@
+import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 export default function Explore() {
     const navigate = useNavigate()
+    const [category, setCategory] = useState('all')
     const openOpportunity = () => navigate('/app/opportunity')
+    const categoryButtonClass = (value) =>
+        `px-5 py-2 rounded-full font-label-md text-label-md whitespace-nowrap transition-colors ${category === value ? 'tab-active' : 'bg-surface-container text-on-surface-variant hover:bg-primary-container/20'}`
+    const categoryCardStyle = (value) => ({
+        display: category === 'all' || category === value ? undefined : 'none',
+    })
     return (
         <>
             <meta charSet="utf-8" />
@@ -152,32 +159,42 @@ export default function Explore() {
                     {/* Category Tabs */}
                     <div className="flex gap-3 overflow-x-auto pb-1" id="category-tabs">
                         <button
-                            className="tab-active px-5 py-2 rounded-full font-label-md text-label-md whitespace-nowrap transition-colors"
+                            className={categoryButtonClass('all')}
                             data-cat="all"
+                            aria-pressed={category === 'all'}
+                            onClick={() => setCategory('all')}
                         >
                             All
                         </button>
                         <button
-                            className="bg-surface-container text-on-surface-variant px-5 py-2 rounded-full font-label-md text-label-md whitespace-nowrap transition-colors hover:bg-primary-container/20"
+                            className={categoryButtonClass('competition')}
                             data-cat="competition"
+                            aria-pressed={category === 'competition'}
+                            onClick={() => setCategory('competition')}
                         >
                             Competitions
                         </button>
                         <button
-                            className="bg-surface-container text-on-surface-variant px-5 py-2 rounded-full font-label-md text-label-md whitespace-nowrap transition-colors hover:bg-primary-container/20"
+                            className={categoryButtonClass('event')}
                             data-cat="event"
+                            aria-pressed={category === 'event'}
+                            onClick={() => setCategory('event')}
                         >
                             Events
                         </button>
                         <button
-                            className="bg-surface-container text-on-surface-variant px-5 py-2 rounded-full font-label-md text-label-md whitespace-nowrap transition-colors hover:bg-primary-container/20"
+                            className={categoryButtonClass('workshop')}
                             data-cat="workshop"
+                            aria-pressed={category === 'workshop'}
+                            onClick={() => setCategory('workshop')}
                         >
                             Workshops
                         </button>
                         <button
-                            className="bg-surface-container text-on-surface-variant px-5 py-2 rounded-full font-label-md text-label-md whitespace-nowrap transition-colors hover:bg-primary-container/20"
+                            className={categoryButtonClass('course')}
                             data-cat="course"
+                            aria-pressed={category === 'course'}
+                            onClick={() => setCategory('course')}
                         >
                             Courses
                         </button>
@@ -197,6 +214,7 @@ export default function Explore() {
                     <div
                         className="ev-card spotlight ev-fade-up ev-stagger-2 bg-surface-container-lowest border border-outline-variant/30 rounded-xl overflow-hidden shadow-sm group cursor-pointer"
                         data-cat="competition"
+                        style={categoryCardStyle('competition')}
                         onClick={openOpportunity}
                     >
                         <div className="h-40 relative overflow-hidden">
@@ -237,6 +255,7 @@ export default function Explore() {
                     <div
                         className="ev-card spotlight ev-fade-up ev-stagger-2 bg-surface-container-lowest border border-outline-variant/30 rounded-xl overflow-hidden shadow-sm group cursor-pointer"
                         data-cat="workshop"
+                        style={categoryCardStyle('workshop')}
                         onClick={openOpportunity}
                     >
                         <div className="h-40 relative overflow-hidden">
@@ -277,6 +296,7 @@ export default function Explore() {
                     <div
                         className="ev-card spotlight ev-fade-up ev-stagger-2 bg-surface-container-lowest border border-outline-variant/30 rounded-xl overflow-hidden shadow-sm group cursor-pointer"
                         data-cat="competition"
+                        style={categoryCardStyle('competition')}
                         onClick={openOpportunity}
                     >
                         <div className="h-40 relative overflow-hidden">
@@ -317,6 +337,7 @@ export default function Explore() {
                     <div
                         className="ev-card spotlight ev-fade-up ev-stagger-2 bg-surface-container-lowest border border-outline-variant/30 rounded-xl overflow-hidden shadow-sm group cursor-pointer"
                         data-cat="competition"
+                        style={categoryCardStyle('competition')}
                         onClick={openOpportunity}
                     >
                         <div className="h-40 relative overflow-hidden">
@@ -357,6 +378,7 @@ export default function Explore() {
                     <div
                         className="ev-card spotlight ev-fade-up ev-stagger-2 bg-surface-container-lowest border border-outline-variant/30 rounded-xl overflow-hidden shadow-sm group cursor-pointer"
                         data-cat="event"
+                        style={categoryCardStyle('event')}
                         onClick={openOpportunity}
                     >
                         <div className="h-40 relative overflow-hidden">
@@ -397,6 +419,7 @@ export default function Explore() {
                     <div
                         className="ev-card spotlight ev-fade-up ev-stagger-2 bg-surface-container-lowest border border-outline-variant/30 rounded-xl overflow-hidden shadow-sm group cursor-pointer"
                         data-cat="course"
+                        style={categoryCardStyle('course')}
                         onClick={openOpportunity}
                     >
                         <div className="h-40 relative overflow-hidden bg-gradient-to-br from-primary/20 to-secondary/20 flex items-center justify-center">
@@ -435,6 +458,7 @@ export default function Explore() {
                     <div
                         className="ev-card spotlight ev-fade-up ev-stagger-2 bg-surface-container-lowest border border-outline-variant/30 rounded-xl overflow-hidden shadow-sm group cursor-pointer"
                         data-cat="workshop"
+                        style={categoryCardStyle('workshop')}
                         onClick={openOpportunity}
                     >
                         <div className="h-40 relative overflow-hidden bg-gradient-to-br from-secondary/20 to-primary/10 flex items-center justify-center">
@@ -473,6 +497,7 @@ export default function Explore() {
                     <div
                         className="ev-card spotlight ev-fade-up ev-stagger-2 bg-surface-container-lowest border border-outline-variant/30 rounded-xl overflow-hidden shadow-sm group cursor-pointer"
                         data-cat="course"
+                        style={categoryCardStyle('course')}
                         onClick={openOpportunity}
                     >
                         <div className="h-40 relative overflow-hidden bg-gradient-to-br from-tertiary/20 to-primary/10 flex items-center justify-center">

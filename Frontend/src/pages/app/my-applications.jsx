@@ -189,7 +189,7 @@ export default function MyApplications() {
                     <div
                         className="ev-card spotlight ev-fade-up ev-stagger-2 ev-fade-up ev-stagger-1 bg-surface-container-lowest p-5 rounded-xl border border-outline-variant/50 flex flex-col sm:flex-row sm:items-center gap-4"
                         data-status="pending"
-                        hidden={activeFilter !== 'all' && activeFilter !== 'pending'}
+                        style={{ display: activeFilter === 'all' || activeFilter === 'pending' ? undefined : 'none' }}
                     >
                         <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
                             <span className="material-symbols-outlined text-primary">
@@ -217,7 +217,7 @@ export default function MyApplications() {
                     <div
                         className="ev-card spotlight ev-fade-up ev-stagger-2 ev-fade-up ev-stagger-2 bg-surface-container-lowest p-5 rounded-xl border border-outline-variant/50 flex flex-col sm:flex-row sm:items-center gap-4"
                         data-status="pending"
-                        hidden={activeFilter !== 'all' && activeFilter !== 'pending'}
+                        style={{ display: activeFilter === 'all' || activeFilter === 'pending' ? undefined : 'none' }}
                     >
                         <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
                             <span className="material-symbols-outlined text-primary">
@@ -245,7 +245,7 @@ export default function MyApplications() {
                     <div
                         className="ev-card spotlight ev-fade-up ev-stagger-2 ev-fade-up ev-stagger-3 bg-surface-container-lowest p-5 rounded-xl border border-outline-variant/50 flex flex-col sm:flex-row sm:items-center gap-4"
                         data-status="pending"
-                        hidden={activeFilter !== 'all' && activeFilter !== 'pending'}
+                        style={{ display: activeFilter === 'all' || activeFilter === 'pending' ? undefined : 'none' }}
                     >
                         <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
                             <span className="material-symbols-outlined text-primary">groups</span>
@@ -271,7 +271,7 @@ export default function MyApplications() {
                     <div
                         className="ev-card spotlight ev-fade-up ev-stagger-2 ev-fade-up ev-stagger-4 bg-surface-container-lowest p-5 rounded-xl border border-outline-variant/50 flex flex-col sm:flex-row sm:items-center gap-4"
                         data-status="accepted"
-                        hidden={activeFilter !== 'all' && activeFilter !== 'accepted'}
+                        style={{ display: activeFilter === 'all' || activeFilter === 'accepted' ? undefined : 'none' }}
                     >
                         <div className="w-12 h-12 rounded-full bg-success/10 flex items-center justify-center flex-shrink-0">
                             <span
@@ -302,7 +302,7 @@ export default function MyApplications() {
                     <div
                         className="ev-card spotlight ev-fade-up ev-stagger-2 ev-fade-up ev-stagger-5 bg-surface-container-lowest p-5 rounded-xl border border-outline-variant/50 flex flex-col sm:flex-row sm:items-center gap-4"
                         data-status="accepted"
-                        hidden={activeFilter !== 'all' && activeFilter !== 'accepted'}
+                        style={{ display: activeFilter === 'all' || activeFilter === 'accepted' ? undefined : 'none' }}
                     >
                         <div className="w-12 h-12 rounded-full bg-success/10 flex items-center justify-center flex-shrink-0">
                             <span
@@ -333,7 +333,7 @@ export default function MyApplications() {
                     <div
                         className="ev-card spotlight ev-fade-up ev-stagger-2 bg-surface-container-lowest p-5 rounded-xl border border-outline-variant/50 flex flex-col sm:flex-row sm:items-center gap-4 opacity-80"
                         data-status="rejected"
-                        hidden={activeFilter !== 'all' && activeFilter !== 'rejected'}
+                        style={{ display: activeFilter === 'all' || activeFilter === 'rejected' ? undefined : 'none' }}
                     >
                         <div className="w-12 h-12 rounded-full bg-error/10 flex items-center justify-center flex-shrink-0">
                             <span className="material-symbols-outlined text-error">cancel</span>

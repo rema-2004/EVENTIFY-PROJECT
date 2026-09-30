@@ -1,7 +1,9 @@
 import { useEffect } from 'react'
 import './dashboard.js'
+import { useAdminPageControls } from './useAdminPageControls.js'
 
 export default function AdminDashboard() {
+    useAdminPageControls({ mobileNavigation: false })
     useEffect(() => window.initAdminDashboard(), [])
 
     return (

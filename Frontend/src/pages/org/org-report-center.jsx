@@ -1,4 +1,16 @@
+import { useEffect } from 'react'
+import './sidebar.css'
+import '../admin/admin.css'
+import './org-dashboard.css'
+import './org-reports.css'
+import './org-reports-data.js'
+import { initOrgReportCenter } from './org-report-center.js'
+import { useOrgPageControls } from './useOrgPageControls.js'
+
 export default function OrgReportCenter() {
+    useOrgPageControls({ mobileNavigation: false })
+    useEffect(() => initOrgReportCenter(), [])
+
     return (
         <>
             <meta charSet="utf-8" />
@@ -348,50 +360,37 @@ export default function OrgReportCenter() {
                             </div>
                         </div>
                     </div>
-                    {/* Page Header: breadcrumb, title, description, page-specific actions */}
-                    <div className="org-page-header">
-                        <div className="flex items-center gap-2 text-sm mb-2">
-                            <a
-                                className="text-on-surface-variant hover:text-primary transition-colors"
-                                href="/org/dashboard"
-                            >
-                                Dashboard
-                            </a>
-                            <span className="text-outline">/</span>
-                            <span className="font-semibold text-on-surface">Reports</span>
-                        </div>
-                        <p className="profile-page-desc">
-                            Create, preview, and download reports for your own events and
-                            organization.
+                    <div className="org-report-toolbar">
+                        <p className="org-report-toolbar__description">
+                            Create, preview, and download reports for your events and organization.
+                            <span id="org-reports-updated" className="org-report-toolbar__updated" />
                         </p>
-                        <div className="org-page-header__actions">
-                            <button
-                                type="button"
-                                id="btn-refresh-org-reports"
-                                className="btn-secondary"
-                            >
-                                <span
-                                    className="material-symbols-outlined"
-                                    style={{ fontSize: 18, verticalAlign: "middle" }}
-                                >
-                                    refresh
-                                </span>{" "}
-                                Refresh
+                        <div className="org-report-toolbar__actions">
+                            <label className="sr-only" htmlFor="org-report-range">Date range</label>
+                            <select className="input-primary org-report-range" id="org-report-range" defaultValue="month">
+                                <option value="today">Today</option>
+                                <option value="week">This week</option>
+                                <option value="month">This month</option>
+                                <option value="quarter">Last 3 months</option>
+                                <option value="year">This year</option>
+                                <option value="all">All time</option>
+                                <option value="custom">Custom range...</option>
+                            </select>
+                            <button type="button" id="btn-refresh-org-reports" className="btn-secondary">
+                                <span className="material-symbols-outlined" style={{ fontSize: 18 }}>refresh</span> Refresh
                             </button>
-                            <button
-                                type="button"
-                                id="btn-create-org-report"
-                                className="btn-primary"
-                            >
-                                <span
-                                    className="material-symbols-outlined"
-                                    style={{ fontSize: 18, verticalAlign: "middle" }}
-                                >
-                                    add
-                                </span>{" "}
-                                Create Report
+                            <button type="button" id="btn-export-org-reports" className="btn-primary">
+                                <span className="material-symbols-outlined" style={{ fontSize: 18 }}>download</span> Export
                             </button>
                         </div>
+                    </div>
+                    <div className="org-report-custom-range" id="org-report-custom-range" hidden>
+                        <label className="sr-only" htmlFor="org-report-range-start">From date</label>
+                        <input className="input-primary" type="date" id="org-report-range-start" />
+                        <span>to</span>
+                        <label className="sr-only" htmlFor="org-report-range-end">To date</label>
+                        <input className="input-primary" type="date" id="org-report-range-end" />
+                        <button type="button" className="btn-primary" id="org-report-range-apply">Apply</button>
                     </div>
                     {/* Stat cards */}
                     <div className="mb-8 grid grid-cols-2 gap-4 lg:grid-cols-4">
@@ -442,7 +441,12 @@ export default function OrgReportCenter() {
                     </div>
                     {/* Quick create */}
                     <section className="mb-8">
-                        <h2 className="mb-4 text-title-lg font-semibold">Quick Create</h2>
+                        <div className="org-report-section-heading">
+                            <h2 className="text-title-lg font-semibold">Quick Create</h2>
+                            <button type="button" id="btn-create-org-report" className="btn-primary">
+                                <span className="material-symbols-outlined" style={{ fontSize: 18 }}>add</span> Create Report
+                            </button>
+                        </div>
                         <div
                             className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-5"
                             id="org-quick-create-grid"

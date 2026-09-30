@@ -1,4 +1,7 @@
+import { useOrgPageControls } from './useOrgPageControls.js'
+
 export default function OrgProfile() {
+    useOrgPageControls()
     return (
         <>
             <meta charSet="utf-8" />
@@ -532,7 +535,7 @@ export default function OrgProfile() {
                                         </div>
                                         <a
                                             className="org-program-link"
-                                            href="/org/applicants?event=evt-001"
+                                            href="/org/applicants?event=evt-1"
                                         >
                                             View applicants{" "}
                                             <span

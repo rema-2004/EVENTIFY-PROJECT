@@ -1,4 +1,11 @@
+import { useEffect } from 'react'
+import { initOrgOpportunities } from './org-opportunities.js'
+import { useOrgPageControls } from './useOrgPageControls.js'
+
 export default function OrgOpportunities() {
+    useOrgPageControls({ mobileNavigation: false })
+    useEffect(() => initOrgOpportunities(), [])
+
     return (
         <>
             <meta charSet="utf-8" />
