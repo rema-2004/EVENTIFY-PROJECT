@@ -42,7 +42,11 @@ class StoreEventRequest extends FormRequest
             // Dates required only when submitting for review.
             'start_date' => [$isSubmit ? 'required' : 'nullable', 'date'],
             'end_date' => [$isSubmit ? 'required' : 'nullable', 'date', 'after_or_equal:start_date'],
-            'registration_deadline' => ['nullable', 'date', 'before_or_equal:end_date'],
+           'registration_deadline' => [
+             'nullable',
+              'date',
+            Rule::when($this->filled('start_date'), ['before_or_equal:start_date']),
+                            ],
 
             'cover_image' => ['nullable', 'image', 'mimes:png,jpg,jpeg,webp', 'max:5120'], // 5MB
 
