@@ -84,8 +84,6 @@ class EventController extends Controller
                 'start_date' => $validated['start_date'] ?? null,
                 'end_date' => $validated['end_date'] ?? null,
                 'registration_deadline' => $validated['registration_deadline'] ?? null,
-                // 'action' is required in StoreEventRequest, so it's
-                // always present here after validation passes.
                 'status' => $validated['action'] === 'submit'
                     ? Event::STATUS_PENDING_REVIEW
                     : Event::STATUS_DRAFT,
@@ -131,8 +129,6 @@ class EventController extends Controller
         $validated = $request->validated();
 
         DB::transaction(function () use ($validated, $event, $request) {
-            // Regenerate the slug ONLY if the title actually changed —
-            // otherwise the URL would silently go stale after an edit.
             if (isset($validated['title']) && $validated['title'] !== $event->title) {
                 $validated['slug'] = $this->generateUniqueSlug($validated['title']);
             }
@@ -156,14 +152,18 @@ class EventController extends Controller
             $type = $request->input('type', $event->type);
 
             if ($type === Event::TYPE_COMPETITION) {
-                // Empty search array — the HasOne relation already scopes
-                // to this event's id automatically (Eloquent fills the
-                // foreign key on create too), so no need to repeat it.
+                // team_size/prize are only overwritten when actually sent
+                // in this request — otherwise a partial update (e.g. just
+                // the title) would silently wipe the existing values.
                 $event->competition()->updateOrCreate(
                     [],
                     [
-                        'team_size' => $request->input('team_size'),
-                        'prize' => $request->input('prize'),
+                        'team_size' => $request->has('team_size')
+                            ? $request->input('team_size')
+                            : $event->competition?->team_size,
+                        'prize' => $request->has('prize')
+                            ? $request->input('prize')
+                            : $event->competition?->prize,
                     ]
                 );
             } else {
@@ -176,16 +176,6 @@ class EventController extends Controller
         return $this->success(new EventResource($event), 'Event updated');
     }
 
-    /**
-     * DELETE /api/v1/org/events/{event}
-     * Only draft events can be deleted — an event that was ever submitted
-     * for review (pending/published/rejected) is kept for record-keeping.
-     *
-     * Note: this is a SOFT delete (Event uses SoftDeletes), so the
-     * related "competitions" row is NOT removed by the DB cascade —
-     * it stays linked to the now-soft-deleted event, simply unreachable
-     * through normal queries. That's acceptable for drafts.
-     */
     public function destroy(Event $event): JsonResponse
     {
         $organization = Auth::guard('organization')->user();
