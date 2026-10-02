@@ -1,0 +1,111 @@
+/* Admin Reports page — additions not already covered by admin.css / theme.css */
+
+.quick-report-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 14px;
+    padding: 18px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    background: var(--surface);
+    transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease;
+}
+.quick-report-card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-card);
+    border-color: var(--accent);
+}
+.quick-report-card__icon {
+    display: grid;
+    place-items: center;
+    width: 40px;
+    height: 40px;
+    border-radius: var(--radius-sm);
+    background: var(--accent-soft);
+    color: var(--accent);
+    flex-shrink: 0;
+}
+html.dark .quick-report-card__icon { background: rgba(255, 77, 46, 0.16); }
+.quick-report-card h4 { font-size: 14px; font-weight: 700; }
+.quick-report-card p { font-size: 12.5px; color: var(--text-muted); margin-top: 2px; }
+
+/* Sortable table headers */
+.dash-table th[data-sort] { cursor: pointer; user-select: none; white-space: nowrap; }
+.dash-table th[data-sort]:hover { color: var(--text); }
+.dash-table th[data-sort] .sort-arrow { display: inline-block; margin-left: 4px; opacity: .35; font-size: 10px; }
+.dash-table th[data-sort][data-dir="asc"] .sort-arrow,
+.dash-table th[data-sort][data-dir="desc"] .sort-arrow { opacity: 1; color: var(--accent); }
+.dash-table th[data-sort][data-dir="asc"] .sort-arrow::before { content: "\25B2"; }
+.dash-table th[data-sort][data-dir="desc"] .sort-arrow::before { content: "\25BC"; }
+.dash-table th[data-sort]:not([data-dir]) .sort-arrow::before { content: "\25B2"; }
+
+/* Pagination */
+.pagination {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 16px;
+    flex-wrap: wrap;
+}
+.pagination button {
+    min-width: 32px;
+    height: 32px;
+    padding: 0 8px;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--text);
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color .15s ease, color .15s ease;
+}
+.pagination button:hover:not(:disabled) { background: var(--surface-2); }
+.pagination button[aria-current="true"] { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+.pagination button:disabled { opacity: .4; cursor: default; }
+
+/* Row "more" menu */
+.row-menu { position: relative; display: inline-flex; z-index: 50; }
+.row-menu__panel {
+    position: absolute;
+    top: calc(100% + 6px);
+    right: 0;
+    z-index: 50;
+    min-width: 140px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-elevated, 0 12px 30px -10px rgba(0,0,0,.25));
+    padding: 6px;
+}
+.row-menu__panel[hidden] { display: none; }
+.row-menu__panel button {
+    display: block;
+    width: 100%;
+    text-align: left;
+    padding: 8px 10px;
+    border-radius: var(--radius-sm);
+    font-size: 13px;
+    color: var(--text);
+    background: transparent;
+    border: none;
+    cursor: pointer;
+}
+.row-menu__panel button:hover { background: var(--surface-2); }
+
+/* Wide dialog variant for create/preview modals */
+.confirm-dialog--wide {
+    max-width: 640px;
+}
+.confirm-dialog--wide .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 14px; }
+.confirm-dialog--wide label { display: flex; flex-direction: column; gap: 6px; font-size: 13px; font-weight: 600; color: var(--text-muted); }
+.confirm-dialog--wide .format-options { display: flex; gap: 16px; flex-wrap: wrap; }
+.confirm-dialog--wide .format-options label { flex-direction: row; align-items: center; gap: 6px; font-weight: 500; color: var(--text); }
+
+@media (max-width: 640px) {
+    .confirm-dialog--wide .form-row { grid-template-columns: 1fr; }
+    .confirm-dialog--wide,
+    .confirm-dialog { width: calc(100% - 16px); max-width: none; }
+}

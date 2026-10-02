@@ -1,0 +1,16 @@
+@import './styles/base/tailwind.css';
+@import './styles/base/theme.css';
+@import './styles/base/theme-overrides.css';
+@import './styles/base/icons.css';
+
+
+
+html[dir="rtl"] .admin-accent-sidebar,
+html[dir="rtl"] .org-accent-sidebar {
+    border-right: 0;
+    border-left: 1px solid var(--border, rgba(14, 17, 22, 0.1));
+}
+
+html[dir="rtl"] .text-left {
+    text-align: right;
+}
