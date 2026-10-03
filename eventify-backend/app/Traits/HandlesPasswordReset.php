@@ -2,23 +2,25 @@
 
 namespace App\Traits;
 
+use App\Mail\PasswordResetMail;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 
 trait HandlesPasswordReset
 {
     /**
-     * Creates a reset token, stores it (hashed) in the given table,
-     * and "delivers" the reset link.
-     *
-     * TODO (end of project): replace the Log::info() call with an actual
-     * Mail::to($email)->send(new PasswordResetMail($link)) once SMTP is
-     * configured. Everything else in this flow stays the same.
+     * Creates a reset token, stores it (hashed), and delivers the reset link.
+     * Uses MAIL_MAILER=log during local dev — no code change needed for
+     * production, just flip MAIL_MAILER in .env once SMTP is configured.
      */
-    protected function createAndLogResetToken(string $table, string $email, string $frontendResetPath): void
-    {
+    protected function createAndDeliverResetToken(
+        string $table,
+        string $email,
+        string $frontendResetPath
+    ): void {
         $token = Str::random(64);
 
         DB::table($table)->updateOrInsert(
@@ -29,25 +31,37 @@ trait HandlesPasswordReset
             ]
         );
 
-        $resetLink = "{$frontendResetPath}?token={$token}&email=" . urlencode($email);
+        $resetLink = $frontendResetPath . '?' . http_build_query([
+            'token' => $token,
+            'email' => $email,
+        ]);
 
-        // TEMPORARY: logged instead of emailed, per project decision.
-        Log::info('[Password Reset Link] ' . $resetLink);
+        Mail::to($email)->send(new PasswordResetMail($resetLink));
     }
 
     /**
-     * Validates a submitted token against the stored (hashed) one,
-     * and enforces the expiry window. Returns true if valid.
+     * Validates the submitted token against the stored hash,
+     * enforces the expiry window, and cleans up if expired.
      */
-    protected function isResetTokenValid(string $table, string $email, string $token, int $expiryMinutes = 60): bool
-    {
+    protected function isResetTokenValid(
+        string $table,
+        string $email,
+        string $token,
+        int $expiryMinutes = 60
+    ): bool {
         $record = DB::table($table)->where('email', $email)->first();
 
         if (! $record) {
             return false;
         }
 
-        if (now()->diffInMinutes($record->created_at) > $expiryMinutes) {
+        // DB::table() returns a raw stdClass — created_at is a plain
+        // string here, NOT a Carbon instance, so it must be parsed
+        // explicitly before using Carbon comparison methods.
+        $createdAt = Carbon::parse($record->created_at);
+
+        if ($createdAt->lt(now()->subMinutes($expiryMinutes))) {
+            DB::table($table)->where('email', $email)->delete();
             return false;
         }
 
