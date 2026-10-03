@@ -1,3 +1,4 @@
+import AppLangToggle from '../../components/app/AppLangToggle'
 import AppFooter from '../../components/app/AppFooter'
 import { useEffect, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
@@ -76,7 +77,9 @@ export default function RafeeqVoice() {
                         <span className="font-title-md text-title-md">{ar ? 'رفيق' : 'Rafeeq'}</span>
                     </div>
 
-                    <div className="flex rounded-full bg-surface-container p-1">
+                    <div className="flex items-center gap-3">
+<AppLangToggle />
+<div className="flex rounded-full bg-surface-container p-1">
                         <button
                             className="rounded-full px-4 py-1.5 font-label-sm text-label-sm text-on-surface-variant transition-all hover:text-on-surface"
                             type="button"
@@ -93,6 +96,7 @@ export default function RafeeqVoice() {
                             {ar ? 'صوت' : 'Voice'}
                         </button>
                     </div>
+</div>
                 </div>
             </header>
 

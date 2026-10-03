@@ -1,6 +1,6 @@
 import { Link, useLocation } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
-import { useLanguage } from '../../hooks/useLanguage'
+import AppLangToggle from './AppLangToggle'
 
 const NAV_LINKS = [
     { to: '/app', label: 'appNav.home' },
@@ -22,7 +22,6 @@ const PROFILE_IMAGE =
 export default function AppNavbar() {
     const { pathname } = useLocation()
     const { t } = useTranslation()
-    const { language, toggleLanguage } = useLanguage()
 
     const isActive = (to) => {
         if (to === '/app') return pathname === '/app'
@@ -62,15 +61,7 @@ export default function AppNavbar() {
                     </div>
                 </div>
                 <div className="flex items-center gap-4">
-                    {/* Language toggle — matches visitor Navbar design */}
-                    <button
-                        className="h-10 px-4 rounded-xl flex items-center justify-center font-bold text-sm text-on-surface-variant border border-outline-variant hover:text-primary hover:border-primary transition-colors"
-                        type="button"
-                        aria-label={t('nav.toggleLanguage')}
-                        onClick={toggleLanguage}
-                    >
-                        {language === 'ar' ? 'AR' : 'EN'}
-                    </button>
+                    <AppLangToggle />
                     {/* Theme toggle */}
                     <button
                         className="theme-toggle w-9 h-9 rounded-full flex items-center justify-center text-on-surface-variant hover:text-primary hover:bg-surface-container-low dark:text-gray-300 dark:hover:text-white dark:hover:bg-white/10 transition-colors"

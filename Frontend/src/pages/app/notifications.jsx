@@ -1,3 +1,4 @@
+import AppLangToggle from '../../components/app/AppLangToggle'
 import AppFooter from '../../components/app/AppFooter'
 import AppPageHead from '../../components/app/AppPageHead'
 import { useState } from 'react'
@@ -179,6 +180,8 @@ export default function Notifications() {
                             {ar ? 'الإشعارات' : 'Notifications'}
                         </h1>
                     </div>
+<div className="flex items-center gap-2">
+<AppLangToggle />
                     <Link
                         className="material-symbols-outlined p-2 active:scale-95 transition-transform"
                         style={{ color: '#FF4D2E' }}
@@ -186,6 +189,7 @@ export default function Notifications() {
                     >
                         settings
                     </Link>
+</div>
                 </header>
 
                 <main className="max-w-[840px] mx-auto pb-40 px-4 sm:px-6">

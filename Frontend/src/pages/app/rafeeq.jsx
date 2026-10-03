@@ -1,3 +1,4 @@
+import AppLangToggle from '../../components/app/AppLangToggle'
 import AppFooter from '../../components/app/AppFooter'
 import AppPageHead from '../../components/app/AppPageHead'
 import { useState } from 'react'
@@ -70,7 +71,9 @@ export default function Rafeeq() {
                     </div>
 
                     {/* Mode toggle */}
-                    <div className="flex bg-surface-container rounded-full p-1">
+                    <div className="flex items-center gap-3">
+<AppLangToggle />
+<div className="flex bg-surface-container rounded-full p-1">
                         <button
                             type="button"
                             className="px-4 py-1.5 rounded-full font-label-sm text-label-sm transition-all"
@@ -87,6 +90,7 @@ export default function Rafeeq() {
                             {ar ? 'صوت' : 'Voice'}
                         </button>
                     </div>
+</div>
                 </div>
             </header>
 

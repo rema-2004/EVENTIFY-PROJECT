@@ -1,3 +1,4 @@
+import AppLangToggle from '../../components/app/AppLangToggle'
 import AppFooter from '../../components/app/AppFooter'
 import AppPageHead from '../../components/app/AppPageHead'
 import { useState } from 'react'
@@ -47,7 +48,8 @@ export default function TeamDashboard() {
                     <span className="material-symbols-outlined text-3xl" style={{ color: '#FF4D2E', fontVariationSettings: '"FILL" 1' }}>hub</span>
                     <span className="font-headline-md text-headline-md font-black" style={{ color: '#FF4D2E' }}>EVENTIFY</span>
                 </Link>
-                <Link className="ml-auto mr-3 font-label-md text-label-md" style={{ color: '#FF4D2E' }} to="/app/my-applications">
+                <AppLangToggle className="ml-auto mr-3" />
+                <Link className="mr-3 font-label-md text-label-md" style={{ color: '#FF4D2E' }} to="/app/my-applications">
                     {ar ? 'طلباتي' : 'My Applications'}
                 </Link>
                 <Link className="p-2 hover:bg-surface-container-low rounded-full transition-colors" to="/app/my-applications" aria-label="Close">
