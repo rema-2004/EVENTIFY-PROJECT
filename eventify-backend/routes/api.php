@@ -4,6 +4,7 @@ use App\Http\Controllers\Api\V1\AuthController;
 use App\Http\Controllers\Api\V1\OrgAuthController;
 use App\Http\Controllers\Api\V1\EventController;
 use App\Http\Controllers\Api\V1\Admin\OrganizationManagementController;
+use App\Http\Controllers\Api\V1\Admin\EventManagementController;
 use App\Http\Controllers\Api\V1\Organization\EventController as OrgEventController;
 use Illuminate\Support\Facades\Route;
 
@@ -21,18 +22,18 @@ Route::prefix('v1')->group(function () {
 
     // — Public auth routes ——————————————————————————————————————————
     Route::middleware('throttle:5,1')->group(function () {
-    // User Auth
-    Route::post('/register', [AuthController::class, 'register']);
-    Route::post('/login', [AuthController::class, 'login']);
-    Route::post('/forgot-password', [AuthController::class, 'forgotPassword']);
-    Route::post('/reset-password', [AuthController::class, 'resetPassword']);
+        // User Auth
+        Route::post('/register', [AuthController::class, 'register']);
+        Route::post('/login', [AuthController::class, 'login']);
+        Route::post('/forgot-password', [AuthController::class, 'forgotPassword']);
+        Route::post('/reset-password', [AuthController::class, 'resetPassword']);
 
-    // Organization Auth
-    Route::post('/org/register', [OrgAuthController::class, 'register']);
-    Route::post('/org/login', [OrgAuthController::class, 'login']);
-    Route::post('/org/forgot-password', [OrgAuthController::class, 'forgotPassword']);
-    Route::post('/org/reset-password', [OrgAuthController::class, 'resetPassword']);
-});
+        // Organization Auth
+        Route::post('/org/register', [OrgAuthController::class, 'register']);
+        Route::post('/org/login', [OrgAuthController::class, 'login']);
+        Route::post('/org/forgot-password', [OrgAuthController::class, 'forgotPassword']);
+        Route::post('/org/reset-password', [OrgAuthController::class, 'resetPassword']);
+    });
 
     // — Protected User routes (require Bearer token) ————————————————
     Route::middleware('auth:sanctum')->group(function () {
@@ -67,6 +68,12 @@ Route::prefix('v1')->group(function () {
         Route::get('/organizations/{organization}/license', [OrganizationManagementController::class, 'downloadLicense']);
         Route::patch('/organizations/{organization}/approve', [OrganizationManagementController::class, 'approve']);
         Route::patch('/organizations/{organization}/reject', [OrganizationManagementController::class, 'reject']);
+
+        // Events review
+        Route::get('/events', [EventManagementController::class, 'index']);
+        Route::get('/events/{event}', [EventManagementController::class, 'show']);
+        Route::patch('/events/{event}/approve', [EventManagementController::class, 'approve']);
+        Route::patch('/events/{event}/reject', [EventManagementController::class, 'reject']);
     });
 
 });
