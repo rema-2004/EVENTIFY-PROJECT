@@ -122,5 +122,7 @@ return [
         'driver' => env('APP_MAINTENANCE_DRIVER', 'file'),
         'store' => env('APP_MAINTENANCE_STORE', 'database'),
     ],
+    'frontend_reset_url'     => env('FRONTEND_RESET_URL', 'http://localhost:3000/auth/reset-password'),
 
+    'frontend_org_reset_url' => env('FRONTEND_ORG_RESET_URL', 'http://localhost:3000/auth/org/reset-password'),
 ];

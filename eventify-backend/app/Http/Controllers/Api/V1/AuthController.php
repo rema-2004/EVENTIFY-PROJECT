@@ -3,32 +3,35 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Auth\ForgotPasswordRequest;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Http\Requests\Auth\RegisterRequest;
+use App\Http\Requests\Auth\ResetPasswordRequest;
 use App\Http\Resources\UserResource;
 use App\Models\User;
 use App\Traits\ApiResponse;
+use App\Traits\HandlesPasswordReset;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Http\JsonResponse;
+use Laravel\Sanctum\PersonalAccessToken;
 
 class AuthController extends Controller
 {
-    use ApiResponse;
+    use ApiResponse, HandlesPasswordReset;
 
     /**
      * POST /api/v1/register
      */
     public function register(RegisterRequest $request): JsonResponse
     {
-        // استخدام validated لجلب البيانات الآمنة فقط
         $validated = $request->validated();
 
         $user = User::create([
             'name' => $validated['name'],
             'email' => $validated['email'],
             'phone' => $validated['phone'] ?? null,
-            'password' => Hash::make($validated['password']),
+            'password' => $validated['password'],
             // role/status are NEVER accepted from client input.
         ]);
 
@@ -73,16 +76,79 @@ class AuthController extends Controller
      * POST /api/v1/logout
      */
     public function logout(): JsonResponse
-{
-    /** @var \App\Models\User $user */
-    $user = Auth::user();
+    {
+        /** @var \App\Models\User $user */
+        $user = Auth::user();
 
-    /** @var \Laravel\Sanctum\PersonalAccessToken $token */
-    $token = $user->currentAccessToken();
-    $token->delete();
+        $token = $user->currentAccessToken();
 
-    return $this->success(data: null, message: 'Logged out successfully');
-}
+        // TransientToken (session-based) has no delete() — only real API tokens do.
+        if ($token instanceof PersonalAccessToken) {
+            $token->delete();
+        }
+
+        return $this->success(null, 'Logged out successfully');
+    }
+
+    /**
+     * POST /api/v1/forgot-password
+     *
+     * Always returns a generic success message, whether or not the
+     * email exists — prevents attackers from using this endpoint to
+     * discover which emails are registered (account enumeration).
+     */
+    public function forgotPassword(ForgotPasswordRequest $request): JsonResponse
+    {
+        $email = $request->validated('email');
+        $user = User::where('email', $email)->first();
+
+        if ($user) {
+            $this->createAndDeliverResetToken(
+                'password_reset_tokens',
+                $email,
+                config('app.frontend_reset_url')
+            );
+        }
+
+        return $this->success(
+            null,
+            'If an account with that email exists, a password reset link has been sent.'
+        );
+    }
+
+    /**
+     * POST /api/v1/reset-password
+     */
+    public function resetPassword(ResetPasswordRequest $request): JsonResponse
+    {
+        $validated = $request->validated();
+
+        $valid = $this->isResetTokenValid(
+            'password_reset_tokens',
+            $validated['email'],
+            $validated['token']
+        );
+
+        if (! $valid) {
+            return $this->error('This password reset link is invalid or has expired.', 400);
+        }
+
+        $user = User::where('email', $validated['email'])->first();
+
+        if (! $user) {
+            return $this->error('This password reset link is invalid or has expired.', 400);
+        }
+
+        $user->update(['password' => $validated['password']]);
+
+        // One-time use — remove the token so it can't be replayed.
+        $this->deleteResetToken('password_reset_tokens', $validated['email']);
+
+        // Revoke all existing sessions for security, since the password changed.
+        $user->tokens()->delete();
+
+        return $this->success(null, 'Password has been reset successfully. Please log in again.');
+    }
 
     /**
      * GET /api/v1/me
