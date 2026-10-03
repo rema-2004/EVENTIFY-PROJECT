@@ -857,6 +857,115 @@ html.dark .btn-danger-outline {
     border-color: rgba(255, 156, 146, 0.35);
 }
 
+/* --- confirmed moderation button states (feedback for Approve / Reject) --- */
+.btn-success.is-confirmed,
+.btn-success.is-confirmed[disabled] {
+    background: #1e7a4f !important;
+    color: #ffffff !important;
+    border-color: #1e7a4f !important;
+    opacity: 1 !important;
+    cursor: default !important;
+    box-shadow: 0 0 0 3px rgba(30, 122, 79, 0.25);
+    pointer-events: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    animation: confirmPop 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.btn-danger-outline.is-confirmed,
+.btn-danger.is-confirmed,
+.btn-danger-outline.is-confirmed[disabled] {
+    background: #b3261e !important;
+    color: #ffffff !important;
+    border-color: #b3261e !important;
+    opacity: 1 !important;
+    cursor: default !important;
+    box-shadow: 0 0 0 3px rgba(179, 38, 30, 0.25);
+    pointer-events: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    animation: confirmPop 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes confirmPop {
+    0% { transform: scale(0.92); }
+    50% { transform: scale(1.06); }
+    100% { transform: scale(1); }
+}
+
+/* Card highlight states */
+.section-card--approved {
+    border-left: 4px solid #1e7a4f !important;
+    background: linear-gradient(to right, rgba(30, 122, 79, 0.05), transparent 40%) !important;
+    transition: border-color 0.3s ease, background 0.3s ease;
+}
+
+html.dark .section-card--approved {
+    border-left-color: #6ddba4 !important;
+    background: linear-gradient(to right, rgba(109, 219, 164, 0.08), transparent 40%) !important;
+}
+
+.section-card--rejected {
+    border-left: 4px solid #b3261e !important;
+    background: linear-gradient(to right, rgba(179, 38, 30, 0.05), transparent 40%) !important;
+    transition: border-color 0.3s ease, background 0.3s ease;
+}
+
+html.dark .section-card--rejected {
+    border-left-color: #ff9c92 !important;
+    background: linear-gradient(to right, rgba(255, 156, 146, 0.08), transparent 40%) !important;
+}
+
+/* Inline action confirmation banner inside card */
+.event-action-banner {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 14px;
+    border-radius: var(--radius-pill, 9999px);
+    font-size: 13px;
+    font-weight: 600;
+    margin-top: 14px;
+    animation: fadeInSlide 0.3s ease;
+}
+
+@keyframes fadeInSlide {
+    from {
+        opacity: 0;
+        transform: translateY(6px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.event-action-banner--approved {
+    background: rgba(30, 122, 79, 0.12);
+    color: #1e7a4f;
+    border: 1px solid rgba(30, 122, 79, 0.25);
+}
+
+html.dark .event-action-banner--approved {
+    background: rgba(109, 219, 164, 0.15);
+    color: #6ddba4;
+    border-color: rgba(109, 219, 164, 0.35);
+}
+
+.event-action-banner--rejected {
+    background: rgba(179, 38, 30, 0.1);
+    color: #b3261e;
+    border: 1px solid rgba(179, 38, 30, 0.25);
+}
+
+html.dark .event-action-banner--rejected {
+    background: rgba(255, 156, 146, 0.15);
+    color: #ff9c92;
+    border-color: rgba(255, 156, 146, 0.35);
+}
+
 /* --- shared section card (replaces copy-pasted Tailwind card recipes) --- */
 .section-card {
     background: var(--surface-container-lowest, var(--surface));

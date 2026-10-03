@@ -39,12 +39,12 @@
     window.EventifyUI.toast = toast;
 
     const OUTCOMES = {
-        approve: { status: 'approved', badge: 'badge--approved' },
-        accept: { status: 'approved', badge: 'badge--approved' },
-        verify: { status: 'approved', badge: 'badge--approved' },
-        reject: { status: 'rejected', badge: 'badge--rejected' },
-        suspend: { status: 'suspended', badge: 'badge--rejected' },
-        reinstate: { status: 'active', badge: 'badge--approved' }
+        approve: { status: 'approved', label: 'Approved', badge: 'badge--approved', icon: 'check_circle' },
+        accept: { status: 'approved', label: 'Accepted', badge: 'badge--approved', icon: 'check_circle' },
+        verify: { status: 'approved', label: 'Verified', badge: 'badge--approved', icon: 'verified' },
+        reject: { status: 'rejected', label: 'Rejected', badge: 'badge--rejected', icon: 'cancel' },
+        suspend: { status: 'suspended', label: 'Suspended', badge: 'badge--rejected', icon: 'block' },
+        reinstate: { status: 'active', label: 'Reinstated', badge: 'badge--approved', icon: 'check_circle' }
     };
 
     // Verify-organizations summary cards: move one application out of "Pending review"
@@ -85,22 +85,59 @@
         if (row.dataset.uiDecided) return;
         row.dataset.uiDecided = outcome.status;
 
-        let chip = row.querySelector('.badge');
-        if (!chip) {
-            // Review cards carry no status pill of their own — add one so the
-            // decision stays visible after the buttons retire.
-            chip = document.createElement('span');
-            button.parentElement.insertBefore(chip, button);
-        }
-        chip.className = `badge ${outcome.badge}`;
-        chip.textContent = outcome.status;
+        // 1. Visibly update the clicked button itself so the user knows their click registered!
+        button.disabled = true;
+        button.classList.add('is-confirmed');
+        button.classList.add(outcome.status === 'approved' ? 'is-approved' : 'is-rejected');
+        button.style.pointerEvents = 'none';
+        button.innerHTML = `<span class="material-symbols-outlined" style="font-size:18px;display:inline-flex;align-items:center;">${outcome.icon}</span><span>${outcome.label}</span>`;
 
+        // 2. Smoothly retire/hide the sibling actions in this row
         row.querySelectorAll('[data-ui-action]').forEach(other => {
             if (other === button) return;
             other.disabled = true;
-            other.style.opacity = '0.45';
+            other.style.transition = 'all 0.25s ease';
+            other.style.opacity = '0';
+            other.style.transform = 'scale(0.85)';
             other.style.pointerEvents = 'none';
+            setTimeout(() => {
+                other.style.display = 'none';
+            }, 250);
         });
+
+        // 3. Update or create the status badge chip on the card
+        let chip = row.querySelector('[data-status-badge]') || row.querySelector('.badge');
+        if (!chip) {
+            chip = document.createElement('span');
+            chip.setAttribute('data-status-badge', '');
+            const headerBadgeContainer = row.querySelector('.badge-container') || row.querySelector('.text-secondary')?.parentElement;
+            if (headerBadgeContainer) {
+                headerBadgeContainer.appendChild(chip);
+            } else {
+                button.parentElement.insertBefore(chip, button);
+            }
+        }
+        chip.className = `badge ${outcome.badge}`;
+        chip.innerHTML = `<span class="material-symbols-outlined" style="font-size:14px;vertical-align:middle;margin-inline-end:4px;">${outcome.icon}</span>${outcome.label}`;
+
+        // 4. Highlight the card with color-coded border & background
+        row.classList.remove('section-card--approved', 'section-card--rejected');
+        row.classList.add(`section-card--${outcome.status}`);
+
+        // 5. Add inline confirmation banner inside the card
+        let banner = row.querySelector('.event-action-banner');
+        if (!banner) {
+            banner = document.createElement('div');
+            const targetContainer = row.querySelector('.event-content-body') || row.querySelector('p.font-body-md')?.parentElement || row.firstElementChild;
+            if (targetContainer) {
+                targetContainer.appendChild(banner);
+            }
+        }
+        if (banner) {
+            const dest = outcome.status === 'approved' ? 'Approved' : 'Rejected';
+            banner.className = `event-action-banner event-action-banner--${outcome.status}`;
+            banner.innerHTML = `<span class="material-symbols-outlined" style="font-size:16px;">${outcome.icon}</span><span>Event ${outcome.label.toLowerCase()} · Visible in ${dest} tab</span>`;
+        }
 
         if (actionName === 'accept' || actionName === 'verify') {
             adjustStat('Pending review', -1);
@@ -110,15 +147,23 @@
             adjustStat('Rejected requests', 1);
         }
 
-        // Pages with a status-filter tab bar (e.g. /admin/events) track each
-        // row's status via data-status; keep it in sync and re-run the filter.
+        // 6. Update data-status and tab counters without hiding the card from view immediately
         if (row.dataset.status !== undefined) {
             row.dataset.status = outcome.status;
-            if (typeof window.refreshEventsFilter === 'function') window.refreshEventsFilter();
+
+            document.querySelectorAll('#events-tab-group [data-filter]').forEach(tabBtn => {
+                const count = [...document.querySelectorAll('#events-list [data-status]')]
+                    .filter(r => r.dataset.status === tabBtn.dataset.filter).length;
+                const countEl = tabBtn.querySelector('[data-filter-count]');
+                if (countEl) countEl.textContent = `(${count})`;
+            });
         }
 
-        // Show toast feedback: green for accept/approve, red for reject/suspend
-        const feedback = TOAST_MESSAGES[actionName] || { text: 'Done', tone: 'success' };
-        toast(feedback.text, feedback.tone);
+        // 7. Show toast feedback: green for accept/approve, red for reject/suspend
+        const eventTitle = row.querySelector('h3, h2')?.textContent?.trim();
+        const toastMsg = eventTitle 
+            ? `${eventTitle} ${outcome.label.toLowerCase()}` 
+            : (TOAST_MESSAGES[actionName]?.text || outcome.label);
+        toast(toastMsg, outcome.status === 'approved' ? 'success' : 'error');
     });
 })();

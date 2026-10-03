@@ -341,10 +341,16 @@ export default function AdminEvents() {
                             data-category="Course"
                         >
                             <div className="flex flex-col md:flex-row md:items-start justify-between gap-4">
-                                <div>
-                                    <span className="text-[10px] uppercase tracking-wider text-secondary font-bold">
-                                        Course
-                                    </span>
+                                <div className="event-content-body">
+                                    <div className="flex items-center gap-2 mb-1">
+                                        <span className="text-[10px] uppercase tracking-wider text-secondary font-bold">
+                                            Course
+                                        </span>
+                                        <span className="badge badge--pending" data-status-badge="">
+                                            <span className="material-symbols-outlined" style={{ fontSize: 14, verticalAlign: 'middle', marginInlineEnd: 4 }}>schedule</span>
+                                            Pending
+                                        </span>
+                                    </div>
                                     <h3 className="font-title-lg text-title-lg text-on-surface mt-1">
                                         DevOps Masterclass
                                     </h3>
@@ -356,7 +362,7 @@ export default function AdminEvents() {
                                         infrastructure as code over 6 weeks.
                                     </p>
                                 </div>
-                                <div className="flex flex-wrap gap-2">
+                                <div className="flex flex-wrap items-center gap-2 flex-shrink-0">
                                     <Link
                                         to="/admin/event-review-details"
                                         className="btn-secondary"
@@ -368,14 +374,16 @@ export default function AdminEvents() {
                                         className="btn-success"
                                         data-ui-action="approve"
                                     >
-                                        Approve
+                                        <span className="material-symbols-outlined" style={{ fontSize: 18 }}>check</span>
+                                        <span>Approve</span>
                                     </button>
                                     <button
                                         type="button"
                                         className="btn-danger-outline"
                                         data-ui-action="reject"
                                     >
-                                        Reject
+                                        <span className="material-symbols-outlined" style={{ fontSize: 18 }}>close</span>
+                                        <span>Reject</span>
                                     </button>
                                 </div>
                             </div>
@@ -386,10 +394,16 @@ export default function AdminEvents() {
                             data-category="Workshop"
                         >
                             <div className="flex flex-col md:flex-row md:items-start justify-between gap-4">
-                                <div>
-                                    <span className="text-[10px] uppercase tracking-wider text-secondary font-bold">
-                                        Workshop
-                                    </span>
+                                <div className="event-content-body">
+                                    <div className="flex items-center gap-2 mb-1">
+                                        <span className="text-[10px] uppercase tracking-wider text-secondary font-bold">
+                                            Workshop
+                                        </span>
+                                        <span className="badge badge--pending" data-status-badge="">
+                                            <span className="material-symbols-outlined" style={{ fontSize: 14, verticalAlign: 'middle', marginInlineEnd: 4 }}>schedule</span>
+                                            Pending
+                                        </span>
+                                    </div>
                                     <h3 className="font-title-lg text-title-lg text-on-surface mt-1">
                                         Quantum Computing Bootcamp
                                     </h3>
@@ -401,7 +415,7 @@ export default function AdminEvents() {
                                         advanced undergraduate students.
                                     </p>
                                 </div>
-                                <div className="flex flex-wrap gap-2">
+                                <div className="flex flex-wrap items-center gap-2 flex-shrink-0">
                                     <Link
                                         to="/admin/event-review-details"
                                         className="btn-secondary"
@@ -413,14 +427,16 @@ export default function AdminEvents() {
                                         className="btn-success"
                                         data-ui-action="approve"
                                     >
-                                        Approve
+                                        <span className="material-symbols-outlined" style={{ fontSize: 18 }}>check</span>
+                                        <span>Approve</span>
                                     </button>
                                     <button
                                         type="button"
                                         className="btn-danger-outline"
                                         data-ui-action="reject"
                                     >
-                                        Reject
+                                        <span className="material-symbols-outlined" style={{ fontSize: 18 }}>close</span>
+                                        <span>Reject</span>
                                     </button>
                                 </div>
                             </div>
@@ -431,10 +447,16 @@ export default function AdminEvents() {
                             data-category="Competition"
                         >
                             <div className="flex flex-col md:flex-row md:items-start justify-between gap-4">
-                                <div>
-                                    <span className="text-[10px] uppercase tracking-wider text-secondary font-bold">
-                                        Competition
-                                    </span>
+                                <div className="event-content-body">
+                                    <div className="flex items-center gap-2 mb-1">
+                                        <span className="text-[10px] uppercase tracking-wider text-secondary font-bold">
+                                            Competition
+                                        </span>
+                                        <span className="badge badge--pending" data-status-badge="">
+                                            <span className="material-symbols-outlined" style={{ fontSize: 14, verticalAlign: 'middle', marginInlineEnd: 4 }}>schedule</span>
+                                            Pending
+                                        </span>
+                                    </div>
                                     <h3 className="font-title-lg text-title-lg text-on-surface mt-1">
                                         Product Design Sprint
                                     </h3>
@@ -446,7 +468,7 @@ export default function AdminEvents() {
                                         hours, judged by industry mentors.
                                     </p>
                                 </div>
-                                <div className="flex flex-wrap gap-2">
+                                <div className="flex flex-wrap items-center gap-2 flex-shrink-0">
                                     <Link
                                         to="/admin/event-review-details"
                                         className="btn-secondary"
@@ -458,14 +480,16 @@ export default function AdminEvents() {
                                         className="btn-success"
                                         data-ui-action="approve"
                                     >
-                                        Approve
+                                        <span className="material-symbols-outlined" style={{ fontSize: 18 }}>check</span>
+                                        <span>Approve</span>
                                     </button>
                                     <button
                                         type="button"
                                         className="btn-danger-outline"
                                         data-ui-action="reject"
                                     >
-                                        Reject
+                                        <span className="material-symbols-outlined" style={{ fontSize: 18 }}>close</span>
+                                        <span>Reject</span>
                                     </button>
                                 </div>
                             </div>
@@ -476,10 +500,16 @@ export default function AdminEvents() {
                             data-category="Conference"
                         >
                             <div className="flex flex-col md:flex-row md:items-start justify-between gap-4">
-                                <div>
-                                    <span className="text-[10px] uppercase tracking-wider text-secondary font-bold">
-                                        Conference
-                                    </span>
+                                <div className="event-content-body">
+                                    <div className="flex items-center gap-2 mb-1">
+                                        <span className="text-[10px] uppercase tracking-wider text-secondary font-bold">
+                                            Conference
+                                        </span>
+                                        <span className="badge badge--pending" data-status-badge="">
+                                            <span className="material-symbols-outlined" style={{ fontSize: 14, verticalAlign: 'middle', marginInlineEnd: 4 }}>schedule</span>
+                                            Pending
+                                        </span>
+                                    </div>
                                     <h3 className="font-title-lg text-title-lg text-on-surface mt-1">
                                         Future of AI Summit
                                     </h3>
@@ -491,7 +521,7 @@ export default function AdminEvents() {
                                         AI, open to students and industry professionals.
                                     </p>
                                 </div>
-                                <div className="flex flex-wrap gap-2">
+                                <div className="flex flex-wrap items-center gap-2 flex-shrink-0">
                                     <Link
                                         to="/admin/event-review-details"
                                         className="btn-secondary"
@@ -503,14 +533,16 @@ export default function AdminEvents() {
                                         className="btn-success"
                                         data-ui-action="approve"
                                     >
-                                        Approve
+                                        <span className="material-symbols-outlined" style={{ fontSize: 18 }}>check</span>
+                                        <span>Approve</span>
                                     </button>
                                     <button
                                         type="button"
                                         className="btn-danger-outline"
                                         data-ui-action="reject"
                                     >
-                                        Reject
+                                        <span className="material-symbols-outlined" style={{ fontSize: 18 }}>close</span>
+                                        <span>Reject</span>
                                     </button>
                                 </div>
                             </div>
