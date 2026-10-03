@@ -3,19 +3,23 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Auth\ForgotPasswordRequest;
+use App\Http\Requests\Auth\ResetPasswordRequest;
 use App\Http\Requests\Organization\LoginOrganizationRequest;
 use App\Http\Requests\Organization\RegisterOrganizationRequest;
 use App\Http\Resources\OrganizationResource;
 use App\Models\Organization;
 use App\Traits\ApiResponse;
+use App\Traits\HandlesPasswordReset;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
-use Illuminate\Http\JsonResponse;
+use Laravel\Sanctum\PersonalAccessToken;
 
 class OrgAuthController extends Controller
 {
-    use ApiResponse;
+    use ApiResponse, HandlesPasswordReset;
 
     /**
      * POST /api/v1/org/register
@@ -29,13 +33,11 @@ class OrgAuthController extends Controller
             'slug' => $this->generateUniqueSlug($validated['name']),
             'email' => $validated['email'],
             'phone' => $validated['phone'] ?? null,
-            'password' => Hash::make($validated['password']),
+            'password' => $validated['password'],
             // status defaults to 'pending' at the DB level.
             // Organization CANNOT publish events until an admin approves it.
         ]);
 
-        // Tokens are issued on the "organization" Sanctum guard automatically,
-        // because Organization uses HasApiTokens just like User does.
         $token = $organization->createToken('eventify-org-token')->plainTextToken;
 
         return $this->success([
@@ -85,7 +87,13 @@ class OrgAuthController extends Controller
     {
         /** @var \App\Models\Organization $organization */
         $organization = Auth::guard('organization')->user();
-        $organization->currentAccessToken()->delete();
+
+        $token = $organization->currentAccessToken();
+
+        // TransientToken (session-based) has no delete() — only real API tokens do.
+        if ($token instanceof PersonalAccessToken) {
+            $token->delete();
+        }
 
         return $this->success(null, 'Logged out successfully');
     }
@@ -102,8 +110,62 @@ class OrgAuthController extends Controller
     }
 
     /**
+     * POST /api/v1/org/forgot-password
+     */
+    public function forgotPassword(ForgotPasswordRequest $request): JsonResponse
+    {
+        $email = $request->validated('email');
+        $organization = Organization::where('email', $email)->first();
+
+        if ($organization) {
+            $this->createAndDeliverResetToken(
+                'organization_password_reset_tokens',
+                $email,
+                config('app.frontend_org_reset_url')
+            );
+        }
+
+        return $this->success(
+            null,
+            'If an organization account with that email exists, a password reset link has been sent.'
+        );
+    }
+
+    /**
+     * POST /api/v1/org/reset-password
+     */
+    public function resetPassword(ResetPasswordRequest $request): JsonResponse
+    {
+        $validated = $request->validated();
+
+        $valid = $this->isResetTokenValid(
+            'organization_password_reset_tokens',
+            $validated['email'],
+            $validated['token']
+        );
+
+        if (! $valid) {
+            return $this->error('This password reset link is invalid or has expired.', 400);
+        }
+
+        $organization = Organization::where('email', $validated['email'])->first();
+
+        if (! $organization) {
+            return $this->error('This password reset link is invalid or has expired.', 400);
+        }
+
+        $organization->update(['password' => $validated['password']]);
+
+        $this->deleteResetToken('organization_password_reset_tokens', $validated['email']);
+
+        $organization->tokens()->delete();
+
+        return $this->success(null, 'Password has been reset successfully. Please log in again.');
+    }
+
+    /**
      * Generates a unique URL-friendly slug from the organization name.
-     * Appends a random suffix if the base slug is already taken.
+     * Appends a numeric suffix (-1, -2, ...) if the base slug is taken.
      */
     private function generateUniqueSlug(string $name): string
     {

@@ -21,14 +21,18 @@ Route::prefix('v1')->group(function () {
 
     // — Public auth routes ——————————————————————————————————————————
     Route::middleware('throttle:5,1')->group(function () {
-        // User Auth
-        Route::post('/register', [AuthController::class, 'register']);
-        Route::post('/login', [AuthController::class, 'login']);
+    // User Auth
+    Route::post('/register', [AuthController::class, 'register']);
+    Route::post('/login', [AuthController::class, 'login']);
+    Route::post('/forgot-password', [AuthController::class, 'forgotPassword']);
+    Route::post('/reset-password', [AuthController::class, 'resetPassword']);
 
-        // Organization Auth
-        Route::post('/org/register', [OrgAuthController::class, 'register']);
-        Route::post('/org/login', [OrgAuthController::class, 'login']);
-    });
+    // Organization Auth
+    Route::post('/org/register', [OrgAuthController::class, 'register']);
+    Route::post('/org/login', [OrgAuthController::class, 'login']);
+    Route::post('/org/forgot-password', [OrgAuthController::class, 'forgotPassword']);
+    Route::post('/org/reset-password', [OrgAuthController::class, 'resetPassword']);
+});
 
     // — Protected User routes (require Bearer token) ————————————————
     Route::middleware('auth:sanctum')->group(function () {
