@@ -94,20 +94,20 @@
 <main class="flex-grow flex items-center justify-center p-4 md:p-8">
 <div class="w-full max-w-xl mx-auto text-center space-y-8">
 <div class="inline-flex items-center gap-2 px-4 py-1.5 bg-surface-container-high rounded-full ev-fade-up ev-stagger-1">
-<span class="w-2 h-2 rounded-full bg-success"></span>
+<span id="reg-step-dot" class="w-2 h-2 rounded-full bg-success"></span>
 <span class="font-label-md text-label-md text-on-surface-variant">Step 3 of 3</span>
 </div>
-<div class="success-circle w-24 h-24 bg-success-container rounded-full flex items-center justify-center mx-auto">
-<span class="material-symbols-outlined text-success text-5xl" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+<div id="reg-circle" class="success-circle w-24 h-24 bg-success-container rounded-full flex items-center justify-center mx-auto">
+<span id="reg-circle-icon" class="material-symbols-outlined text-success text-5xl" style="font-variation-settings: 'FILL' 1;">check_circle</span>
 </div>
 <div class="space-y-3 ev-fade-up ev-stagger-2">
-<h1 class="font-headline-lg text-headline-lg text-on-surface">Registration Successful!</h1>
-<p class="font-body-lg text-body-lg text-on-surface-variant">You're registered as a solo participant for <span class="font-semibold text-on-surface">Global AI Innovation Challenge</span>. No team needed — you're all set to compete on your own.</p>
+<h1 id="reg-title" class="font-headline-lg text-headline-lg text-on-surface">Registration Successful!</h1>
+<p id="reg-body" class="font-body-lg text-body-lg text-on-surface-variant">You're registered as a solo participant for <span class="font-semibold text-on-surface">Global AI Innovation Challenge</span>. No team needed — you're all set to compete on your own.</p>
 </div>
 <div class="bg-surface-container-lowest border border-outline-variant/50 rounded-xl p-6 soft-shadow text-left space-y-3 ev-fade-up ev-stagger-3">
 <div class="flex items-center gap-3">
-<span class="material-symbols-outlined text-primary">person</span>
-<span class="font-label-md text-label-md text-on-surface">Participation type: <span class="font-bold">Solo</span></span>
+<span id="reg-type-icon" class="material-symbols-outlined text-primary">person</span>
+<span class="font-label-md text-label-md text-on-surface">Participation type: <span id="reg-type-label" class="font-bold">Solo</span></span>
 </div>
 <div class="flex items-center gap-3">
 <span class="material-symbols-outlined text-primary">mail</span>
@@ -116,6 +116,7 @@
 </div>
 <div class="flex flex-col sm:flex-row gap-3 justify-center pt-2 ev-fade-up ev-stagger-4">
 <a class="w-full sm:w-auto py-4 px-8 rounded-full border border-outline-variant text-on-surface font-title-lg text-title-lg hover:bg-surface-container-low active:scale-95 transition-all duration-200" href="opportunity.html">Back to Opportunity</a>
+<a id="reg-extra-action" class="hidden w-full sm:w-auto py-4 px-8 rounded-full border border-outline-variant text-on-surface font-title-lg text-title-lg hover:bg-surface-container-low active:scale-95 transition-all duration-200" href="team-dashboard.html">Team Dashboard</a>
 <a class="w-full sm:w-auto py-4 px-8 rounded-full bg-primary text-on-primary font-title-lg text-title-lg shadow-lg hover:bg-primary-container active:scale-95 transition-all duration-200" href="my-applications.html">Go to My Event</a>
 </div>
 </div>
@@ -160,6 +161,38 @@
 <div class="absolute -top-[20%] -left-[10%] w-[600px] h-[600px] bg-primary/5 rounded-full blur-3xl opacity-30"></div>
 <div class="absolute -bottom-[20%] -right-[10%] w-[600px] h-[600px] bg-success/5 rounded-full blur-3xl opacity-30"></div>
 </div>
+<script>
+// Registration outcome per path: ?type=solo (default) | create | join, plus ?team=<name>.
+(function () {
+    const q = new URLSearchParams(location.search);
+    const type = ['solo', 'create', 'join'].includes(q.get('type')) ? q.get('type') : 'solo';
+    const team = q.get('team') || 'your team';
+    const el = (id) => document.getElementById(id);
+    const competition = '<span class="font-semibold text-on-surface">Global AI Innovation Challenge</span>';
+    const teamName = '<span class="font-semibold text-on-surface">' + team.replace(/[<>&"]/g, '') + '</span>';
+    const outcomes = {
+        solo: { icon: 'person', title: 'Registration Successful!', label: 'Solo',
+            body: 'You\'re registered as a solo participant for ' + competition + '. No team needed — you\'re all set to compete on your own.' },
+        create: { icon: 'add_circle', title: 'Team Created!', label: 'Team leader',
+            body: 'You created ' + teamName + ' and are registered as its leader for ' + competition + '. Invite members from the team dashboard.' },
+        join: { icon: 'groups', title: 'Request Sent', label: 'Pending leader approval', pending: true,
+            body: 'Your request to join ' + teamName + ' was sent. Your registration for ' + competition + ' completes once the team leader approves.' }
+    };
+    const o = outcomes[type];
+    el('reg-title').textContent = o.title;
+    el('reg-body').innerHTML = o.body;
+    el('reg-type-icon').textContent = o.icon;
+    el('reg-type-label').textContent = o.label;
+    if (o.pending) {
+        el('reg-step-dot').className = 'w-2 h-2 rounded-full bg-primary';
+        el('reg-circle').classList.replace('bg-success-container', 'bg-surface-container-high');
+        el('reg-circle').style.animation = 'pop .7s ease';
+        el('reg-circle-icon').classList.replace('text-success', 'text-primary');
+        el('reg-circle-icon').textContent = 'schedule';
+    }
+    if (type === 'create') el('reg-extra-action').classList.remove('hidden');
+})();
+</script>
 <script src="../assets/js/ui-state.js"></script>
 <script src="nav.js"></script>
 <script src="../assets/js/motion.js"></script>

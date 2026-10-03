@@ -1,4 +1,5 @@
 import AppLangToggle from '../../components/app/AppLangToggle'
+import AppPageHead from '../../components/app/AppPageHead'
 import AppFooter from '../../components/app/AppFooter'
 import { useEffect, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
@@ -58,6 +59,7 @@ export default function RafeeqVoice() {
 
     return (
         <div className="flex min-h-screen flex-col bg-surface text-on-surface" dir={ar ? 'rtl' : 'ltr'}>
+            <AppPageHead title="Rafeeq Voice | EVENTIFY" />
             {/* Header */}
             <header className="sticky top-0 z-50 flex h-16 w-full items-center border-b border-outline-variant/30 bg-surface/90 px-container-margin-mobile backdrop-blur-md md:px-container-margin-desktop">
                 <div className="mx-auto flex w-full max-w-[900px] flex-wrap items-center justify-between gap-x-5 gap-y-2">

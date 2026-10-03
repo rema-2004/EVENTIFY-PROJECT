@@ -14,6 +14,24 @@ html:not(.dark) .bg-surface-container-low { background-color: #f4f3ef !important
 html:not(.dark) .bg-surface-container, html:not(.dark) .bg-surface-container-high { background-color: #edebe5 !important; }
 html:not(.dark) .text-on-background, html:not(.dark) .text-on-surface { color: #0b0c0e !important; }
 html:not(.dark) .text-on-surface-variant { color: #4a5058 !important; }
+/* --secondary / --tertiary are near-black and dark-gray: unreadable on dark surfaces, so lift them.
+   The "-fixed" chips keep their light background in both themes, so text on them stays dark. */
+html.dark .text-secondary { color: #e7e5e0 !important; }
+html.dark .text-tertiary { color: #a8a49c !important; }
+html.dark [class*="bg-primary-fixed"] .text-secondary,
+html.dark [class*="bg-secondary-fixed"] .text-secondary,
+html.dark [class*="bg-tertiary-fixed"] .text-secondary { color: #0e1116 !important; }
+html.dark [class*="bg-primary-fixed"] .text-tertiary,
+html.dark [class*="bg-secondary-fixed"] .text-tertiary,
+html.dark [class*="bg-tertiary-fixed"] .text-tertiary { color: #4a5058 !important; }
+/* Same for the error red, and the "highest" surface which otherwise stays light under light text. */
+html.dark .text-error { color: #ff8b82 !important; }
+html.dark [class*="bg-error-container"] .text-error,
+html.dark .bg-error-container.text-error { color: #b3261e !important; }
+html.dark .bg-surface-container-highest { background-color: #2b2f36 !important; }
+html.dark .text-success { color: #5fd09a !important; }
+html.dark [class*="bg-success-container"] .text-success,
+html.dark .bg-success-container.text-success { color: #1e7a4f !important; }
 html.dark [class*="border-outline-variant"] { border-color: rgba(255, 255, 255, 0.14) !important; }
 html.dark input[type="checkbox"], html.dark input[type="radio"] {
     background-color: #1c1f24 !important;

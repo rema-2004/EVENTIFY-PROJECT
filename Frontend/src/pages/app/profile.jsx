@@ -1,4 +1,5 @@
 import AppPageHead from '../../components/app/AppPageHead'
+import AppLangToggle from '../../components/app/AppLangToggle'
 import AppFooter from '../../components/app/AppFooter'
 import { Link } from 'react-router-dom'
 import { useTheme } from '../../hooks/useTheme'
@@ -428,6 +429,17 @@ export default function Profile() {
 
                 {/* Main Content */}
                 <main className="flex-1 flex flex-col gap-6 min-w-0 pb-12">
+                    {/* The settings sidebar (with the language switch) is desktop-only, so expose language + theme here on mobile */}
+                    <div className="lg:hidden flex justify-end items-center gap-3">
+                        <AppLangToggle />
+                        <button
+                            className="theme-toggle w-10 h-10 rounded-full flex items-center justify-center text-on-surface-variant hover:text-primary hover:bg-surface-container-low dark:text-gray-300 dark:hover:text-white dark:hover:bg-white/10 transition-colors"
+                            type="button"
+                            aria-label={ar ? 'تبديل السمة' : 'Switch theme'}
+                        >
+                            <span className="material-symbols-outlined text-[20px]">dark_mode</span>
+                        </button>
+                    </div>
                     {/* Profile Header Card */}
                     <section className="ev-fade-up ev-stagger-1 bg-surface-container-lowest rounded-2xl overflow-hidden premium-shadow border border-outline-variant/50">
                         <div className="h-48 w-full bg-cover bg-center relative" style={{ backgroundImage: `url("${coverImg}")` }}>

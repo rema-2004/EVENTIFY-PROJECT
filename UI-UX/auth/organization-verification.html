@@ -167,12 +167,12 @@
                     <div>
 
                         <label class="font-label-md text-label-md text-on-surface block mb-2">
-                            Organization Type
+                            Organization Type *
                         </label>
 
-                        <select class="ev-input w-full h-12 bg-surface-container-lowest border border-outline-variant rounded-md transition-all text-on-surface">
+                        <select required class="ev-input w-full h-12 bg-surface-container-lowest border border-outline-variant rounded-md transition-all text-on-surface">
 
-                            <option>Select Type</option>
+                            <option value="">Select Type</option>
                             <option>University</option>
                             <option>Company</option>
                             <option>NGO</option>
@@ -259,12 +259,13 @@
 
                         <label class="font-label-md text-label-md text-on-surface block mb-2">
 
-                            Full Name
+                            Full Name *
 
                         </label>
 
                         <input
                             type="text"
+                            required
                             placeholder="John Smith"
                             class="ev-input w-full h-12 bg-surface-container-lowest border border-outline-variant rounded-md transition-all text-on-surface">
 
@@ -289,12 +290,13 @@
 
                         <label class="font-label-md text-label-md text-on-surface block mb-2">
 
-                            Phone Number
+                            Phone Number *
 
                         </label>
 
                         <input
                             type="tel"
+                            required
                             placeholder="+962 7XXXXXXXX"
                             class="ev-input w-full h-12 bg-surface-container-lowest border border-outline-variant rounded-md transition-all text-on-surface">
 
@@ -345,6 +347,7 @@
 
                     <input
                         type="file"
+                        required
                         class="mt-6 w-full max-w-full font-body-sm text-body-sm bg-transparent border-0 border-none outline-none shadow-none focus:outline-none focus:ring-0 focus:border-0 focus:shadow-none file:me-4 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-primary/10 file:text-primary hover:file:bg-primary/20 file:cursor-pointer transition-all cursor-pointer"
                         accept=".pdf,.png,.jpg,.jpeg">
 
@@ -360,6 +363,7 @@
 
                 <textarea
                     rows="6"
+                    required
                     class="ev-input w-full rounded-xl bg-surface-container-lowest border border-outline-variant transition-all text-on-surface p-4 ev-fade-up ev-stagger-5"
                     placeholder="Tell us about your organization, the events you organize, your goals, and who your audience is..."></textarea>
 

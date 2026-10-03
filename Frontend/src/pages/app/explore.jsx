@@ -37,7 +37,7 @@ export default function Explore() {
 
     const SaveBtn = ({ id }) => (
         <button
-            className={`save-btn absolute top-3 left-3 w-9 h-9 rounded-full bg-white/90 backdrop-blur flex items-center justify-center shadow-lg transition-colors ${saved.has(id) ? 'text-primary' : 'text-on-surface-variant hover:text-primary'}`}
+            className={`save-btn absolute top-3 ${ar ? 'right-3' : 'left-3'} w-9 h-9 rounded-full bg-white/90 backdrop-blur flex items-center justify-center shadow-lg transition-colors ${saved.has(id) ? 'text-primary' : 'text-on-surface-variant hover:text-primary'}`}
             aria-label={ar ? 'احفظ لاحقاً' : 'Save for later'}
             onClick={(e) => toggleSave(id, e)}
         >

@@ -2,7 +2,7 @@ import AppLangToggle from '../../components/app/AppLangToggle'
 import AppFooter from '../../components/app/AppFooter'
 import AppPageHead from '../../components/app/AppPageHead'
 import { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { useLanguage } from '../../hooks/useLanguage'
 
 const TEAMS = [
@@ -91,6 +91,9 @@ const SKILL_FILTERS = ['all', 'Python', 'UI/UX', 'AI']
 export default function Teams() {
     const { language } = useLanguage()
     const ar = language === 'ar'
+    const navigate = useNavigate()
+    const requestToJoin = (team) =>
+        navigate('/app/registration-success', { state: { type: 'join', team: team.name } })
 
     const [selectedSkill, setSelectedSkill] = useState('all')
     const [searchQuery, setSearchQuery] = useState('')
@@ -211,7 +214,7 @@ export default function Teams() {
                                                     </p>
                                                 </div>
                                                 {team.status && (
-                                                    <span className="bg-success-container px-4 py-1.5 rounded-full border border-primary text-primary text-label-sm font-label-sm uppercase tracking-wider flex items-center gap-1">
+                                                    <span className="bg-success-container px-4 py-1.5 rounded-full border border-primary text-on-success-container text-label-sm font-label-sm uppercase tracking-wider flex items-center gap-1">
                                                         <span className="w-2 h-2 rounded-full animate-pulse" style={{ backgroundColor: '#FF4D2E' }} />
                                                         {ar ? team.status.ar : team.status.en}
                                                     </span>
@@ -241,13 +244,15 @@ export default function Teams() {
                                                     <Link className="px-6 py-2.5 rounded-full border border-outline-variant font-label-md text-label-md hover:bg-surface-container transition-all text-center" to="/app/team-dashboard">
                                                         {ar ? 'عرض التفاصيل' : 'View Details'}
                                                     </Link>
-                                                    <Link
-                                                        className="px-6 py-2.5 rounded-full font-label-md text-label-md hover:opacity-90 active:scale-95 transition-all text-center"
+                                                    <button
+                                                        type="button"
+                                                        className="px-6 py-2.5 rounded-full font-label-md text-label-md hover:opacity-90 active:scale-95 transition-all text-center disabled:opacity-50 disabled:pointer-events-none"
                                                         style={{ backgroundColor: '#FF4D2E', color: '#fff' }}
-                                                        to="/app/team-dashboard"
+                                                        disabled={team.members >= team.max}
+                                                        onClick={() => requestToJoin(team)}
                                                     >
-                                                        {ar ? 'طلب الانضمام' : 'Request to Join'}
-                                                    </Link>
+                                                        {team.members >= team.max ? (ar ? 'مكتمل' : 'Full') : ar ? 'طلب الانضمام' : 'Request to Join'}
+                                                    </button>
                                                 </div>
                                             </div>
                                         </div>
@@ -281,13 +286,15 @@ export default function Teams() {
                                         <Link className="py-2.5 rounded-xl border border-outline-variant font-label-md text-label-md hover:bg-surface-container transition-all text-center" to="/app/team-dashboard">
                                             {ar ? 'عرض' : 'View'}
                                         </Link>
-                                        <Link
-                                            className="py-2.5 rounded-xl font-label-md text-label-md hover:opacity-90 active:scale-95 transition-all text-center"
+                                        <button
+                                            type="button"
+                                            className="py-2.5 rounded-xl font-label-md text-label-md hover:opacity-90 active:scale-95 transition-all text-center disabled:opacity-50 disabled:pointer-events-none"
                                             style={{ backgroundColor: '#FF4D2E', color: '#fff' }}
-                                            to="/app/team-dashboard"
+                                            disabled={team.members >= team.max}
+                                            onClick={() => requestToJoin(team)}
                                         >
-                                            {ar ? 'انضمام' : 'Join'}
-                                        </Link>
+                                            {team.members >= team.max ? (ar ? 'مكتمل' : 'Full') : ar ? 'انضمام' : 'Join'}
+                                        </button>
                                     </div>
                                 </div>
                             )

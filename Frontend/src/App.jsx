@@ -29,6 +29,7 @@ const ComingSoon = lazy(() => import('./pages/ComingSoon'))
 const Login = lazy(() => import('./pages/auth/Login'))
 const Signup = lazy(() => import('./pages/auth/Signup'))
 const ForgotPassword = lazy(() => import('./pages/auth/ForgotPassword'))
+const ResetPassword = lazy(() => import('./pages/auth/ResetPassword'))
 const OrganizationVerification = lazy(() => import('./pages/auth/OrganizationVerification'))
 const OrganizationPending = lazy(() => import('./pages/auth/OrganizationPending'))
 const Privacy = lazy(() => import('./pages/auth/Privacy'))
@@ -172,6 +173,7 @@ export default function App() {
                 <Route path="/auth/login" element={<Login />} />
                 <Route path="/auth/signup" element={<Signup />} />
                 <Route path="/auth/forgot-password" element={<ForgotPassword />} />
+                <Route path="/auth/reset-password" element={<ResetPassword />} />
                 <Route path="/auth/organization-verification" element={<OrganizationVerification />} />
                 <Route path="/auth/organization-pending" element={<OrganizationPending />} />
 

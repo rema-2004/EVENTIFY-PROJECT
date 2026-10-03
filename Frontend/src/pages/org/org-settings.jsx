@@ -175,7 +175,7 @@ export default function OrgSettings() {
                             <form className="grid grid-cols-1 gap-5 md:grid-cols-2" onSubmit={handleSave}>
                                 <div className="form-group">
                                     <label className="form-label" htmlFor="org-name">Organization name</label>
-                                    <input className="form-input" id="org-name" type="text" value={form.name} onChange={handleField} />
+                                    <input className="form-input" id="org-name" type="text" required value={form.name} onChange={handleField} />
                                 </div>
                                 <div className="form-group">
                                     <label className="form-label" htmlFor="org-type">Organization type</label>
@@ -190,7 +190,7 @@ export default function OrgSettings() {
                                 </div>
                                 <div className="form-group">
                                     <label className="form-label" htmlFor="org-email">Work email</label>
-                                    <input className="form-input" id="org-email" type="email" value={form.email} onChange={handleField} />
+                                    <input className="form-input" id="org-email" type="email" required value={form.email} onChange={handleField} />
                                 </div>
                                 <div className="form-group">
                                     <label className="form-label" htmlFor="org-website">Website</label>

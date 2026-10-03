@@ -37,23 +37,12 @@ const INITIAL_STATUSES = {
     'app-9': 'pending',  'app-10': 'rejected','app-11': 'accepted','app-12': 'pending',
 }
 
-const BADGE_STYLES = {
-    pending:  { color: '#b45309', background: 'rgba(217,119,6,0.1)',   border: '1px solid rgba(217,119,6,0.2)' },
-    accepted: { color: '#1e7a4f', background: 'rgba(30,122,79,0.1)',   border: '1px solid rgba(30,122,79,0.2)' },
-    rejected: { color: '#b3261e', background: 'rgba(179,38,30,0.08)',  border: '1px solid rgba(179,38,30,0.18)' },
-}
+// Uses the shared .badge classes (they carry the dark-mode colors, unlike inline styles).
+const BADGE_CLASS = { pending: 'badge--pending', accepted: 'badge--approved', rejected: 'badge--rejected' }
 
 function StatusBadge({ status }) {
-    const s = BADGE_STYLES[status] || BADGE_STYLES.pending
     return (
-        <span style={{
-            display: 'inline-flex', alignItems: 'center', gap: 5,
-            padding: '4px 10px', borderRadius: 999,
-            fontSize: 11, fontWeight: 700, letterSpacing: '0.03em',
-            textTransform: 'capitalize', whiteSpace: 'nowrap',
-            ...s
-        }}>
-            <span style={{ width: 6, height: 6, borderRadius: '50%', background: 'currentColor', flexShrink: 0, display: 'inline-block' }} />
+        <span className={`badge ${BADGE_CLASS[status] || BADGE_CLASS.pending}`}>
             {status.charAt(0).toUpperCase() + status.slice(1)}
         </span>
     )

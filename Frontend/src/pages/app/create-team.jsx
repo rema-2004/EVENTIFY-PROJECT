@@ -4,6 +4,7 @@ import AppPageHead from '../../components/app/AppPageHead'
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useLanguage } from '../../hooks/useLanguage'
+import { TEAM_LIMITS, teamSizeOptions } from './team-limits'
 
 const INITIAL_SKILLS = ['React', 'Tailwind', 'AI Models']
 
@@ -75,7 +76,10 @@ export default function CreateTeam() {
                     <div className="w-full max-w-2xl bg-surface-container-lowest p-8 rounded-xl border border-outline-variant/30 shadow-sm">
                         <form
                             className="flex flex-col gap-8"
-                            onSubmit={(e) => { e.preventDefault(); navigate('/app/team-dashboard') }}
+                            onSubmit={(e) => {
+                                e.preventDefault()
+                                navigate('/app/registration-success', { state: { type: 'create', team: e.currentTarget.elements['team-name'].value.trim() } })
+                            }}
                         >
                             {/* Team Identity */}
                             <section className="flex flex-col gap-6">
@@ -114,12 +118,10 @@ export default function CreateTeam() {
                                         {ar ? 'الحد الأقصى للأعضاء' : 'Maximum Members'}
                                     </label>
                                     <div className="relative">
-                                        <select className="input-primary h-12 appearance-none" id="max-members" dir={ar ? 'rtl' : 'ltr'}>
-                                            <option value={2}>{ar ? 'عضوان' : '2 Members'}</option>
-                                            <option value={4} defaultValue>{ar ? '4 أعضاء' : '4 Members'}</option>
-                                            <option value={6}>{ar ? '6 أعضاء' : '6 Members'}</option>
-                                            <option value={8}>{ar ? '8 أعضاء' : '8 Members'}</option>
-                                            <option value="10+">{ar ? '10+ أعضاء' : '10+ Members'}</option>
+                                        <select className="input-primary h-12 appearance-none" id="max-members" defaultValue={Math.min(4, TEAM_LIMITS.max)} dir={ar ? 'rtl' : 'ltr'}>
+                                            {teamSizeOptions().map((n) => (
+                                                <option key={n} value={n}>{ar ? `${n} أعضاء` : `${n} Members`}</option>
+                                            ))}
                                         </select>
                                         <span className={`material-symbols-outlined absolute ${ar ? 'left-3' : 'right-3'} top-1/2 -translate-y-1/2 pointer-events-none text-on-surface-variant`}>expand_more</span>
                                     </div>
@@ -151,7 +153,7 @@ export default function CreateTeam() {
                                     <label className="font-label-md text-label-md text-on-surface">
                                         {ar ? 'المهارات المطلوبة' : 'Required Skills'}
                                     </label>
-                                    <span className="font-label-sm text-label-sm uppercase bg-primary-fixed px-2 py-0.5 rounded" style={{ color: '#FF4D2E' }}>
+                                    <span className="font-label-sm text-label-sm uppercase bg-primary-fixed text-on-primary-fixed-variant px-2 py-0.5 rounded">
                                         {ar ? 'اقتراحات AI متاحة' : 'AI Suggestions Available'}
                                     </span>
                                 </div>

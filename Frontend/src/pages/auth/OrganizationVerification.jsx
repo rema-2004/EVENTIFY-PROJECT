@@ -13,9 +13,37 @@ export default function OrganizationVerification() {
     const [confirmAccurate, setConfirmAccurate] = useState(false)
     const [confirmReview, setConfirmReview] = useState(false)
     const [confirmError, setConfirmError] = useState('')
+    const [errors, setErrors] = useState({})
+
+    // Core details the admin needs to review the organization (website, email, country, city and job title stay optional).
+    const REQUIRED_FIELDS = ['orgType', 'repName', 'phone', 'document', 'description']
+
+    const clearError = (name) => setErrors((prev) => (prev[name] ? { ...prev, [name]: '' } : prev))
+    const fieldError = (name) =>
+        errors[name] && <p id={`${name}-error`} className="text-sm text-error mt-2" role="alert">{errors[name]}</p>
+    const fieldProps = (name) => ({
+        name,
+        'aria-required': true,
+        'aria-invalid': errors[name] ? true : undefined,
+        'aria-describedby': errors[name] ? `${name}-error` : undefined,
+        onChange: () => clearError(name),
+    })
 
     function handleSubmit(e) {
         e.preventDefault()
+        const form = e.currentTarget
+        const nextErrors = {}
+        REQUIRED_FIELDS.forEach((name) => {
+            const field = form.elements[name]
+            const empty = field.type === 'file' ? !field.files.length : !field.value.trim()
+            if (empty) nextErrors[name] = t('auth.common.required')
+        })
+        setErrors(nextErrors)
+        const firstInvalid = REQUIRED_FIELDS.find((name) => nextErrors[name])
+        if (firstInvalid) {
+            form.elements[firstInvalid].focus()
+            return
+        }
         if (!confirmAccurate || !confirmReview) {
             setConfirmError(t('auth.orgVerification.confirmRequired'))
             return
@@ -56,9 +84,9 @@ export default function OrganizationVerification() {
                             <h3 className="font-headline-md text-headline-md mb-6">🏢 {t('auth.orgVerification.orgInfoTitle')}</h3>
                             <div className="grid md:grid-cols-2 gap-6">
                                 <div>
-                                    <label className="font-label-md text-label-md text-on-surface block mb-2">{t('auth.orgVerification.orgType')}</label>
-                                    <select aria-label={t('auth.orgVerification.orgType')} className="ev-input w-full h-12 px-4 bg-surface-container-lowest border border-outline-variant rounded-md transition-all text-on-surface">
-                                        <option>{t('auth.orgVerification.selectType')}</option>
+                                    <label className="font-label-md text-label-md text-on-surface block mb-2">{t('auth.orgVerification.orgType')} *</label>
+                                    <select aria-label={t('auth.orgVerification.orgType')} {...fieldProps('orgType')} defaultValue="" className="ev-input w-full h-12 px-4 bg-surface-container-lowest border border-outline-variant rounded-md transition-all text-on-surface">
+                                        <option value="">{t('auth.orgVerification.selectType')}</option>
                                         <option>{t('auth.orgVerification.typeUniversity')}</option>
                                         <option>{t('auth.orgVerification.typeCompany')}</option>
                                         <option>{t('auth.orgVerification.typeNgo')}</option>
@@ -66,6 +94,7 @@ export default function OrganizationVerification() {
                                         <option>{t('auth.orgVerification.typeStartup')}</option>
                                         <option>{t('auth.orgVerification.typeOther')}</option>
                                     </select>
+                                    {fieldError('orgType')}
                                 </div>
                                 <div>
                                     <label className="font-label-md text-label-md text-on-surface block mb-2">{t('auth.orgVerification.website')}</label>
@@ -88,16 +117,18 @@ export default function OrganizationVerification() {
                             <h3 className="font-headline-md text-headline-md mt-12 mb-6">👤 {t('auth.orgVerification.repTitle')}</h3>
                             <div className="grid md:grid-cols-2 gap-6">
                                 <div>
-                                    <label className="font-label-md text-label-md text-on-surface block mb-2">{t('auth.orgVerification.repName')}</label>
-                                    <input type="text" placeholder="John Smith" className="ev-input w-full h-12 px-4 bg-surface-container-lowest border border-outline-variant rounded-md transition-all text-on-surface" />
+                                    <label className="font-label-md text-label-md text-on-surface block mb-2">{t('auth.orgVerification.repName')} *</label>
+                                    <input type="text" placeholder="John Smith" {...fieldProps('repName')} className="ev-input w-full h-12 px-4 bg-surface-container-lowest border border-outline-variant rounded-md transition-all text-on-surface" />
+                                    {fieldError('repName')}
                                 </div>
                                 <div>
                                     <label className="font-label-md text-label-md text-on-surface block mb-2">{t('auth.orgVerification.jobTitle')}</label>
                                     <input type="text" placeholder="CEO" className="ev-input w-full h-12 px-4 bg-surface-container-lowest border border-outline-variant rounded-md transition-all text-on-surface" />
                                 </div>
                                 <div className="md:col-span-2">
-                                    <label className="font-label-md text-label-md text-on-surface block mb-2">{t('auth.orgVerification.phone')}</label>
-                                    <input type="tel" placeholder="+962 7XXXXXXXX" className="ev-input w-full h-12 px-4 bg-surface-container-lowest border border-outline-variant rounded-md transition-all text-on-surface" />
+                                    <label className="font-label-md text-label-md text-on-surface block mb-2">{t('auth.orgVerification.phone')} *</label>
+                                    <input type="tel" placeholder="+962 7XXXXXXXX" {...fieldProps('phone')} className="ev-input w-full h-12 px-4 bg-surface-container-lowest border border-outline-variant rounded-md transition-all text-on-surface" />
+                                    {fieldError('phone')}
                                 </div>
                             </div>
 
@@ -111,14 +142,17 @@ export default function OrganizationVerification() {
                                 <p className="font-body-sm text-body-sm text-on-surface-variant mt-2 opacity-75">PDF • JPG • PNG (Max 10MB)</p>
                                 <input
                                     type="file"
+                                    {...fieldProps('document')}
                                     aria-label="Upload verification document"
                                     className="mt-6 w-full max-w-full font-body-sm text-body-sm bg-transparent border-0 border-none outline-none shadow-none focus:outline-none focus:ring-0 focus:border-0 focus:shadow-none file:me-4 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-primary/10 file:text-primary hover:file:bg-primary/20 file:cursor-pointer transition-all cursor-pointer"
                                     accept=".pdf,.png,.jpg,.jpeg"
                                 />
                             </div>
+                            {fieldError('document')}
 
                             <h3 className="font-headline-md text-headline-md mt-12 mb-6">📝 {t('auth.orgVerification.descTitle')}</h3>
-                            <textarea rows="6" className="ev-input w-full rounded-xl bg-surface-container-lowest border border-outline-variant transition-all text-on-surface p-4" placeholder={t('auth.orgVerification.descPlaceholder')}></textarea>
+                            <textarea rows="6" {...fieldProps('description')} className="ev-input w-full rounded-xl bg-surface-container-lowest border border-outline-variant transition-all text-on-surface p-4" placeholder={t('auth.orgVerification.descPlaceholder')}></textarea>
+                            {fieldError('description')}
 
                             <div className="mt-10 space-y-5">
                                 <label className="flex items-start gap-3">

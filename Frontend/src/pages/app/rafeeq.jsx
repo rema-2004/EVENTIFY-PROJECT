@@ -29,9 +29,9 @@ const MESSAGES = [
             ar: <>وجدت 3 تطابقات قوية. الأفضل هو تطابق <strong>98%</strong> — تحدي الابتكار العالمي بالذكاء الاصطناعي، هاكاثون متخصص في الذكاء الاصطناعي التطبيقي. هل تريد ملخصاً أو فحص التوافق بالتفصيل؟</>,
         },
         actions: [
-            { icon: 'summarize',  iconColor: '#FF4D2E',              to: '/app/opportunity', label: { en: 'Summarize it',        ar: 'تلخيصه' } },
-            { icon: 'target',     iconColor: 'var(--color-secondary)', to: '/app/opportunity', label: { en: 'Check compatibility', ar: 'فحص التوافق' } },
-            { icon: 'explore',    iconColor: 'var(--color-tertiary)',  to: '/app/explore',     label: { en: 'Show more matches',   ar: 'عرض المزيد' } },
+            { icon: 'summarize',  iconColor: 'text-primary',           to: '/app/opportunity', label: { en: 'Summarize it',        ar: 'تلخيصه' } },
+            { icon: 'target',     iconColor: 'text-secondary',         to: '/app/opportunity', label: { en: 'Check compatibility', ar: 'فحص التوافق' } },
+            { icon: 'explore',    iconColor: 'text-tertiary',          to: '/app/explore',     label: { en: 'Show more matches',   ar: 'عرض المزيد' } },
         ],
     },
 ]
@@ -116,8 +116,7 @@ export default function Rafeeq() {
                         {msg.role === 'ai' ? (
                             <div className="space-y-3">
                                 <div
-                                    className={`rounded-2xl px-5 py-3.5 font-body-md text-body-md ${ar ? 'rounded-tr-sm' : 'rounded-tl-sm'}`}
-                                    style={{ backgroundColor: '#ffffff', border: '1px solid #c2c6d6', color: '#0d1c2e' }}
+                                    className={`rounded-2xl px-5 py-3.5 font-body-md text-body-md bg-surface-container-lowest border border-outline-variant text-on-surface ${ar ? 'rounded-tr-sm' : 'rounded-tl-sm'}`}
                                 >
                                     {ar ? msg.text.ar : msg.text.en}
                                 </div>
@@ -129,7 +128,7 @@ export default function Rafeeq() {
                                                 to={action.to}
                                                 className="px-4 py-2 bg-surface-container-lowest border border-outline-variant rounded-lg font-label-sm text-label-sm hover:border-[#FF4D2E]/50 transition-colors flex items-center gap-1"
                                             >
-                                                <span className="material-symbols-outlined" style={{ fontSize: 16, color: action.iconColor }}>{action.icon}</span>
+                                                <span className={`material-symbols-outlined ${action.iconColor}`} style={{ fontSize: 16 }}>{action.icon}</span>
                                                 {ar ? action.label.ar : action.label.en}
                                             </Link>
                                         ))}

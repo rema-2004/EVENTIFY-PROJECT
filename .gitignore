@@ -2,3 +2,5 @@
 /.agents
 /Frontend-Eventifiy-Updates/
 تقرير-تحليل-الفرونت-اند.md
+# Playwright CLI output (may contain credentials)
+.playwright-cli/

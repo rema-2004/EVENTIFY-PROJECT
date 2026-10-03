@@ -1695,6 +1695,20 @@
             "noAccount": "Don't have an account?",
             "createAccount": "Create Account"
         },
+        "resetPassword": {
+            "badge": "Reset password",
+            "title": "Set a new password",
+            "subtitle": "Choose a strong password you haven't used before.",
+            "newPasswordLabel": "New password",
+            "confirmPasswordLabel": "Confirm new password",
+            "submit": "Update password",
+            "submitting": "Updating...",
+            "successTitle": "Password updated",
+            "successDesc": "You can now log in with your new password.",
+            "goToLogin": "Go to log in",
+            "visualTitle": "One last step",
+            "visualDesc": "Set a new password and get back to your opportunities."
+        },
         "forgotPassword": {
             "visualTitle": "Your account, safely back in your hands.",
             "visualDesc": "We'll email you a secure, time-limited link. No security questions, no hassle — just click and set a new password.",
