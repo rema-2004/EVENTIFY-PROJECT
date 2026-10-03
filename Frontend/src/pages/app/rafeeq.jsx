@@ -47,7 +47,7 @@ export default function Rafeeq() {
             <AppPageHead title="Rafeeq AI | EVENTIFY" />
 
             {/* Top Bar */}
-            <header className="sticky top-0 z-50 w-full h-16 border-b border-outline-variant/30 backdrop-blur-md flex items-center px-container-margin-mobile md:px-container-margin-desktop" style={{ backgroundColor: 'rgba(var(--color-surface-rgb, 250 248 255) / 0.9)' }}>
+            <header className="sticky top-0 z-50 w-full h-16 bg-surface/90 border-b border-outline-variant/30 backdrop-blur-md flex items-center px-container-margin-mobile md:px-container-margin-desktop"> 
                 <div className="flex flex-wrap justify-between items-center gap-y-2 w-full max-w-[900px] mx-auto">
                     {/* Back */}
                     <Link
