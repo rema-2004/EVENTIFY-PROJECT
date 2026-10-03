@@ -16,17 +16,14 @@ class EventResource extends JsonResource
             'slug' => $this->slug,
             'description' => $this->description,
             'type' => $this->type,
-            'cover_image' => $this->cover_image
-                ? (str_starts_with($this->cover_image, 'http')
-                    ? $this->cover_image
-                    : Storage::disk('public')->url($this->cover_image))
-                : null,
+            'cover_image' => $this->resolveCoverImageUrl(),
             'location' => $this->location,
             'requirements' => $this->requirements,
             'start_date' => $this->start_date?->toIso8601String(),
             'end_date' => $this->end_date?->toIso8601String(),
             'registration_deadline' => $this->registration_deadline?->toIso8601String(),
             'status' => $this->status,
+            'admin_notes' => $this->admin_notes,
             'display_status' => $this->displayStatus(),
             'is_registration_open' => $this->isRegistrationOpen(),
 
@@ -38,5 +35,21 @@ class EventResource extends JsonResource
 
             'created_at' => $this->created_at?->toIso8601String(),
         ];
+    }
+
+    private function resolveCoverImageUrl(): ?string
+    {
+        if (! $this->cover_image) {
+            return null;
+        }
+
+        if (str_starts_with($this->cover_image, 'http')) {
+            return $this->cover_image;
+        }
+
+        /** @var \Illuminate\Filesystem\FilesystemAdapter $disk */
+        $disk = Storage::disk('public');
+
+        return $disk->url($this->cover_image);
     }
 }
