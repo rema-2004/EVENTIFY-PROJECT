@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>فلترة المهارات</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50 min-h-screen p-8 flex items-center justify-center font-sans">
+
+    <div class="bg-white p-8 rounded-3xl shadow-sm border border-gray-100 max-w-3xl w-full">
+        <h2 class="text-sm font-bold text-gray-400 mb-6">فلترة المهارات</h2>
+
+        <!-- شريط الفلترة -->
+        <div class="flex flex-wrap items-center gap-2" id="filterBar">
+            
+            <!-- زر ALL SKILLS مع البحث المباشر -->
+            <div class="relative" id="dropdownWrapper">
+                <button
+                    id="allSkillsBtn"
+                    type="button"
+                    class="inline-flex items-center gap-2 px-5 py-2.5 rounded-2xl text-sm font-semibold transition-all text-white bg-[#FF4D2E] border border-[#FF4D2E] shadow-[0_2px_8px_rgba(255,77,46,0.25)] cursor-pointer select-none"
+                >
+                    <!-- أيقونة الفلتر -->
+                    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="3" y1="6" x2="21" y2="6"></line>
+                        <line x1="6" y1="12" x2="18" y2="12"></line>
+                        <line x1="10" y1="18" x2="14" y2="18"></line>
+                    </svg>
+                    <span>كل المهارات</span>
+                </button>
+
+                <!-- مربع البحث المباشر السريع -->
+                <div
+                    id="dropdownMenu"
+                    class="hidden absolute top-full mt-2 w-64 bg-white rounded-2xl shadow-xl border border-gray-100 p-2 z-[9999] right-0 text-right"
+                >
+                    <input
+                        id="searchInput"
+                        type="text"
+                        placeholder="اكتب اسم المهارة..."
+                        class="w-full px-3 py-2 text-sm bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:border-[#FF4D2E] focus:bg-white text-right"
+                    />
+                    <div id="skillsList" class="mt-1.5 max-h-48 overflow-y-auto space-y-0.5"></div>
+                </div>
+            </div>
+
+            <!-- أزرار الفلترة السريعة (Python, UI/UX, AI) -->
+            <div id="quickButtons" class="flex flex-wrap items-center gap-2"></div>
+
+            <!-- وسوم المهارات المحددة (Tags) -->
+            <div id="selectedTags" class="flex flex-wrap items-center gap-1.5"></div>
+
+        </div>
+
+        <!-- معاينة الاختيارات -->
+        <div class="mt-8 pt-4 border-t border-gray-100 text-xs text-gray-500">
+            المهارات المحددة: <span id="selectedPreview" class="font-bold text-[#FF4D2E]">الكل</span>
+        </div>
+    </div>
+
+    <script>
+        const ALL_SKILLS = [
+            'Python', 'UI/UX', 'AI', 'React', 'Node.js', 'Flutter',
+            'AWS', 'Three.js', 'Data Viz', 'TypeScript', 'Docker',
+            'Figma', 'Next.js', 'GraphQL', 'Machine Learning', 'Cybersecurity'
+        ];
+        const QUICK_SKILLS = ['Python', 'UI/UX', 'AI'];
+
+        let selectedSkills = [];
+        let searchQuery = '';
+
+        const allSkillsBtn = document.getElementById('allSkillsBtn');
+        const dropdownMenu = document.getElementById('dropdownMenu');
+        const searchInput = document.getElementById('searchInput');
+        const skillsList = document.getElementById('skillsList');
+        const quickButtons = document.getElementById('quickButtons');
+        const selectedTags = document.getElementById('selectedTags');
+        const selectedPreview = document.getElementById('selectedPreview');
+
+        // فتح وإغلاق البحث عند الضغط على الزر
+        allSkillsBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const isOpen = !dropdownMenu.classList.contains('hidden');
+            if (isOpen) {
+                closeDropdown();
+            } else {
+                openDropdown();
+            }
+        });
+
+        function openDropdown() {
+            dropdownMenu.classList.remove('hidden');
+            searchInput.value = '';
+            searchQuery = '';
+            renderDropdown();
+            setTimeout(() => searchInput.focus(), 50);
+        }
+
+        function closeDropdown() {
+            dropdownMenu.classList.add('hidden');
+        }
+
+        // إغلاق عند النقر خارج القائمة
+        document.addEventListener('click', (e) => {
+            if (!document.getElementById('dropdownWrapper').contains(e.target)) {
+                closeDropdown();
+            }
+        });
+
+        // البحث الفوري
+        searchInput.addEventListener('input', (e) => {
+            searchQuery = e.target.value.toLowerCase().trim();
+            renderDropdown();
+        });
+
+        function toggleSkill(skill) {
+            if (selectedSkills.includes(skill)) {
+                selectedSkills = selectedSkills.filter(s => s !== skill);
+            } else {
+                selectedSkills.push(skill);
+            }
+            updateUI();
+        }
+
+        function removeSkill(skill) {
+            selectedSkills = selectedSkills.filter(s => s !== skill);
+            updateUI();
+        }
+
+        function updateUI() {
+            renderQuickButtons();
+            renderTags();
+            updateAllSkillsButtonStyle();
+            selectedPreview.textContent = selectedSkills.length ? selectedSkills.join(', ') : 'الكل';
+        }
+
+        function updateAllSkillsButtonStyle() {
+            if (selectedSkills.length === 0) {
+                allSkillsBtn.className = "inline-flex items-center gap-2 px-5 py-2.5 rounded-2xl text-sm font-semibold transition-all text-white bg-[#FF4D2E] border border-[#FF4D2E] shadow-[0_2px_8px_rgba(255,77,46,0.25)] cursor-pointer select-none";
+            } else {
+                allSkillsBtn.className = "inline-flex items-center gap-2 px-5 py-2.5 rounded-2xl text-sm font-semibold transition-all bg-white text-gray-800 border border-gray-200 hover:bg-gray-50 cursor-pointer select-none";
+            }
+        }
+
+        function renderQuickButtons() {
+            quickButtons.innerHTML = QUICK_SKILLS.map(skill => {
+                const active = selectedSkills.includes(skill);
+                return `
+                    <button
+                        type="button"
+                        onclick="toggleSkill('${skill}')"
+                        class="inline-flex items-center px-5 py-2.5 rounded-2xl text-sm font-semibold transition-all border cursor-pointer select-none ${
+                            active 
+                                ? 'bg-[#FF4D2E] text-white border-[#FF4D2E] shadow-[0_2px_8px_rgba(255,77,46,0.25)]' 
+                                : 'bg-white text-gray-800 border-gray-200 hover:bg-gray-50'
+                        }"
+                    >
+                        ${skill}
+                    </button>
+                `;
+            }).join('');
+        }
+
+        function renderDropdown() {
+            const matches = ALL_SKILLS.filter(s => s.toLowerCase().includes(searchQuery));
+            if (matches.length === 0) {
+                skillsList.innerHTML = '<div class="py-3 text-center text-xs text-gray-400">لا توجد مهارة بهذا الاسم</div>';
+                return;
+            }
+            skillsList.innerHTML = matches.map(skill => {
+                const active = selectedSkills.includes(skill);
+                return `
+                    <button
+                        type="button"
+                        onclick="toggleSkill('${skill}'); closeDropdown();"
+                        class="w-full flex items-center justify-between px-3 py-2 rounded-xl text-sm text-right transition-colors cursor-pointer ${
+                            active ? 'bg-orange-50 text-[#FF4D2E] font-bold' : 'text-gray-700 hover:bg-gray-100'
+                        }"
+                    >
+                        <span>${skill}</span>
+                        ${active ? '<span class="text-[#FF4D2E] font-bold">✓</span>' : ''}
+                    </button>
+                `;
+            }).join('');
+        }
+
+        function renderTags() {
+            selectedTags.innerHTML = selectedSkills.map(skill => `
+                <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-orange-50 text-[#FF4D2E] border border-orange-200">
+                    <span>${skill}</span>
+                    <button type="button" onclick="removeSkill('${skill}')" class="w-3.5 h-3.5 rounded-full hover:bg-orange-200 flex items-center justify-center transition-colors cursor-pointer">
+                        ✕
+                    </button>
+                </span>
+            `).join('');
+        }
+
+        // Init
+        updateUI();
+    </script>
+</body>
+</html>

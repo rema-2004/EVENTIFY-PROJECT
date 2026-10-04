@@ -1,6 +1,7 @@
 import AppLangToggle from '../../components/app/AppLangToggle'
 import AppFooter from '../../components/app/AppFooter'
 import AppPageHead from '../../components/app/AppPageHead'
+import SkillFilter from '../../components/SkillFilter'
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useLanguage } from '../../hooks/useLanguage'
@@ -86,8 +87,6 @@ const TEAMS = [
     },
 ]
 
-const SKILL_FILTERS = ['all', 'Python', 'UI/UX', 'AI']
-
 export default function Teams() {
     const { language } = useLanguage()
     const ar = language === 'ar'
@@ -95,11 +94,11 @@ export default function Teams() {
     const requestToJoin = (team) =>
         navigate('/app/registration-success', { state: { type: 'join', team: team.name } })
 
-    const [selectedSkill, setSelectedSkill] = useState('all')
+    const [selectedSkills, setSelectedSkills] = useState([])
     const [searchQuery, setSearchQuery] = useState('')
 
     const visible = TEAMS.filter((t) => {
-        const matchesSkill = selectedSkill === 'all' || t.skills.includes(selectedSkill)
+        const matchesSkill = selectedSkills.length === 0 || selectedSkills.some((s) => t.skills.includes(s))
         const text = `${t.name} ${ar ? t.desc.ar : t.desc.en} ${t.skills.join(' ')}`.toLowerCase()
         return matchesSkill && text.includes(searchQuery.trim().toLowerCase())
     })
@@ -156,8 +155,8 @@ export default function Teams() {
                     </div>
 
                     {/* Search & Skill Filters */}
-                    <div className="flex flex-col gap-6 mb-12">
-                        <div className={`flex flex-col md:flex-row gap-4 ${ar ? 'md:flex-row-reverse' : ''}`}>
+                    <div className="flex flex-col gap-6 mb-12 relative z-30">
+                        <div className={`flex flex-col md:flex-row gap-4 relative z-30 ${ar ? 'md:flex-row-reverse' : ''}`}>
                             {/* Search */}
                             <div className="flex-1 relative">
                                 <span className={`material-symbols-outlined absolute ${ar ? 'right-4' : 'left-4'} top-1/2 -translate-y-1/2 text-outline`}>search</span>
@@ -171,24 +170,13 @@ export default function Teams() {
                                 />
                             </div>
 
-                            {/* Skill chips */}
-                            <div className={`flex gap-2 overflow-x-auto pb-2 md:pb-0 ${ar ? 'flex-row-reverse' : ''}`}>
-                                {SKILL_FILTERS.map((skill) => (
-                                    <button
-                                        key={skill}
-                                        type="button"
-                                        className="flex items-center gap-2 px-5 py-2.5 rounded-2xl text-label-md font-label-md whitespace-nowrap transition-all border"
-                                        style={selectedSkill === skill
-                                            ? { backgroundColor: '#FF4D2E', color: '#fff', borderColor: '#FF4D2E', boxShadow: '0 2px 8px rgba(255,77,46,.25)' }
-                                            : { borderColor: 'var(--color-outline-variant)', backgroundColor: 'var(--color-surface-container-lowest)', color: 'var(--color-on-surface)' }}
-                                        aria-pressed={selectedSkill === skill}
-                                        onClick={() => setSelectedSkill(skill)}
-                                    >
-                                        {skill === 'all' && <span className="material-symbols-outlined text-[17px]">filter_list</span>}
-                                        {skill === 'all' ? (ar ? 'كل المهارات' : 'All Skills') : skill}
-                                    </button>
-                                ))}
-                            </div>
+                            {/* Skill Filter Component with Dropdown & Multi-Select */}
+                            <SkillFilter
+                                selectedSkills={selectedSkills}
+                                onSkillsChange={setSelectedSkills}
+                                quickSkills={['Python', 'UI/UX', 'AI']}
+                                ar={ar}
+                            />
                         </div>
                     </div>
 

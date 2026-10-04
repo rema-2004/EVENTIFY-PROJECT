@@ -119,26 +119,40 @@
                 </a>
 </div>
 <!-- Search & Filters -->
-<div class="flex flex-col gap-6 mb-12 ev-fade-up ev-stagger-2">
-<div class="flex flex-col md:flex-row gap-4">
+<div class="flex flex-col gap-6 mb-12 ev-fade-up ev-stagger-2 relative z-30">
+<div class="flex flex-col md:flex-row gap-4 relative z-30">
 <div class="flex-1 relative">
 <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-outline" data-icon="search">search</span>
 <input class="w-full pl-12 pr-4 py-3 rounded-2xl border border-outline-variant bg-surface-container-lowest focus:ring-2 focus:ring-primary focus:border-transparent transition-all outline-none text-body-md" placeholder="Search by team name or project idea..." type="text"/>
 </div>
-<div class="flex gap-2 overflow-x-auto pb-2 md:pb-0">
-<button class="flex items-center gap-2 px-6 py-3 rounded-2xl border border-outline-variant bg-surface-container-lowest hover:bg-surface-container-high transition-all text-label-md font-label-md whitespace-nowrap">
-<span class="material-symbols-outlined text-primary" data-icon="filter_list">filter_list</span>
-                            All Skills
-                        </button>
-<button class="flex items-center gap-2 px-6 py-3 rounded-2xl bg-secondary-container text-on-secondary-container text-label-md font-label-md whitespace-nowrap shadow-sm">
-                            Python
-                        </button>
-<button class="flex items-center gap-2 px-6 py-3 rounded-2xl border border-outline-variant bg-surface-container-lowest hover:bg-surface-container-high transition-all text-label-md font-label-md whitespace-nowrap">
-                            UI/UX
-                        </button>
-<button class="flex items-center gap-2 px-6 py-3 rounded-2xl border border-outline-variant bg-surface-container-lowest hover:bg-surface-container-high transition-all text-label-md font-label-md whitespace-nowrap">
-                            AI
-                        </button>
+<div class="flex flex-wrap items-center gap-2 overflow-visible pb-2 md:pb-0 relative z-40" id="skillFilterBar">
+    <!-- All Skills Button with Dropdown Search -->
+    <div class="relative z-50" id="allSkillsDropdownWrapper">
+        <button id="allSkillsHtmlBtn" type="button" class="flex items-center gap-2 px-6 py-3 rounded-2xl border border-primary bg-primary text-white transition-all text-label-md font-label-md whitespace-nowrap shadow-sm cursor-pointer select-none">
+            <span class="material-symbols-outlined text-white" data-icon="filter_list">filter_list</span>
+            All Skills
+        </button>
+
+        <!-- Dropdown Search Menu -->
+        <div id="skillsDropdownMenu" class="hidden absolute left-0 top-full mt-2 w-64 bg-white rounded-2xl shadow-2xl border border-outline-variant/60 p-2 z-[9999]" style="box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.15), 0 10px 10px -5px rgba(0, 0, 0, 0.08);">
+            <input id="skillSearchInput" type="text" placeholder="Type a skill..." class="w-full px-3 py-2 text-sm bg-surface-container-lowest border border-outline-variant/60 rounded-xl focus:outline-none focus:border-primary outline-none" />
+            <div id="skillsMatchesList" class="mt-1.5 max-h-48 overflow-y-auto space-y-0.5"></div>
+        </div>
+    </div>
+
+    <!-- Quick Buttons -->
+    <button type="button" data-skill="Python" class="quick-skill-btn flex items-center gap-2 px-6 py-3 rounded-2xl border border-outline-variant bg-surface-container-lowest hover:bg-surface-container-high transition-all text-label-md font-label-md whitespace-nowrap cursor-pointer select-none">
+        Python
+    </button>
+    <button type="button" data-skill="UI/UX" class="quick-skill-btn flex items-center gap-2 px-6 py-3 rounded-2xl border border-outline-variant bg-surface-container-lowest hover:bg-surface-container-high transition-all text-label-md font-label-md whitespace-nowrap cursor-pointer select-none">
+        UI/UX
+    </button>
+    <button type="button" data-skill="AI" class="quick-skill-btn flex items-center gap-2 px-6 py-3 rounded-2xl border border-outline-variant bg-surface-container-lowest hover:bg-surface-container-high transition-all text-label-md font-label-md whitespace-nowrap cursor-pointer select-none">
+        AI
+    </button>
+
+    <!-- Selected Tags Container -->
+    <div id="selectedSkillTags" class="flex flex-wrap items-center gap-1.5 ml-1"></div>
 </div>
 </div>
 </div>
@@ -341,14 +355,136 @@
 </a>
 </nav>
 <script>
-        // Simple micro-interaction for filter buttons
-        document.querySelectorAll('button').forEach(btn => {
-            btn.addEventListener('click', function() {
-                if(this.classList.contains('border-outline-variant')) {
-                    // Toggle selection logic could go here
+        // Skills Filter Logic (Pure HTML/JS - No React required!)
+        (function() {
+            const ALL_SKILLS = ['Python', 'UI/UX', 'AI', 'React', 'Node.js', 'Flutter', 'AWS', 'Three.js', 'Data Viz', 'TypeScript', 'Docker', 'Figma', 'Machine Learning'];
+            let selectedSkills = [];
+
+            const allSkillsBtn = document.getElementById('allSkillsHtmlBtn');
+            const dropdown = document.getElementById('skillsDropdownMenu');
+            const searchInput = document.getElementById('skillSearchInput');
+            const matchesList = document.getElementById('skillsMatchesList');
+            const tagsContainer = document.getElementById('selectedSkillTags');
+            const quickButtons = document.querySelectorAll('.quick-skill-btn');
+            const teamCards = document.querySelectorAll('.grid > div');
+
+            if (!allSkillsBtn) return;
+
+            // Toggle Dropdown
+            allSkillsBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const isOpen = !dropdown.classList.contains('hidden');
+                if (isOpen) {
+                    closeDropdown();
+                } else {
+                    dropdown.classList.remove('hidden');
+                    searchInput.value = '';
+                    renderMatches('');
+                    setTimeout(() => searchInput.focus(), 50);
                 }
             });
-        });
+
+            function closeDropdown() {
+                dropdown.classList.add('hidden');
+            }
+
+            document.addEventListener('click', (e) => {
+                if (!document.getElementById('allSkillsDropdownWrapper').contains(e.target)) {
+                    closeDropdown();
+                }
+            });
+
+            // Search filtering
+            searchInput.addEventListener('input', (e) => {
+                renderMatches(e.target.value.toLowerCase().trim());
+            });
+
+            function renderMatches(q) {
+                const matches = ALL_SKILLS.filter(s => s.toLowerCase().includes(q));
+                if (!matches.length) {
+                    matchesList.innerHTML = '<div class="py-2 text-center text-xs text-outline">No skills found</div>';
+                    return;
+                }
+                matchesList.innerHTML = matches.map(skill => `
+                    <button type="button" data-val="${skill}" class="w-full flex items-center justify-between px-3 py-2 rounded-xl text-sm text-on-surface hover:bg-surface-container-high transition-colors text-left cursor-pointer">
+                        <span>${skill}</span>
+                        ${selectedSkills.includes(skill) ? '<span class="text-primary font-bold">✓</span>' : ''}
+                    </button>
+                `).join('');
+
+                matchesList.querySelectorAll('button').forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        const val = btn.getAttribute('data-val');
+                        toggleSkill(val);
+                        closeDropdown();
+                    });
+                });
+            }
+
+            // Quick skill button clicks
+            quickButtons.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const skill = btn.getAttribute('data-skill');
+                    toggleSkill(skill);
+                });
+            });
+
+            function toggleSkill(skill) {
+                if (selectedSkills.includes(skill)) {
+                    selectedSkills = selectedSkills.filter(s => s !== skill);
+                } else {
+                    selectedSkills.push(skill);
+                }
+                updateUI();
+            }
+
+            function updateUI() {
+                // Update All Skills Button style
+                if (selectedSkills.length === 0) {
+                    allSkillsBtn.className = "flex items-center gap-2 px-6 py-3 rounded-2xl border border-primary bg-primary text-white transition-all text-label-md font-label-md whitespace-nowrap shadow-sm cursor-pointer select-none";
+                    allSkillsBtn.querySelector('span').className = "material-symbols-outlined text-white";
+                } else {
+                    allSkillsBtn.className = "flex items-center gap-2 px-6 py-3 rounded-2xl border border-outline-variant bg-surface-container-lowest hover:bg-surface-container-high transition-all text-label-md font-label-md whitespace-nowrap cursor-pointer select-none";
+                    allSkillsBtn.querySelector('span').className = "material-symbols-outlined text-primary";
+                }
+
+                // Update quick buttons styles
+                quickButtons.forEach(btn => {
+                    const skill = btn.getAttribute('data-skill');
+                    const isSelected = selectedSkills.includes(skill);
+                    if (isSelected) {
+                        btn.className = "quick-skill-btn flex items-center gap-2 px-6 py-3 rounded-2xl border border-primary bg-primary text-white transition-all text-label-md font-label-md whitespace-nowrap shadow-sm cursor-pointer select-none";
+                    } else {
+                        btn.className = "quick-skill-btn flex items-center gap-2 px-6 py-3 rounded-2xl border border-outline-variant bg-surface-container-lowest hover:bg-surface-container-high transition-all text-label-md font-label-md whitespace-nowrap cursor-pointer select-none";
+                    }
+                });
+
+                // Render Tags
+                tagsContainer.innerHTML = selectedSkills.map(skill => `
+                    <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-primary/10 text-primary border border-primary/20">
+                        <span>${skill}</span>
+                        <button type="button" data-remove="${skill}" class="w-3.5 h-3.5 rounded-full hover:bg-primary/20 flex items-center justify-center cursor-pointer">✕</button>
+                    </span>
+                `).join('');
+
+                tagsContainer.querySelectorAll('button[data-remove]').forEach(b => {
+                    b.addEventListener('click', () => {
+                        toggleSkill(b.getAttribute('data-remove'));
+                    });
+                });
+
+                // Filter team cards on page
+                teamCards.forEach(card => {
+                    if (selectedSkills.length === 0) {
+                        card.style.display = '';
+                        return;
+                    }
+                    const cardText = card.innerText;
+                    const matches = selectedSkills.some(skill => cardText.includes(skill));
+                    card.style.display = matches ? '' : 'none';
+                });
+            }
+        })();
 
         // Search bar focus effect
         const searchInput = document.querySelector('input[type="text"]');
