@@ -3,6 +3,7 @@ import AppPageHead from '../../components/app/AppPageHead'
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useLanguage } from '../../hooks/useLanguage'
+import AnimatedCounter from '../../components/shared/AnimatedCounter'
 
 const REQUIREMENTS = [
     { en: 'Basic programming experience (any language)', ar: 'خبرة برمجية أساسية (أي لغة)' },
@@ -71,15 +72,15 @@ export default function Opportunity() {
                     <div className="ev-fade-up lg:col-span-2 space-y-6">
 
                         {/* Hero image + match badge */}
-                        <div className="rounded-xl overflow-hidden h-64 md:h-80 relative">
+                        <div className="group rounded-xl overflow-hidden h-64 md:h-80 relative shadow-md">
                             <img
-                                className="w-full h-full object-cover"
+                                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                                 alt="A dynamic digital art piece representing a global coding hackathon"
                                 src="https://lh3.googleusercontent.com/aida-public/AB6AXuB9CEnFNI0sa64wtdt1xcbuCO2ctuePljYf3b0mGoAfsaVbTQZl6EUEKGeq_A-lCje6-84UGOy-xM_EX1fj34sF-YWMO-_0SG4_iedT1vjYrRw5UpEFxOlngZ_cDhCxJRFxyyChSuzfbQzaifbDrY-ySQm0SZNqdXFNpNdzVSiaboP2NAJ4pYTV-P32G1lYqug8kLksnCytiGNYKiUHGIacjDYyZIZ5HHucNTeyCLWQmzn3HRdmrm8n18EIgGN0AobDjfqjTG3DQkjK"
                             />
-                            <div className={`absolute top-4 ${ar ? 'left-4' : 'right-4'} px-3 py-1.5 bg-secondary text-white rounded-lg font-label-sm flex items-center gap-1 shadow-lg`}>
+                            <div className={`absolute top-4 ${ar ? 'left-4' : 'right-4'} px-3 py-1.5 bg-secondary text-white rounded-lg font-label-sm flex items-center gap-1 shadow-lg backdrop-blur-sm animate-[fadeIn_0.5s_ease-out]`}>
                                 <span className="material-symbols-outlined text-[16px]">bolt</span>
-                                {ar ? 'تطابق 98%' : '98% Match for you'}
+                                {ar ? 'تطابق ' : ''}<AnimatedCounter value={98} suffix="%" />{ar ? '' : ' Match for you'}
                             </div>
                         </div>
 
@@ -132,8 +133,8 @@ export default function Opportunity() {
                                 {ar ? 'المتطلبات' : 'Requirements'}
                             </h2>
                             <ul className="space-y-2 font-body-md text-body-md text-on-surface-variant">
-                                {REQUIREMENTS.map((req) => (
-                                    <li key={req.en} className={`flex items-start gap-2 ${ar ? 'flex-row-reverse text-right' : ''}`}>
+                                {REQUIREMENTS.map((req, i) => (
+                                    <li key={req.en} className={`row-animated flex items-start gap-2 ${ar ? 'flex-row-reverse text-right' : ''} hover:translate-x-1 transition-transform duration-200`} style={{ '--stagger-idx': i }}>
                                         <span className="material-symbols-outlined text-tertiary text-[20px] shrink-0" style={{ fontVariationSettings: '"FILL" 1' }}>check_circle</span>
                                         {ar ? req.ar : req.en}
                                     </li>
@@ -147,14 +148,15 @@ export default function Opportunity() {
                                 {ar ? 'المهارات المطابقة لملفك' : 'Skills matched to your profile'}
                             </h2>
                             <div className={`flex flex-wrap gap-2 ${ar ? 'flex-row-reverse' : ''}`}>
-                                {SKILLS.map((skill) => {
+                                {SKILLS.map((skill, i) => {
                                     const label = typeof skill.label === 'string' ? skill.label : (ar ? skill.label.ar : skill.label.en)
                                     return (
                                         <span
                                             key={typeof skill.label === 'string' ? skill.label : skill.label.en}
-                                            className={`px-3 py-1 rounded-lg font-label-sm text-label-sm ${skill.matched
+                                            className={`row-animated px-3 py-1 rounded-lg font-label-sm text-label-sm hover:scale-105 transition-transform duration-200 cursor-default ${skill.matched
                                                 ? 'bg-primary/5 text-primary border border-primary/10'
                                                 : 'bg-surface-container text-on-surface-variant'}`}
+                                            style={{ '--stagger-idx': i }}
                                         >
                                             {label}
                                         </span>
@@ -229,9 +231,9 @@ export default function Opportunity() {
                         {/* Similar */}
                         <div className="ev-card spotlight bg-surface-container-lowest border border-outline-variant/30 rounded-xl p-6 shadow-sm space-y-3">
                             <h3 className="font-title-md text-title-md">{ar ? 'فرص مشابهة' : 'Similar Opportunities'}</h3>
-                            {SIMILAR.map(({ icon, color, bg, title, sub }) => (
-                                <Link key={title} className={`flex items-center gap-3 group ${ar ? 'flex-row-reverse' : ''}`} to="/app/opportunity">
-                                    <div className={`w-12 h-12 rounded-lg ${bg} flex items-center justify-center shrink-0`}>
+                            {SIMILAR.map(({ icon, color, bg, title, sub }, i) => (
+                                <Link key={title} className={`row-animated flex items-center gap-3 group p-2 rounded-lg hover:bg-surface-container-low transition-all duration-200 ${ar ? 'flex-row-reverse' : ''}`} to="/app/opportunity" style={{ '--stagger-idx': i }}>
+                                    <div className={`w-12 h-12 rounded-lg ${bg} flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform duration-200`}>
                                         <span className={`material-symbols-outlined ${color}`}>{icon}</span>
                                     </div>
                                     <div className={ar ? 'text-right' : ''}>

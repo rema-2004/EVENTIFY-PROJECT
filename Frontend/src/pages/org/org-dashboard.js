@@ -34,16 +34,36 @@ import './org-dashboard-data.js'
         };
     }
 
-    function statCard(k) {
+    function animateValue(el, targetText) {
+        const num = parseFloat(String(targetText).replace(/[^0-9.-]/g, ''));
+        if (isNaN(num)) {
+            el.textContent = targetText;
+            return;
+        }
+        const prefix = String(targetText).startsWith('$') ? '$' : '';
+        const suffix = String(targetText).endsWith('%') ? '%' : String(targetText).endsWith('k') ? 'k' : '';
+        const startTime = performance.now();
+        const duration = 1100;
+        function tick(now) {
+            const progress = Math.min((now - startTime) / duration, 1);
+            const ease = 1 - Math.pow(1 - progress, 3);
+            const current = String(targetText).includes('.') ? (num * ease).toFixed(1) : Math.round(num * ease);
+            el.textContent = `${prefix}${Number(current).toLocaleString()}${suffix}`;
+            if (progress < 1) requestAnimationFrame(tick);
+        }
+        requestAnimationFrame(tick);
+    }
+
+    function statCard(k, idx) {
         const up = k.trend >= 0;
         const value = k.suffix ? `${k.trend > 0 ? '+' : ''}${k.trend}` : `${up ? '+' : ''}${k.trend}%`;
         return `
-        <article class="stat-card">
+        <article class="stat-card row-animated" style="--stagger-idx: ${idx}">
             <div class="stat-card__top">
                 <span class="stat-card__label">${k.label}</span>
                 <span class="stat-card__icon"><span class="material-symbols-outlined" aria-hidden="true">${k.icon}</span></span>
             </div>
-            <p class="stat-card__value">${k.value}</p>
+            <p class="stat-card__value" data-target="${k.value}">${k.value}</p>
             <div class="stat-card__top">
                 <span class="stat-card__hint">${k.trendLabel}</span>
                 <span class="trend ${up ? 'trend--up' : 'trend--down'}">
@@ -55,14 +75,20 @@ import './org-dashboard-data.js'
 
     function renderStats(kpis) {
         const grid = $('#org-stat-grid');
-        if (grid) grid.innerHTML = kpis.map(statCard).join('');
+        if (grid) {
+            grid.innerHTML = kpis.map((k, idx) => statCard(k, idx)).join('');
+            grid.querySelectorAll('.stat-card__value').forEach((el) => {
+                const target = el.getAttribute('data-target');
+                if (target) animateValue(el, target);
+            });
+        }
     }
 
     function renderMyEvents(events) {
         const body = $('#org-events-body');
         if (!body) return;
-        body.innerHTML = events.map((e) => `
-            <tr>
+        body.innerHTML = events.map((e, idx) => `
+            <tr class="row-animated" style="--stagger-idx: ${idx}">
                 <td>
                     <div class="flex items-center gap-3">
                         <img src="${e.image || '../assets/images/event1.jpeg'}" alt="" class="w-10 h-10 rounded-xl object-cover border border-outline-variant/40 flex-shrink-0" onerror="this.style.display='none'">
@@ -87,11 +113,11 @@ import './org-dashboard-data.js'
     function renderUpcoming(events) {
         const target = $('#org-upcoming');
         if (!target) return;
-        target.innerHTML = events.map((e) => {
+        target.innerHTML = events.map((e, idx) => {
             const d = new Date(e.date);
             const hasDate = !isNaN(d);
             return `
-            <div class="event-row">
+            <div class="event-row row-animated" style="--stagger-idx: ${idx}">
                 <div class="event-row__date">
                     <span class="event-row__day">${hasDate ? d.getDate() : '—'}</span>
                     <span class="event-row__month">${hasDate ? d.toLocaleDateString('en-GB', { month: 'short' }) : ''}</span>
@@ -109,8 +135,8 @@ import './org-dashboard-data.js'
         const target = $('#org-top-events');
         if (!target) return;
         const max = Math.max(...events.map((e) => e.score));
-        target.innerHTML = events.map((e) => `
-            <div class="rank-row">
+        target.innerHTML = events.map((e, idx) => `
+            <div class="rank-row row-animated" style="--stagger-idx: ${idx}">
                 <span class="rank-row__index">${String(e.rank).padStart(2, '0')}</span>
                 <div style="min-width:0">
                     <p class="rank-row__name truncate">${e.name}</p>
@@ -127,8 +153,8 @@ import './org-dashboard-data.js'
     function renderRecentApplicants(list) {
         const body = $('#org-applicants-body');
         if (!body) return;
-        body.innerHTML = list.map((a) => `
-            <tr>
+        body.innerHTML = list.map((a, idx) => `
+            <tr class="row-animated" style="--stagger-idx: ${idx}">
                 <td class="font-medium text-on-surface whitespace-nowrap">${a.name}</td>
                 <td class="truncate max-w-[180px] md:max-w-[260px]">${a.event}</td>
                 <td class="mono whitespace-nowrap">${a.applied}</td>
@@ -145,8 +171,8 @@ import './org-dashboard-data.js'
     function renderActivity(items) {
         const target = $('#org-activity');
         if (!target) return;
-        target.innerHTML = items.map((a) => `
-            <div class="timeline__item">
+        target.innerHTML = items.map((a, idx) => `
+            <div class="timeline__item row-animated" style="--stagger-idx: ${idx}">
                 <p class="timeline__text">${a.text}</p>
                 <p class="timeline__time">${a.time}</p>
             </div>`).join('');

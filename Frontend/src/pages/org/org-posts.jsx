@@ -4,6 +4,7 @@ import AppPageHead from '../../components/app/AppPageHead'
 import { useOrgPageControls } from './useOrgPageControls.js'
 import { toast } from '../../utils/toast.js'
 import LangToggleBtn from '../../components/org/LangToggleBtn'
+import AnimatedCounter from '../../components/shared/AnimatedCounter'
 import '../../styles/org/sidebar.css'
 import '../../styles/admin/admin.css'
 import '../../styles/org/org-dashboard.css'
@@ -226,7 +227,7 @@ export default function OrgPosts() {
                         <div className="org-page-header__actions">
                             <div className="panel" style={{ padding: "12px 20px" }}>
                                 <p className="text-sm text-on-surface-variant">Active followers</p>
-                                <p className="text-2xl font-semibold text-on-surface font-mono">3,214</p>
+                                <p className="text-2xl font-semibold text-on-surface font-mono"><AnimatedCounter value={3214} /></p>
                             </div>
                         </div>
                     </div>
@@ -276,8 +277,8 @@ export default function OrgPosts() {
                             </div>
 
                             <div className="space-y-4">
-                                {posts.map(post => (
-                                    <article key={post.id} className="soft-card premium-card rounded-[28px] p-6">
+                                {posts.map((post, idx) => (
+                                    <article key={post.id} className="soft-card premium-card rounded-[28px] p-6 row-animated transition-all duration-300 hover:shadow-md" style={{ '--stagger-idx': idx }}>
                                         <div className="flex items-start justify-between gap-4">
                                             <div className="flex gap-3">
                                                 <div className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl ${post.avatarColor} text-label-md font-semibold`}>
@@ -338,7 +339,7 @@ export default function OrgPosts() {
                                             {EXPLORE_POSTS.map((ep, i) => (
                                                 <button
                                                     key={i}
-                                                    className="w-full rounded-xl border border-outline-variant/30 bg-surface p-3 text-left transition-colors hover:border-primary/30 hover:bg-surface-container-high"
+                                                    className="w-full rounded-xl border border-outline-variant/30 bg-surface p-3 text-left transition-all duration-200 hover:border-primary/40 hover:bg-surface-container-high hover:translate-x-1"
                                                     type="button"
                                                     onClick={() => setModal({ open: true, org: ep.org, title: ep.title, body: ep.body, meta: ep.meta })}
                                                 >

@@ -5,7 +5,21 @@
     let activeFilter = 'all';
     let searchQuery = '';
 
-    function updateCounts() {
+    function animateCount(el, target, duration = 500) {
+        if (!el) return;
+        const start = parseInt(el.textContent, 10) || 0;
+        if (start === target) return;
+        const startTime = performance.now();
+        function update(now) {
+            const progress = Math.min((now - startTime) / duration, 1);
+            const ease = 1 - Math.pow(1 - progress, 3);
+            el.textContent = Math.round(start + (target - start) * ease);
+            if (progress < 1) requestAnimationFrame(update);
+        }
+        requestAnimationFrame(update);
+    }
+
+    function updateCounts(animate = true) {
         const rows = $$('#opp-tbody tr[data-status]');
         const counts = { all: rows.length, live: 0, pending: 0, upcoming: 0, ended: 0 };
 
@@ -14,23 +28,19 @@
             if (counts[s] !== undefined) counts[s]++;
         });
 
-        // Update KPI stat card values
-        const liveVal = $('#kpi-live-val');
-        const pendingVal = $('#kpi-pending-val');
-        const upcomingVal = $('#kpi-upcoming-val');
-        const endedVal = $('#kpi-ended-val');
-
-        if (liveVal) liveVal.textContent = counts.live;
-        if (pendingVal) pendingVal.textContent = counts.pending;
-        if (upcomingVal) upcomingVal.textContent = counts.upcoming;
-        if (endedVal) endedVal.textContent = counts.ended;
+        // Update KPI stat card values with smooth animation
+        const updater = animate ? animateCount : (el, val) => { if (el) el.textContent = val; };
+        updater($('#kpi-live-val'), counts.live);
+        updater($('#kpi-pending-val'), counts.pending);
+        updater($('#kpi-upcoming-val'), counts.upcoming);
+        updater($('#kpi-ended-val'), counts.ended);
 
         // Update Filter pill badge counts
         $$('.opp-filter-btn').forEach(btn => {
             const f = btn.dataset.filter;
             const badge = btn.querySelector('.filter-count');
             if (badge && counts[f] !== undefined) {
-                badge.textContent = counts[f];
+                updater(badge, counts[f], 350);
             }
         });
     }
@@ -42,6 +52,7 @@
         const query = searchQuery.trim().toLowerCase();
 
         let visibleCount = 0;
+        let staggerIdx = 0;
 
         rows.forEach(row => {
             const status = row.dataset.status;
@@ -53,6 +64,11 @@
 
             if (matchesFilter && matchesSearch) {
                 row.style.display = '';
+                row.style.setProperty('--stagger-idx', staggerIdx);
+                row.classList.remove('row-animated');
+                void row.offsetWidth; // trigger reflow
+                row.classList.add('row-animated');
+                staggerIdx++;
                 visibleCount++;
             } else {
                 row.style.display = 'none';
@@ -179,37 +195,55 @@
     function wireResubmitActions() {
         document.addEventListener('click', (e) => {
             const btn = e.target.closest('.btn-resubmit-opp');
-            if (!btn) return;
+            if (!btn || btn.classList.contains('loading')) return;
             const row = btn.closest('tr[data-status]');
             if (!row) return;
 
-            // Change state from rejected to pending
-            row.dataset.status = 'pending';
+            // Immediate tactile feedback: spin icon & disable duplicate clicks
+            btn.classList.add('loading');
+            const icon = btn.querySelector('svg');
+            if (icon) icon.classList.add('icon-spin-fast');
 
-            // Remove rejection reason box
-            const rejectionBox = row.querySelector('.opp-rejection-box');
-            if (rejectionBox) rejectionBox.remove();
+            setTimeout(() => {
+                // Change state from rejected to pending
+                row.dataset.status = 'pending';
+                row.classList.add('row-resubmitted-pulse');
 
-            // Update badge to pending
-            const badge = row.querySelector('.badge');
-            if (badge) {
-                badge.className = 'badge badge--pending';
-                badge.textContent = 'Pending Approval';
-            }
+                // Remove rejection reason box with fade
+                const rejectionBox = row.querySelector('.opp-rejection-box');
+                if (rejectionBox) {
+                    rejectionBox.style.transition = 'all 0.25s ease';
+                    rejectionBox.style.opacity = '0';
+                    rejectionBox.style.maxHeight = '0';
+                    setTimeout(() => rejectionBox.remove(), 250);
+                }
 
-            // Update actions to pending actions (only Edit, no Applicants)
-            const actionsWrap = row.querySelector('.org-row-actions');
-            if (actionsWrap) {
-                actionsWrap.innerHTML = `
-                    <a href="org-create-event.html" class="org-action--primary" aria-label="Edit opportunity">Edit</a>
-                `;
-            }
+                // Update badge to pending
+                const badge = row.querySelector('.badge');
+                if (badge) {
+                    badge.className = 'badge badge--pending';
+                    badge.textContent = 'Pending Approval';
+                }
 
-            // Update counts across stat cards & filter pills
-            updateCounts();
+                // Update actions to pending actions (only Edit, no Applicants)
+                const actionsWrap = row.querySelector('.org-row-actions');
+                if (actionsWrap) {
+                    actionsWrap.innerHTML = `
+                        <a href="org-create-event.html" class="org-action--primary" aria-label="Edit opportunity">Edit</a>
+                    `;
+                }
 
-            // Re-apply filter & search so if user is on a specific filter it moves appropriately
-            applyFilterAndSearch();
+                // Update counts across stat cards & filter pills (with smooth countup)
+                updateCounts(true);
+
+                // Re-apply filter & search so if user is on a specific filter it moves appropriately
+                applyFilterAndSearch();
+
+                // Clean up pulse animation after completion
+                setTimeout(() => {
+                    row.classList.remove('row-resubmitted-pulse');
+                }, 1600);
+            }, 300);
         });
     }
 

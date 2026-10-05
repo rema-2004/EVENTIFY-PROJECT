@@ -124,8 +124,16 @@ export default function Landing() {
         chips.forEach((c) => c.classList.remove('active'))
         chip.classList.add('active')
         const filter = chip.dataset.filter
+        let visibleIdx = 0
         cards.forEach((card) => {
-          card.classList.toggle('hidden', filter !== 'all' && card.dataset.type !== filter)
+          const isMatch = filter === 'all' || card.dataset.type === filter
+          card.classList.toggle('hidden', !isMatch)
+          if (isMatch) {
+            card.style.setProperty('--filter-idx', visibleIdx++)
+            card.classList.remove('filter-anim')
+            void card.offsetWidth
+            card.classList.add('filter-anim')
+          }
         })
       })
     })

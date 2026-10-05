@@ -100,22 +100,22 @@ export default function ParticipationType() {
 
                         {/* Options grid */}
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                            {OPTIONS.map((opt) => {
+                            {OPTIONS.map((opt, i) => {
                                 const isActive = selected === opt.key
                                 return (
                                     <button
                                         key={opt.key}
                                         type="button"
-                                        className={`flex flex-col items-start p-6 rounded-xl border transition-all duration-300 text-left relative ${ar ? 'text-right' : 'text-left'} ${
+                                        className={`row-animated group flex flex-col items-start p-6 rounded-xl border transition-all duration-300 text-left relative ${ar ? 'text-right' : 'text-left'} ${
                                             isActive
-                                                ? 'border-[#FF4D2E] bg-surface-container-low -translate-y-1'
-                                                : 'bg-surface border-outline-variant hover:border-[#FF4D2E]/50 hover:bg-surface-container-low'
+                                                ? 'border-[#FF4D2E] bg-surface-container-low -translate-y-1 scale-[1.02] shadow-xl ring-2 ring-[#FF4D2E]/20'
+                                                : 'bg-surface border-outline-variant hover:border-[#FF4D2E]/50 hover:bg-surface-container-low hover:-translate-y-1'
                                         }`}
-                                        style={{ boxShadow: '0 4px 20px -2px rgba(15,23,42,0.08)' }}
+                                        style={{ '--stagger-idx': i, boxShadow: '0 4px 20px -2px rgba(15,23,42,0.08)' }}
                                         onClick={() => setSelected(opt.key)}
                                     >
                                         {/* Check badge */}
-                                        <div className={`absolute top-4 ${ar ? 'left-4' : 'right-4'} transition-opacity ${isActive ? 'opacity-100' : 'opacity-0'}`}>
+                                        <div className={`absolute top-4 ${ar ? 'left-4' : 'right-4'} transition-all duration-200 ${isActive ? 'opacity-100 scale-100 animate-[successPop_0.3s_cubic-bezier(0.16,1,0.3,1)]' : 'opacity-0 scale-75'}`}>
                                             <span
                                                 className="material-symbols-outlined"
                                                 style={{ color: '#FF4D2E', fontVariationSettings: '"FILL" 1' }}
@@ -123,13 +123,13 @@ export default function ParticipationType() {
                                         </div>
 
                                         {/* Icon */}
-                                        <div className={`w-12 h-12 rounded-lg ${opt.iconBg} flex items-center justify-center mb-6`}>
+                                        <div className={`w-12 h-12 rounded-lg ${opt.iconBg} flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300`}>
                                             <span className={`material-symbols-outlined ${opt.iconColor} text-2xl`}>{opt.icon}</span>
                                         </div>
 
                                         {/* Text */}
                                         <div className="space-y-3 mb-8 flex-grow">
-                                            <h3 className="font-title-lg text-title-lg text-on-surface">
+                                            <h3 className="font-title-lg text-title-lg text-on-surface group-hover:text-primary transition-colors">
                                                 {ar ? opt.title.ar : opt.title.en}
                                             </h3>
                                             <p className="font-body-md text-body-md text-on-surface-variant">
@@ -138,7 +138,7 @@ export default function ParticipationType() {
                                         </div>
 
                                         {/* Badge */}
-                                        <span className={`inline-block px-3 py-1 rounded-full font-label-sm text-label-sm ${opt.badgeCls}`}>
+                                        <span className={`inline-block px-3 py-1 rounded-full font-label-sm text-label-sm transition-transform group-hover:translate-x-0.5 ${opt.badgeCls}`}>
                                             {ar ? opt.badge.ar : opt.badge.en}
                                         </span>
                                     </button>

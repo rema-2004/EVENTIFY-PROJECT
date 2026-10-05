@@ -539,3 +539,45 @@ select:focus-visible {
     outline: 2px solid var(--accent);
     outline-offset: 2px;
 }
+
+/* ===== Micro-animations & Enhanced Motion ===== */
+@keyframes row-stagger-in {
+    0% {
+        opacity: 0;
+        transform: translateY(8px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.opp-table tbody tr.row-animated {
+    animation: row-stagger-in 0.32s cubic-bezier(0.16, 1, 0.3, 1) both;
+    animation-delay: calc(var(--stagger-idx, 0) * 45ms);
+}
+
+@keyframes resubmit-glow-pulse {
+    0% {
+        background-color: rgba(245, 158, 11, 0.22);
+    }
+    50% {
+        background-color: rgba(245, 158, 11, 0.1);
+    }
+    100% {
+        background-color: transparent;
+    }
+}
+
+.row-resubmitted-pulse {
+    animation: resubmit-glow-pulse 1.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes spin-fast {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+.icon-spin-fast {
+    animation: spin-fast 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}

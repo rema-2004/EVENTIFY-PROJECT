@@ -286,9 +286,14 @@ export default function AppHome() {
     { img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuC3eL49qDKde8nJat8bbMD-e7iLAX5jUmYWEgqWWO3G4gKStDqZVQcvk-s0RAU_pzaZfmmGzBNiqJ0B90CztUFJsVgCQpiCiOIrzyZSob_6KdzfhMj191B5cm02XzBYKFUHVnYwHkgLcxET11ZEq7eZ3UN9W4lbYliTucyjKFvVY8yMqG-4JV5p3mAA1oYqsYiICSzmgCacyFAQ6SXYl7Fmm2s9yLl19UR4LVmrIGVCmPfepE7pwtjpwcBOapQEnDac5lnwZZ00ht5g', type: ar ? 'سباق تصميم' : 'Design Sprint', title: ar ? 'سباق التصميم 2024' : 'DesignSprint 2024', icon: 'brush', meta: ar ? 'مصممو UI/UX' : 'UI/UX Designers', timing: ar ? 'يبدأ غداً' : 'Starts Tomorrow', level: ar ? 'مفتوح' : 'OPEN', prize: ar ? 'إرشاد' : 'Mentorship' },
     { img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCXjuV5CQGqc-ZmamRm8rBUtKL8uClHTygX0WXc3pOz_URa_gxCcG8AwYwcTdoFJJMwYHK-8yGqGa_we6rtmdJ-o-dlrTDebv3EOaalvLTX0AbshUPKUwZyYLGMzXshnisKSXxiIb3z5i5gXzLOxFzkZDGyp2eiai4-zFbHE6L5JTyXWjUxjY4-Gr7FYQmzegkgSeyQxjeA9O5cBo5ah87T3qI-xYuJRoP8DJnofGUr37XLhF-OcBMLzFhDfV99BeirnKTIQgJ4rqvS', type: ar ? 'روبوتات' : 'Robotics', title: ar ? 'تحدي روبوكويست' : 'RoboQuest Tech', icon: 'precision_manufacturing', meta: ar ? 'مطوّرو الأجهزة' : 'Hardware Devs', timing: ar ? 'ينتهي خلال يومين' : 'Ends in 2 days', level: ar ? 'متقدم' : 'ADVANCED', prize: '$25k Grant' },
 ].map((c, i) => (
-    <div key={i} className="bg-surface-container-lowest dark:bg-slate-900/80 border border-outline-variant/30 dark:border-white/10 rounded-xl p-4 space-y-4 premium-card cursor-pointer group" onClick={openOpportunity}>
+    <div 
+        key={i} 
+        className="bg-surface-container-lowest dark:bg-slate-900/80 border border-outline-variant/30 dark:border-white/10 rounded-xl p-4 space-y-4 premium-card cursor-pointer group row-animated transition-all duration-300 hover:-translate-y-1 hover:shadow-lg" 
+        style={{ '--stagger-idx': i }}
+        onClick={openOpportunity}
+    >
         <div className="aspect-video rounded-lg overflow-hidden mb-4">
-            <img className="w-full h-full object-cover" alt={c.title} src={c.img} />
+            <img className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" alt={c.title} src={c.img} />
         </div>
         <div className="space-y-1">
             <span className="font-label-sm text-label-sm uppercase text-secondary">{c.type}</span>
@@ -333,9 +338,9 @@ export default function AppHome() {
         ))}
     </div>
 </div>
-<div className="grid grid-cols-1 md:grid-cols-12 gap-gutter">
+<div key={eventFilter} className="grid grid-cols-1 md:grid-cols-12 gap-gutter">
 {(eventFilter === 'all' || eventFilter === 'event') && (
-    <div className="md:col-span-8 bg-surface-container-lowest dark:bg-slate-900/60 border border-outline-variant/30 dark:border-white/10 rounded-xl overflow-hidden shadow-sm flex flex-col md:flex-row md:min-h-[22rem] ev-card spotlight cursor-pointer" onClick={openOpportunity}>
+    <div className="md:col-span-8 bg-surface-container-lowest dark:bg-slate-900/60 border border-outline-variant/30 dark:border-white/10 rounded-xl overflow-hidden shadow-sm flex flex-col md:flex-row md:min-h-[22rem] ev-card spotlight cursor-pointer row-animated transition-all duration-300 hover:-translate-y-1 hover:shadow-lg" style={{ '--stagger-idx': 0 }} onClick={openOpportunity}>
         <div className="md:w-1/2 overflow-hidden">
             <img className="w-full h-full object-cover" alt="Global AI Summit 2024" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB4XGVVgdXcQZS5VeH1XemHRZule_sQgpM4yB8dp3TMxmIjOTnb7x77AU3_AQqluVNnUoBk5iOwilGg_Cj8LHOtQPsJVDcaa2kfvpwYLdBwATyhzxwNtAS856W4G73Ol2mDobe-pFocsYIgmXPkxxqQyS3aZpjC91TuFLwh-po8QIPiLvPOm1yFqZmmNUYFn-URTuNl5djEq9B_ex_XDVvWZZOaO1ql7f1IdMFa91gP9zwnDLnSsn8-06q6CYeqKkjDxqTjq8-BsmeU"/>
         </div>

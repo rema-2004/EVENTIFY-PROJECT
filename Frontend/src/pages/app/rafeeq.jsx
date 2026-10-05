@@ -106,9 +106,9 @@ export default function Rafeeq() {
                 </p>
 
                 {MESSAGES.map((msg, i) => (
-                    <div key={i} className={`flex gap-3 max-w-[80%] ${msg.role === 'user' ? 'self-end flex-row-reverse' : ''}`}>
+                    <div key={i} className={`row-animated flex gap-3 max-w-[80%] ${msg.role === 'user' ? 'self-end flex-row-reverse' : ''}`} style={{ '--stagger-idx': i }}>
                         {msg.role === 'ai' && (
-                            <div className="w-9 h-9 rounded-full flex items-center justify-center flex-shrink-0" style={{ background: RAFEEQ_GRADIENT }}>
+                            <div className="w-9 h-9 rounded-full flex items-center justify-center flex-shrink-0 shadow-[0_0_12px_rgba(255,77,46,0.3)] animate-pulse" style={{ background: RAFEEQ_GRADIENT }}>
                                 <span className="material-symbols-outlined text-white" style={{ fontSize: 18 }}>smart_toy</span>
                             </div>
                         )}
@@ -116,17 +116,18 @@ export default function Rafeeq() {
                         {msg.role === 'ai' ? (
                             <div className="space-y-3">
                                 <div
-                                    className={`rounded-2xl px-5 py-3.5 font-body-md text-body-md bg-surface-container-lowest border border-outline-variant text-on-surface ${ar ? 'rounded-tr-sm' : 'rounded-tl-sm'}`}
+                                    className={`rounded-2xl px-5 py-3.5 font-body-md text-body-md bg-surface-container-lowest border border-outline-variant text-on-surface shadow-sm ${ar ? 'rounded-tr-sm' : 'rounded-tl-sm'}`}
                                 >
                                     {ar ? msg.text.ar : msg.text.en}
                                 </div>
                                 {msg.actions && (
                                     <div className="flex flex-wrap gap-2">
-                                        {msg.actions.map((action) => (
+                                        {msg.actions.map((action, actionIdx) => (
                                             <Link
                                                 key={action.icon}
                                                 to={action.to}
-                                                className="px-4 py-2 bg-surface-container-lowest border border-outline-variant rounded-lg font-label-sm text-label-sm hover:border-[#FF4D2E]/50 transition-colors flex items-center gap-1"
+                                                className="row-animated px-4 py-2 bg-surface-container-lowest border border-outline-variant rounded-lg font-label-sm text-label-sm hover:border-[#FF4D2E]/50 hover:-translate-y-0.5 active:scale-95 transition-all flex items-center gap-1 shadow-sm"
+                                                style={{ '--stagger-idx': actionIdx + 2 }}
                                             >
                                                 <span className={`material-symbols-outlined ${action.iconColor}`} style={{ fontSize: 16 }}>{action.icon}</span>
                                                 {ar ? action.label.ar : action.label.en}
@@ -137,7 +138,7 @@ export default function Rafeeq() {
                             </div>
                         ) : (
                             <div
-                                className={`rounded-2xl px-5 py-3.5 font-body-md text-body-md ${ar ? 'rounded-tl-sm' : 'rounded-tr-sm'}`}
+                                className={`rounded-2xl px-5 py-3.5 font-body-md text-body-md shadow-md ${ar ? 'rounded-tl-sm' : 'rounded-tr-sm'}`}
                                 style={{ backgroundColor: '#FF4D2E', color: '#ffffff' }}
                             >
                                 {ar ? msg.text.ar : msg.text.en}

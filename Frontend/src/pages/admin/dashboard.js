@@ -92,6 +92,29 @@ import './dashboard-data.js'
             </article>`;
     }
 
+    function animateDashboardCounters() {
+        document.querySelectorAll('#stat-blocks .stat-card__value, .pending-action-card__count').forEach(el => {
+            const raw = el.textContent.trim();
+            const numVal = parseInt(raw.replace(/[^\d]/g, ''), 10);
+            if (isNaN(numVal) || numVal === 0) return;
+
+            let startTime = null;
+            const duration = 750;
+            const step = (ts) => {
+                if (!startTime) startTime = ts;
+                const progress = Math.min((ts - startTime) / duration, 1);
+                const ease = 1 - Math.pow(1 - progress, 3);
+                el.textContent = Math.round(numVal * ease).toLocaleString('en-US');
+                if (progress < 1) {
+                    requestAnimationFrame(step);
+                } else {
+                    el.textContent = num(numVal);
+                }
+            };
+            requestAnimationFrame(step);
+        });
+    }
+
     function renderStats(kpis) {
         // The core four primary platform KPIs.
         const picks = [
@@ -102,6 +125,8 @@ import './dashboard-data.js'
             const card = statCard(item, true); // All top level KPIs are primary
             return card.replace('<article class="stat-card', `<article class="stat-card adm-enter" style="animation-delay:${0.1 + (i * 0.05)}s"`);
         }).join('')}</div>`;
+
+        animateDashboardCounters();
     }
 
     /* ---- charts --------------------------------------------------------- */
@@ -355,8 +380,8 @@ import './dashboard-data.js'
     function renderOrganizations(rows) {
         const body = $('#top-organizations');
         if (!body) return;
-        body.innerHTML = rows.map(row => `
-            <tr>
+        body.innerHTML = rows.map((row, i) => `
+            <tr class="row-animated" style="--stagger-idx:${i}">
                 <td style="font-weight:600">${esc(row.name)}</td>
                 <td class="mono">${num(row.events)}</td>
                 <td class="mono">${num(row.registrations)}</td>
@@ -399,7 +424,7 @@ import './dashboard-data.js'
         if (!el) return;
         const icons = ['trending_up', 'category', 'pending_actions', 'apartment', 'bolt'];
         el.innerHTML = list.map((text, i) => `
-            <div class="insight-item">
+            <div class="insight-item row-animated" style="--stagger-idx:${i}">
                 <span class="insight-item__icon">${icon(icons[i % icons.length])}</span>
                 <p class="insight-item__text">${esc(text)}</p>
             </div>`).join('');
@@ -408,10 +433,10 @@ import './dashboard-data.js'
     function renderPendingActions(rows) {
         const el = $('#pending-actions');
         if (!el) return;
-        el.innerHTML = rows.map(row => {
+        el.innerHTML = rows.map((row, i) => {
             const displayCount = row.count < 10 ? '0' + row.count : num(row.count);
             return `
-            <article class="pending-action-card">
+            <article class="pending-action-card row-animated" style="--stagger-idx:${i}">
                 <div class="pending-action-card__top">
                     <span class="pending-action-card__icon">${icon(row.icon)}</span>
                     <p class="pending-action-card__count">${displayCount}</p>
@@ -468,7 +493,7 @@ import './dashboard-data.js'
         $('#top-competitions').innerHTML = rows.map((row, i) => {
             const pct = Math.round((row.participants / row.capacity) * 100);
             return `
-            <div class="rank-row">
+            <div class="rank-row row-animated" style="--stagger-idx:${i}">
                 <span class="rank-row__index">${String(i + 1).padStart(2, '0')}</span>
                 <div>
                     <p class="rank-row__name">${esc(row.name)}</p>
@@ -484,10 +509,10 @@ import './dashboard-data.js'
     }
 
     function renderUpcomingEvents(rows) {
-        $('#upcoming-events').innerHTML = rows.map(row => {
+        $('#upcoming-events').innerHTML = rows.map((row, i) => {
             const d = new Date(row.date);
             return `
-            <div class="event-row">
+            <div class="event-row row-animated" style="--stagger-idx:${i}">
                 <div class="event-row__date">
                     <span class="event-row__day">${d.getDate()}</span>
                     <span class="event-row__month">${d.toLocaleDateString('en-GB', { month: 'short' })}</span>
@@ -503,8 +528,8 @@ import './dashboard-data.js'
     }
 
     function renderActivity(rows) {
-        $('#recent-activity').innerHTML = `<div class="timeline">${rows.map(row => `
-            <div class="timeline__item">
+        $('#recent-activity').innerHTML = `<div class="timeline">${rows.map((row, i) => `
+            <div class="timeline__item row-animated" style="--stagger-idx:${i}">
                 <p class="timeline__text"><strong>${esc(row.actor)}</strong> ${esc(row.action)} <strong>${esc(row.target)}</strong></p>
                 <p class="timeline__time">${relativeTime(row.at)}</p>
             </div>`).join('')}</div>`;
@@ -522,8 +547,8 @@ import './dashboard-data.js'
             return;
         }
 
-        body.innerHTML = rows.map(row => `
-            <tr data-id="${row.id}">
+        body.innerHTML = rows.map((row, i) => `
+            <tr data-id="${row.id}" class="row-animated" style="--stagger-idx:${i}">
                 <td>
                     <p style="font-weight:600">${esc(row.participant)}</p>
                     <p class="rank-row__meta">${esc(row.email)}</p>

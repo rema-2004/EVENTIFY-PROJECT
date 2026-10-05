@@ -170,7 +170,7 @@ export default function OrgSettings() {
                     </div>
 
                     <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
-                        <section className="rounded-2xl border border-outline-variant/50 bg-surface-container-lowest p-8 lg:col-span-2">
+                        <section className="rounded-2xl border border-outline-variant/50 bg-surface-container-lowest p-8 lg:col-span-2 row-animated" style={{ '--stagger-idx': 0 }}>
                             <h3 className="mb-6 text-title-lg font-semibold">Official Information</h3>
                             <form className="grid grid-cols-1 gap-5 md:grid-cols-2" onSubmit={handleSave}>
                                 <div className="form-group">
@@ -214,7 +214,7 @@ export default function OrgSettings() {
                             </form>
                         </section>
                         <aside className="space-y-6">
-                            <section className="rounded-2xl border border-outline-variant/50 bg-surface-container-lowest p-6">
+                            <section className="rounded-2xl border border-outline-variant/50 bg-surface-container-lowest p-6 row-animated" style={{ '--stagger-idx': 1 }}>
                                 <h3 className="mb-4 text-title-lg font-semibold">Verification</h3>
                                 <div className="mb-4 rounded-xl bg-success/10 p-4 text-success">
                                     <p className="font-semibold">Verified organizer</p>
@@ -235,7 +235,7 @@ export default function OrgSettings() {
                                     </p>
                                 </div>
                             </section>
-                            <section className="rounded-2xl border border-outline-variant/50 bg-surface-container-lowest p-6">
+                            <section className="rounded-2xl border border-outline-variant/50 bg-surface-container-lowest p-6 row-animated" style={{ '--stagger-idx': 2 }}>
                                 <h3 className="mb-4 text-title-lg font-semibold">Notification Rules</h3>
                                 <div className="space-y-4">
                                     <label className="flex items-center justify-between gap-3">

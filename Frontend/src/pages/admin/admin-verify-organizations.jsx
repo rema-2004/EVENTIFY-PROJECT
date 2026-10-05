@@ -5,6 +5,7 @@ import { useAdminPageControls } from './useAdminPageControls.js'
 import LangToggleBtn from '../../components/org/LangToggleBtn'
 import { useLanguage } from '../../hooks/useLanguage'
 import { toast } from '../../utils/toast'
+import AnimatedCounter from '../../components/shared/AnimatedCounter'
 import '../../styles/admin/admin.css'
 
 const INITIAL_ORGANIZATIONS = [
@@ -378,24 +379,28 @@ export default function AdminVerifyOrganizations() {
                     </div>
                     <div className="stat-grid stat-grid--3 mb-6">
                         <div className="stat-card">
-                            <p className="stat-card__value">{pendingCount}</p>
+                            <p className="stat-card__value"><AnimatedCounter value={pendingCount} /></p>
                             <p className="stat-card__label">Pending review</p>
                             <p className="stat-card__hint">On this page</p>
                         </div>
                         <div className="stat-card">
-                            <p className="stat-card__value">{312 + acceptedCount}</p>
+                            <p className="stat-card__value"><AnimatedCounter value={312 + acceptedCount} /></p>
                             <p className="stat-card__label">Verified organizations</p>
                             <p className="stat-card__hint">All time</p>
                         </div>
                         <div className="stat-card">
-                            <p className="stat-card__value">{4 + rejectedCount}</p>
+                            <p className="stat-card__value"><AnimatedCounter value={4 + rejectedCount} /></p>
                             <p className="stat-card__label">Rejected requests</p>
                             <p className="stat-card__hint">All time</p>
                         </div>
                     </div>
                     <section className="space-y-4">
-                        {organizations.map((org) => (
-                            <article key={org.id} className="section-card transition-all duration-200">
+                        {organizations.map((org, idx) => (
+                            <article 
+                                key={org.id} 
+                                className="section-card row-animated transition-all duration-200"
+                                style={{ '--stagger-idx': idx }}
+                            >
                                 <div className="flex flex-col justify-between gap-5 lg:flex-row lg:items-start">
                                     <div className="flex-1">
                                         <div className="mb-2 flex flex-wrap items-center gap-2">

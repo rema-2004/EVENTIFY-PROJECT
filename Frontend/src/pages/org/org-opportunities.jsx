@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import AppPageHead from '../../components/app/AppPageHead'
 import { useOrgPageControls } from './useOrgPageControls.js'
@@ -104,6 +104,37 @@ const KPI_FILTERS = [
     { key: 'ended',    label: 'Ended',    labelAr: 'منتهي',  icon: 'task_alt' },
 ]
 
+function AnimatedNumber({ value, duration = 650 }) {
+    const [displayVal, setDisplayVal] = useState(0)
+
+    useEffect(() => {
+        let startTime = null
+        const startVal = displayVal
+        const targetVal = Number(value) || 0
+
+        if (startVal === targetVal) return
+
+        let animationFrameId
+
+        const step = (timestamp) => {
+            if (!startTime) startTime = timestamp
+            const progress = Math.min((timestamp - startTime) / duration, 1)
+            // easeOutCubic curve for smooth decelerating count
+            const ease = 1 - Math.pow(1 - progress, 3)
+            setDisplayVal(Math.round(startVal + (targetVal - startVal) * ease))
+
+            if (progress < 1) {
+                animationFrameId = requestAnimationFrame(step)
+            }
+        }
+
+        animationFrameId = requestAnimationFrame(step)
+        return () => cancelAnimationFrame(animationFrameId)
+    }, [value, duration])
+
+    return <span>{displayVal}</span>
+}
+
 export default function OrgOpportunities() {
     useOrgPageControls()
     const { isRtl } = useLanguage()
@@ -111,6 +142,8 @@ export default function OrgOpportunities() {
     const [opportunities, setOpportunities] = useState(INITIAL_OPPORTUNITIES)
     const [activeFilter, setActiveFilter] = useState('all')
     const [search, setSearch] = useState('')
+    const [animatingId, setAnimatingId] = useState(null)
+    const [pulseId, setPulseId] = useState(null)
 
     const counts = {
         all:      opportunities.length,
@@ -135,24 +168,34 @@ export default function OrgOpportunities() {
     })
 
     const handleResubmit = (oppId) => {
-        setOpportunities(prev => prev.map(opp => {
-            if (opp.id === oppId) {
-                return {
-                    ...opp,
-                    status: 'pending',
-                    rejectionReason: '',
-                    rejectionReasonAr: '',
-                }
-            }
-            return opp
-        }))
+        if (animatingId) return
+        setAnimatingId(oppId)
 
-        toast(
-            isRtl 
-                ? 'تم تحديث حالة الفعالية إلى "معلق" وإعادة إرسالها للمراجعة بنجاح' 
-                : 'Event resubmitted: status updated to "Pending" and submitted for approval',
-            'success'
-        )
+        setTimeout(() => {
+            setOpportunities(prev => prev.map(opp => {
+                if (opp.id === oppId) {
+                    return {
+                        ...opp,
+                        status: 'pending',
+                        rejectionReason: '',
+                        rejectionReasonAr: '',
+                    }
+                }
+                return opp
+            }))
+
+            setAnimatingId(null)
+            setPulseId(oppId)
+
+            toast(
+                isRtl 
+                    ? 'تم تحديث حالة الفعالية إلى "معلق" وإعادة إرسالها للمراجعة بنجاح' 
+                    : 'Event resubmitted: status updated to "Pending" and submitted for approval',
+                'success'
+            )
+
+            setTimeout(() => setPulseId(null), 2000)
+        }, 320)
     }
 
     function handleKpiClick(key) {
@@ -309,7 +352,7 @@ export default function OrgOpportunities() {
                                         <span className="material-symbols-outlined" aria-hidden="true">{icon}</span>
                                     </span>
                                 </div>
-                                <p className="stat-card__value">{counts[key]}</p>
+                                <p className="stat-card__value"><AnimatedNumber value={counts[key]} /></p>
                             </button>
                         ))}
                     </div>
@@ -326,7 +369,7 @@ export default function OrgOpportunities() {
                                     onClick={() => setActiveFilter(tab.key)}
                                 >
                                     {isRtl ? tab.labelAr : tab.label}{' '}
-                                    <span className="filter-count">{counts[tab.key] ?? counts.all}</span>
+                                    <span className="filter-count"><AnimatedNumber value={counts[tab.key] ?? counts.all} duration={400} /></span>
                                 </button>
                             ))}
                         </div>
@@ -362,16 +405,23 @@ export default function OrgOpportunities() {
                                             <th style={{ textAlign: isRtl ? 'left' : 'right' }}>{isRtl ? 'الإجراءات' : 'Actions'}</th>
                                         </tr>
                                     </thead>
-                                    <tbody>
-                                        {visible.map(opp => {
+                                    <tbody key={activeFilter + (search ? '-search' : '')}>
+                                        {visible.map((opp, index) => {
                                             const badge = STATUS_BADGE[opp.status]
                                             const isEnded = opp.status === 'ended'
                                             const isRejected = opp.status === 'rejected'
                                             const isUnpublished = ['pending', 'draft', 'rejected'].includes(opp.status)
                                             const rejectionText = isRtl && opp.rejectionReasonAr ? opp.rejectionReasonAr : opp.rejectionReason
+                                            const isResubmitting = animatingId === opp.id
+                                            const isPulsing = pulseId === opp.id
 
                                             return (
-                                                <tr key={opp.id} data-status={opp.status} className={isRejected ? 'bg-red-50/30 dark:bg-red-950/15' : ''}>
+                                                <tr
+                                                    key={opp.id}
+                                                    data-status={opp.status}
+                                                    style={{ '--stagger-idx': index }}
+                                                    className={`row-animated transition-all ${isRejected ? 'bg-red-50/30 dark:bg-red-950/15' : ''} ${isPulsing ? 'row-resubmitted-pulse' : ''}`}
+                                                >
                                                     <td>
                                                         <div className="opp-entity">
                                                             <div className="flex-1 min-w-0">
@@ -417,12 +467,15 @@ export default function OrgOpportunities() {
                                                             {isRejected ? (
                                                                 <button
                                                                     type="button"
+                                                                    disabled={isResubmitting}
                                                                     onClick={() => handleResubmit(opp.id)}
-                                                                    className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-full bg-red-600 hover:bg-red-700 active:bg-red-800 text-white transition-all shadow-sm hover:shadow cursor-pointer"
+                                                                    className={`inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-full bg-red-600 hover:bg-red-700 active:bg-red-800 text-white transition-all shadow-sm hover:shadow cursor-pointer ${isResubmitting ? 'opacity-75 scale-95' : ''}`}
                                                                     title={isRtl ? 'تعديل وإعادة إرسال الفعالية للمراجعة' : 'Edit & Resubmit event for approval'}
                                                                 >
-                                                                    <span className="material-symbols-outlined text-[15px]" aria-hidden="true">published_with_changes</span>
-                                                                    <span>{isRtl ? 'تعديل وإعادة إرسال' : 'Edit & Resubmit'}</span>
+                                                                    <span className={`material-symbols-outlined text-[15px] ${isResubmitting ? 'icon-spin-fast' : ''}`} aria-hidden="true">
+                                                                        published_with_changes
+                                                                    </span>
+                                                                    <span>{isResubmitting ? (isRtl ? 'جارِ الإرسال...' : 'Submitting...') : (isRtl ? 'تعديل وإعادة إرسال' : 'Edit & Resubmit')}</span>
                                                                 </button>
                                                             ) : isUnpublished ? (
                                                                 /* Pending / Unpublished events: Hide Applicants button completely, show only Edit */

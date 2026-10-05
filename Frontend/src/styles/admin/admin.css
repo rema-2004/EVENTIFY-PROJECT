@@ -1845,3 +1845,31 @@ aside.h-screen::-webkit-scrollbar-thumb {
         display: none;
     }
 }
+
+/* --- Admin Staggered Fluid Entrances --- */
+#users-list > div,
+#category-list > div,
+#events-list > div {
+    animation: row-stagger-in 0.35s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+#users-list > div:nth-child(1), #category-list > div:nth-child(1), #events-list > div:nth-child(1) { animation-delay: 0.04s; }
+#users-list > div:nth-child(2), #category-list > div:nth-child(2), #events-list > div:nth-child(2) { animation-delay: 0.08s; }
+#users-list > div:nth-child(3), #category-list > div:nth-child(3), #events-list > div:nth-child(3) { animation-delay: 0.12s; }
+#users-list > div:nth-child(4), #category-list > div:nth-child(4), #events-list > div:nth-child(4) { animation-delay: 0.16s; }
+#users-list > div:nth-child(5), #category-list > div:nth-child(5), #events-list > div:nth-child(5) { animation-delay: 0.20s; }
+#users-list > div:nth-child(6), #events-list > div:nth-child(6) { animation-delay: 0.24s; }
+#users-list > div:nth-child(7), #events-list > div:nth-child(7) { animation-delay: 0.28s; }
+#users-list > div:nth-child(8), #events-list > div:nth-child(8) { animation-delay: 0.32s; }
+#users-list > div:nth-child(9), #events-list > div:nth-child(9) { animation-delay: 0.36s; }
+#users-list > div:nth-child(10), #events-list > div:nth-child(10) { animation-delay: 0.40s; }
+
+/* Subtle interactive row hover */
+#users-list > div,
+#category-list > div {
+    transition: background-color 0.18s ease, transform 0.18s ease;
+}
+#users-list > div:hover,
+#category-list > div:hover {
+    background-color: var(--surface-2);
+}

@@ -4,6 +4,7 @@ import AppPageHead from '../../components/app/AppPageHead'
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useLanguage } from '../../hooks/useLanguage'
+import AnimatedCounter from '../../components/shared/AnimatedCounter'
 
 const MEMBERS = [
     {
@@ -77,7 +78,7 @@ export default function TeamDashboard() {
                             </span>
                             <span className="text-outline mx-2">•</span>
                             <span className="font-label-md text-label-md text-on-surface-variant" data-count>
-                                {ar ? '4 / 6 أعضاء' : '4 / 6 Members'}
+                                <AnimatedCounter value={4} /> / 6 {ar ? 'أعضاء' : 'Members'}
                             </span>
                         </div>
                     </div>
@@ -191,13 +192,13 @@ export default function TeamDashboard() {
                                 {ar ? 'الأعضاء الحاليون' : 'Current Members'}
                             </h3>
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                {MEMBERS.map((m) => (
-                                    <div key={m.id} className={`flex items-center gap-4 p-4 bg-surface-container-low border border-outline-variant rounded-xl hover:bg-surface-container transition-colors ${ar ? 'flex-row-reverse' : ''}`}>
-                                        <div className="w-12 h-12 rounded-full overflow-hidden border border-outline-variant flex-shrink-0">
+                                {MEMBERS.map((m, idx) => (
+                                    <div key={m.id} className={`row-animated group flex items-center gap-4 p-4 bg-surface-container-low border border-outline-variant rounded-xl hover:bg-surface-container hover:-translate-y-0.5 transition-all duration-200 ${ar ? 'flex-row-reverse' : ''}`} style={{ '--stagger-idx': idx }}>
+                                        <div className="w-12 h-12 rounded-full overflow-hidden border border-outline-variant flex-shrink-0 group-hover:scale-105 transition-transform">
                                             <img className="w-full h-full object-cover" src={m.img} alt={m.name.en} />
                                         </div>
                                         <div className={ar ? 'text-right' : ''}>
-                                            <h5 className="font-title-md text-title-md text-on-surface">{ar ? m.name.ar : m.name.en}</h5>
+                                            <h5 className="font-title-md text-title-md text-on-surface group-hover:text-primary transition-colors">{ar ? m.name.ar : m.name.en}</h5>
                                             <p className="font-label-sm text-label-sm text-on-surface-variant">{ar ? m.role.ar : m.role.en}</p>
                                         </div>
                                     </div>
@@ -239,10 +240,10 @@ export default function TeamDashboard() {
                                     <div key={pct}>
                                         <div className={`flex justify-between items-center mb-1 ${ar ? 'flex-row-reverse' : ''}`}>
                                             <span className="font-label-md text-label-md text-on-surface-variant">{ar ? label.ar : label.en}</span>
-                                            <span className="font-mono text-label-md" style={{ color: '#FF4D2E' }}>{pct}%</span>
+                                            <span className="font-mono text-label-md font-bold" style={{ color: '#FF4D2E' }}><AnimatedCounter value={pct} suffix="%" /></span>
                                         </div>
                                         <div className="h-1.5 w-full bg-surface-container-highest rounded-full overflow-hidden">
-                                            <div className="h-full rounded-full" style={{ width: `${pct}%`, backgroundColor: '#FF4D2E' }} />
+                                            <div className="h-full rounded-full transition-all duration-1000 ease-out" style={{ width: `${pct}%`, backgroundColor: '#FF4D2E' }} />
                                         </div>
                                     </div>
                                 ))}

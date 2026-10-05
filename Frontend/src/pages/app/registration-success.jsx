@@ -154,13 +154,15 @@ export default function RegistrationSuccess() {
             {/* keyframe definitions */}
             <style>{`
                 @keyframes successPop {
-                    from { transform: scale(.5); opacity: 0; }
-                    to   { transform: scale(1);  opacity: 1; }
+                    0%   { transform: scale(0.3); opacity: 0; }
+                    55%  { transform: scale(1.15); opacity: 1; }
+                    80%  { transform: scale(0.96); }
+                    100% { transform: scale(1); opacity: 1; }
                 }
                 @keyframes successPulse {
-                    0%   { box-shadow: 0 0 0 0   rgba(30,122,79,.35); }
-                    70%  { box-shadow: 0 0 0 22px rgba(30,122,79, 0); }
-                    100% { box-shadow: 0 0 0 0   rgba(30,122,79, 0); }
+                    0%   { box-shadow: 0 0 0 0 rgba(30,122,79, 0.45); }
+                    60%  { box-shadow: 0 0 0 24px rgba(30,122,79, 0); }
+                    100% { box-shadow: 0 0 0 0 rgba(30,122,79, 0); }
                 }
             `}</style>
 

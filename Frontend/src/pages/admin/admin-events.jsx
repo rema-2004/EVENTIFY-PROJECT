@@ -440,10 +440,11 @@ export default function AdminEvents() {
                         </div>
                     </div>
                     <div className="space-y-4" id="events-list">
-                        {events.map((event) => (
+                        {events.map((event, idx) => (
                             <div
                                 key={event.id}
-                                className="section-card transition-all duration-200"
+                                className="section-card row-animated transition-all duration-200"
+                                style={{ '--stagger-idx': idx }}
                                 data-status={event.status}
                                 data-category={event.category}
                             >

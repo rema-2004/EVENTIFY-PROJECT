@@ -109,95 +109,119 @@ export function initOrgApplicants() {
         const emptyState = $('#applicants-empty-state');
         const table = $('#applicants-table');
 
-        function updateFilterView() {
-            let visibleCount = 0;
-            rows.forEach((row) => {
-                const rowStatus = row.dataset.status || 'all';
-                const shouldShow = currentFilter === 'all' || rowStatus === currentFilter;
-                row.style.display = shouldShow ? '' : 'none';
-                if (shouldShow) visibleCount++;
-            });
-
-            if (visibleCount === 0) {
-                if (table) table.style.display = 'none';
-                if (emptyState) emptyState.removeAttribute('hidden');
-            } else {
-                if (table) table.style.display = '';
-                if (emptyState) emptyState.setAttribute('hidden', '');
-            }
+    function animateCount(el, target) {
+        const start = parseInt(el.textContent, 10) || 0;
+        const end = parseInt(target, 10) || 0;
+        if (start === end) {
+            el.textContent = end;
+            return;
         }
+        const startTime = performance.now();
+        const duration = 600;
+        function tick(now) {
+            const progress = Math.min((now - startTime) / duration, 1);
+            const ease = 1 - Math.pow(1 - progress, 3);
+            el.textContent = Math.round(start + (end - start) * ease);
+            if (progress < 1) requestAnimationFrame(tick);
+        }
+        requestAnimationFrame(tick);
+    }
 
-        filterButtons.forEach((button) => {
-            listen(button, 'click', () => {
-                currentFilter = button.dataset.filter || 'all';
-
-                filterButtons.forEach((btn) => {
-                    const isActive = btn === button;
-                    btn.setAttribute('aria-pressed', String(isActive));
-                    btn.classList.toggle('active', isActive);
-                });
-
-                updateFilterView();
-            });
+    function updateFilterView() {
+        let visibleCount = 0;
+        rows.forEach((row) => {
+            const rowStatus = row.dataset.status || 'all';
+            const shouldShow = currentFilter === 'all' || rowStatus === currentFilter;
+            row.style.display = shouldShow ? '' : 'none';
+            if (shouldShow) {
+                row.classList.remove('row-animated');
+                void row.offsetWidth;
+                row.classList.add('row-animated');
+                row.style.setProperty('--stagger-idx', visibleCount);
+                visibleCount++;
+            }
         });
 
-        // "Clear filters" in empty state
-        const emptyReset = $('#applicants-empty-reset');
-        if (emptyReset) {
-            listen(emptyReset, 'click', () => {
-                const allBtn = $('.filter-btn[data-filter="all"]');
-                if (allBtn) allBtn.click();
-            });
+        if (visibleCount === 0) {
+            if (table) table.style.display = 'none';
+            if (emptyState) emptyState.removeAttribute('hidden');
+        } else {
+            if (table) table.style.display = '';
+            if (emptyState) emptyState.setAttribute('hidden', '');
         }
     }
 
-    function wireDecisions() {
-        const rows = $$('.applicant-row');
+    filterButtons.forEach((button) => {
+        listen(button, 'click', () => {
+            currentFilter = button.dataset.filter || 'all';
 
-        rows.forEach((row) => {
-            const decisionCell = row.querySelector('.decision-cell');
-            const acceptBtn = row.querySelector('.btn-accept');
-            const rejectBtn = row.querySelector('.btn-reject');
+            filterButtons.forEach((btn) => {
+                const isActive = btn === button;
+                btn.setAttribute('aria-pressed', String(isActive));
+                btn.classList.toggle('active', isActive);
+            });
 
-            if (!decisionCell || !acceptBtn || !rejectBtn) return;
+            updateFilterView();
+        });
+    });
 
-            function resolve(newStatus) {
-                const event = EVENTS[currentEventId];
-                if (row.dataset.status === 'pending') {
-                    event.pending = Math.max(0, event.pending - 1);
-                }
-                event[newStatus] = (event[newStatus] || 0) + 1;
-                row.dataset.status = newStatus;
+    // "Clear filters" in empty state
+    const emptyReset = $('#applicants-empty-reset');
+    if (emptyReset) {
+        listen(emptyReset, 'click', () => {
+            const allBtn = $('.filter-btn[data-filter="all"]');
+            if (allBtn) allBtn.click();
+        });
+    }
+}
 
-                // Update status badge
-                const statusBadgeCell = row.querySelector('.status-cell');
-                if (statusBadgeCell) {
-                    if (newStatus === 'accepted') {
-                        statusBadgeCell.innerHTML = '<span class="badge badge--approved">Accepted</span>';
-                    } else {
-                        statusBadgeCell.innerHTML = '<span class="badge badge--rejected">Rejected</span>';
-                    }
-                }
+function wireDecisions() {
+    const rows = $$('.applicant-row');
 
-                // Update decision cell
+    rows.forEach((row) => {
+        const decisionCell = row.querySelector('.decision-cell');
+        const acceptBtn = row.querySelector('.btn-accept');
+        const rejectBtn = row.querySelector('.btn-reject');
+
+        if (!decisionCell || !acceptBtn || !rejectBtn) return;
+
+        function resolve(newStatus) {
+            const event = EVENTS[currentEventId];
+            if (row.dataset.status === 'pending') {
+                event.pending = Math.max(0, event.pending - 1);
+            }
+            event[newStatus] = (event[newStatus] || 0) + 1;
+            row.dataset.status = newStatus;
+
+            // Update status badge
+            const statusBadgeCell = row.querySelector('.status-cell');
+            if (statusBadgeCell) {
                 if (newStatus === 'accepted') {
-                    decisionCell.innerHTML = '<span class="decision-state"><span class="material-symbols-outlined">check_circle</span>Reviewed</span>';
+                    statusBadgeCell.innerHTML = '<span class="badge badge--approved animate-[successPop_0.3s_cubic-bezier(0.16,1,0.3,1)]">Accepted</span>';
                 } else {
-                    decisionCell.innerHTML = '<span class="decision-state"><span class="material-symbols-outlined">mail</span>Notified</span>';
+                    statusBadgeCell.innerHTML = '<span class="badge badge--rejected animate-[successPop_0.3s_cubic-bezier(0.16,1,0.3,1)]">Rejected</span>';
                 }
+            }
 
-                // Update counter elements
-                countEls.forEach((el) => {
-                    const key = el.dataset.count;
-                    if (event[key] !== undefined) {
-                        el.textContent = event[key];
-                    }
-                });
+            // Update decision cell
+            if (newStatus === 'accepted') {
+                decisionCell.innerHTML = '<span class="decision-state"><span class="material-symbols-outlined">check_circle</span>Reviewed</span>';
+            } else {
+                decisionCell.innerHTML = '<span class="decision-state"><span class="material-symbols-outlined">mail</span>Notified</span>';
+            }
 
-                // Check active filter visibility
-                if (currentFilter !== 'all' && currentFilter !== newStatus) {
-                    row.style.display = 'none';
+            // Update counter elements
+            countEls.forEach((el) => {
+                const key = el.dataset.count;
+                if (event[key] !== undefined) {
+                    animateCount(el, event[key]);
                 }
+            });
+
+            // Check active filter visibility
+            if (currentFilter !== 'all' && currentFilter !== newStatus) {
+                row.style.display = 'none';
+            }
 
                 // Check empty state
                 const visibleCount = $$('.applicant-row').filter(r => r.style.display !== 'none').length;

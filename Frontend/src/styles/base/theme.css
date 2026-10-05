@@ -1048,3 +1048,90 @@ html.dark .empty-state__icon { background: rgba(255, 77, 46, 0.14); }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: var(--border-strong); border-radius: 99px; border: 3px solid var(--bg); }
 ::-webkit-scrollbar-thumb:hover { background: var(--ink-2); }
+
+/* =========================================================
+   Universal Micro-Interactions & Fluid Animations
+   ========================================================= */
+
+/* Smooth Card Hover Elevation */
+.card,
+.stat-card,
+.section-card {
+    transition: transform 0.24s cubic-bezier(0.16, 1, 0.3, 1), 
+                box-shadow 0.24s cubic-bezier(0.16, 1, 0.3, 1), 
+                border-color 0.24s ease !important;
+}
+
+.card:hover,
+.stat-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-card-hover);
+}
+
+/* Staggered Row Entry Animation */
+@keyframes row-stagger-in {
+    from {
+        opacity: 0;
+        transform: translateY(10px) scale(0.995);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.row-animated {
+    animation: row-stagger-in 0.35s cubic-bezier(0.16, 1, 0.3, 1) both;
+    animation-delay: calc(var(--stagger-idx, 0) * 45ms);
+}
+
+/* Resubmit / State Change Pulse */
+@keyframes resubmit-glow-pulse {
+    0% {
+        background-color: rgba(255, 77, 46, 0.15);
+        box-shadow: inset 0 0 0 2px var(--accent);
+    }
+    50% {
+        background-color: rgba(255, 77, 46, 0.08);
+        box-shadow: inset 0 0 0 1px var(--accent);
+    }
+    100% {
+        background-color: transparent;
+        box-shadow: none;
+    }
+}
+
+.row-resubmitted-pulse {
+    animation: resubmit-glow-pulse 1.4s ease-out both;
+}
+
+/* Micro Spinner for Action Buttons */
+@keyframes spin-action-fast {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+.icon-spin-fast {
+    animation: spin-action-fast 0.65s linear infinite !important;
+}
+
+/* Smooth Badges */
+.badge {
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.badge:hover {
+    transform: scale(1.04);
+}
+
+/* Reduced Motion Override */
+@media (prefers-reduced-motion: reduce) {
+    .row-animated,
+    .row-resubmitted-pulse,
+    .card:hover,
+    .stat-card:hover {
+        animation: none !important;
+        transform: none !important;
+        transition: none !important;
+    }
+}

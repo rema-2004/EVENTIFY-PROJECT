@@ -90,11 +90,29 @@ export function initAdminAuditLog() {
     }
 
     /* --- statistics ---------------------------------------------------------- */
+    function animateStat(id, targetVal) {
+        const el = $(id);
+        if (!el) return;
+        const startVal = parseInt(el.textContent, 10) || 0;
+        if (startVal === targetVal) { el.textContent = targetVal; return; }
+        let startTime = null;
+        const duration = 650;
+        const step = (ts) => {
+            if (!startTime) startTime = ts;
+            const progress = Math.min((ts - startTime) / duration, 1);
+            const ease = 1 - Math.pow(1 - progress, 3);
+            el.textContent = Math.round(startVal + (targetVal - startVal) * ease);
+            if (progress < 1) requestAnimationFrame(step);
+            else el.textContent = targetVal;
+        };
+        requestAnimationFrame(step);
+    }
+
     function updateStatistics() {
-        $('#audit-stat-total').textContent = logs.length;
-        $('#audit-stat-today').textContent = logs.filter(l => sameDay(parseTs(l.timestamp), NOW)).length;
-        $('#audit-stat-sensitive').textContent = logs.filter(l => l.sensitive).length;
-        $('#audit-stat-failed').textContent = logs.filter(l => l.status === 'Failed').length;
+        animateStat('#audit-stat-total', logs.length);
+        animateStat('#audit-stat-today', logs.filter(l => sameDay(parseTs(l.timestamp), NOW)).length);
+        animateStat('#audit-stat-sensitive', logs.filter(l => l.sensitive).length);
+        animateStat('#audit-stat-failed', logs.filter(l => l.status === 'Failed').length);
     }
 
     /* --- search / filter / sort -------------------------------------------- */
@@ -176,8 +194,8 @@ export function initAdminAuditLog() {
         emptyState.hidden = list.length !== 0;
         tableWrap.hidden = list.length === 0;
 
-        tbody.innerHTML = pageItems.map(l => `
-            <tr data-id="${l.id}">
+        tbody.innerHTML = pageItems.map((l, i) => `
+            <tr data-id="${l.id}" class="row-animated" style="--stagger-idx:${i}">
                 <td class="mono audit-cell-nowrap">${formatDateTime(l.timestamp)}</td>
                 <td>
                     <div class="audit-user-cell">

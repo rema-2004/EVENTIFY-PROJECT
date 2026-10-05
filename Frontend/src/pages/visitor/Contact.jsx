@@ -46,29 +46,29 @@ export default function Contact() {
             <main id="main" className="section-pad">
                 <div className="container">
                     <div className="contact-grid">
-                        <div className="reveal">
-                            <div className="contact-info-card">
+                        <div className="reveal-stagger">
+                            <div className="contact-info-card" style={{ '--stagger-idx': 0 }}>
                                 <span className="contact-icon"><i className="fa-solid fa-envelope"></i></span>
                                 <div>
                                     <h4>{t('contact.emailTitle')}</h4>
                                     <p>hello@eventify.io<br />{t('contact.emailDesc')}</p>
                                 </div>
                             </div>
-                            <div className="contact-info-card">
+                            <div className="contact-info-card" style={{ '--stagger-idx': 1 }}>
                                 <span className="contact-icon"><i className="fa-solid fa-phone"></i></span>
                                 <div>
                                     <h4>{t('contact.callTitle')}</h4>
                                     <p>+962 6 500 1200<br />{t('contact.callDesc')}</p>
                                 </div>
                             </div>
-                            <div className="contact-info-card">
+                            <div className="contact-info-card" style={{ '--stagger-idx': 2 }}>
                                 <span className="contact-icon"><i className="fa-solid fa-location-dot"></i></span>
                                 <div>
                                     <h4>{t('contact.visitTitle')}</h4>
                                     <p>{t('contact.visitDesc1')}<br />{t('contact.visitDesc2')}</p>
                                 </div>
                             </div>
-                            <div className="contact-info-card">
+                            <div className="contact-info-card" style={{ '--stagger-idx': 3 }}>
                                 <span className="contact-icon"><i className="fa-solid fa-building"></i></span>
                                 <div>
                                     <h4>{t('contact.orgTitle')}</h4>

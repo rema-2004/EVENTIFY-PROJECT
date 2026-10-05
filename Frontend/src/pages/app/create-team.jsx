@@ -157,11 +157,11 @@ export default function CreateTeam() {
                                         {ar ? 'اقتراحات AI متاحة' : 'AI Suggestions Available'}
                                     </span>
                                 </div>
-                                <div className={`flex flex-wrap gap-2 p-4 bg-white border border-outline-variant rounded-lg min-h-[64px] ${ar ? 'flex-row-reverse' : ''}`}>
+                                <div className={`flex flex-wrap gap-2 p-4 bg-white border border-outline-variant rounded-lg min-h-[64px] transition-all focus-within:border-primary focus-within:ring-2 focus-within:ring-primary/20 ${ar ? 'flex-row-reverse' : ''}`}>
                                     {skills.map((s) => (
-                                        <div key={s} className="flex items-center gap-1.5 bg-primary-fixed text-on-primary-fixed px-3 py-1.5 rounded-full font-label-sm text-label-sm">
+                                        <div key={s} className="flex items-center gap-1.5 bg-primary-fixed text-on-primary-fixed px-3 py-1.5 rounded-full font-label-sm text-label-sm animate-[successPop_0.25s_cubic-bezier(0.16,1,0.3,1)]">
                                             <span>{s}</span>
-                                            <button type="button" className="hover:text-error transition-colors" onClick={() => removeSkill(s)} aria-label="Remove">
+                                            <button type="button" className="hover:text-error transition-colors p-0.5 rounded-full hover:bg-black/5" onClick={() => removeSkill(s)} aria-label="Remove">
                                                 <span className="material-symbols-outlined" style={{ fontSize: 16 }}>close</span>
                                             </button>
                                         </div>
@@ -187,7 +187,7 @@ export default function CreateTeam() {
                                     {ar ? 'رجوع' : 'Back'}
                                 </Link>
                                 <button
-                                    className="px-10 py-3 rounded-full font-label-md text-label-md shadow-md active:scale-95 transition-all"
+                                    className="px-10 py-3 rounded-full font-label-md text-label-md shadow-md active:scale-95 transition-all duration-200 hover:shadow-lg hover:opacity-90"
                                     style={{ backgroundColor: '#FF4D2E', color: '#fff' }}
                                     type="submit"
                                 >
@@ -210,8 +210,8 @@ export default function CreateTeam() {
                                 title: { en: 'Auto-Match', ar: 'تطابق تلقائي' },
                                 body: { en: 'AI will notify potential members after creation.', ar: 'سيُنبّه الذكاء الاصطناعي الأعضاء المحتملين بعد الإنشاء.' },
                             },
-                        ].map(({ icon, title, body }) => (
-                            <div key={icon} className={`p-6 rounded-xl border border-dashed border-outline-variant flex items-center gap-4 opacity-70 ${ar ? 'flex-row-reverse' : ''}`}>
+                        ].map(({ icon, title, body }, i) => (
+                            <div key={icon} className={`row-animated p-6 rounded-xl border border-dashed border-outline-variant flex items-center gap-4 opacity-80 hover:opacity-100 hover:border-primary/40 transition-all duration-200 ${ar ? 'flex-row-reverse' : ''}`} style={{ '--stagger-idx': i }}>
                                 <div className="w-12 h-12 rounded-full bg-surface-container-highest flex items-center justify-center flex-shrink-0">
                                     <span className="material-symbols-outlined text-outline">{icon}</span>
                                 </div>

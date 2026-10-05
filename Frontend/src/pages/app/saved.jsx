@@ -136,11 +136,15 @@ export default function Saved() {
                         </div>
                     ) : (
                         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                            {items.map((item) => (
-                                <div key={item.id} className="ev-card spotlight ev-fade-up ev-stagger-1 bg-surface-container-lowest border border-outline-variant/30 rounded-xl overflow-hidden shadow-sm group cursor-pointer">
+                            {items.map((item, idx) => (
+                                <div 
+                                    key={item.id} 
+                                    className="ev-card spotlight row-animated bg-surface-container-lowest border border-outline-variant/30 rounded-xl overflow-hidden shadow-sm group cursor-pointer transition-all duration-300 hover:-translate-y-1 hover:shadow-lg"
+                                    style={{ '--stagger-idx': idx }}
+                                >
                                     <div className="h-56 relative overflow-hidden">
                                         <img
-                                            className="ev-card-img w-full h-full object-cover"
+                                            className="ev-card-img w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                                             src={item.img}
                                             alt={ar ? item.title.ar : item.title.en}
                                         />

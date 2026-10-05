@@ -214,13 +214,14 @@ export default function Notifications() {
                     </section>
 
                     {/* Notification Cards */}
-                    <div className="flex flex-col gap-4">
-                        {NOTIFS.filter(visible).map((n) => {
+                    <div key={filter} className="flex flex-col gap-4">
+                        {NOTIFS.filter(visible).map((n, idx) => {
                             if (n.isFriendRequest) {
                                 return (
                                     <div
                                         key={n.id}
-                                        className={`group bg-surface-container-lowest p-5 rounded-xl border border-outline-variant/50 flex gap-4 cursor-pointer hover:shadow-md transition-shadow ${ar ? 'flex-row-reverse' : ''}`}
+                                        className={`group bg-surface-container-lowest p-5 rounded-xl border border-outline-variant/50 flex gap-4 cursor-pointer row-animated hover:-translate-y-0.5 hover:shadow-md transition-all duration-200 ${ar ? 'flex-row-reverse' : ''}`}
+                                        style={{ '--stagger-idx': idx }}
                                         onClick={() => navigate(n.to)}
                                     >
                                         <div className="shrink-0 w-12 h-12 rounded-full overflow-hidden border-2 border-surface shadow-sm">
@@ -266,7 +267,8 @@ export default function Notifications() {
                                 return (
                                     <div
                                         key={n.id}
-                                        className={`group bg-surface-container-lowest p-5 rounded-xl border border-outline-variant/50 flex gap-4 cursor-pointer hover:shadow-md transition-shadow ${ar ? 'flex-row-reverse' : ''}`}
+                                        className={`group bg-surface-container-lowest p-5 rounded-xl border border-outline-variant/50 flex gap-4 cursor-pointer row-animated hover:-translate-y-0.5 hover:shadow-md transition-all duration-200 ${ar ? 'flex-row-reverse' : ''}`}
+                                        style={{ '--stagger-idx': idx }}
                                         onClick={() => navigate(n.to)}
                                     >
                                         <div className={`shrink-0 w-12 h-12 rounded-full overflow-hidden border-2 border-surface shadow-sm ${n.iconBg} flex items-center justify-center`}>
@@ -286,7 +288,8 @@ export default function Notifications() {
                             return (
                                 <div
                                     key={n.id}
-                                    className={`group relative bg-surface-container-lowest p-5 rounded-xl border border-outline-variant/50 flex gap-4 cursor-pointer hover:shadow-md transition-shadow overflow-hidden ${ar ? 'flex-row-reverse' : ''}`}
+                                    className={`group relative bg-surface-container-lowest p-5 rounded-xl border border-outline-variant/50 flex gap-4 cursor-pointer row-animated hover:-translate-y-0.5 hover:shadow-md transition-all duration-200 overflow-hidden ${ar ? 'flex-row-reverse' : ''}`}
+                                    style={{ '--stagger-idx': idx }}
                                     onClick={() => navigate(n.to)}
                                 >
                                     <div className={`shrink-0 w-12 h-12 rounded-full flex items-center justify-center border ${n.iconBg} ${n.iconBorder}`}>

@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
+import AnimatedCounter from '../../components/shared/AnimatedCounter'
 
 export default function About() {
     const { t } = useTranslation()
@@ -22,17 +23,17 @@ export default function About() {
                             <p>{t('about.valuesSubtitle')}</p>
                         </div>
                         <div className="why-grid reveal-stagger">
-                            <div className="why-card">
+                            <div className="why-card" style={{ '--stagger-idx': 0 }}>
                                 <div className="why-icon"><i className="fa-solid fa-scale-balanced"></i></div>
                                 <h3>{t('about.value1Title')}</h3>
                                 <p>{t('about.value1Desc')}</p>
                             </div>
-                            <div className="why-card">
+                            <div className="why-card" style={{ '--stagger-idx': 1 }}>
                                 <div className="why-icon"><i className="fa-solid fa-eye"></i></div>
                                 <h3>{t('about.value2Title')}</h3>
                                 <p>{t('about.value2Desc')}</p>
                             </div>
-                            <div className="why-card">
+                            <div className="why-card" style={{ '--stagger-idx': 2 }}>
                                 <div className="why-icon"><i className="fa-solid fa-shield-halved"></i></div>
                                 <h3>{t('about.value3Title')}</h3>
                                 <p>{t('about.value3Desc')}</p>
@@ -57,10 +58,22 @@ export default function About() {
                                 </Link>
                             </div>
                             <div className="story-stats reveal-stagger">
-                                <div className="story-stat"><h3>2024</h3><p>{t('about.stat1')}</p></div>
-                                <div className="story-stat"><h3>12,400+</h3><p>{t('about.stat2')}</p></div>
-                                <div className="story-stat"><h3>312</h3><p>{t('about.stat3')}</p></div>
-                                <div className="story-stat"><h3>1,742</h3><p>{t('about.stat4')}</p></div>
+                                <div className="story-stat" style={{ '--stagger-idx': 0 }}>
+                                    <h3><AnimatedCounter value={2024} /></h3>
+                                    <p>{t('about.stat1')}</p>
+                                </div>
+                                <div className="story-stat" style={{ '--stagger-idx': 1 }}>
+                                    <h3><AnimatedCounter value={12400} suffix="+" /></h3>
+                                    <p>{t('about.stat2')}</p>
+                                </div>
+                                <div className="story-stat" style={{ '--stagger-idx': 2 }}>
+                                    <h3><AnimatedCounter value={312} /></h3>
+                                    <p>{t('about.stat3')}</p>
+                                </div>
+                                <div className="story-stat" style={{ '--stagger-idx': 3 }}>
+                                    <h3><AnimatedCounter value={1742} /></h3>
+                                    <p>{t('about.stat4')}</p>
+                                </div>
                             </div>
                         </div>
                     </div>

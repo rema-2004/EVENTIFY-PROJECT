@@ -181,11 +181,15 @@ export default function Teams() {
                     </div>
 
                     {/* Teams Grid */}
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                        {visible.map((team) =>
+                    <div key={selectedSkills.join('-') + '-' + search} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        {visible.map((team, idx) =>
                             team.featured ? (
                                 /* Featured wide card */
-                                <div key={team.id} className="ai-border md:col-span-2 lg:col-span-2">
+                                <div 
+                                    key={team.id} 
+                                    className="ai-border md:col-span-2 lg:col-span-2 row-animated transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
+                                    style={{ '--stagger-idx': idx }}
+                                >
                                     <div className={`p-8 h-full flex flex-col md:flex-row gap-8 bg-white rounded-2xl ${ar ? 'md:flex-row-reverse' : ''}`}>
                                         <div className="flex-shrink-0">
                                             <div className={`w-32 h-32 rounded-3xl ${team.logoBg} flex items-center justify-center overflow-hidden`}>
@@ -248,7 +252,11 @@ export default function Teams() {
                                 </div>
                             ) : (
                                 /* Standard card */
-                                <div key={team.id} className="bg-white p-6 rounded-2xl border border-outline-variant flex flex-col h-full hover:-translate-y-1 hover:shadow-lg transition-all duration-200">
+                                <div 
+                                    key={team.id} 
+                                    className="bg-white p-6 rounded-2xl border border-outline-variant flex flex-col h-full hover:-translate-y-1 hover:shadow-lg transition-all duration-200 row-animated"
+                                    style={{ '--stagger-idx': idx }}
+                                >
                                     <div className={`flex items-start justify-between mb-6 ${ar ? 'flex-row-reverse' : ''}`}>
                                         <div className={`w-16 h-16 rounded-2xl ${team.logoBg} flex items-center justify-center overflow-hidden`}>
                                             <img className="w-full h-full object-cover" src={team.logo} alt={team.name} />

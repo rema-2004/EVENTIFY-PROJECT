@@ -90,23 +90,39 @@ export function initOrgReportCenter() {
     }
 
     /* --- stat cards + quick create -------------------------------------- */
+    function animateStat(element, target, duration = 600) {
+        if (!element) return;
+        const start = parseInt(element.textContent, 10) || 0;
+        const diff = target - start;
+        if (diff === 0) { element.textContent = target; return; }
+        const startTime = performance.now();
+        const step = (now) => {
+            const progress = Math.min((now - startTime) / duration, 1);
+            const ease = 1 - Math.pow(1 - progress, 3);
+            element.textContent = Math.round(start + diff * ease);
+            if (progress < 1) requestAnimationFrame(step);
+            else element.textContent = target;
+        };
+        requestAnimationFrame(step);
+    }
+
     function renderStatCards() {
         const rangeReports = reportsInSelectedRange();
         const total = rangeReports.length;
         const thisMonth = orgReports.filter(r => r.date.startsWith('2026-09')).length;
         const completed = rangeReports.filter(r => r.status === 'Completed').length;
         const scheduled = rangeReports.filter(r => r.status === 'Scheduled').length;
-        $('#org-stat-total').textContent = total;
-        $('#org-stat-month').textContent = thisMonth;
-        $('#org-stat-completed').textContent = completed;
-        $('#org-stat-scheduled').textContent = scheduled;
+        animateStat($('#org-stat-total'), total);
+        animateStat($('#org-stat-month'), thisMonth);
+        animateStat($('#org-stat-completed'), completed);
+        animateStat($('#org-stat-scheduled'), scheduled);
     }
 
     function renderQuickCreate() {
         const grid = $('#org-quick-create-grid');
         if (!grid) return;
-        grid.innerHTML = QUICK_CREATE.map(q => `
-            <div class="reports-kpi-card" style="min-height:auto">
+        grid.innerHTML = QUICK_CREATE.map((q, idx) => `
+            <div class="reports-kpi-card row-animated" style="min-height:auto; --stagger-idx:${idx}">
                 <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10 text-primary mb-3">
                     <span class="material-symbols-outlined text-[20px]">${q.icon}</span>
                 </div>
@@ -153,8 +169,8 @@ export function initOrgReportCenter() {
         emptyState.hidden = list.length !== 0;
         tableWrap.hidden = list.length === 0;
 
-        tbody.innerHTML = pageItems.map(r => `
-            <tr data-id="${r.id}">
+        tbody.innerHTML = pageItems.map((r, idx) => `
+            <tr data-id="${r.id}" class="row-animated" style="--stagger-idx:${idx}">
                 <td class="font-medium text-on-surface">${r.name}</td>
                 <td>${r.type}</td>
                 <td>${r.event}</td>

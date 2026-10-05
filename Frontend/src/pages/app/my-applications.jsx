@@ -3,6 +3,7 @@ import AppPageHead from '../../components/app/AppPageHead'
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useLanguage } from '../../hooks/useLanguage'
+import AnimatedCounter from '../../components/shared/AnimatedCounter'
 
 const APPLICATIONS = [
     {
@@ -57,10 +58,10 @@ const APPLICATIONS = [
 ]
 
 const TABS = [
-    { key: 'all',      label: { en: 'All (6)',           ar: 'الكل (6)' } },
-    { key: 'pending',  label: { en: 'Pending (3)',        ar: 'قيد المراجعة (3)' } },
-    { key: 'accepted', label: { en: 'Accepted (2)',       ar: 'المقبولة (2)' } },
-    { key: 'rejected', label: { en: 'Not Selected (1)',   ar: 'غير المختارة (1)' } },
+    { key: 'all',      labelEn: 'All',           labelAr: 'الكل' },
+    { key: 'pending',  labelEn: 'Pending',        labelAr: 'قيد المراجعة' },
+    { key: 'accepted', labelEn: 'Accepted',       labelAr: 'المقبولة' },
+    { key: 'rejected', labelEn: 'Not Selected',   labelAr: 'غير المختارة' },
 ]
 
 export default function MyApplications() {
@@ -68,6 +69,13 @@ export default function MyApplications() {
     const ar = language === 'ar'
 
     const [activeFilter, setActiveFilter] = useState('all')
+
+    const counts = {
+        all: APPLICATIONS.length,
+        pending: APPLICATIONS.filter((a) => a.status === 'pending').length,
+        accepted: APPLICATIONS.filter((a) => a.status === 'accepted').length,
+        rejected: APPLICATIONS.filter((a) => a.status === 'rejected').length,
+    }
 
     const visible = APPLICATIONS.filter(
         (a) => activeFilter === 'all' || a.status === activeFilter
@@ -95,28 +103,32 @@ export default function MyApplications() {
 
                 {/* Filter Tabs */}
                 <div className={`flex gap-stack_gap_md overflow-x-auto no-scrollbar ${ar ? 'flex-row-reverse' : ''}`}>
-                    {TABS.map(({ key, label }) => (
+                    {TABS.map(({ key, labelEn, labelAr }) => (
                         <button
                             key={key}
                             type="button"
-                            className="flex-shrink-0 px-6 py-2 rounded-full font-label-md text-label-md transition-all"
+                            className="flex-shrink-0 px-6 py-2 rounded-full font-label-md text-label-md transition-all flex items-center gap-1.5"
                             style={activeFilter === key
                                 ? { backgroundColor: '#FF4D2E', color: '#fff', boxShadow: '0 2px 8px rgba(255,77,46,.25)' }
                                 : { backgroundColor: 'var(--color-surface-container)', color: 'var(--color-on-surface-variant)' }}
                             aria-pressed={activeFilter === key}
                             onClick={() => setActiveFilter(key)}
                         >
-                            {ar ? label.ar : label.en}
+                            <span>{ar ? labelAr : labelEn}</span>
+                            <span className="opacity-90 text-xs">
+                                (<AnimatedCounter value={counts[key]} duration={400} />)
+                            </span>
                         </button>
                     ))}
                 </div>
 
                 {/* Applications List */}
-                <div className="flex flex-col gap-4">
-                    {visible.map((app) => (
+                <div key={activeFilter} className="flex flex-col gap-4">
+                    {visible.map((app, idx) => (
                         <div
                             key={app.id}
-                            className={`bg-surface-container-lowest p-5 rounded-xl border border-outline-variant/50 flex flex-col sm:flex-row sm:items-center gap-4 ${app.dim ? 'opacity-80' : ''} ${ar ? 'sm:flex-row-reverse' : ''}`}
+                            className={`bg-surface-container-lowest p-5 rounded-xl border border-outline-variant/50 flex flex-col sm:flex-row sm:items-center gap-4 row-animated transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md ${app.dim ? 'opacity-80' : ''} ${ar ? 'sm:flex-row-reverse' : ''}`}
+                            style={{ '--stagger-idx': idx }}
                         >
                             <div className={`w-12 h-12 rounded-full ${app.iconBg} flex items-center justify-center flex-shrink-0`}>
                                 <span

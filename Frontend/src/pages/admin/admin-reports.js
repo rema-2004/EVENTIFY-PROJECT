@@ -45,15 +45,33 @@ export function initAdminReports() {
     }
 
     /* --- statistics ---------------------------------------------------------- */
+    function animateStat(id, targetVal) {
+        const el = $(id);
+        if (!el) return;
+        const startVal = parseInt(el.textContent, 10) || 0;
+        if (startVal === targetVal) { el.textContent = targetVal; return; }
+        let startTime = null;
+        const duration = 650;
+        const step = (ts) => {
+            if (!startTime) startTime = ts;
+            const progress = Math.min((ts - startTime) / duration, 1);
+            const ease = 1 - Math.pow(1 - progress, 3);
+            el.textContent = Math.round(startVal + (targetVal - startVal) * ease);
+            if (progress < 1) requestAnimationFrame(step);
+            else el.textContent = targetVal;
+        };
+        requestAnimationFrame(step);
+    }
+
     function updateStatistics() {
         const total = reports.length;
         const thisMonth = reports.filter(r => r.date.startsWith('2026-09')).length;
         const completed = reports.filter(r => r.status === 'Completed').length;
         const scheduled = reports.filter(r => r.status === 'Scheduled').length;
-        $('#stat-total').textContent = total;
-        $('#stat-month').textContent = thisMonth;
-        $('#stat-completed').textContent = completed;
-        $('#stat-scheduled').textContent = scheduled;
+        animateStat('#stat-total', total);
+        animateStat('#stat-month', thisMonth);
+        animateStat('#stat-completed', completed);
+        animateStat('#stat-scheduled', scheduled);
     }
 
     /* --- derive visible list: search + filter + sort ------------------------ */
@@ -88,8 +106,8 @@ export function initAdminReports() {
         emptyState.hidden = list.length !== 0;
         tableWrap.hidden = list.length === 0;
 
-        tbody.innerHTML = pageItems.map(r => `
-            <tr data-id="${r.id}">
+        tbody.innerHTML = pageItems.map((r, i) => `
+            <tr data-id="${r.id}" class="row-animated" style="--stagger-idx:${i}">
                 <td class="font-medium text-on-surface">${r.name}</td>
                 <td>${r.type}</td>
                 <td>${r.period}</td>

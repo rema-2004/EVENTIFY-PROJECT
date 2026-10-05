@@ -72,11 +72,14 @@ const POSTS = [
     },
 ]
 
-function PostCard({ post, ar }) {
+function PostCard({ post, ar, idx = 0 }) {
     const [expanded, setExpanded] = useState(false)
 
     return (
-        <div className="ev-card spotlight ev-fade-up ev-stagger-2 overflow-hidden rounded-2xl border border-outline-variant/40 bg-surface-container-lowest p-5 shadow-sm">
+        <div
+            className="row-animated ev-card spotlight overflow-hidden rounded-2xl border border-outline-variant/40 bg-surface-container-lowest p-6 shadow-sm hover:border-primary/40 hover:-translate-y-0.5 transition-all duration-300"
+            style={{ '--stagger-idx': idx }}
+        >
             <div className={`flex items-center gap-3 ${ar ? 'flex-row-reverse' : ''}`}>
                 <div className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-full ${post.bgColor}`}>
                     <span
@@ -85,26 +88,26 @@ function PostCard({ post, ar }) {
                     >{post.icon}</span>
                 </div>
                 <div className={ar ? 'text-right' : ''}>
-                    <p className="font-label-md text-label-md">{post.org}</p>
+                    <p className="font-label-md text-label-md font-bold">{post.org}</p>
                     <p className="font-label-sm text-label-sm text-on-surface-variant">
                         {ar ? post.time.ar : post.time.en}
                     </p>
                 </div>
             </div>
 
-            <p className={`mt-4 font-body-md text-body-md ${ar ? 'text-right' : ''}`}>
+            <p className={`mt-4 font-body-md text-body-md leading-relaxed ${ar ? 'text-right' : ''}`}>
                 {ar ? post.text.ar : post.text.en}
             </p>
 
             {post.details && (
                 <>
                     {expanded && (
-                        <p className={`mt-3 font-body-sm text-body-sm text-on-surface-variant ${ar ? 'text-right' : ''}`}>
+                        <p className={`mt-3 font-body-sm text-body-sm text-on-surface-variant animate-[fadeIn_0.3s_ease-out] ${ar ? 'text-right' : ''}`}>
                             {ar ? post.details.ar : post.details.en}
                         </p>
                     )}
                     <button
-                        className="mt-4 rounded-full border px-4 py-2 font-label-md text-label-md transition-all"
+                        className="mt-4 rounded-full border px-4 py-2 font-label-md text-label-md active:scale-95 transition-all"
                         style={expanded
                             ? { backgroundColor: '#FF4D2E', color: '#fff', borderColor: '#FF4D2E' }
                             : { backgroundColor: 'rgba(255,77,46,0.05)', color: '#FF4D2E', borderColor: 'rgba(255,77,46,0.2)' }}
@@ -163,8 +166,8 @@ export default function Posts() {
                 </div>
 
                 <div className="space-y-4">
-                    {POSTS.map((post) => (
-                        <PostCard key={post.id} post={post} ar={ar} />
+                    {POSTS.map((post, idx) => (
+                        <PostCard key={post.id} post={post} ar={ar} idx={idx} />
                     ))}
                 </div>
             </main>

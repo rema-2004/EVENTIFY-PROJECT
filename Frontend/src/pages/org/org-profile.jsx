@@ -1,7 +1,8 @@
-﻿import { Link } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import AppPageHead from '../../components/app/AppPageHead'
 import { useOrgPageControls } from './useOrgPageControls.js'
 import LangToggleBtn from '../../components/org/LangToggleBtn'
+import AnimatedCounter from '../../components/shared/AnimatedCounter'
 import '../../styles/org/sidebar.css'
 import '../../styles/admin/admin.css'
 import '../../styles/org/org-dashboard.css'
@@ -268,16 +269,16 @@ export default function OrgProfile() {
                             </div>
                             {/* 3 Key Metric Stats */}
                             <div className="org-metrics-grid">
-                                <div className="org-metric-card">
-                                    <div className="org-metric-num">24</div>
+                                <div className="org-metric-card row-animated" style={{ '--stagger-idx': 0 }}>
+                                    <div className="org-metric-num"><AnimatedCounter value={24} /></div>
                                     <div className="org-metric-label">Active programs</div>
                                 </div>
-                                <div className="org-metric-card">
-                                    <div className="org-metric-num">1.9k</div>
+                                <div className="org-metric-card row-animated" style={{ '--stagger-idx': 1 }}>
+                                    <div className="org-metric-num"><AnimatedCounter value={1900} suffix="" /></div>
                                     <div className="org-metric-label">Applicants reached</div>
                                 </div>
-                                <div className="org-metric-card">
-                                    <div className="org-metric-num">4.8</div>
+                                <div className="org-metric-card row-animated" style={{ '--stagger-idx': 2 }}>
+                                    <div className="org-metric-num"><AnimatedCounter value={4.8} decimals={1} /></div>
                                     <div className="org-metric-label">Community rating</div>
                                 </div>
                             </div>

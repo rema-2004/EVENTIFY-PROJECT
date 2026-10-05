@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom'
 import { useTheme } from '../../hooks/useTheme'
 import { useLanguage } from '../../hooks/useLanguage'
 import { useState, useRef, useEffect } from 'react'
+import AnimatedCounter from '../../components/shared/AnimatedCounter'
 
 const DEFAULT_COVER = 'https://lh3.googleusercontent.com/aida-public/AB6AXuBeHOaLhImSXpSf94lw-SYxPYBwlc5gBXk7btOOFAhqx_oZFBSKtgn_P2pIGvFfCBhoMLxLxt6nkAaVv6TstLXm2DSDLS1AOT6QH_IRGTfXo2OtjjsArXHvWKur1GZZ2eDK6qHuSbQcfxMGo0fzNj2QnZzFWPIyhuDuCUdRosBAChWJFtM6RTcO8__ey71pVTFe5E9QEaseLBt6QNApMCSG2FDAAUMEE4xtjtfwbTwTctscv_cpXmi6Kt9_szB4pNw3Yn5KbAGVUlRw'
 const DEFAULT_AVATAR = 'https://lh3.googleusercontent.com/aida-public/AB6AXuDsQh5xOHYdmYcFmjJRpba3iiPC5g3JPTyK7qlEyYGrWLO_FtAHZOzRW4cX1RMPUClIy0d90XrNRLcOHNKGQkJKGdAt1u1Ukq4lYdrRDfJqdzzKVIyNbQ2FgWThdiwD06oY_uvI63tt40yB9wAi_f92Yb_O6IrGry-GNDu_3j-NEv3cU8WRQgm1fNlsToUpHXTKZszchQ4CRvtQhgyxMTzzWqjh7YpyYoacng83yN5O38dvrRRbO8B2iYc2p5lfWbCbUaTJ-KCVF07o'
@@ -368,8 +369,8 @@ export default function Profile() {
 
             {/* Certificate Modal */}
             {certModal && (
-                <div className="fixed inset-0 z-[9998] bg-black/60 flex items-center justify-center p-4" onClick={() => setCertModal(null)}>
-                    <div className="bg-white dark:bg-slate-800 rounded-2xl p-8 max-w-md w-full shadow-2xl border border-gray-100 dark:border-white/10" onClick={(e) => e.stopPropagation()}>
+                <div className="fixed inset-0 z-[9998] bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 animate-[fadeIn_0.2s_ease-out]" onClick={() => setCertModal(null)}>
+                    <div className="bg-white dark:bg-slate-800 rounded-2xl p-8 max-w-md w-full shadow-2xl border border-gray-100 dark:border-white/10 animate-[successPop_0.4s_cubic-bezier(0.16,1,0.3,1)]" onClick={(e) => e.stopPropagation()}>
                         <div className="text-center space-y-4">
                             <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto">
                                 <span className="material-symbols-outlined text-primary text-3xl" style={{ fontVariationSettings: '"FILL" 1' }}>workspace_premium</span>
@@ -380,7 +381,7 @@ export default function Profile() {
                                 <p className="text-sm font-semibold text-primary">{ar ? 'شهادة موثّقة من EVENTIFY' : 'Verified by EVENTIFY'}</p>
                                 <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">ALI • ID: EV-2025-{certModal.id}</p>
                             </div>
-                            <button className="w-full py-3 rounded-full font-semibold transition-opacity hover:opacity-85" style={{ backgroundColor: '#FF4D2E', color: '#ffffff' }} onClick={() => setCertModal(null)}>
+                            <button className="w-full py-3 rounded-full font-semibold transition-all duration-200 hover:opacity-85 active:scale-95" style={{ backgroundColor: '#FF4D2E', color: '#ffffff' }} onClick={() => setCertModal(null)}>
                                 {ar ? 'إغلاق' : 'Close'}
                             </button>
                         </div>
@@ -492,13 +493,19 @@ export default function Profile() {
 
                     {/* Stats */}
                     <section className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                        {STATS.map(({ icon, color, bg, value, label, sub }) => (
-                            <div key={label} className="ev-card spotlight ev-fade-up ev-stagger-2 bg-surface-container-lowest p-6 rounded-2xl border border-outline-variant/50 premium-shadow group">
+                        {STATS.map(({ icon, color, bg, value, label, sub }, i) => (
+                            <div
+                                key={label}
+                                className="ev-card spotlight row-animated bg-surface-container-lowest p-6 rounded-2xl border border-outline-variant/50 premium-shadow group hover:-translate-y-1 transition-all duration-300"
+                                style={{ '--stagger-idx': i }}
+                            >
                                 <div className={`flex justify-between items-start mb-4 ${ar ? 'flex-row-reverse' : ''}`}>
-                                    <span className={`material-symbols-outlined ${color} p-2 ${bg} rounded-lg`}>{icon}</span>
+                                    <span className={`material-symbols-outlined ${color} p-2 ${bg} rounded-lg group-hover:scale-110 transition-transform duration-300`}>{icon}</span>
                                     <span className="font-label-sm text-label-sm text-outline">{sub}</span>
                                 </div>
-                                <p className="font-mono text-headline-lg text-on-surface" data-count>{value}</p>
+                                <p className="font-mono text-headline-lg text-on-surface" data-count>
+                                    <AnimatedCounter value={parseInt(value, 10)} />
+                                </p>
                                 <p className="font-label-md text-label-md text-on-surface-variant">{label}</p>
                             </div>
                         ))}
@@ -508,11 +515,15 @@ export default function Profile() {
                     <section className="ev-fade-up ev-stagger-2 bg-surface-container-lowest p-8 rounded-2xl border border-outline-variant/50 premium-shadow">
                         <div className={`flex justify-between items-center mb-6 ${ar ? 'flex-row-reverse' : ''}`}>
                             <h3 className="font-headline-md text-headline-md">{ar ? 'الخبرات' : 'Experience'}</h3>
-                            <button type="button" className="material-symbols-outlined text-outline hover:text-primary" aria-label={ar ? 'إضافة خبرة' : 'Add experience'} onClick={() => openEdit('experience')}>add</button>
+                            <button type="button" className="material-symbols-outlined text-outline hover:text-primary transition-colors" aria-label={ar ? 'إضافة خبرة' : 'Add experience'} onClick={() => openEdit('experience')}>add</button>
                         </div>
-                        <div className="space-y-8">
+                        <div className="space-y-6">
                             {shownExperience.map(({ icon, iconColor, title, org, orgColor, period, desc }, index) => (
-                                <div key={`${title}-${index}`} className={`flex gap-4 ${ar ? 'flex-row-reverse text-right' : ''}`}>
+                                <div
+                                    key={`${title}-${index}`}
+                                    className={`row-animated flex gap-4 ${ar ? 'flex-row-reverse text-right' : ''} p-3 rounded-xl hover:bg-surface-container-low/60 transition-colors duration-200`}
+                                    style={{ '--stagger-idx': index }}
+                                >
                                     <div className="w-12 h-12 bg-surface-container rounded-lg shrink-0 flex items-center justify-center">
                                         <span className={`material-symbols-outlined ${iconColor}`}>{icon}</span>
                                     </div>
@@ -534,8 +545,14 @@ export default function Profile() {
                             {ar ? 'أبرز مهاراتك وقدراتك الأساسية المكتسبة عبر المنصة.' : 'Showcase the participant\'s core skills and strengths learned through the platform.'}
                         </p>
                         <div className={`flex flex-wrap gap-3 ${ar ? 'flex-row-reverse' : ''}`}>
-                            {(saved?.skills ? saved.skills.map((label, i) => ({ label, cls: SKILL_STYLES[i % SKILL_STYLES.length] })) : SKILLS).map(({ label, cls }) => (
-                                <span key={label} className={`px-4 py-2 font-label-md text-label-md rounded-full ${cls}`}>{label}</span>
+                            {(saved?.skills ? saved.skills.map((label, i) => ({ label, cls: SKILL_STYLES[i % SKILL_STYLES.length] })) : SKILLS).map(({ label, cls }, i) => (
+                                <span
+                                    key={label}
+                                    className={`row-animated px-4 py-2 font-label-md text-label-md rounded-full ${cls} hover:scale-105 transition-transform duration-200 cursor-default`}
+                                    style={{ '--stagger-idx': i }}
+                                >
+                                    {label}
+                                </span>
                             ))}
                         </div>
                     </section>
@@ -595,8 +612,12 @@ export default function Profile() {
                             </button>
                         </div>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            {shownProjects.map(({ img, title, desc }) => (
-                                <div key={title} className="group">
+                            {shownProjects.map(({ img, title, desc }, index) => (
+                                <div
+                                    key={title}
+                                    className="row-animated group bg-surface-container-lowest p-4 rounded-2xl border border-outline-variant/30 hover:border-primary/40 hover:-translate-y-1 transition-all duration-300"
+                                    style={{ '--stagger-idx': index }}
+                                >
                                     <div className="h-48 bg-surface-container-low rounded-xl overflow-hidden mb-4">
                                         {img
                                             ? <img className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" alt={title} src={img} />
@@ -629,14 +650,18 @@ export default function Profile() {
                                 <span>{ar ? 'الإجراء' : 'Action'}</span>
                             </div>
                             <div className="space-y-3 p-4 overflow-y-auto max-h-[430px]">
-                                {CERTS.map((cert) => (
-                                    <div key={cert.id} className={`flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 rounded-3xl border border-surface-container-high p-4 bg-surface ${ar ? 'sm:flex-row-reverse text-right' : ''}`}>
+                                {CERTS.map((cert, index) => (
+                                    <div
+                                        key={cert.id}
+                                        className={`row-animated flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 rounded-3xl border border-surface-container-high p-4 bg-surface hover:border-primary/30 transition-all duration-200 ${ar ? 'sm:flex-row-reverse text-right' : ''}`}
+                                        style={{ '--stagger-idx': index }}
+                                    >
                                         <div>
                                             <p className="font-label-md text-label-md text-on-surface">{cert.title}</p>
                                             <p className="font-body-sm text-body-sm text-on-surface-variant mt-1">{cert.sub}</p>
                                         </div>
                                         <button
-                                            className="inline-flex items-center justify-center rounded-full px-5 py-2 font-label-md text-label-md shrink-0 transition-opacity hover:opacity-85"
+                                            className="inline-flex items-center justify-center rounded-full px-5 py-2 font-label-md text-label-md shrink-0 transition-all duration-200 hover:opacity-85 active:scale-95"
                                             style={{ backgroundColor: '#FF4D2E', color: '#ffffff' }}
                                             onClick={() => setCertModal(cert)}
                                         >

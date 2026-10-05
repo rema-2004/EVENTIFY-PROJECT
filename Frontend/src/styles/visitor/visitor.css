@@ -115,7 +115,14 @@ html[dir="rtl"] .nav-links a::after{left:auto;right:0;}
 @media(max-width:900px){.story-grid{grid-template-columns:1fr;gap:36px;}}
 .story-copy p{color:var(--text-muted);font-size:15px;line-height:1.8;margin-bottom:18px;}
 .story-stats{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;}
-.story-stat{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:24px;}
+.story-stat{
+  background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:24px;
+  transition:all .35s cubic-bezier(.2,.8,.2,1);
+}
+.story-stat:hover{
+  transform:translateY(-4px);border-color:var(--primary);
+  box-shadow:0 8px 24px -4px rgba(255, 77, 46, .12);
+}
 .story-stat h3{font-family:'JetBrains Mono';font-size:30px;color:var(--primary);margin-bottom:6px;}
 .story-stat p{font-size:13px;color:var(--text-muted);font-weight:500;}
 /* ===== TEAM ===== */
@@ -234,12 +241,22 @@ html:not([data-theme="dark"]) .theme-toggle .fa-sun{display:none;}
 /* ===== CONTACT PAGE ===== */
 .contact-grid { display: grid; grid-template-columns: 1fr 1.5fr; gap: 64px; align-items: flex-start; }
 @media(max-width: 900px) { .contact-grid { grid-template-columns: 1fr; gap: 40px; } }
-.contact-info-card { display: flex; gap: 16px; margin-bottom: 32px; }
+.contact-info-card {
+  display: flex; gap: 16px; margin-bottom: 20px; padding: 16px 20px;
+  background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+  transition: all .35s cubic-bezier(.2,.8,.2,1);
+}
+.contact-info-card:hover {
+  transform: translateY(-3px);
+  border-color: var(--primary);
+  box-shadow: 0 8px 24px -4px rgba(255, 77, 46, .12);
+}
 .contact-icon {
   width: 44px; height: 44px; border-radius: 12px; background: var(--grad-brand-soft);
   display: flex; align-items: center; justify-content: center; color: var(--primary);
-  font-size: 18px; flex-shrink: 0;
+  font-size: 18px; flex-shrink: 0; transition: transform .3s ease;
 }
+.contact-info-card:hover .contact-icon { transform: scale(1.12); }
 .contact-info-card h4 { font-size: 16px; margin-bottom: 4px; }
 .contact-info-card p { font-size: 14px; color: var(--text-muted); line-height: 1.6; }
 .contact-social { display: flex; gap: 12px; margin-top: 20px; padding-top: 20px; border-top: 1px solid var(--border); }

@@ -1,4 +1,4 @@
-﻿import { Link } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import AppPageHead from '../../components/app/AppPageHead'
 import { useAdminPageControls } from './useAdminPageControls.js'
 import LangToggleBtn from '../../components/org/LangToggleBtn'
@@ -302,7 +302,8 @@ export default function AdminCategories() {
                         </h2>
                         <div className="flex flex-col gap-3" id="category-list">
                             <div
-                                className="flex items-center justify-between rounded-xl bg-surface-container-low p-4"
+                                className="flex items-center justify-between rounded-xl bg-surface-container-low p-4 row-animated"
+                                style={{ '--stagger-idx': 0 }}
                                 data-active={84}
                             >
                                 <div className="flex items-center gap-2 min-w-0">
@@ -351,7 +352,8 @@ export default function AdminCategories() {
                                 </div>
                             </div>
                             <div
-                                className="flex items-center justify-between rounded-xl bg-surface-container-low p-4"
+                                className="flex items-center justify-between rounded-xl bg-surface-container-low p-4 row-animated"
+                                style={{ '--stagger-idx': 1 }}
                                 data-active={112}
                             >
                                 <div className="flex items-center gap-2 min-w-0">
@@ -396,7 +398,8 @@ export default function AdminCategories() {
                                 </div>
                             </div>
                             <div
-                                className="flex items-center justify-between rounded-xl bg-surface-container-low p-4"
+                                className="flex items-center justify-between rounded-xl bg-surface-container-low p-4 row-animated"
+                                style={{ '--stagger-idx': 2 }}
                                 data-active={96}
                             >
                                 <div className="flex items-center gap-2 min-w-0">
@@ -445,7 +448,8 @@ export default function AdminCategories() {
                                 </div>
                             </div>
                             <div
-                                className="flex items-center justify-between rounded-xl bg-surface-container-low p-4"
+                                className="flex items-center justify-between rounded-xl bg-surface-container-low p-4 row-animated"
+                                style={{ '--stagger-idx': 3 }}
                                 data-active={56}
                             >
                                 <div className="flex items-center gap-2 min-w-0">

@@ -3,6 +3,7 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import AppPageHead from '../../components/app/AppPageHead'
 import { useLanguage } from '../../hooks/useLanguage'
+import AnimatedCounter from '../../components/shared/AnimatedCounter'
 
 export default function Explore() {
     const navigate = useNavigate()
@@ -232,22 +233,22 @@ export default function Explore() {
                 </div>
 
                 {/* Results Grid */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-gutter">
-                    {CARDS.map((card) => (
+                <div key={category} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-gutter">
+                    {CARDS.filter(c => category === 'all' || c.cat === category).map((card, idx) => (
                         <div
                             key={card.id}
-                            className="ev-card spotlight ev-fade-up ev-stagger-2 bg-surface-container-lowest border border-outline-variant/30 rounded-xl overflow-hidden shadow-sm group cursor-pointer"
-                            style={{ display: show(card.cat) }}
+                            className="ev-card spotlight row-animated bg-surface-container-lowest border border-outline-variant/30 rounded-xl overflow-hidden shadow-sm group cursor-pointer transition-all duration-300 hover:-translate-y-1 hover:shadow-lg"
+                            style={{ '--stagger-idx': idx }}
                             onClick={openOpportunity}
                         >
                             <div className={`h-40 relative overflow-hidden ${!card.img ? `${card.bgClass} flex items-center justify-center` : ''}`}>
                                 {card.img
-                                    ? <img className="ev-card-img w-full h-full object-cover" alt={card.imgAlt} src={card.img} />
-                                    : <span className={`material-symbols-outlined ${card.iconColor} text-5xl`}>{card.icon}</span>
+                                    ? <img className="ev-card-img w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" alt={card.imgAlt} src={card.img} />
+                                    : <span className={`material-symbols-outlined ${card.iconColor} text-5xl transition-transform duration-300 group-hover:scale-110`}>{card.icon}</span>
                                 }
                                 <div className={`absolute top-3 ${ar ? 'left-3' : 'right-3'} px-3 py-1 ${card.badgeColor} text-white rounded-lg font-label-sm flex items-center gap-1 shadow-lg`} data-count>
                                     <span className="material-symbols-outlined text-[14px]">bolt</span>
-                                    {card.match}%
+                                    <AnimatedCounter value={card.match} suffix="%" duration={600} />
                                 </div>
                                 <SaveBtn id={card.id} />
                             </div>
@@ -255,7 +256,7 @@ export default function Explore() {
                                 <span className={`font-label-sm text-label-sm uppercase ${card.typeColor}`}>
                                     {card.type}
                                 </span>
-                                <h3 className="font-title-md text-title-md line-clamp-1">
+                                <h3 className="font-title-md text-title-md line-clamp-1 group-hover:text-primary transition-colors">
                                     {card.title}
                                 </h3>
                                 <p className="font-body-sm text-body-sm text-on-surface-variant">
