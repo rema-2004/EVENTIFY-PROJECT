@@ -1,11 +1,121 @@
-﻿import { Link } from 'react-router-dom'
+import { useState } from 'react'
+import { Link } from 'react-router-dom'
 import AppPageHead from '../../components/app/AppPageHead'
 import { useAdminPageControls } from './useAdminPageControls.js'
 import LangToggleBtn from '../../components/org/LangToggleBtn'
+import { useLanguage } from '../../hooks/useLanguage'
+import { toast } from '../../utils/toast'
 import '../../styles/admin/admin.css'
+
+const INITIAL_ORGANIZATIONS = [
+    {
+        id: 1,
+        name: 'University of Technology',
+        type: 'University · Amman · official domain verified · 2 documents attached',
+        details: [
+            { label: 'Domain email', value: 'valid' },
+            { label: 'License', value: 'readable' },
+            { label: 'Contact', value: 'dean.office@uot.edu' },
+        ],
+        status: 'pending',
+        rejectionReason: '',
+    },
+    {
+        id: 2,
+        name: 'DesignHub Amman',
+        type: 'Student club · portfolio site verified · missing official club letter',
+        details: [
+            { label: 'Domain email', value: 'valid' },
+            { label: 'Club letter', value: 'missing' },
+            { label: 'Past events', value: '5' },
+        ],
+        status: 'pending',
+        rejectionReason: '',
+    },
+    {
+        id: 3,
+        name: 'Zain Innovation Campus',
+        type: 'Corporate innovation hub · Amman · 3 documents attached',
+        details: [
+            { label: 'Domain email', value: 'valid' },
+            { label: 'Commercial registration', value: 'attached' },
+            { label: 'Contact', value: 'events@zain.jo' },
+        ],
+        status: 'pending',
+        rejectionReason: '',
+    },
+    {
+        id: 4,
+        name: 'Cloud Native Academy',
+        type: 'Tech training institute · Amman · e-learning platform verified · 1 document attached',
+        details: [
+            { label: 'Domain email', value: 'valid' },
+            { label: 'Ministry letter', value: 'missing' },
+            { label: 'Contact', value: 'info@cloudnative.jo' },
+        ],
+        status: 'pending',
+        rejectionReason: '',
+    },
+]
 
 export default function AdminVerifyOrganizations() {
     useAdminPageControls()
+    const { language } = useLanguage()
+    const ar = language === 'ar'
+
+    const [organizations, setOrganizations] = useState(INITIAL_ORGANIZATIONS)
+    const [rejectModalOpen, setRejectModalOpen] = useState(false)
+    const [selectedOrg, setSelectedOrg] = useState(null)
+    const [rejectionReason, setRejectionReason] = useState('')
+
+    const handleOpenRejectModal = (org) => {
+        setSelectedOrg(org)
+        setRejectionReason('')
+        setRejectModalOpen(true)
+    }
+
+    const handleCloseRejectModal = () => {
+        setRejectModalOpen(false)
+        setSelectedOrg(null)
+        setRejectionReason('')
+    }
+
+    const handleConfirmReject = () => {
+        if (!rejectionReason.trim() || !selectedOrg) return
+
+        executeReject(selectedOrg.id, rejectionReason.trim())
+        handleCloseRejectModal()
+    }
+
+    const executeReject = (orgId, reason) => {
+        setOrganizations((prev) =>
+            prev.map((org) => {
+                if (org.id === orgId) {
+                    return { ...org, status: 'rejected', rejectionReason: reason }
+                }
+                return org
+            }),
+        )
+        const org = organizations.find((o) => o.id === orgId)
+        toast(ar ? `تم رفض طلب "${org?.name}"` : `Application for "${org?.name}" rejected`, 'error')
+    }
+
+    const handleAccept = (orgId) => {
+        setOrganizations((prev) =>
+            prev.map((org) => {
+                if (org.id === orgId) {
+                    return { ...org, status: 'accepted' }
+                }
+                return org
+            }),
+        )
+        const org = organizations.find((o) => o.id === orgId)
+        toast(ar ? `تم قبول طلب "${org?.name}" بنجاح` : `Application for "${org?.name}" verified successfully`, 'success')
+    }
+
+    const pendingCount = organizations.filter((o) => o.status === 'pending').length
+    const acceptedCount = organizations.filter((o) => o.status === 'accepted').length
+    const rejectedCount = organizations.filter((o) => o.status === 'rejected').length
     return (
         <>
             <AppPageHead title="Verify Organizations | EVENTIFY" />
@@ -294,192 +404,184 @@ export default function AdminVerifyOrganizations() {
                     </div>
                     <div className="stat-grid stat-grid--3 mb-6">
                         <div className="stat-card">
-                            <p className="stat-card__value">4</p>
+                            <p className="stat-card__value">{pendingCount}</p>
                             <p className="stat-card__label">Pending review</p>
                             <p className="stat-card__hint">On this page</p>
                         </div>
                         <div className="stat-card">
-                            <p className="stat-card__value">312</p>
+                            <p className="stat-card__value">{312 + acceptedCount}</p>
                             <p className="stat-card__label">Verified organizations</p>
                             <p className="stat-card__hint">All time</p>
                         </div>
                         <div className="stat-card">
-                            <p className="stat-card__value">4</p>
+                            <p className="stat-card__value">{4 + rejectedCount}</p>
                             <p className="stat-card__label">Rejected requests</p>
                             <p className="stat-card__hint">All time</p>
                         </div>
                     </div>
                     <section className="space-y-4">
-                        <article className="section-card">
-                            <div className="flex flex-col justify-between gap-5 lg:flex-row lg:items-start">
-                                <div>
-                                    <div className="mb-2 flex flex-wrap items-center gap-2">
-                                        <h3 className="text-title-lg font-semibold">
-                                            University of Technology
-                                        </h3>
-                                        <span className="badge badge--pending">Pending</span>
+                        {organizations.map((org) => (
+                            <article key={org.id} className="section-card transition-all duration-200">
+                                <div className="flex flex-col justify-between gap-5 lg:flex-row lg:items-start">
+                                    <div className="flex-1">
+                                        <div className="mb-2 flex flex-wrap items-center gap-2">
+                                            <h3 className="text-title-lg font-semibold">{org.name}</h3>
+                                            {org.status === 'pending' && <span className="badge badge--pending">{ar ? 'قيد المراجعة' : 'Pending'}</span>}
+                                            {org.status === 'accepted' && (
+                                                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200 shadow-sm">
+                                                    <span className="material-symbols-outlined text-[16px]">check_circle</span>
+                                                    {ar ? 'تم التحقق' : 'Verified'}
+                                                </span>
+                                            )}
+                                            {org.status === 'rejected' && (
+                                                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-red-50 text-red-700 border border-red-200 shadow-sm">
+                                                    <span className="material-symbols-outlined text-[16px]">cancel</span>
+                                                    {ar ? 'مرفوض' : 'Rejected'}
+                                                </span>
+                                            )}
+                                        </div>
+                                        <p className="text-on-surface-variant">{org.type}</p>
+                                        <div className="mt-4 grid grid-cols-1 gap-3 text-label-md md:grid-cols-3">
+                                            {org.details.map((detail, idx) => (
+                                                <span key={idx} className="rounded-lg bg-surface-container-low p-3">
+                                                    {detail.label}: {detail.value}
+                                                </span>
+                                            ))}
+                                        </div>
+
+                                        {/* Rejection Reason Note if rejected */}
+                                        {org.status === 'rejected' && org.rejectionReason && (
+                                            <div className="mt-4 p-4 rounded-2xl bg-red-50/90 border border-red-200/80 text-sm text-red-900 animate-in fade-in duration-200">
+                                                <div className="flex items-center gap-1.5 font-bold text-red-800 mb-1">
+                                                    <span className="material-symbols-outlined text-lg">info</span>
+                                                    {ar ? 'سبب الرفض:' : 'Rejection Reason:'}
+                                                </div>
+                                                <p className="text-red-700 leading-relaxed whitespace-pre-wrap">{org.rejectionReason}</p>
+                                            </div>
+                                        )}
                                     </div>
-                                    <p className="text-on-surface-variant">
-                                        University · Amman · official domain verified · 2 documents
-                                        attached
-                                    </p>
-                                    <div className="mt-4 grid grid-cols-1 gap-3 text-label-md md:grid-cols-3">
-                                        <span className="rounded-lg bg-surface-container-low p-3">
-                                            Domain email: valid
-                                        </span>
-                                        <span className="rounded-lg bg-surface-container-low p-3">
-                                            License: readable
-                                        </span>
-                                        <span className="rounded-lg bg-surface-container-low p-3">
-                                            Contact: dean.office@uot.edu
-                                        </span>
-                                    </div>
-                                </div>
-                                <div className="flex gap-2">
-                                    <button
-                                        type="button"
-                                        className="btn-danger-outline"
-                                        data-ui-action="reject"
-                                    >
-                                        Reject
-                                    </button>
-                                    <button
-                                        type="button"
-                                        className="btn-success"
-                                        data-ui-action="accept"
-                                    >
-                                        Accept
-                                    </button>
-                                </div>
-                            </div>
-                        </article>
-                        <article className="section-card">
-                            <div className="flex flex-col justify-between gap-5 lg:flex-row lg:items-start">
-                                <div>
-                                    <div className="mb-2 flex flex-wrap items-center gap-2">
-                                        <h3 className="text-title-lg font-semibold">DesignHub Amman</h3>
-                                        <span className="badge badge--pending">Pending</span>
-                                    </div>
-                                    <p className="text-on-surface-variant">
-                                        Student club · portfolio site verified · missing official club
-                                        letter
-                                    </p>
-                                    <div className="mt-4 grid grid-cols-1 gap-3 text-label-md md:grid-cols-3">
-                                        <span className="rounded-lg bg-surface-container-low p-3">
-                                            Domain email: valid
-                                        </span>
-                                        <span className="rounded-lg bg-surface-container-low p-3">
-                                            Club letter: missing
-                                        </span>
-                                        <span className="rounded-lg bg-surface-container-low p-3">
-                                            Past events: 5
-                                        </span>
-                                    </div>
-                                </div>
-                                <div className="flex gap-2">
-                                    <button
-                                        type="button"
-                                        className="btn-danger-outline"
-                                        data-ui-action="reject"
-                                    >
-                                        Reject
-                                    </button>
-                                    <button
-                                        type="button"
-                                        className="btn-success"
-                                        data-ui-action="accept"
-                                    >
-                                        Accept
-                                    </button>
-                                </div>
-                            </div>
-                        </article>
-                        <article className="section-card">
-                            <div className="flex flex-col justify-between gap-5 lg:flex-row lg:items-start">
-                                <div>
-                                    <div className="mb-2 flex flex-wrap items-center gap-2">
-                                        <h3 className="text-title-lg font-semibold">
-                                            Zain Innovation Campus
-                                        </h3>
-                                        <span className="badge badge--pending">Pending</span>
-                                    </div>
-                                    <p className="text-on-surface-variant">
-                                        Corporate innovation hub · Amman · 3 documents attached
-                                    </p>
-                                    <div className="mt-4 grid grid-cols-1 gap-3 text-label-md md:grid-cols-3">
-                                        <span className="rounded-lg bg-surface-container-low p-3">
-                                            Domain email: valid
-                                        </span>
-                                        <span className="rounded-lg bg-surface-container-low p-3">
-                                            Commercial registration: attached
-                                        </span>
-                                        <span className="rounded-lg bg-surface-container-low p-3">
-                                            Contact: events@zain.jo
-                                        </span>
+
+                                    {/* Action Buttons */}
+                                    <div className="flex gap-2">
+                                        {org.status === 'pending' ? (
+                                            <>
+                                                <button
+                                                    type="button"
+                                                    className="btn-danger-outline hover:bg-red-50 transition-colors cursor-pointer"
+                                                    onClick={() => handleOpenRejectModal(org)}
+                                                >
+                                                    Reject
+                                                </button>
+                                                <button
+                                                    type="button"
+                                                    className="btn-success hover:brightness-105 transition-all cursor-pointer"
+                                                    onClick={() => handleAccept(org.id)}
+                                                >
+                                                    Accept
+                                                </button>
+                                            </>
+                                        ) : (
+                                            <span className="text-xs text-on-surface-variant self-center font-medium px-3 py-1.5 rounded-lg bg-surface-container-low">
+                                                {ar ? 'تم تسجيل القرار' : 'Decision recorded'}
+                                            </span>
+                                        )}
                                     </div>
                                 </div>
-                                <div className="flex gap-2">
-                                    <button
-                                        type="button"
-                                        className="btn-danger-outline"
-                                        data-ui-action="reject"
-                                    >
-                                        Reject
-                                    </button>
-                                    <button
-                                        type="button"
-                                        className="btn-success"
-                                        data-ui-action="accept"
-                                    >
-                                        Accept
-                                    </button>
-                                </div>
-                            </div>
-                        </article>
-                        <article className="section-card">
-                            <div className="flex flex-col justify-between gap-5 lg:flex-row lg:items-start">
-                                <div>
-                                    <div className="mb-2 flex flex-wrap items-center gap-2">
-                                        <h3 className="text-title-lg font-semibold">
-                                            Cloud Native Academy
-                                        </h3>
-                                        <span className="badge badge--pending">Pending</span>
-                                    </div>
-                                    <p className="text-on-surface-variant">
-                                        Tech training institute · Amman · e-learning platform verified ·
-                                        1 document attached
-                                    </p>
-                                    <div className="mt-4 grid grid-cols-1 gap-3 text-label-md md:grid-cols-3">
-                                        <span className="rounded-lg bg-surface-container-low p-3">
-                                            Domain email: valid
-                                        </span>
-                                        <span className="rounded-lg bg-surface-container-low p-3">
-                                            Ministry letter: missing
-                                        </span>
-                                        <span className="rounded-lg bg-surface-container-low p-3">
-                                            Contact: info@cloudnative.jo
-                                        </span>
-                                    </div>
-                                </div>
-                                <div className="flex gap-2">
-                                    <button
-                                        type="button"
-                                        className="btn-danger-outline"
-                                        data-ui-action="reject"
-                                    >
-                                        Reject
-                                    </button>
-                                    <button
-                                        type="button"
-                                        className="btn-success"
-                                        data-ui-action="accept"
-                                    >
-                                        Accept
-                                    </button>
-                                </div>
-                            </div>
-                        </article>
+                            </article>
+                        ))}
                     </section>
+
+                    {/* Rejection Reason Modal */}
+                    {rejectModalOpen && (
+                        <div
+                            className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-200"
+                            role="dialog"
+                            aria-modal="true"
+                            aria-labelledby="reject-modal-title"
+                            dir={ar ? 'rtl' : 'ltr'}
+                        >
+                            <div
+                                className="w-full max-w-lg bg-white rounded-3xl shadow-2xl border border-gray-100 p-6 md:p-8 space-y-6 animate-in zoom-in-95 duration-200"
+                                onClick={(e) => e.stopPropagation()}
+                            >
+                                {/* Modal Header */}
+                                <div className="flex items-start justify-between gap-4">
+                                    <div className="flex items-center gap-3">
+                                        <div className="w-12 h-12 rounded-2xl bg-red-50 text-red-600 flex items-center justify-center flex-shrink-0 border border-red-100">
+                                            <span className="material-symbols-outlined text-2xl">report_problem</span>
+                                        </div>
+                                        <div>
+                                            <h3 id="reject-modal-title" className="text-lg md:text-xl font-bold text-gray-900">
+                                                {ar ? 'سبب الرفض' : 'Rejection Reason'}
+                                            </h3>
+                                            <p className="text-sm text-gray-500 mt-0.5">
+                                                {ar ? 'المنظمة: ' : 'Organization: '}
+                                                <strong className="text-gray-800 font-semibold">{selectedOrg?.name}</strong>
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <button
+                                        type="button"
+                                        onClick={handleCloseRejectModal}
+                                        className="text-gray-400 hover:text-gray-600 p-1.5 rounded-xl hover:bg-gray-100 transition-colors cursor-pointer"
+                                        aria-label="Close modal"
+                                    >
+                                        <span className="material-symbols-outlined text-xl">close</span>
+                                    </button>
+                                </div>
+
+                                {/* Modal Body: Textarea */}
+                                <div className="space-y-2">
+                                    <label htmlFor="rejection-reason" className="block text-sm font-semibold text-gray-700">
+                                        {ar ? 'يرجى كتابة سبب الرفض' : 'Please provide a rejection reason'} <span className="text-red-500">*</span>
+                                    </label>
+                                    <textarea
+                                        id="rejection-reason"
+                                        rows={4}
+                                        required
+                                        value={rejectionReason}
+                                        onChange={(e) => setRejectionReason(e.target.value)}
+                                        placeholder={
+                                            ar
+                                                ? 'اكتب سبب الرفض بالتفصيل هنا (مثال: الوثائق المرفقة غير واضحة، السجل التجاري منتهي الصلاحية، إلخ)...'
+                                                : 'Provide the reason for rejecting this application (e.g. invalid documentation, expired business license, etc.)...'
+                                        }
+                                        className="w-full p-3.5 text-sm bg-gray-50 border border-gray-200 rounded-2xl focus:outline-none focus:border-red-500 focus:bg-white focus:ring-4 focus:ring-red-500/10 transition-all resize-none text-gray-800"
+                                        autoFocus
+                                    />
+                                    <div className="flex justify-between items-center text-xs text-gray-400 px-1">
+                                        <span>{ar ? 'حقل إلزامي لتوثيق سبب القرار' : 'Required to document the rejection decision'}</span>
+                                        <span>{rejectionReason.trim().length} {ar ? 'حرف' : 'characters'}</span>
+                                    </div>
+                                </div>
+
+                                {/* Modal Footer / Actions */}
+                                <div className="flex items-center justify-end gap-3 pt-3 border-t border-gray-100">
+                                    <button
+                                        type="button"
+                                        onClick={handleCloseRejectModal}
+                                        className="px-5 py-2.5 rounded-2xl text-sm font-medium text-gray-700 bg-gray-100 hover:bg-gray-200 transition-colors cursor-pointer"
+                                    >
+                                        {ar ? 'إلغاء' : 'Cancel'}
+                                    </button>
+
+                                    <button
+                                        type="button"
+                                        onClick={handleConfirmReject}
+                                        disabled={!rejectionReason.trim()}
+                                        className={`flex items-center gap-2 px-6 py-2.5 rounded-2xl text-sm font-semibold transition-all cursor-pointer ${
+                                            !rejectionReason.trim()
+                                                ? 'bg-red-200 text-white cursor-not-allowed opacity-60'
+                                                : 'bg-red-600 hover:bg-red-700 text-white shadow-lg shadow-red-600/25 active:scale-95'
+                                        }`}
+                                    >
+                                        <span className="material-symbols-outlined text-lg">check</span>
+                                        {ar ? 'تأكيد الرفض' : 'Confirm Reject'}
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    )}
                 </main>
             </div>
             <div className="mobile-nav-overlay" id="admin-mobile-overlay" />
