@@ -24,7 +24,10 @@ class EventResource extends JsonResource
             'registration_deadline' => $this->registration_deadline?->toIso8601String(),
             'status' => $this->status,
             'admin_notes' => $this->admin_notes,
-            'display_status' => $this->displayStatus(),
+            // displayStatus() only computes upcoming/live/ended for PUBLISHED events,
+           // so it returns null for draft / pending_review / rejected / etc.
+          // Fall back to the workflow status so this field is never null.
+            'display_status' => $this->displayStatus() ?? $this->status,
             'is_registration_open' => $this->isRegistrationOpen(),
 
             // Only present for type = 'competition'; null otherwise.
