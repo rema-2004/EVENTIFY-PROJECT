@@ -94,6 +94,19 @@ class Event extends Model
         return $this->hasOne(Competition::class, 'id');
     }
 
+    public function registrations(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(EventRegistration::class);
+    }
+
+    /**
+     * Teams only ever exist for type = 'competition'.
+     */
+    public function teams(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(Team::class);
+    }
+
     // ── Status helpers ────────────────────────────────────────
     public function isPublished(): bool
     {

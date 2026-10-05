@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -13,9 +14,6 @@ class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable, SoftDeletes;
 
-    // ── Constants ──────────────────────────────────────────────
-    // Single source of truth for role/status values. Avoids typo bugs
-    // and gives IDE autocomplete anywhere these are used.
     public const ROLE_ADMIN = 'admin';
     public const ROLE_USER = 'user';
 
@@ -50,9 +48,6 @@ class User extends Authenticatable
         ];
     }
 
-    // ── Role / status helpers ────────────────────────────────
-    // Used in controllers/policies instead of comparing raw strings everywhere.
-
     public function isAdmin(): bool
     {
         return $this->role === self::ROLE_ADMIN;
@@ -68,18 +63,6 @@ class User extends Authenticatable
         return $this->provider === self::PROVIDER_GOOGLE;
     }
 
-    // ── Login identifier helpers ──────────────────────────────
-
-    /**
-     * Normalizes a phone number so different typings of the same number
-     * ("+962 7 9012 3456", "+962-7-9012-3456", "(+962) 790123456")
-     * are stored and compared identically: keeps digits and a single
-     * leading "+", strips spaces/dashes/parentheses.
-     *
-     * NOTE: this does NOT convert local formats to international
-     * ("0790123456" vs "+962790123456" are still different strings).
-     * Full country-aware normalization can be added later if needed.
-     */
     public static function normalizePhone(?string $phone): ?string
     {
         if ($phone === null || trim($phone) === '') {
@@ -96,10 +79,6 @@ class User extends Authenticatable
         return ($hasPlus ? '+' : '') . $digits;
     }
 
-    /**
-     * Finds a user by a single "login" identifier that may be either
-     * an email address or a phone number.
-     */
     public static function findByLogin(string $login): ?self
     {
         if (filter_var($login, FILTER_VALIDATE_EMAIL)) {
@@ -109,8 +88,24 @@ class User extends Authenticatable
         return static::where('phone', static::normalizePhone($login))->first();
     }
 
+    // ── Relationships ──────────────────────────────────────────
+
+    public function registrations(): HasMany
+    {
+        return $this->hasMany(EventRegistration::class);
+    }
+
+    public function teamMemberships(): HasMany
+    {
+        return $this->hasMany(TeamMember::class);
+    }
+
+    public function ledTeams(): HasMany
+    {
+        return $this->hasMany(Team::class, 'created_by');
+    }
+
     // ── Query scopes ──────────────────────────────────────────
-    // User::active()->get()  instead of  User::where('status', 'active')->get()
 
     public function scopeActive(Builder $query): Builder
     {
