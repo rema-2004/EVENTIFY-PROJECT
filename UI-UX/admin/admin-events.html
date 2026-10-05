@@ -227,12 +227,221 @@
 </div>
 </div>
 
+<!-- Rejection Reason Modal -->
+<div id="event-reject-modal" style="position:fixed;inset:0;z-index:9999;display:none;align-items:center;justify-content:center;padding:16px;background:rgba(0,0,0,0.65);backdrop-filter:blur(4px);" role="dialog" aria-modal="true" aria-labelledby="reject-modal-title">
+    <div style="position:relative;width:100%;max-width:520px;background:var(--surface, #ffffff);color:var(--text, #111);border-radius:20px;padding:24px 28px;box-shadow:0 25px 50px -12px rgba(0,0,0,0.35);border:1px solid var(--border-strong, #e2e8f0);">
+        <!-- Modal Header -->
+        <div style="display:flex;align-items:center;justify-content:space-between;padding-bottom:16px;border-bottom:1px solid var(--border, #edf2f7);margin-bottom:20px;">
+            <div style="display:flex;align-items:center;gap:12px;">
+                <div style="width:42px;height:42px;border-radius:12px;background:#fef2f2;color:#dc2626;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                    <span class="material-symbols-outlined" style="font-size:24px;">cancel</span>
+                </div>
+                <div>
+                    <h3 id="reject-modal-title" style="font-size:18px;font-weight:700;margin:0;color:var(--text, #111);">Reject Event</h3>
+                    <p id="reject-modal-event-name" style="font-size:12px;font-weight:500;margin:4px 0 0 0;color:var(--text-muted, #64748b);">DevOps Masterclass</p>
+                </div>
+            </div>
+            <button type="button" id="reject-modal-close" style="background:transparent;border:none;color:var(--text-muted, #64748b);cursor:pointer;padding:6px;border-radius:8px;display:flex;align-items:center;justify-content:center;" aria-label="Close modal">
+                <span class="material-symbols-outlined" style="font-size:20px;">close</span>
+            </button>
+        </div>
+
+        <!-- Modal Form Body -->
+        <form id="reject-modal-form" style="display:flex;flex-direction:column;gap:16px;">
+            <div>
+                <label for="reject-reason-input" style="display:block;font-size:13px;font-weight:600;margin-bottom:8px;color:var(--text, #111);">
+                    Please provide a rejection reason <span style="color:#ef4444;">*</span>
+                </label>
+                <textarea
+                    id="reject-reason-input"
+                    rows="4"
+                    required
+                    placeholder="Provide the reason for rejecting this event (e.g. incomplete agenda, missing venue safety approvals, prerequisites not met)..."
+                    style="width:100%;box-sizing:border-box;padding:12px 14px;font-size:13.5px;font-family:inherit;background:var(--surface-2, #f8fafc);color:var(--text, #111);border:1px solid var(--border-strong, #cbd5e1);border-radius:12px;outline:none;resize:none;line-height:1.5;transition:border-color 0.2s, box-shadow 0.2s;"
+                ></textarea>
+                <div style="display:flex;justify-content:space-between;align-items:center;font-size:12px;color:var(--text-muted, #64748b);margin-top:6px;padding:0 2px;">
+                    <span>Required to document the rejection decision</span>
+                    <span id="reject-char-count">0 characters</span>
+                </div>
+            </div>
+
+            <!-- Modal Actions -->
+            <div style="display:flex;align-items:center;justify-content:flex-end;gap:10px;padding-top:14px;border-top:1px solid var(--border, #edf2f7);margin-top:4px;">
+                <button type="button" id="reject-modal-cancel" class="btn-secondary" style="padding:8px 18px;border-radius:9999px;font-size:13px;font-weight:600;cursor:pointer;">
+                    Cancel
+                </button>
+                <button type="submit" id="reject-modal-confirm" disabled style="display:inline-flex;align-items:center;gap:6px;padding:8px 20px;border-radius:9999px;font-size:13px;font-weight:600;background:#dc2626;color:#ffffff;border:none;cursor:not-allowed;opacity:0.5;transition:all 0.2s;">
+                    <span class="material-symbols-outlined" style="font-size:18px;">check</span>
+                    <span>Confirm Reject</span>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
 </main>
 </div>
 <script src="../assets/js/ui-state.js"></script>
 <script src="../assets/js/org-topbar.js"></script>
 <script src="ui-actions.js"></script>
 <script src="../assets/js/motion.js"></script>
+<script>
+(function () {
+    var modal = document.getElementById('event-reject-modal');
+    var form = document.getElementById('reject-modal-form');
+    var textarea = document.getElementById('reject-reason-input');
+    var charCount = document.getElementById('reject-char-count');
+    var confirmBtn = document.getElementById('reject-modal-confirm');
+    var closeBtn = document.getElementById('reject-modal-close');
+    var cancelBtn = document.getElementById('reject-modal-cancel');
+    var eventNameEl = document.getElementById('reject-modal-event-name');
+
+    var currentTargetCard = null;
+
+    function openRejectModal(card) {
+        currentTargetCard = card;
+        var titleEl = card.querySelector('h3');
+        var eventName = titleEl ? titleEl.textContent.trim() : 'Event';
+        if (eventNameEl) eventNameEl.textContent = eventName;
+        if (textarea) textarea.value = '';
+        if (charCount) charCount.textContent = '0 characters';
+        if (confirmBtn) {
+            confirmBtn.disabled = true;
+            confirmBtn.style.opacity = '0.5';
+            confirmBtn.style.cursor = 'not-allowed';
+        }
+        if (modal) {
+            modal.style.display = 'flex';
+            setTimeout(function() { if (textarea) textarea.focus(); }, 60);
+        }
+    }
+
+    function closeRejectModal() {
+        if (modal) modal.style.display = 'none';
+        currentTargetCard = null;
+    }
+
+    if (closeBtn) closeBtn.addEventListener('click', closeRejectModal);
+    if (cancelBtn) cancelBtn.addEventListener('click', closeRejectModal);
+    if (modal) {
+        modal.addEventListener('click', function(e) {
+            if (e.target === modal) closeRejectModal();
+        });
+    }
+
+    if (textarea) {
+        textarea.addEventListener('input', function() {
+            var val = textarea.value.trim();
+            if (charCount) charCount.textContent = val.length + ' characters';
+            if (val.length > 0) {
+                confirmBtn.disabled = false;
+                confirmBtn.style.opacity = '1';
+                confirmBtn.style.cursor = 'pointer';
+            } else {
+                confirmBtn.disabled = true;
+                confirmBtn.style.opacity = '0.5';
+                confirmBtn.style.cursor = 'not-allowed';
+            }
+        });
+    }
+
+    // Intercept clicks on reject buttons in capture phase
+    document.addEventListener('click', function(e) {
+        var rejectBtn = e.target.closest('[data-ui-action="reject"]');
+        if (!rejectBtn) return;
+        var card = rejectBtn.closest('.section-card');
+        if (!card) return;
+
+        // If card already decided or not pending, ignore
+        if (card.dataset.status !== 'pending') return;
+
+        // Prevent immediate rejection by ui-actions.js
+        e.stopImmediatePropagation();
+        e.preventDefault();
+
+        openRejectModal(card);
+    }, true);
+
+    if (form) {
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            var reason = textarea ? textarea.value.trim() : '';
+            if (!reason || !currentTargetCard) return;
+
+            var card = currentTargetCard;
+            card.dataset.status = 'rejected';
+            card.dataset.rejectionReason = reason;
+            card.dataset.uiDecided = 'rejected';
+
+            // Add clear callout under event description showing rejection reason
+            var headerDiv = card.querySelector('.flex.flex-col > div');
+            if (headerDiv && !card.querySelector('.rejection-callout')) {
+                var callout = document.createElement('div');
+                callout.className = 'rejection-callout';
+                callout.style.marginTop = '12px';
+                callout.style.padding = '10px 14px';
+                callout.style.borderRadius = '10px';
+                callout.style.background = '#fef2f2';
+                callout.style.border = '1px solid #fecaca';
+                callout.style.color = '#b91c1c';
+                callout.style.fontSize = '12.5px';
+                callout.style.display = 'flex';
+                callout.style.alignItems = 'flex-start';
+                callout.style.gap = '8px';
+                callout.innerHTML = '<span class="material-symbols-outlined" style="font-size:16px;color:#dc2626;flex-shrink:0;margin-top:2px;">cancel</span><div><strong>Reason for rejection: </strong>' + escapeHtml(reason) + '</div>';
+                headerDiv.appendChild(callout);
+            }
+
+            // Disable buttons and update reject button state
+            card.querySelectorAll('[data-ui-action]').forEach(function(b) {
+                if (b.dataset.uiAction === 'reject') {
+                    b.disabled = true;
+                    b.classList.remove('btn-danger-outline');
+                    b.classList.add('badge', 'badge--rejected');
+                    b.textContent = 'Rejected';
+                } else {
+                    b.disabled = true;
+                    b.style.display = 'none';
+                }
+            });
+
+            // Toast notification
+            showNotification('Event rejected. Rejection reason recorded and sent to organizer.');
+
+            // Refresh filter tabs count and view
+            if (typeof window.refreshEventsFilter === 'function') {
+                window.refreshEventsFilter();
+            }
+
+            closeRejectModal();
+        });
+    }
+
+    function escapeHtml(str) {
+        var div = document.createElement('div');
+        div.textContent = str;
+        return div.innerHTML;
+    }
+
+    function showNotification(msg) {
+        var stack = document.getElementById('toast-stack');
+        if (!stack) {
+            stack = document.createElement('div');
+            stack.id = 'toast-stack';
+            document.body.appendChild(stack);
+        }
+        var toast = document.createElement('div');
+        toast.className = 'toast toast-error';
+        toast.textContent = msg;
+        stack.appendChild(toast);
+        requestAnimationFrame(function() { toast.classList.add('is-visible'); });
+        setTimeout(function() {
+            toast.classList.remove('is-visible');
+            setTimeout(function() { toast.remove(); }, 300);
+        }, 2600);
+    }
+})();
+</script>
 <script>
 (function () {
     var tabGroup = document.getElementById('events-tab-group');

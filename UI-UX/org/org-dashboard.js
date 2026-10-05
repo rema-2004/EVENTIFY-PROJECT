@@ -2,8 +2,8 @@
     const $ = (sel, root) => (root || document).querySelector(sel);
     const $$ = (sel, root) => Array.from((root || document).querySelectorAll(sel));
 
-    const STATUS_LABEL = { live: 'Live', upcoming: 'Upcoming', pending: 'Pending Approval', ended: 'Ended', cancelled: 'Cancelled' };
-    const STATUS_BADGE = { live: 'badge--active', upcoming: 'badge--upcoming', pending: 'badge--pending', ended: 'badge--completed', cancelled: 'badge--cancelled' };
+    const STATUS_LABEL = { live: 'Live', upcoming: 'Upcoming', pending: 'Pending Approval', ended: 'Ended', cancelled: 'Cancelled', rejected: 'Rejected' };
+    const STATUS_BADGE = { live: 'badge--active', upcoming: 'badge--upcoming', pending: 'badge--pending', ended: 'badge--completed', cancelled: 'badge--cancelled', rejected: 'badge--rejected' };
     const APP_BADGE = { approved: 'badge--approved', pending: 'badge--pending', rejected: 'badge--rejected' };
 
     let charts = {};
@@ -57,27 +57,43 @@
     function renderMyEvents(events) {
         const body = $('#org-events-body');
         if (!body) return;
-        body.innerHTML = events.map((e) => `
-            <tr>
+        body.innerHTML = events.map((e) => {
+            const isUnpublished = ['pending', 'draft', 'rejected'].includes(e.status);
+            const isRejected = e.status === 'rejected';
+
+            return `
+            <tr class="${isRejected ? 'bg-red-50/20' : ''}">
                 <td>
                     <div class="flex items-center gap-3">
                         <img src="${e.image || '../assets/images/event1.jpeg'}" alt="" class="w-10 h-10 rounded-xl object-cover border border-outline-variant/40 flex-shrink-0" onerror="this.style.display='none'">
-                        <p class="font-medium text-on-surface truncate max-w-[200px] md:max-w-[280px]">${e.name}</p>
+                        <div class="min-w-0">
+                            <p class="font-medium text-on-surface truncate max-w-[200px] md:max-w-[280px]">${e.name}</p>
+                            ${isRejected && e.rejectionReason ? `
+                                <p class="text-xs text-red-600 truncate max-w-[240px] mt-0.5">Reason: ${e.rejectionReason}</p>
+                            ` : ''}
+                        </div>
                     </div>
                 </td>
-                <td><span class="badge ${STATUS_BADGE[e.status]}">${STATUS_LABEL[e.status]}</span></td>
+                <td><span class="badge ${STATUS_BADGE[e.status] || 'badge--pending'}">${STATUS_LABEL[e.status] || e.status}</span></td>
                 <td class="mono whitespace-nowrap">${e.date}</td>
-                <td class="whitespace-nowrap"><span class="mono">${e.applicants}</span> applicants</td>
-                <td class="whitespace-nowrap">${e.approved === null ? '—' : '<span class="mono">' + e.approved + '</span> approved'}</td>
-                <td class="whitespace-nowrap"><span class="mono">${e.pending}</span> pending</td>
+                <td class="whitespace-nowrap">${isUnpublished ? '<span class="mono text-muted">—</span>' : '<span class="mono">' + e.applicants + '</span> applicants'}</td>
+                <td class="whitespace-nowrap">${isUnpublished || e.approved === null ? '<span class="mono text-muted">—</span>' : '<span class="mono">' + e.approved + '</span> approved'}</td>
+                <td class="whitespace-nowrap">${isUnpublished ? '<span class="mono text-muted">—</span>' : '<span class="mono">' + e.pending + '</span> pending'}</td>
                 <td class="whitespace-nowrap">${e.rating ? '★ ' + e.rating.toFixed(1) : '—'}</td>
                 <td>
                     <div class="org-row-actions">
-                        <a href="org-opportunities.html" aria-label="Manage ${e.name}">Manage</a>
-                        <a href="org-applicants.html?event=${e.id}" aria-label="Applicants for ${e.name}">Applicants</a>
+                        ${isRejected ? `
+                            <a href="org-opportunities.html" class="org-action--primary" style="background:#dc2626;border-color:#dc2626;color:#ffffff;" aria-label="Edit & Resubmit ${e.name}">Edit & Resubmit</a>
+                        ` : isUnpublished ? `
+                            <a href="org-opportunities.html" class="org-action--primary" aria-label="Manage ${e.name}">Manage</a>
+                        ` : `
+                            <a href="org-opportunities.html" aria-label="Manage ${e.name}">Manage</a>
+                            <a href="org-applicants.html?event=${e.id}" class="org-action--primary" aria-label="Applicants for ${e.name}">Applicants</a>
+                        `}
                     </div>
                 </td>
-            </tr>`).join('');
+            </tr>`;
+        }).join('');
     }
 
     function renderUpcoming(events) {

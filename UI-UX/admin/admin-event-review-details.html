@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html class="light" lang="en">
 
 <head>
@@ -218,6 +218,67 @@
 <script src="../assets/js/org-topbar.js"></script>
 <script src="ui-actions.js"></script>
 <script src="../assets/js/motion.js"></script>
+<script>
+(function() {
+    var rejectReasonTextarea = document.querySelector('section.section-card textarea');
+    var sendRejectBtn = document.querySelector('section.section-card button.btn-danger-outline');
+    var topRejectBtn = document.querySelector('div.flex.gap-3 button.btn-danger-outline');
+    var topApproveBtn = document.querySelector('div.flex.gap-3 button.btn-success');
+    var statusBadge = document.querySelector('span.badge--pending');
+
+    if (topRejectBtn && rejectReasonTextarea) {
+        topRejectBtn.addEventListener('click', function() {
+            rejectReasonTextarea.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            rejectReasonTextarea.focus();
+        });
+    }
+
+    if (sendRejectBtn && rejectReasonTextarea) {
+        sendRejectBtn.addEventListener('click', function() {
+            var reason = rejectReasonTextarea.value.trim();
+            if (!reason) {
+                alert('Please enter a rejection reason before submitting.');
+                rejectReasonTextarea.focus();
+                return;
+            }
+
+            if (statusBadge) {
+                statusBadge.className = 'badge badge--rejected';
+                statusBadge.textContent = 'Rejected';
+            }
+
+            sendRejectBtn.disabled = true;
+            sendRejectBtn.textContent = 'Rejection sent';
+            sendRejectBtn.style.opacity = '0.5';
+
+            if (topRejectBtn) {
+                topRejectBtn.disabled = true;
+                topRejectBtn.style.opacity = '0.4';
+            }
+            if (topApproveBtn) {
+                topApproveBtn.disabled = true;
+                topApproveBtn.style.opacity = '0.4';
+            }
+
+            var stack = document.getElementById('toast-stack');
+            if (!stack) {
+                stack = document.createElement('div');
+                stack.id = 'toast-stack';
+                document.body.appendChild(stack);
+            }
+            var toast = document.createElement('div');
+            toast.className = 'toast toast-error';
+            toast.textContent = 'Event rejected. Reason sent to organizer.';
+            stack.appendChild(toast);
+            requestAnimationFrame(function() { toast.classList.add('is-visible'); });
+            setTimeout(function() {
+                toast.classList.remove('is-visible');
+                setTimeout(function() { toast.remove(); }, 300);
+            }, 2600);
+        });
+    }
+})();
+</script>
 </body>
 
 </html>

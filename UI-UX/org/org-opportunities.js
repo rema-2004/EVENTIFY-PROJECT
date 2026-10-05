@@ -176,10 +176,48 @@
         });
     }
 
+    function wireResubmitActions() {
+        document.addEventListener('click', (e) => {
+            const btn = e.target.closest('.btn-resubmit-opp');
+            if (!btn) return;
+            const row = btn.closest('tr[data-status]');
+            if (!row) return;
+
+            // Change state from rejected to pending
+            row.dataset.status = 'pending';
+
+            // Remove rejection reason box
+            const rejectionBox = row.querySelector('.opp-rejection-box');
+            if (rejectionBox) rejectionBox.remove();
+
+            // Update badge to pending
+            const badge = row.querySelector('.badge');
+            if (badge) {
+                badge.className = 'badge badge--pending';
+                badge.textContent = 'Pending Approval';
+            }
+
+            // Update actions to pending actions (only Edit, no Applicants)
+            const actionsWrap = row.querySelector('.org-row-actions');
+            if (actionsWrap) {
+                actionsWrap.innerHTML = `
+                    <a href="org-create-event.html" class="org-action--primary" aria-label="Edit opportunity">Edit</a>
+                `;
+            }
+
+            // Update counts across stat cards & filter pills
+            updateCounts();
+
+            // Re-apply filter & search so if user is on a specific filter it moves appropriately
+            applyFilterAndSearch();
+        });
+    }
+
     document.addEventListener('DOMContentLoaded', () => {
         updateCounts();
         wireFilters();
         wireSearch();
         wireMobileNav();
+        wireResubmitActions();
     });
 })();

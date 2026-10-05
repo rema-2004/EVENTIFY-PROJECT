@@ -18,7 +18,6 @@ const INITIAL_ORGANIZATIONS = [
             { label: 'Contact', value: 'dean.office@uot.edu' },
         ],
         status: 'pending',
-        rejectionReason: '',
     },
     {
         id: 2,
@@ -30,7 +29,6 @@ const INITIAL_ORGANIZATIONS = [
             { label: 'Past events', value: '5' },
         ],
         status: 'pending',
-        rejectionReason: '',
     },
     {
         id: 3,
@@ -42,7 +40,6 @@ const INITIAL_ORGANIZATIONS = [
             { label: 'Contact', value: 'events@zain.jo' },
         ],
         status: 'pending',
-        rejectionReason: '',
     },
     {
         id: 4,
@@ -54,7 +51,6 @@ const INITIAL_ORGANIZATIONS = [
             { label: 'Contact', value: 'info@cloudnative.jo' },
         ],
         status: 'pending',
-        rejectionReason: '',
     },
 ]
 
@@ -64,34 +60,12 @@ export default function AdminVerifyOrganizations() {
     const ar = language === 'ar'
 
     const [organizations, setOrganizations] = useState(INITIAL_ORGANIZATIONS)
-    const [rejectModalOpen, setRejectModalOpen] = useState(false)
-    const [selectedOrg, setSelectedOrg] = useState(null)
-    const [rejectionReason, setRejectionReason] = useState('')
 
-    const handleOpenRejectModal = (org) => {
-        setSelectedOrg(org)
-        setRejectionReason('')
-        setRejectModalOpen(true)
-    }
-
-    const handleCloseRejectModal = () => {
-        setRejectModalOpen(false)
-        setSelectedOrg(null)
-        setRejectionReason('')
-    }
-
-    const handleConfirmReject = () => {
-        if (!rejectionReason.trim() || !selectedOrg) return
-
-        executeReject(selectedOrg.id, rejectionReason.trim())
-        handleCloseRejectModal()
-    }
-
-    const executeReject = (orgId, reason) => {
+    const handleReject = (orgId) => {
         setOrganizations((prev) =>
             prev.map((org) => {
                 if (org.id === orgId) {
-                    return { ...org, status: 'rejected', rejectionReason: reason }
+                    return { ...org, status: 'rejected' }
                 }
                 return org
             }),
@@ -448,17 +422,6 @@ export default function AdminVerifyOrganizations() {
                                                 </span>
                                             ))}
                                         </div>
-
-                                        {/* Rejection Reason Note if rejected */}
-                                        {org.status === 'rejected' && org.rejectionReason && (
-                                            <div className="mt-4 p-4 rounded-2xl bg-red-50/90 border border-red-200/80 text-sm text-red-900 animate-in fade-in duration-200">
-                                                <div className="flex items-center gap-1.5 font-bold text-red-800 mb-1">
-                                                    <span className="material-symbols-outlined text-lg">info</span>
-                                                    {ar ? 'سبب الرفض:' : 'Rejection Reason:'}
-                                                </div>
-                                                <p className="text-red-700 leading-relaxed whitespace-pre-wrap">{org.rejectionReason}</p>
-                                            </div>
-                                        )}
                                     </div>
 
                                     {/* Action Buttons */}
@@ -468,7 +431,7 @@ export default function AdminVerifyOrganizations() {
                                                 <button
                                                     type="button"
                                                     className="btn-danger-outline hover:bg-red-50 transition-colors cursor-pointer"
-                                                    onClick={() => handleOpenRejectModal(org)}
+                                                    onClick={() => handleReject(org.id)}
                                                 >
                                                     Reject
                                                 </button>
@@ -490,98 +453,6 @@ export default function AdminVerifyOrganizations() {
                             </article>
                         ))}
                     </section>
-
-                    {/* Rejection Reason Modal */}
-                    {rejectModalOpen && (
-                        <div
-                            className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-200"
-                            role="dialog"
-                            aria-modal="true"
-                            aria-labelledby="reject-modal-title"
-                            dir={ar ? 'rtl' : 'ltr'}
-                        >
-                            <div
-                                className="w-full max-w-lg bg-white rounded-3xl shadow-2xl border border-gray-100 p-6 md:p-8 space-y-6 animate-in zoom-in-95 duration-200"
-                                onClick={(e) => e.stopPropagation()}
-                            >
-                                {/* Modal Header */}
-                                <div className="flex items-start justify-between gap-4">
-                                    <div className="flex items-center gap-3">
-                                        <div className="w-12 h-12 rounded-2xl bg-red-50 text-red-600 flex items-center justify-center flex-shrink-0 border border-red-100">
-                                            <span className="material-symbols-outlined text-2xl">report_problem</span>
-                                        </div>
-                                        <div>
-                                            <h3 id="reject-modal-title" className="text-lg md:text-xl font-bold text-gray-900">
-                                                {ar ? 'سبب الرفض' : 'Rejection Reason'}
-                                            </h3>
-                                            <p className="text-sm text-gray-500 mt-0.5">
-                                                {ar ? 'المنظمة: ' : 'Organization: '}
-                                                <strong className="text-gray-800 font-semibold">{selectedOrg?.name}</strong>
-                                            </p>
-                                        </div>
-                                    </div>
-                                    <button
-                                        type="button"
-                                        onClick={handleCloseRejectModal}
-                                        className="text-gray-400 hover:text-gray-600 p-1.5 rounded-xl hover:bg-gray-100 transition-colors cursor-pointer"
-                                        aria-label="Close modal"
-                                    >
-                                        <span className="material-symbols-outlined text-xl">close</span>
-                                    </button>
-                                </div>
-
-                                {/* Modal Body: Textarea */}
-                                <div className="space-y-2">
-                                    <label htmlFor="rejection-reason" className="block text-sm font-semibold text-gray-700">
-                                        {ar ? 'يرجى كتابة سبب الرفض' : 'Please provide a rejection reason'} <span className="text-red-500">*</span>
-                                    </label>
-                                    <textarea
-                                        id="rejection-reason"
-                                        rows={4}
-                                        required
-                                        value={rejectionReason}
-                                        onChange={(e) => setRejectionReason(e.target.value)}
-                                        placeholder={
-                                            ar
-                                                ? 'اكتب سبب الرفض بالتفصيل هنا (مثال: الوثائق المرفقة غير واضحة، السجل التجاري منتهي الصلاحية، إلخ)...'
-                                                : 'Provide the reason for rejecting this application (e.g. invalid documentation, expired business license, etc.)...'
-                                        }
-                                        className="w-full p-3.5 text-sm bg-gray-50 border border-gray-200 rounded-2xl focus:outline-none focus:border-red-500 focus:bg-white focus:ring-4 focus:ring-red-500/10 transition-all resize-none text-gray-800"
-                                        autoFocus
-                                    />
-                                    <div className="flex justify-between items-center text-xs text-gray-400 px-1">
-                                        <span>{ar ? 'حقل إلزامي لتوثيق سبب القرار' : 'Required to document the rejection decision'}</span>
-                                        <span>{rejectionReason.trim().length} {ar ? 'حرف' : 'characters'}</span>
-                                    </div>
-                                </div>
-
-                                {/* Modal Footer / Actions */}
-                                <div className="flex items-center justify-end gap-3 pt-3 border-t border-gray-100">
-                                    <button
-                                        type="button"
-                                        onClick={handleCloseRejectModal}
-                                        className="px-5 py-2.5 rounded-2xl text-sm font-medium text-gray-700 bg-gray-100 hover:bg-gray-200 transition-colors cursor-pointer"
-                                    >
-                                        {ar ? 'إلغاء' : 'Cancel'}
-                                    </button>
-
-                                    <button
-                                        type="button"
-                                        onClick={handleConfirmReject}
-                                        disabled={!rejectionReason.trim()}
-                                        className={`flex items-center gap-2 px-6 py-2.5 rounded-2xl text-sm font-semibold transition-all cursor-pointer ${
-                                            !rejectionReason.trim()
-                                                ? 'bg-red-200 text-white cursor-not-allowed opacity-60'
-                                                : 'bg-red-600 hover:bg-red-700 text-white shadow-lg shadow-red-600/25 active:scale-95'
-                                        }`}
-                                    >
-                                        <span className="material-symbols-outlined text-lg">check</span>
-                                        {ar ? 'تأكيد الرفض' : 'Confirm Reject'}
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    )}
                 </main>
             </div>
             <div className="mobile-nav-overlay" id="admin-mobile-overlay" />

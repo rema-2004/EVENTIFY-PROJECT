@@ -1,11 +1,116 @@
+import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import AppPageHead from '../../components/app/AppPageHead'
 import { useAdminPageControls } from './useAdminPageControls.js'
 import LangToggleBtn from '../../components/org/LangToggleBtn'
+import { useLanguage } from '../../hooks/useLanguage'
+import { toast } from '../../utils/toast'
 import '../../styles/admin/admin.css'
+
+const INITIAL_EVENTS = [
+    {
+        id: 'evt-1',
+        title: 'DevOps Masterclass',
+        category: 'Course',
+        organizer: 'TechGenius Labs',
+        submitted: 'Submitted 2 hours ago',
+        submittedAr: 'تم التقديم منذ ساعتين',
+        description: 'A hands-on cloud lab covering CI/CD, Kubernetes, and infrastructure as code over 6 weeks.',
+        descriptionAr: 'مختبر سحابي عملي يغطي CI/CD وKubernetes والبنية التحتية ككود على مدار 6 أسابيع.',
+        status: 'pending',
+    },
+    {
+        id: 'evt-2',
+        title: 'Quantum Computing Bootcamp',
+        category: 'Workshop',
+        organizer: 'University of Technology',
+        submitted: 'Submitted yesterday',
+        submittedAr: 'تم التقديم بالأمس',
+        description: 'An intensive 3-day introduction to quantum algorithms for advanced undergraduate students.',
+        descriptionAr: 'مقدمة مكثفة مدتها 3 أيام لخوارزميات الحوسبة الكمية لطلاب البكالوريوس المتقدمين.',
+        status: 'pending',
+    },
+    {
+        id: 'evt-3',
+        title: 'Product Design Sprint',
+        category: 'Competition',
+        organizer: 'DesignHub Amman',
+        submitted: 'Submitted 3 days ago',
+        submittedAr: 'تم التقديم منذ 3 أيام',
+        description: 'Teams of 2-4 compete to redesign a real fintech product in 48 hours, judged by industry mentors.',
+        descriptionAr: 'تتنافس فرق من 2 إلى 4 أعضاء لإعادة تصميم منتج حقيقي في التكنولوجيا المالية خلال 48 ساعة.',
+        status: 'pending',
+    },
+    {
+        id: 'evt-4',
+        title: 'Future of AI Summit',
+        category: 'Conference',
+        organizer: 'TechGenius Labs',
+        submitted: 'Submitted 5 hours ago',
+        submittedAr: 'تم التقديم منذ 5 ساعات',
+        description: 'A one-day conference with keynote talks and panels on applied AI, open to students and industry professionals.',
+        descriptionAr: 'مؤتمر ليوم واحد يضم كلمات رئيسية وحلقات نقاشية حول الذكاء الاصطناعي التطبيقي.',
+        status: 'pending',
+    },
+]
 
 export default function AdminEvents() {
     useAdminPageControls()
+    const { language } = useLanguage()
+    const ar = language === 'ar'
+
+    const [events, setEvents] = useState(INITIAL_EVENTS)
+    const [rejectModalOpen, setRejectModalOpen] = useState(false)
+    const [selectedEvent, setSelectedEvent] = useState(null)
+    const [rejectionReason, setRejectionReason] = useState('')
+
+    const handleOpenRejectModal = (event) => {
+        setSelectedEvent(event)
+        setRejectionReason('')
+        setRejectModalOpen(true)
+    }
+
+    const handleCloseRejectModal = () => {
+        setRejectModalOpen(false)
+        setSelectedEvent(null)
+        setRejectionReason('')
+    }
+
+    const handleConfirmReject = () => {
+        if (!rejectionReason.trim() || !selectedEvent) return
+
+        executeReject(selectedEvent.id, rejectionReason.trim())
+        handleCloseRejectModal()
+    }
+
+    const executeReject = (eventId, reason) => {
+        setEvents((prev) =>
+            prev.map((e) => {
+                if (e.id === eventId) {
+                    return { ...e, status: 'rejected' }
+                }
+                return e
+            }),
+        )
+        const eventItem = events.find((e) => e.id === eventId)
+        toast(ar ? `تم رفض فعالية "${eventItem?.title}"` : `Event "${eventItem?.title}" rejected`, 'error')
+        setTimeout(() => window.refreshEventsFilter?.(), 50)
+    }
+
+    const handleApprove = (eventId) => {
+        setEvents((prev) =>
+            prev.map((e) => {
+                if (e.id === eventId) {
+                    return { ...e, status: 'approved' }
+                }
+                return e
+            }),
+        )
+        const eventItem = events.find((e) => e.id === eventId)
+        toast(ar ? `تمت الموافقة على فعالية "${eventItem?.title}"` : `Event "${eventItem?.title}" approved`, 'success')
+        setTimeout(() => window.refreshEventsFilter?.(), 50)
+    }
+
     return (
         <>
             <AppPageHead title="Review Events | EVENTIFY" />
@@ -335,228 +440,186 @@ export default function AdminEvents() {
                         </div>
                     </div>
                     <div className="space-y-4" id="events-list">
-                        <div
-                            className="section-card"
-                            data-status="pending"
-                            data-category="Course"
-                        >
-                            <div className="flex flex-col md:flex-row md:items-start justify-between gap-4">
-                                <div className="event-content-body">
-                                    <div className="flex items-center gap-2 mb-1">
-                                        <span className="text-[10px] uppercase tracking-wider text-secondary font-bold">
-                                            Course
-                                        </span>
-                                        <span className="badge badge--pending" data-status-badge="">
-                                            <span className="material-symbols-outlined" style={{ fontSize: 14, verticalAlign: 'middle', marginInlineEnd: 4 }}>schedule</span>
-                                            Pending
-                                        </span>
+                        {events.map((event) => (
+                            <div
+                                key={event.id}
+                                className="section-card transition-all duration-200"
+                                data-status={event.status}
+                                data-category={event.category}
+                            >
+                                <div className="flex flex-col md:flex-row md:items-start justify-between gap-4">
+                                    <div className="event-content-body flex-1">
+                                        <div className="flex items-center gap-2 mb-1">
+                                            <span className="text-[10px] uppercase tracking-wider text-secondary font-bold">
+                                                {event.category}
+                                            </span>
+                                            {event.status === 'pending' && (
+                                                <span className="badge badge--pending" data-status-badge="">
+                                                    <span className="material-symbols-outlined" style={{ fontSize: 14, verticalAlign: 'middle', marginInlineEnd: 4 }}>schedule</span>
+                                                    {ar ? 'قيد المراجعة' : 'Pending'}
+                                                </span>
+                                            )}
+                                            {event.status === 'approved' && (
+                                                <span className="badge badge--approved" data-status-badge="">
+                                                    <span className="material-symbols-outlined" style={{ fontSize: 14, verticalAlign: 'middle', marginInlineEnd: 4 }}>check_circle</span>
+                                                    {ar ? 'مقبول' : 'Approved'}
+                                                </span>
+                                            )}
+                                            {event.status === 'rejected' && (
+                                                <span className="badge badge--rejected" data-status-badge="">
+                                                    <span className="material-symbols-outlined" style={{ fontSize: 14, verticalAlign: 'middle', marginInlineEnd: 4 }}>cancel</span>
+                                                    {ar ? 'مرفوض' : 'Rejected'}
+                                                </span>
+                                            )}
+                                        </div>
+                                        <h3 className="font-title-lg text-title-lg text-on-surface mt-1">
+                                            {event.title}
+                                        </h3>
+                                        <p className="font-label-md text-label-md text-on-surface-variant mt-1">
+                                            {ar ? `بواسطة ${event.organizer} · ${event.submittedAr || event.submitted}` : `By ${event.organizer} · ${event.submitted}`}
+                                        </p>
+                                        <p className="font-body-md text-body-md text-on-surface-variant mt-3 max-w-2xl">
+                                            {ar ? (event.descriptionAr || event.description) : event.description}
+                                        </p>
                                     </div>
-                                    <h3 className="font-title-lg text-title-lg text-on-surface mt-1">
-                                        DevOps Masterclass
-                                    </h3>
-                                    <p className="font-label-md text-label-md text-on-surface-variant mt-1">
-                                        By TechGenius Labs · Submitted 2 hours ago
-                                    </p>
-                                    <p className="font-body-md text-body-md text-on-surface-variant mt-3 max-w-2xl">
-                                        A hands-on cloud lab covering CI/CD, Kubernetes, and
-                                        infrastructure as code over 6 weeks.
-                                    </p>
-                                </div>
-                                <div className="flex flex-wrap items-center gap-2 flex-shrink-0">
-                                    <Link
-                                        to="/admin/event-review-details"
-                                        className="btn-secondary"
-                                    >
-                                        View Details
-                                    </Link>
-                                    <button
-                                        type="button"
-                                        className="btn-success"
-                                        data-ui-action="approve"
-                                    >
-                                        <span className="material-symbols-outlined" style={{ fontSize: 18 }}>check</span>
-                                        <span>Approve</span>
-                                    </button>
-                                    <button
-                                        type="button"
-                                        className="btn-danger-outline"
-                                        data-ui-action="reject"
-                                    >
-                                        <span className="material-symbols-outlined" style={{ fontSize: 18 }}>close</span>
-                                        <span>Reject</span>
-                                    </button>
+                                    <div className="flex flex-wrap items-center gap-2 flex-shrink-0">
+                                        <Link
+                                            to="/admin/event-review-details"
+                                            className="btn-secondary"
+                                        >
+                                            {ar ? 'عرض التفاصيل' : 'View Details'}
+                                        </Link>
+                                        {event.status === 'pending' ? (
+                                            <>
+                                                <button
+                                                    type="button"
+                                                    className="btn-success cursor-pointer"
+                                                    onClick={() => handleApprove(event.id)}
+                                                >
+                                                    <span className="material-symbols-outlined" style={{ fontSize: 18 }}>check</span>
+                                                    <span>{ar ? 'قبول' : 'Approve'}</span>
+                                                </button>
+                                                <button
+                                                    type="button"
+                                                    className="btn-danger-outline cursor-pointer"
+                                                    onClick={() => handleOpenRejectModal(event)}
+                                                >
+                                                    <span className="material-symbols-outlined" style={{ fontSize: 18 }}>close</span>
+                                                    <span>{ar ? 'رفض' : 'Reject'}</span>
+                                                </button>
+                                            </>
+                                        ) : (
+                                            <span className="text-xs text-on-surface-variant self-center font-medium px-3 py-1.5 rounded-lg bg-surface-container-low">
+                                                {ar ? 'تم اتخاذ القرار' : 'Decision recorded'}
+                                            </span>
+                                        )}
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div
-                            className="section-card"
-                            data-status="pending"
-                            data-category="Workshop"
-                        >
-                            <div className="flex flex-col md:flex-row md:items-start justify-between gap-4">
-                                <div className="event-content-body">
-                                    <div className="flex items-center gap-2 mb-1">
-                                        <span className="text-[10px] uppercase tracking-wider text-secondary font-bold">
-                                            Workshop
-                                        </span>
-                                        <span className="badge badge--pending" data-status-badge="">
-                                            <span className="material-symbols-outlined" style={{ fontSize: 14, verticalAlign: 'middle', marginInlineEnd: 4 }}>schedule</span>
-                                            Pending
-                                        </span>
-                                    </div>
-                                    <h3 className="font-title-lg text-title-lg text-on-surface mt-1">
-                                        Quantum Computing Bootcamp
-                                    </h3>
-                                    <p className="font-label-md text-label-md text-on-surface-variant mt-1">
-                                        By University of Technology · Submitted yesterday
-                                    </p>
-                                    <p className="font-body-md text-body-md text-on-surface-variant mt-3 max-w-2xl">
-                                        An intensive 3-day introduction to quantum algorithms for
-                                        advanced undergraduate students.
-                                    </p>
-                                </div>
-                                <div className="flex flex-wrap items-center gap-2 flex-shrink-0">
-                                    <Link
-                                        to="/admin/event-review-details"
-                                        className="btn-secondary"
-                                    >
-                                        View Details
-                                    </Link>
-                                    <button
-                                        type="button"
-                                        className="btn-success"
-                                        data-ui-action="approve"
-                                    >
-                                        <span className="material-symbols-outlined" style={{ fontSize: 18 }}>check</span>
-                                        <span>Approve</span>
-                                    </button>
-                                    <button
-                                        type="button"
-                                        className="btn-danger-outline"
-                                        data-ui-action="reject"
-                                    >
-                                        <span className="material-symbols-outlined" style={{ fontSize: 18 }}>close</span>
-                                        <span>Reject</span>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                        <div
-                            className="section-card"
-                            data-status="pending"
-                            data-category="Competition"
-                        >
-                            <div className="flex flex-col md:flex-row md:items-start justify-between gap-4">
-                                <div className="event-content-body">
-                                    <div className="flex items-center gap-2 mb-1">
-                                        <span className="text-[10px] uppercase tracking-wider text-secondary font-bold">
-                                            Competition
-                                        </span>
-                                        <span className="badge badge--pending" data-status-badge="">
-                                            <span className="material-symbols-outlined" style={{ fontSize: 14, verticalAlign: 'middle', marginInlineEnd: 4 }}>schedule</span>
-                                            Pending
-                                        </span>
-                                    </div>
-                                    <h3 className="font-title-lg text-title-lg text-on-surface mt-1">
-                                        Product Design Sprint
-                                    </h3>
-                                    <p className="font-label-md text-label-md text-on-surface-variant mt-1">
-                                        By DesignHub Amman · Submitted 3 days ago
-                                    </p>
-                                    <p className="font-body-md text-body-md text-on-surface-variant mt-3 max-w-2xl">
-                                        Teams of 2-4 compete to redesign a real fintech product in 48
-                                        hours, judged by industry mentors.
-                                    </p>
-                                </div>
-                                <div className="flex flex-wrap items-center gap-2 flex-shrink-0">
-                                    <Link
-                                        to="/admin/event-review-details"
-                                        className="btn-secondary"
-                                    >
-                                        View Details
-                                    </Link>
-                                    <button
-                                        type="button"
-                                        className="btn-success"
-                                        data-ui-action="approve"
-                                    >
-                                        <span className="material-symbols-outlined" style={{ fontSize: 18 }}>check</span>
-                                        <span>Approve</span>
-                                    </button>
-                                    <button
-                                        type="button"
-                                        className="btn-danger-outline"
-                                        data-ui-action="reject"
-                                    >
-                                        <span className="material-symbols-outlined" style={{ fontSize: 18 }}>close</span>
-                                        <span>Reject</span>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                        <div
-                            className="section-card"
-                            data-status="pending"
-                            data-category="Conference"
-                        >
-                            <div className="flex flex-col md:flex-row md:items-start justify-between gap-4">
-                                <div className="event-content-body">
-                                    <div className="flex items-center gap-2 mb-1">
-                                        <span className="text-[10px] uppercase tracking-wider text-secondary font-bold">
-                                            Conference
-                                        </span>
-                                        <span className="badge badge--pending" data-status-badge="">
-                                            <span className="material-symbols-outlined" style={{ fontSize: 14, verticalAlign: 'middle', marginInlineEnd: 4 }}>schedule</span>
-                                            Pending
-                                        </span>
-                                    </div>
-                                    <h3 className="font-title-lg text-title-lg text-on-surface mt-1">
-                                        Future of AI Summit
-                                    </h3>
-                                    <p className="font-label-md text-label-md text-on-surface-variant mt-1">
-                                        By TechGenius Labs · Submitted 5 hours ago
-                                    </p>
-                                    <p className="font-body-md text-body-md text-on-surface-variant mt-3 max-w-2xl">
-                                        A one-day conference with keynote talks and panels on applied
-                                        AI, open to students and industry professionals.
-                                    </p>
-                                </div>
-                                <div className="flex flex-wrap items-center gap-2 flex-shrink-0">
-                                    <Link
-                                        to="/admin/event-review-details"
-                                        className="btn-secondary"
-                                    >
-                                        View Details
-                                    </Link>
-                                    <button
-                                        type="button"
-                                        className="btn-success"
-                                        data-ui-action="approve"
-                                    >
-                                        <span className="material-symbols-outlined" style={{ fontSize: 18 }}>check</span>
-                                        <span>Approve</span>
-                                    </button>
-                                    <button
-                                        type="button"
-                                        className="btn-danger-outline"
-                                        data-ui-action="reject"
-                                    >
-                                        <span className="material-symbols-outlined" style={{ fontSize: 18 }}>close</span>
-                                        <span>Reject</span>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
+                        ))}
                         <div className="empty-state" id="events-empty" hidden="">
                             <span className="empty-state__icon">
                                 <span className="material-symbols-outlined" aria-hidden="true">
                                     event_busy
                                 </span>
                             </span>
-                            <h3>No events in this status</h3>
-                            <p>No events match this filter right now.</p>
+                            <h3>{ar ? 'لا توجد فعاليات في هذه الحالة' : 'No events in this status'}</h3>
+                            <p>{ar ? 'لا توجد أي فعاليات مطابقة لهذا الفلتر حالياً.' : 'No events match this filter right now.'}</p>
                         </div>
                     </div>
+
+                    {/* Rejection Reason Modal (Tailwind CSS) */}
+                    {rejectModalOpen && (
+                        <div
+                            className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-200"
+                            role="dialog"
+                            aria-modal="true"
+                            aria-labelledby="reject-event-modal-title"
+                            dir={ar ? 'rtl' : 'ltr'}
+                            onClick={handleCloseRejectModal}
+                        >
+                            <div
+                                className="w-full max-w-lg bg-white rounded-3xl shadow-2xl border border-gray-100 p-6 md:p-8 space-y-6 animate-in zoom-in-95 duration-200"
+                                onClick={(e) => e.stopPropagation()}
+                            >
+                                {/* Modal Header */}
+                                <div className="flex items-start justify-between gap-4">
+                                    <div className="flex items-center gap-3">
+                                        <div className="w-12 h-12 rounded-2xl bg-red-50 text-red-600 flex items-center justify-center flex-shrink-0 border border-red-100">
+                                            <span className="material-symbols-outlined text-2xl">report_problem</span>
+                                        </div>
+                                        <div>
+                                            <h3 id="reject-event-modal-title" className="text-lg md:text-xl font-bold text-gray-900">
+                                                {ar ? 'سبب الرفض' : 'Rejection Reason'}
+                                            </h3>
+                                            <p className="text-sm text-gray-500 mt-0.5">
+                                                {ar ? 'الفعالية: ' : 'Event: '}
+                                                <strong className="text-gray-800 font-semibold">{selectedEvent?.title}</strong>
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <button
+                                        type="button"
+                                        onClick={handleCloseRejectModal}
+                                        className="text-gray-400 hover:text-gray-600 p-1.5 rounded-xl hover:bg-gray-100 transition-colors cursor-pointer"
+                                        aria-label="Close modal"
+                                    >
+                                        <span className="material-symbols-outlined text-xl">close</span>
+                                    </button>
+                                </div>
+
+                                {/* Modal Body: Required Textarea */}
+                                <div className="space-y-2">
+                                    <label htmlFor="event-rejection-reason" className="block text-sm font-semibold text-gray-700">
+                                        {ar ? 'يرجى كتابة سبب رفض الفعالية' : 'Please provide a rejection reason'} <span className="text-red-500">*</span>
+                                    </label>
+                                    <textarea
+                                        id="event-rejection-reason"
+                                        rows={4}
+                                        required
+                                        value={rejectionReason}
+                                        onChange={(e) => setRejectionReason(e.target.value)}
+                                        placeholder={
+                                            ar
+                                                ? 'اكتب سبب الرفض بالتفصيل هنا (مثال: محتوى الفعالية غير مكتمل، الموعد يتعارض، الشروط غير مستوفاة)...'
+                                                : 'Provide the reason for rejecting this event (e.g. incomplete agenda, missing prerequisites, policy non-compliance)...'
+                                        }
+                                        className="w-full p-3.5 text-sm bg-gray-50 border border-gray-200 rounded-2xl focus:outline-none focus:border-red-500 focus:bg-white focus:ring-4 focus:ring-red-500/10 transition-all resize-none text-gray-800"
+                                        autoFocus
+                                    />
+                                    <div className="flex justify-between items-center text-xs text-gray-400 px-1">
+                                        <span>{ar ? 'حقل إلزامي لتوثيق سبب القرار' : 'Required to document the rejection decision'}</span>
+                                        <span>{rejectionReason.trim().length} {ar ? 'حرف' : 'characters'}</span>
+                                    </div>
+                                </div>
+
+                                {/* Modal Footer / Actions */}
+                                <div className="flex items-center justify-end gap-3 pt-3 border-t border-gray-100">
+                                    <button
+                                        type="button"
+                                        onClick={handleCloseRejectModal}
+                                        className="px-5 py-2.5 rounded-2xl text-sm font-medium text-gray-700 bg-gray-100 hover:bg-gray-200 transition-colors cursor-pointer"
+                                    >
+                                        {ar ? 'إلغاء' : 'Cancel'}
+                                    </button>
+
+                                    <button
+                                        type="button"
+                                        onClick={handleConfirmReject}
+                                        disabled={!rejectionReason.trim()}
+                                        className={`flex items-center gap-2 px-6 py-2.5 rounded-2xl text-sm font-semibold transition-all cursor-pointer ${
+                                            !rejectionReason.trim()
+                                                ? 'bg-red-200 text-white cursor-not-allowed opacity-60'
+                                                : 'bg-red-600 hover:bg-red-700 text-white shadow-lg shadow-red-600/25 active:scale-95'
+                                        }`}
+                                    >
+                                        <span className="material-symbols-outlined text-lg">check</span>
+                                        {ar ? 'تأكيد الرفض' : 'Confirm Reject'}
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    )}
                 </main>
             </div>
             <div className="mobile-nav-overlay" id="admin-mobile-overlay" />

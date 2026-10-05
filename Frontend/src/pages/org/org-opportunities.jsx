@@ -3,55 +3,157 @@ import { Link } from 'react-router-dom'
 import AppPageHead from '../../components/app/AppPageHead'
 import { useOrgPageControls } from './useOrgPageControls.js'
 import LangToggleBtn from '../../components/org/LangToggleBtn'
+import { useLanguage } from '../../hooks/useLanguage'
+import { toast } from '../../utils/toast'
 import '../../styles/org/sidebar.css'
 import '../../styles/admin/admin.css'
 import '../../styles/org/org-dashboard.css'
 import '../../styles/org/org-opportunities.css'
 
-const OPPORTUNITIES = [
-    { id: 'evt-1', name: 'Global AI Innovation Challenge', meta: 'Hackathon · Remote · Teams of 2-4', status: 'live',     deadline: 'Oct 20, 2026', applicants: 98,  primaryAction: 'applicants' },
-    { id: 'evt-4', name: 'DevOps Masterclass',             meta: 'Workshop · Online · Cloud Engineering',  status: 'pending',  deadline: 'Nov 3, 2026',  applicants: 72,  primaryAction: 'applicants' },
-    { id: 'evt-3', name: 'Startup Challenge',              meta: 'Competition · Entrepreneurship',         status: 'upcoming', deadline: 'Nov 25, 2026', applicants: 84,  primaryAction: 'applicants' },
-    { id: 'evt-2', name: 'Frontend Wizards',               meta: 'Hackathon · Web Development',            status: 'ended',    deadline: 'Closed',       applicants: 150, primaryAction: 'report' },
-    { id: 'evt-5', name: 'Cloud Native Bootcamp',          meta: 'Course · Infrastructure',                status: 'ended',    deadline: 'Closed',       applicants: 42,  primaryAction: 'report' },
+const INITIAL_OPPORTUNITIES = [
+    { 
+        id: 'evt-1', 
+        name: 'Global AI Innovation Challenge', 
+        nameAr: 'تحدي الابتكار العالمي للذكاء الاصطناعي',
+        meta: 'Hackathon · Remote · Teams of 2-4', 
+        metaAr: 'هاكاثون · عن بعد · فرق من 2-4',
+        status: 'live',     
+        deadline: 'Oct 20, 2026', 
+        applicants: 98,  
+        primaryAction: 'applicants' 
+    },
+    { 
+        id: 'evt-3', 
+        name: 'Startup Challenge',              
+        nameAr: 'تحدي الشركات الناشئة',
+        meta: 'Competition · Entrepreneurship',         
+        metaAr: 'مسابقة · ريادة أعمال',
+        status: 'upcoming', 
+        deadline: 'Nov 25, 2026', 
+        applicants: 84,  
+        primaryAction: 'applicants' 
+    },
+    { 
+        id: 'evt-4', 
+        name: 'DevOps Masterclass',             
+        nameAr: 'دورة ديف أوبس الاحترافية',
+        meta: 'Workshop · Online · Cloud Engineering',  
+        metaAr: 'ورشة عمل · عبر الإنترنت · هندسة السحابة',
+        status: 'pending',  
+        deadline: 'Nov 3, 2026',  
+        applicants: 0,  
+        primaryAction: 'edit' 
+    },
+    { 
+        id: 'evt-2', 
+        name: 'Frontend Wizards',               
+        nameAr: 'معسكر مبرمجي الواجهات الأمامية',
+        meta: 'Hackathon · Web Development',            
+        metaAr: 'هاكاثون · تطوير الويب',
+        status: 'ended',    
+        deadline: 'Closed',       
+        applicants: 150, 
+        primaryAction: 'report' 
+    },
+    { 
+        id: 'evt-5', 
+        name: 'Cloud Native Bootcamp',          
+        nameAr: 'مخيم الحوسبة السحابية الأصلية',
+        meta: 'Course · Infrastructure',                
+        metaAr: 'دورة تدريبية · بنية تحتية',
+        status: 'ended',    
+        deadline: 'Closed',       
+        applicants: 42,  
+        primaryAction: 'report' 
+    },
+    { 
+        id: 'evt-6', 
+        name: 'Cybersecurity Defense Challenge',          
+        nameAr: 'تحدي الدفاع السيبراني المتقدم',
+        meta: 'Competition · In-person · Riyadh',                
+        metaAr: 'مسابقة · حضورية · الرياض',
+        status: 'rejected', 
+        rejectionReason: 'Event agenda is missing the certified cybersecurity accreditation and detailed venue safety plan. Please attach the required approvals.',
+        rejectionReasonAr: 'أجندة الفعالية تفتقر إلى الاعتماد الأكاديمي المطلوب وخطة السلامة للمقر الحضوري. يرجى إرفاق الموافقات اللازمة.',
+        deadline: 'Dec 10, 2026',       
+        applicants: 0,  
+        primaryAction: 'resubmit' 
+    },
 ]
 
 const STATUS_BADGE = {
-    live:     { cls: 'badge badge--active',    label: 'Live' },
-    pending:  { cls: 'badge badge--pending',   label: 'Pending Approval' },
-    upcoming: { cls: 'badge badge--upcoming',  label: 'Upcoming' },
-    ended:    { cls: 'badge badge--completed', label: 'Ended' },
+    live:     { cls: 'badge badge--active',    label: 'Live',             labelAr: 'مباشر' },
+    pending:  { cls: 'badge badge--pending',   label: 'Pending Approval', labelAr: 'معلق' },
+    upcoming: { cls: 'badge badge--upcoming',  label: 'Upcoming',         labelAr: 'قادم' },
+    ended:    { cls: 'badge badge--completed', label: 'Ended',            labelAr: 'منتهي' },
+    rejected: { cls: 'badge badge--rejected',  label: 'Rejected',         labelAr: 'مرفوض' },
 }
 
+const FILTER_TABS = [
+    { key: 'all',      label: 'All',      labelAr: 'الكل' },
+    { key: 'live',     label: 'Live',     labelAr: 'مباشر' },
+    { key: 'upcoming', label: 'Upcoming', labelAr: 'قادم' },
+    { key: 'pending',  label: 'Pending',  labelAr: 'معلق' },
+    { key: 'ended',    label: 'Ended',    labelAr: 'منتهي' },
+]
+
 const KPI_FILTERS = [
-    { key: 'live',     label: 'Live',     icon: 'play_circle' },
-    { key: 'pending',  label: 'Pending',  icon: 'hourglass_top' },
-    { key: 'upcoming', label: 'Upcoming', icon: 'event_upcoming' },
-    { key: 'ended',    label: 'Ended',    icon: 'task_alt' },
+    { key: 'live',     label: 'Live',     labelAr: 'مباشر',  icon: 'play_circle' },
+    { key: 'upcoming', label: 'Upcoming', labelAr: 'قادم',   icon: 'event_upcoming' },
+    { key: 'pending',  label: 'Pending',  labelAr: 'معلق',   icon: 'hourglass_top' },
+    { key: 'ended',    label: 'Ended',    labelAr: 'منتهي',  icon: 'task_alt' },
 ]
 
 export default function OrgOpportunities() {
     useOrgPageControls()
+    const { isRtl } = useLanguage()
 
+    const [opportunities, setOpportunities] = useState(INITIAL_OPPORTUNITIES)
     const [activeFilter, setActiveFilter] = useState('all')
     const [search, setSearch] = useState('')
 
     const counts = {
-        all:      OPPORTUNITIES.length,
-        live:     OPPORTUNITIES.filter(o => o.status === 'live').length,
-        pending:  OPPORTUNITIES.filter(o => o.status === 'pending').length,
-        upcoming: OPPORTUNITIES.filter(o => o.status === 'upcoming').length,
-        ended:    OPPORTUNITIES.filter(o => o.status === 'ended').length,
+        all:      opportunities.length,
+        live:     opportunities.filter(o => o.status === 'live').length,
+        upcoming: opportunities.filter(o => o.status === 'upcoming').length,
+        pending:  opportunities.filter(o => o.status === 'pending').length,
+        ended:    opportunities.filter(o => o.status === 'ended').length,
     }
 
-    const visible = OPPORTUNITIES.filter(o => {
+    const visible = opportunities.filter(o => {
+        // Rejected events only appear when activeFilter === 'all'
         if (activeFilter !== 'all' && o.status !== activeFilter) return false
         if (search) {
             const q = search.toLowerCase()
-            return o.name.toLowerCase().includes(q) || o.meta.toLowerCase().includes(q)
+            const nameEn = o.name.toLowerCase()
+            const nameAr = (o.nameAr || '').toLowerCase()
+            const metaEn = o.meta.toLowerCase()
+            const metaAr = (o.metaAr || '').toLowerCase()
+            return nameEn.includes(q) || nameAr.includes(q) || metaEn.includes(q) || metaAr.includes(q)
         }
         return true
     })
+
+    const handleResubmit = (oppId) => {
+        setOpportunities(prev => prev.map(opp => {
+            if (opp.id === oppId) {
+                return {
+                    ...opp,
+                    status: 'pending',
+                    rejectionReason: '',
+                    rejectionReasonAr: '',
+                }
+            }
+            return opp
+        }))
+
+        toast(
+            isRtl 
+                ? 'تم تحديث حالة الفعالية إلى "معلق" وإعادة إرسالها للمراجعة بنجاح' 
+                : 'Event resubmitted: status updated to "Pending" and submitted for approval',
+            'success'
+        )
+    }
 
     function handleKpiClick(key) {
         setActiveFilter(f => f === key ? 'all' : key)
@@ -193,7 +295,7 @@ export default function OrgOpportunities() {
 
                     {/* KPI Cards */}
                     <div className="opp-stat-grid" aria-label="Opportunities status summary">
-                        {KPI_FILTERS.map(({ key, label, icon }) => (
+                        {KPI_FILTERS.map(({ key, label, labelAr, icon }) => (
                             <button
                                 key={key}
                                 type="button"
@@ -202,7 +304,7 @@ export default function OrgOpportunities() {
                                 onClick={() => handleKpiClick(key)}
                             >
                                 <div className="stat-card__top">
-                                    <span className="stat-card__label">{label}</span>
+                                    <span className="stat-card__label">{isRtl ? labelAr : label}</span>
                                     <span className="stat-card__icon">
                                         <span className="material-symbols-outlined" aria-hidden="true">{icon}</span>
                                     </span>
@@ -215,16 +317,16 @@ export default function OrgOpportunities() {
                     {/* Filter + Search */}
                     <div className="opp-controls">
                         <div className="opp-filter-tabs" role="group" aria-label="Filter opportunities by status">
-                            {['all', 'live', 'pending', 'upcoming', 'ended'].map(f => (
+                            {FILTER_TABS.map(tab => (
                                 <button
-                                    key={f}
+                                    key={tab.key}
                                     type="button"
                                     className="opp-filter-btn"
-                                    aria-pressed={activeFilter === f}
-                                    onClick={() => setActiveFilter(f)}
+                                    aria-pressed={activeFilter === tab.key}
+                                    onClick={() => setActiveFilter(tab.key)}
                                 >
-                                    {f === 'all' ? 'All' : f.charAt(0).toUpperCase() + f.slice(1)}{' '}
-                                    <span className="filter-count">{counts[f] ?? counts.all}</span>
+                                    {isRtl ? tab.labelAr : tab.label}{' '}
+                                    <span className="filter-count">{counts[tab.key] ?? counts.all}</span>
                                 </button>
                             ))}
                         </div>
@@ -232,7 +334,7 @@ export default function OrgOpportunities() {
                             <span className="material-symbols-outlined" aria-hidden="true">search</span>
                             <input
                                 type="search"
-                                placeholder="Search opportunities..."
+                                placeholder={isRtl ? 'البحث في الفعاليات...' : 'Search opportunities...'}
                                 aria-label="Search opportunities by name or category"
                                 value={search}
                                 onChange={e => setSearch(e.target.value)}
@@ -253,41 +355,98 @@ export default function OrgOpportunities() {
                                     <caption className="sr-only">List of your organization's opportunities</caption>
                                     <thead>
                                         <tr>
-                                            <th>Opportunity</th>
-                                            <th>Status</th>
-                                            <th>Deadline</th>
-                                            <th>Applicants</th>
-                                            <th style={{ textAlign: "right" }}>Actions</th>
+                                            <th>{isRtl ? 'الفعالية' : 'Opportunity'}</th>
+                                            <th>{isRtl ? 'الحالة' : 'Status'}</th>
+                                            <th>{isRtl ? 'الموعد النهائي' : 'Deadline'}</th>
+                                            <th>{isRtl ? 'المتقدمون' : 'Applicants'}</th>
+                                            <th style={{ textAlign: isRtl ? 'left' : 'right' }}>{isRtl ? 'الإجراءات' : 'Actions'}</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         {visible.map(opp => {
                                             const badge = STATUS_BADGE[opp.status]
                                             const isEnded = opp.status === 'ended'
+                                            const isRejected = opp.status === 'rejected'
+                                            const isUnpublished = ['pending', 'draft', 'rejected'].includes(opp.status)
+                                            const rejectionText = isRtl && opp.rejectionReasonAr ? opp.rejectionReasonAr : opp.rejectionReason
+
                                             return (
-                                                <tr key={opp.id} data-status={opp.status}>
+                                                <tr key={opp.id} data-status={opp.status} className={isRejected ? 'bg-red-50/30 dark:bg-red-950/15' : ''}>
                                                     <td>
                                                         <div className="opp-entity">
-                                                            <div>
-                                                                <p className="opp-entity__name">{opp.name}</p>
-                                                                <p className="opp-entity__meta">{opp.meta}</p>
+                                                            <div className="flex-1 min-w-0">
+                                                                <p className="opp-entity__name font-semibold text-on-surface">
+                                                                    {isRtl && opp.nameAr ? opp.nameAr : opp.name}
+                                                                </p>
+                                                                <p className="opp-entity__meta text-xs text-on-surface-variant">
+                                                                    {isRtl && opp.metaAr ? opp.metaAr : opp.meta}
+                                                                </p>
+
+                                                                {/* Visual Callout for Rejection Reason */}
+                                                                {isRejected && rejectionText && (
+                                                                    <div className="mt-2.5 flex items-start gap-2 p-2.5 rounded-lg bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-900/50 text-red-700 dark:text-red-300 text-xs">
+                                                                        <span className="material-symbols-outlined text-[17px] text-red-600 dark:text-red-400 shrink-0 mt-0.5" aria-hidden="true">
+                                                                            cancel
+                                                                        </span>
+                                                                        <div className="leading-snug">
+                                                                            <span className="font-bold text-red-800 dark:text-red-200">
+                                                                                {isRtl ? 'سبب الرفض: ' : 'Reason for rejection: '}
+                                                                            </span>
+                                                                            <span>{rejectionText}</span>
+                                                                        </div>
+                                                                    </div>
+                                                                )}
                                                             </div>
                                                         </div>
                                                     </td>
-                                                    <td><span className={badge.cls}>{badge.label}</span></td>
+                                                    <td>
+                                                        <span className={badge ? badge.cls : 'badge'}>
+                                                            {badge ? (isRtl && badge.labelAr ? badge.labelAr : badge.label) : opp.status}
+                                                        </span>
+                                                    </td>
                                                     <td className="mono whitespace-nowrap">{opp.deadline}</td>
-                                                    <td className="whitespace-nowrap"><span className="mono">{opp.applicants}</span> applicants</td>
+                                                    <td className="whitespace-nowrap">
+                                                        {isUnpublished ? (
+                                                            <span className="mono text-on-surface-variant/70 font-semibold select-none text-base leading-none" title={isRtl ? 'غير منشورة بعد' : 'Not published yet'}>—</span>
+                                                        ) : (
+                                                            <><span className="mono">{opp.applicants}</span> {isRtl ? 'متقدم' : 'applicants'}</>
+                                                        )}
+                                                    </td>
                                                     <td>
                                                         <div className="org-row-actions">
-                                                            {isEnded ? (
+                                                            {isRejected ? (
+                                                                <button
+                                                                    type="button"
+                                                                    onClick={() => handleResubmit(opp.id)}
+                                                                    className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-full bg-red-600 hover:bg-red-700 active:bg-red-800 text-white transition-all shadow-sm hover:shadow cursor-pointer"
+                                                                    title={isRtl ? 'تعديل وإعادة إرسال الفعالية للمراجعة' : 'Edit & Resubmit event for approval'}
+                                                                >
+                                                                    <span className="material-symbols-outlined text-[15px]" aria-hidden="true">published_with_changes</span>
+                                                                    <span>{isRtl ? 'تعديل وإعادة إرسال' : 'Edit & Resubmit'}</span>
+                                                                </button>
+                                                            ) : isUnpublished ? (
+                                                                /* Pending / Unpublished events: Hide Applicants button completely, show only Edit */
+                                                                <Link to="/org/create-event" aria-label={`Edit ${opp.name}`} className="org-action--primary">
+                                                                    {isRtl ? 'تعديل' : 'Edit'}
+                                                                </Link>
+                                                            ) : isEnded ? (
                                                                 <>
-                                                                    <Link to={`/org/applicants?event=${opp.id}`} aria-label={`View applicants for ${opp.name}`}>Applicants</Link>
-                                                                    <Link to="/org/report-center" className="org-action--primary" aria-label={`View report for ${opp.name}`}>View report</Link>
+                                                                    <Link to={`/org/applicants?event=${opp.id}`} aria-label={`View applicants for ${opp.name}`}>
+                                                                        {isRtl ? 'المتقدمون' : 'Applicants'}
+                                                                    </Link>
+                                                                    <Link to="/org/report-center" className="org-action--primary" aria-label={`View report for ${opp.name}`}>
+                                                                        {isRtl ? 'عرض التقرير' : 'View report'}
+                                                                    </Link>
                                                                 </>
                                                             ) : (
+                                                                /* Accepted live / upcoming events */
                                                                 <>
-                                                                    <Link to={`/org/applicants?event=${opp.id}`} className="org-action--primary" aria-label={`View applicants for ${opp.name}`}>Applicants</Link>
-                                                                    <Link to="/org/create-event" aria-label={`Edit ${opp.name}`}>Edit</Link>
+                                                                    <Link to={`/org/applicants?event=${opp.id}`} className="org-action--primary" aria-label={`View applicants for ${opp.name}`}>
+                                                                        {isRtl ? 'المتقدمون' : 'Applicants'}
+                                                                    </Link>
+                                                                    <Link to="/org/create-event" aria-label={`Edit ${opp.name}`}>
+                                                                        {isRtl ? 'تعديل' : 'Edit'}
+                                                                    </Link>
                                                                 </>
                                                             )}
                                                         </div>

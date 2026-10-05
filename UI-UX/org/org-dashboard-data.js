@@ -80,10 +80,11 @@
 
     const myEvents = [
         { id: 'evt-1', name: 'Global AI Innovation Challenge', category: 'Competition', image: '../assets/images/event1.jpeg', status: 'live', date: 'Oct 24 – Oct 26, 2026', applicants: 98, approved: 82, pending: 16, rating: 4.9 },
-        { id: 'evt-4', name: 'DevOps Masterclass', category: 'Workshop', image: '../assets/images/event2.jpeg', status: 'pending', date: 'Nov 10, 2026', applicants: 72, approved: 55, pending: 17, rating: null },
+        { id: 'evt-4', name: 'DevOps Masterclass', category: 'Workshop', image: '../assets/images/event2.jpeg', status: 'pending', date: 'Nov 10, 2026', applicants: 0, approved: null, pending: 0, rating: null },
         { id: 'evt-3', name: 'Startup Challenge', category: 'Competition', image: '../assets/images/event3.jpeg', status: 'upcoming', date: 'Dec 2, 2026', applicants: 84, approved: 61, pending: 23, rating: null },
         { id: 'evt-2', name: 'Frontend Wizards', category: 'Event', image: '../assets/images/event4.jpeg', status: 'ended', date: 'Dec 12, 2025', applicants: 150, approved: 140, pending: 0, rating: 4.7 },
-        { id: 'evt-5', name: 'Cloud Native Bootcamp', category: 'Course', image: '../assets/images/event5.jpeg', status: 'ended', date: 'Sep 6, 2025', applicants: 42, approved: 38, pending: 0, rating: 4.8 }
+        { id: 'evt-5', name: 'Cloud Native Bootcamp', category: 'Course', image: '../assets/images/event5.jpeg', status: 'ended', date: 'Sep 6, 2025', applicants: 42, approved: 38, pending: 0, rating: 4.8 },
+        { id: 'evt-6', name: 'Cybersecurity Defense Challenge', category: 'Competition', image: '../assets/images/event1.jpeg', status: 'rejected', date: 'Dec 10, 2026', applicants: 0, approved: null, pending: 0, rating: null, rejectionReason: 'Event agenda is missing the certified cybersecurity accreditation and detailed venue safety plan.' }
     ];
 
     /* Tally the organization's own events into the 4 fixed categories —
