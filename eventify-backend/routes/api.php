@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\V1\AuthController;
 use App\Http\Controllers\Api\V1\OrgAuthController;
 use App\Http\Controllers\Api\V1\EventController;
+use App\Http\Controllers\Api\V1\EventRegistrationController;
 use App\Http\Controllers\Api\V1\Admin\OrganizationManagementController;
 use App\Http\Controllers\Api\V1\Admin\EventManagementController;
 use App\Http\Controllers\Api\V1\Organization\EventController as OrgEventController;
@@ -39,6 +40,11 @@ Route::prefix('v1')->group(function () {
     Route::middleware('auth:sanctum')->group(function () {
         Route::post('/logout', [AuthController::class, 'logout']);
         Route::get('/me', [AuthController::class, 'me']);
+
+        // Event registration
+        Route::post('/events/{event}/register', [EventRegistrationController::class, 'register']);
+        Route::delete('/events/{event}/register', [EventRegistrationController::class, 'cancel']);
+        Route::get('/my/registrations', [EventRegistrationController::class, 'myRegistrations']);
     });
 
     // — Public Events routes (no auth required) ——————————————————————
