@@ -88,7 +88,7 @@ class User extends Authenticatable
         return static::where('phone', static::normalizePhone($login))->first();
     }
 
-    // ── Relationships ──────────────────────────────────────────
+        // ── Relationships ──────────────────────────────────────────
 
     public function registrations(): HasMany
     {
@@ -103,6 +103,16 @@ class User extends Authenticatable
     public function ledTeams(): HasMany
     {
         return $this->hasMany(Team::class, 'created_by');
+    }
+
+    public function courses(): HasMany
+    {
+        return $this->hasMany(Course::class);
+    }
+
+    public function challengeSubmissions(): HasMany
+    {
+        return $this->hasMany(ChallengeSubmission::class);
     }
 
     // ── Query scopes ──────────────────────────────────────────
