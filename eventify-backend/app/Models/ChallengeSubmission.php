@@ -28,6 +28,6 @@ class ChallengeSubmission extends Model
 
     public function hasLink(): bool
     {
-        return $this->link !== null;
+        return filled($this->link);
     }
 }
