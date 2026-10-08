@@ -37,7 +37,9 @@ class OrgAuthController extends Controller
             // status defaults to 'pending' at the DB level.
             // Organization CANNOT publish events until an admin approves it.
         ]);
+ 
 
+        $organization->refresh();
         $token = $organization->createToken('eventify-org-token')->plainTextToken;
 
         return $this->success([
