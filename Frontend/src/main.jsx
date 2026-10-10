@@ -7,13 +7,16 @@ import './i18n/chartLocalization'
 import App from './App.jsx'
 import { ThemeProvider } from './context/ThemeContext'
 import { LanguageProvider } from './context/LanguageContext'
+import { OnboardingProvider } from './context/OnboardingContext'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <BrowserRouter>
       <ThemeProvider>
         <LanguageProvider>
-          <App />
+          <OnboardingProvider>
+            <App />
+          </OnboardingProvider>
         </LanguageProvider>
       </ThemeProvider>
     </BrowserRouter>
