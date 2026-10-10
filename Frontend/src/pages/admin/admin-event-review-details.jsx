@@ -1,7 +1,6 @@
-import { Link } from 'react-router-dom'
+﻿import { Link } from 'react-router-dom'
 import AppPageHead from '../../components/app/AppPageHead'
 import { useAdminPageControls } from './useAdminPageControls.js'
-import AdminSidebar, { AdminMobileHeader } from '../../components/admin/AdminSidebar'
 import LangToggleBtn from '../../components/org/LangToggleBtn'
 import '../../styles/admin/admin.css'
 
@@ -10,9 +9,95 @@ export default function AdminEventReviewDetails() {
     return (
         <>
             <AppPageHead title="Event Review Details | EVENTIFY" />
-            <AdminMobileHeader />
+            <header className="lg:hidden glass-header sticky top-0 z-50 flex h-16 w-full items-center justify-between px-4 shadow-sm">
+                <Link className="flex items-center gap-2" to="/">
+                    <span
+                        className="material-symbols-outlined text-primary"
+                        style={{ fontVariationSettings: '"FILL" 1' }}
+                    >
+                        hub
+                    </span>
+                    <h1 className="text-headline-lg-mobile font-bold text-primary">
+                        EVENTIFY
+                    </h1>
+                </Link>
+                <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                    <LangToggleBtn small />
+                    <span className="rounded-full bg-primary/10 px-3 py-1 text-label-sm font-label-sm text-primary">
+                        ADMIN
+                    </span>
+                </div>
+            </header>
             <div className="flex min-h-screen">
-                <AdminSidebar />
+                <aside className="admin-accent-sidebar glass-sidebar sticky top-0 z-50 hidden h-screen w-[280px] flex-col p-6 lg:flex">
+                    <Link className="mb-2 flex items-center gap-3" to="/">
+                        <span
+                            className="material-symbols-outlined text-3xl text-primary"
+                            style={{ fontVariationSettings: '"FILL" 1' }}
+                        >
+                            hub
+                        </span>
+                        <h1 className="text-headline-md font-bold text-primary">EVENTIFY</h1>
+                    </Link>
+                    <span className="mb-8 w-fit rounded-full bg-primary/10 px-3 py-1 text-label-sm font-label-sm text-primary">
+                        ADMIN
+                    </span>
+                    <nav className="flex flex-1 flex-col gap-1" aria-label="Admin sections">
+                        <div className="nav-group">
+                            <Link className="nav-link" to="/admin/dashboard">
+                                <span className="material-symbols-outlined" aria-hidden="true">
+                                    dashboard
+                                </span>
+                                Overview
+                            </Link>
+                            <Link className="nav-link" to="/admin/events" aria-current="page">
+                                <span className="material-symbols-outlined" aria-hidden="true">
+                                    trophy
+                                </span>
+                                Competitions &amp; Events
+                            </Link>
+                            <Link className="nav-link" to="/admin/users">
+                                <span className="material-symbols-outlined" aria-hidden="true">
+                                    group
+                                </span>
+                                Participants
+                            </Link>
+                            <Link className="nav-link" to="/admin/verify-organizations">
+                                <span className="material-symbols-outlined" aria-hidden="true">
+                                    verified
+                                </span>
+                                Organizations
+                            </Link>
+                            <Link className="nav-link" to="/admin/categories">
+                                <span className="material-symbols-outlined" aria-hidden="true">
+                                    category
+                                </span>
+                                Categories
+                            </Link>
+                            <Link className="nav-link" to="/admin/reports">
+                                <span className="material-symbols-outlined" aria-hidden="true">
+                                    flag
+                                </span>
+                                Reports
+                            </Link>
+                            <Link className="nav-link" to="/admin/audit-log">
+                                <span className="material-symbols-outlined" aria-hidden="true">
+                                    history
+                                </span>
+                                Audit log
+                            </Link>
+                        </div>
+                    </nav>
+                    <div className="mt-auto rounded-2xl bg-surface-container p-4">
+                        <p className="mb-2 text-label-sm font-label-sm text-on-surface-variant">
+                            SIGNED IN AS
+                        </p>
+                        <p className="mb-1 font-label-md text-label-md text-on-surface">
+                            Platform Admin
+                        </p>
+                        <p className="text-label-sm font-label-sm text-error">Full access</p>
+                    </div>
+                </aside>
                 <main className="w-full flex-1 px-4 pt-6 pb-24 md:px-10 lg:pb-8">
                     {/* Global Top Header: page title (left) + global controls (right) */}
                     <div className="admin-topbar">

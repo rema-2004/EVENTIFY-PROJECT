@@ -3,8 +3,6 @@ import { Link, useNavigate } from 'react-router-dom'
 import AppPageHead from '../../components/app/AppPageHead'
 import AppFooter from '../../components/app/AppFooter'
 import { useLanguage } from '../../hooks/useLanguage'
-import { useOnboarding } from '../../context/OnboardingContext'
-import WelcomeOnboarding from '../../components/app/onboarding/WelcomeOnboarding'
 
 function SaveButton({ id, saved, ar, onToggle }) {
     return (
@@ -27,21 +25,11 @@ export default function AppHome() {
     const navigate = useNavigate()
     const { language } = useLanguage()
     const ar = language === 'ar'
-    const { isProfileComplete, resetProfile, userProfile } = useOnboarding()
     const openOpportunity = () => navigate('/app/opportunity')
     const [isRafeeqOpen, setIsRafeeqOpen] = useState(false)
     const [eventFilter, setEventFilter] = useState('all')
     const [saved, setSaved] = useState(new Set())
     const [toast, setToast] = useState(null)
-
-    // Dynamic skills & major from parsed CV or Wizard
-    const userSkills = (userProfile?.skills && userProfile.skills.length > 0)
-        ? userProfile.skills
-        : ['AI', 'Backend', 'React']
-    const userMajor = userProfile?.education || userProfile?.headline || (ar ? 'علوم الحاسوب والذكاء الاصطناعي' : 'Computer Science & AI')
-    const skill1 = userSkills[0] || 'AI'
-    const skill2 = userSkills[1] || 'Backend'
-    const skill3 = userSkills[2] || 'React'
 
     const toggleRafeeq = () => setIsRafeeqOpen((prev) => !prev)
 
@@ -74,19 +62,6 @@ export default function AppHome() {
         return () => clearTimeout(timer)
     }, [])
 
-    // Step 2 from Flow: If profile is not complete, render WelcomeOnboarding!
-    if (!isProfileComplete) {
-        return (
-            <>
-                <AppPageHead title="EVENTIFY | Welcome & Profile Setup" />
-                <main className="pt-20 pb-16 px-container-margin-mobile md:px-container-margin-desktop max-w-[1280px] mx-auto">
-                    <WelcomeOnboarding />
-                </main>
-                <AppFooter />
-            </>
-        )
-    }
-
     return (
         <>
             <AppPageHead title="EVENTIFY | AI-Powered Opportunity Hub" />
@@ -100,47 +75,6 @@ export default function AppHome() {
                 </div>
             )}
             <main className="pt-24 pb-12 px-container-margin-mobile md:px-container-margin-desktop max-w-[1280px] mx-auto space-y-12">
-
-                {/* Profile Completed Notification Bar */}
-                <div className="flex flex-wrap items-center justify-between gap-4 p-4 rounded-2xl bg-gradient-to-r from-emerald-950/70 via-slate-900/90 to-slate-900/80 border border-emerald-500/30 text-emerald-300 shadow-lg">
-                    <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 rounded-xl bg-emerald-500/20 border border-emerald-500/30 flex items-center justify-center text-emerald-400">
-                            <span className="material-symbols-outlined text-[22px]">verified</span>
-                        </div>
-                        <div>
-                            <div className="font-bold text-white text-sm flex items-center gap-2">
-                                <span>{ar ? 'تم اكتمال الملف الشخصي بنجاح' : 'Profile Complete'}</span>
-                                <span className="text-xs px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300">
-                                    {userProfile.fullName || 'John Nanna'}
-                                </span>
-                            </div>
-                            <div className="text-xs text-gray-300">
-                                {ar
-                                    ? 'تم تفعيل التوصيات الذكية والفرص المقترحة بنسبة تطابق تصل إلى 98%'
-                                    : 'Smart recommendations unlocked with up to 98% match'}
-                            </div>
-                        </div>
-                    </div>
-                    <div className="flex items-center gap-2">
-                        <Link
-                            to="/app/profile?edit=true"
-                            state={{ openEdit: true }}
-                            className="px-3 py-1.5 rounded-lg bg-white/10 hover:bg-white/15 text-white text-xs font-medium transition-colors flex items-center gap-1"
-                        >
-                            <span className="material-symbols-outlined text-[14px]">edit</span>
-                            <span>{ar ? 'تعديل الملف الشخصي' : 'Edit Profile'}</span>
-                        </Link>
-                        <button
-                            type="button"
-                            onClick={resetProfile}
-                            className="px-3 py-1.5 rounded-lg bg-red-500/15 hover:bg-red-500/25 border border-red-500/30 text-red-300 text-xs font-medium transition-colors flex items-center gap-1"
-                            title="Reset to test onboarding again"
-                        >
-                            <span className="material-symbols-outlined text-[14px]">refresh</span>
-                            <span>{ar ? 'إعادة ضبط للاختبار' : 'Reset Flow'}</span>
-                        </button>
-                    </div>
-                </div>
 
 {/* ── Hero Section ─────────────────────────────────────────── */}
 <section className={`app-hero relative overflow-hidden rounded-xl px-8 py-16 md:px-16 md:py-24 flex flex-col items-start space-y-6 ${ar ? 'text-right items-end' : 'text-left items-start'}`}>
@@ -176,8 +110,8 @@ export default function AppHome() {
     <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 border border-white/15 font-label-sm text-label-sm">
         <span className="material-symbols-outlined text-green-400 text-[18px]">task_alt</span>
         {ar
-            ? `تم تحليل السيرة بنجاح — تم التعرف على تخصص ${userMajor}`
-            : `${userMajor} Profile Detected — Successfully Analyzed`}
+            ? 'تم تحليل السيرة بنجاح — تم التعرف على تخصص هندسة البرمجيات والذكاء الاصطناعي'
+            : 'AI & Software Engineering Profile Detected — Successfully Analyzed'}
     </span>
     <Link
         className="inline-flex items-center gap-1.5 px-4 py-2 border border-white/20 rounded-lg font-label-sm text-white/80 hover:text-white hover:border-white/40 transition-colors"
@@ -226,7 +160,7 @@ export default function AppHome() {
             {ar ? 'موصى به لك' : 'Recommended For You'}
         </h2>
         <p className="font-body-md text-body-md text-on-surface-variant dark:text-gray-300">
-            {ar ? `مطابق لمهاراتك (${skill1}، ${skill2}) وتخصصك في ${userMajor}، تم التحديث للتو.` : `Matched against your skills (${skill1}, ${skill2}) and background in ${userMajor}, refreshed just now.`}
+            {ar ? 'مطابق لمهاراتك وخبراتك في سيرتك الذاتية، تم التحديث للتو.' : 'Matched against the skills and experience in your CV, refreshed just now.'}
         </p>
     </div>
     <Link className="text-primary font-label-md hover:underline" to="/app/explore">
@@ -238,9 +172,9 @@ export default function AppHome() {
 {/* Card 1 */}
 <div className="ev-fade-up ev-stagger-2 ev-card spotlight bg-surface-container-lowest dark:bg-slate-900/80 border border-outline-variant/30 dark:border-white/10 rounded-xl overflow-hidden shadow-sm group border-l-4 border-l-secondary">
     <div className="h-48 home-card-media relative overflow-hidden">
-        <img className="ev-card-img w-full h-full object-cover" alt="CTF Hackathon" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB9CEnFNI0sa64wtdt1xcbuCO2ctuePljYf3b0mGoAfsaVbTQZl6EUEKGeq_A-lCje6-84UGOy-xM_EX1fj34sF-YWMO-_0SG4_iedT1vjYrRw5UpEFxOlngZ_cDhCxJRFxyyChSuzfbQzaifbDrY-ySQm0SZNqdXFNpNdzVSiaboP2NAJ4pYTV-P32G1lYqug8kLksnCytiGNYKiUHGIacjDYyZIZ5HHucNTeyCLWQmzn3HRdmrm8n18EIgGN0AobDjfqjTG3DQkjK"/>
+        <img className="ev-card-img w-full h-full object-cover" alt="Global AI hackathon" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB9CEnFNI0sa64wtdt1xcbuCO2ctuePljYf3b0mGoAfsaVbTQZl6EUEKGeq_A-lCje6-84UGOy-xM_EX1fj34sF-YWMO-_0SG4_iedT1vjYrRw5UpEFxOlngZ_cDhCxJRFxyyChSuzfbQzaifbDrY-ySQm0SZNqdXFNpNdzVSiaboP2NAJ4pYTV-P32G1lYqug8kLksnCytiGNYKiUHGIacjDYyZIZ5HHucNTeyCLWQmzn3HRdmrm8n18EIgGN0AobDjfqjTG3DQkjK"/>
         <div className="absolute top-3 right-3 px-3 py-1 bg-secondary text-white rounded-lg font-label-sm flex items-center gap-1 shadow-lg" data-count>
-            <span className="material-symbols-outlined text-[14px]">bolt</span> 98% Match
+            <span className="material-symbols-outlined text-[14px]">bolt</span> 98%
         </div>
     </div>
     <div className="p-6 space-y-4 home-card-body">
@@ -248,21 +182,21 @@ export default function AppHome() {
             <span className="font-label-sm text-label-sm uppercase text-secondary">{ar ? 'هاكاثون' : 'HACKATHON'}</span>
             <Link className="block" to="/app/opportunity">
                 <h3 className="font-title-md text-title-md text-on-background dark:text-white line-clamp-1 mt-1 hover:text-primary transition-colors">
-                    CTF Hackathon
+                    {ar ? 'تحدي الابتكار العالمي بالذكاء الاصطناعي' : 'Global AI Innovation Challenge'}
                 </h3>
             </Link>
-            <p className="font-body-sm text-body-sm text-on-surface-variant dark:text-gray-300">By CyberSecurity Alliance</p>
+            <p className="font-body-sm text-body-sm text-on-surface-variant dark:text-gray-300">By TechGenius Labs</p>
             <div className="flex flex-wrap gap-1.5 pt-2">
-                <span className="px-2 py-0.5 rounded-full bg-surface-container dark:bg-slate-800 font-label-sm text-label-sm text-on-surface-variant dark:text-gray-300">{ar ? `من مهاراتك: ${skill2}` : `From your skills: ${skill2}`}</span>
-                <span className="px-2 py-0.5 rounded-full bg-surface-container dark:bg-slate-800 font-label-sm text-label-sm text-on-surface-variant dark:text-gray-300">{ar ? 'أمن سيبراني' : 'Cybersecurity'}</span>
+                <span className="px-2 py-0.5 rounded-full bg-surface-container dark:bg-slate-800 font-label-sm text-label-sm text-on-surface-variant dark:text-gray-300">{ar ? 'من سيرتك: Python' : 'From your CV: Python'}</span>
+                <span className="px-2 py-0.5 rounded-full bg-surface-container dark:bg-slate-800 font-label-sm text-label-sm text-on-surface-variant dark:text-gray-300">{ar ? 'تعلم الآلة' : 'Machine Learning'}</span>
             </div>
         </div>
         <div className="flex items-center gap-4 text-outline dark:text-gray-400 font-label-sm">
-            <div className="flex items-center gap-1"><span className="material-symbols-outlined text-[18px]">calendar_month</span> Oct 28</div>
+            <div className="flex items-center gap-1"><span className="material-symbols-outlined text-[18px]">calendar_month</span> Oct 24</div>
             <div className="flex items-center gap-1"><span className="material-symbols-outlined text-[18px]">location_on</span> {ar ? 'عن بُعد' : 'Remote'}</div>
         </div>
         <div className="flex gap-2 pt-2 home-card-actions">
-            <Link className="btn-primary flex-1 text-center py-2.5 rounded-lg bg-[#FF4D2E] hover:bg-[#e03e22] text-white font-semibold" to="/app/opportunity">{ar ? 'التقديم' : 'Apply'}</Link>
+            <Link className="btn-primary flex-1" to="/app/opportunity">{ar ? 'تقدّم الآن' : 'Apply Now'}</Link>
             <SaveButton id="rec-1" saved={saved} ar={ar} onToggle={toggleSave} />
         </div>
     </div>
@@ -271,31 +205,31 @@ export default function AppHome() {
 {/* Card 2 */}
 <div className="ev-fade-up ev-stagger-2 ev-card spotlight bg-surface-container-lowest dark:bg-slate-900/80 border border-outline-variant/30 dark:border-white/10 rounded-xl overflow-hidden shadow-sm group border-l-4 border-l-primary">
     <div className="h-48 home-card-media relative overflow-hidden">
-        <img className="ev-card-img w-full h-full object-cover" alt="Data Science Sprint" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBcUXLF60F3KbDnIVZepTTte_yzkhe3rkuMtXTXTMQzA1gyVuzXN1NQ0DXC7XHQBDIHEA2TXLK8EoSvioCS5PoWNoZKnVI7YeLCAxqcRtKE-cfSsrD6X3yBiiGI_J0DdnCu4vgHVOf7tn5UW93gDceqUiZ4hVu5ZCvSuDbEd3Dm8uTINHyELfvrJM4AvcW6lRAm2zAmGTlp9N7rNMUMizYToAN1_rTfY1KtEjsmeIx--zlkOzEz07DRgirbjC8bnSBfxNFTTtVBYuqf"/>
+        <img className="ev-card-img w-full h-full object-cover" alt="Deep Learning workshop" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBcUXLF60F3KbDnIVZepTTte_yzkhe3rkuMtXTXTMQzA1gyVuzXN1NQ0DXC7XHQBDIHEA2TXLK8EoSvioCS5PoWNoZKnVI7YeLCAxqcRtKE-cfSsrD6X3yBiiGI_J0DdnCu4vgHVOf7tn5UW93gDceqUiZ4hVu5ZCvSuDbEd3Dm8uTINHyELfvrJM4AvcW6lRAm2zAmGTlp9N7rNMUMizYToAN1_rTfY1KtEjsmeIx--zlkOzEz07DRgirbjC8bnSBfxNFTTtVBYuqf"/>
         <div className="absolute top-3 right-3 px-3 py-1 bg-secondary text-white rounded-lg font-label-sm flex items-center gap-1 shadow-lg" data-count>
-            <span className="material-symbols-outlined text-[14px]">bolt</span> 98% Match
+            <span className="material-symbols-outlined text-[14px]">bolt</span> 95%
         </div>
     </div>
     <div className="p-6 space-y-4 home-card-body">
         <div>
-            <span className="font-label-sm text-label-sm uppercase text-primary">{ar ? 'سباق بيانات' : 'DATA SPRINT'}</span>
+            <span className="font-label-sm text-label-sm uppercase text-primary">{ar ? 'ورشة عمل' : 'WORKSHOP'}</span>
             <Link className="block" to="/app/opportunity">
                 <h3 className="font-title-md text-title-md text-on-background dark:text-white line-clamp-1 mt-1 hover:text-primary transition-colors">
-                    Data Science Sprint
+                    {ar ? 'إتقان التعلم العميق' : 'Deep Learning Mastery'}
                 </h3>
             </Link>
-            <p className="font-body-sm text-body-sm text-on-surface-variant dark:text-gray-300">By AI Research Lab</p>
+            <p className="font-body-sm text-body-sm text-on-surface-variant dark:text-gray-300">{ar ? 'جامعة التكنولوجيا' : 'University of Technology'}</p>
             <div className="flex flex-wrap gap-1.5 pt-2">
-                <span className="px-2 py-0.5 rounded-full bg-surface-container dark:bg-slate-800 font-label-sm text-label-sm text-on-surface-variant dark:text-gray-300">{ar ? `من مهاراتك: ${skill1}` : `From your skills: ${skill1}`}</span>
-                <span className="px-2 py-0.5 rounded-full bg-surface-container dark:bg-slate-800 font-label-sm text-label-sm text-on-surface-variant dark:text-gray-300">{ar ? 'علم البيانات' : 'Data Science'}</span>
+                <span className="px-2 py-0.5 rounded-full bg-surface-container dark:bg-slate-800 font-label-sm text-label-sm text-on-surface-variant dark:text-gray-300">{ar ? 'من سيرتك: TensorFlow' : 'From your CV: TensorFlow'}</span>
+                <span className="px-2 py-0.5 rounded-full bg-surface-container dark:bg-slate-800 font-label-sm text-label-sm text-on-surface-variant dark:text-gray-300">{ar ? 'التعلم العميق' : 'Deep Learning'}</span>
             </div>
         </div>
         <div className="flex items-center gap-4 text-outline dark:text-gray-400 font-label-sm">
             <div className="flex items-center gap-1"><span className="material-symbols-outlined text-[18px]">calendar_month</span> Nov 12</div>
-            <div className="flex items-center gap-1"><span className="material-symbols-outlined text-[18px]">location_on</span> {ar ? 'عن بُعد' : 'Remote'}</div>
+            <div className="flex items-center gap-1"><span className="material-symbols-outlined text-[18px]">location_on</span> {ar ? 'هجين' : 'Hybrid'}</div>
         </div>
         <div className="flex gap-2 pt-2 home-card-actions">
-            <Link className="btn-primary flex-1 text-center py-2.5 rounded-lg bg-[#FF4D2E] hover:bg-[#e03e22] text-white font-semibold" to="/app/opportunity">{ar ? 'التقديم' : 'Apply'}</Link>
+            <Link className="btn-primary flex-1" to="/app/opportunity">{ar ? 'سجّل الآن' : 'Register'}</Link>
             <SaveButton id="rec-2" saved={saved} ar={ar} onToggle={toggleSave} />
         </div>
     </div>
@@ -319,7 +253,7 @@ export default function AppHome() {
             </Link>
             <p className="font-body-sm text-body-sm text-on-surface-variant dark:text-gray-300">DevCommunity Hub</p>
             <div className="flex flex-wrap gap-1.5 pt-2">
-                <span className="px-2 py-0.5 rounded-full bg-surface-container dark:bg-slate-800 font-label-sm text-label-sm text-on-surface-variant dark:text-gray-300">{ar ? `من سيرتك: ${skill3}` : `From your CV: ${skill3}`}</span>
+                <span className="px-2 py-0.5 rounded-full bg-surface-container dark:bg-slate-800 font-label-sm text-label-sm text-on-surface-variant dark:text-gray-300">{ar ? 'من سيرتك: React' : 'From your CV: React'}</span>
                 <span className="px-2 py-0.5 rounded-full bg-surface-container dark:bg-slate-800 font-label-sm text-label-sm text-on-surface-variant dark:text-gray-300">JavaScript</span>
             </div>
         </div>

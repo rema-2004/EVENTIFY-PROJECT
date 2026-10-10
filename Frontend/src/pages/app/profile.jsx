@@ -1,12 +1,11 @@
 import AppPageHead from '../../components/app/AppPageHead'
+import AppLangToggle from '../../components/app/AppLangToggle'
 import AppFooter from '../../components/app/AppFooter'
-import AppSidebar from '../../components/app/AppSidebar'
-import { Link, useNavigate, useLocation } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { useTheme } from '../../hooks/useTheme'
 import { useLanguage } from '../../hooks/useLanguage'
 import { useState, useRef, useEffect } from 'react'
 import AnimatedCounter from '../../components/shared/AnimatedCounter'
-import { useOnboarding } from '../../context/OnboardingContext'
 
 const DEFAULT_COVER = 'https://lh3.googleusercontent.com/aida-public/AB6AXuBeHOaLhImSXpSf94lw-SYxPYBwlc5gBXk7btOOFAhqx_oZFBSKtgn_P2pIGvFfCBhoMLxLxt6nkAaVv6TstLXm2DSDLS1AOT6QH_IRGTfXo2OtjjsArXHvWKur1GZZ2eDK6qHuSbQcfxMGo0fzNj2QnZzFWPIyhuDuCUdRosBAChWJFtM6RTcO8__ey71pVTFe5E9QEaseLBt6QNApMCSG2FDAAUMEE4xtjtfwbTwTctscv_cpXmi6Kt9_szB4pNw3Yn5KbAGVUlRw'
 const DEFAULT_AVATAR = 'https://lh3.googleusercontent.com/aida-public/AB6AXuDsQh5xOHYdmYcFmjJRpba3iiPC5g3JPTyK7qlEyYGrWLO_FtAHZOzRW4cX1RMPUClIy0d90XrNRLcOHNKGQkJKGdAt1u1Ukq4lYdrRDfJqdzzKVIyNbQ2FgWThdiwD06oY_uvI63tt40yB9wAi_f92Yb_O6IrGry-GNDu_3j-NEv3cU8WRQgm1fNlsToUpHXTKZszchQ4CRvtQhgyxMTzzWqjh7YpyYoacng83yN5O38dvrRRbO8B2iYc2p5lfWbCbUaTJ-KCVF07o'
@@ -33,21 +32,15 @@ function loadProfile() {
 }
 
 export default function Profile() {
-    const navigate = useNavigate()
-    const location = useLocation()
-    const { isDark, setTheme } = useTheme()
+    const { setTheme } = useTheme()
     const { language, toggleLanguage } = useLanguage()
     const ar = language === 'ar'
-    const { userProfile, updateProfile } = useOnboarding()
-
-
 
     // Fields the participant has edited; anything missing falls back to the built-in sample text.
     const [saved, setSaved] = useState(loadProfile)
     const [editOpen, setEditOpen] = useState(false)
     const [draft, setDraft] = useState(null)
     const [editError, setEditError] = useState('')
-
 
     const [coverImg, setCoverImg] = useState(DEFAULT_COVER)
     const [cvFile, setCvFile] = useState(null)
@@ -87,30 +80,14 @@ export default function Profile() {
     }
 
     const defaults = {
-        name: userProfile?.fullName || saved?.name || 'John Nanna',
-        headline: userProfile?.education
-            ? `${userProfile.education} • ${ar ? 'مشارك في Eventify' : 'Eventify Participant'}`
-            : (saved?.headline || (ar ? 'طالب أبحاث ذكاء اصطناعي وقائد فريق هاكاثون' : 'AI Research Student & Hackathon Team Lead')),
-        location: saved?.location || (ar ? 'عمّان، الأردن • 3 هاكاثونات فائزة' : 'Amman, Jordan • 3 Hackathons Won'),
-        about: saved?.about || (ar
-            ? 'شغوف بالتقاطع بين الذكاء الاصطناعي وتطوير البرمجيات. أمضيت السنتين الماضيتين في بناء مشاريع جانبية مدعومة بالذكاء الاصطناعي وقيادة الفرق في الهاكاثونات. أبحث حاليًا عن مسابقات وورش عمل لتطوير مهاراتي عبر Eventify.'
-            : 'Passionate about the intersection of Artificial Intelligence and Human-Computer Interaction. Currently looking for competitions and workshops that sharpen my machine learning and product skills through Eventify.'),
+        name: 'ALI',
+        headline: ar ? 'طالب أبحاث ذكاء اصطناعي وقائد فريق هاكاثون' : 'AI Research Student & Hackathon Team Lead',
+        location: ar ? 'عمّان، الأردن • 3 هاكاثونات فائزة' : 'Amman, Jordan • 3 Hackathons Won',
+        about: ar
+            ? 'شغوف بالتقاطع بين الذكاء الاصطناعي وتفاعل الإنسان مع الحاسوب. أمضيت السنتين الماضيتين في بناء مشاريع جانبية مدعومة بالذكاء الاصطناعي وقيادة الفرق في هاكاثونات الجامعة. أبحث حاليًا عن مسابقات وورش عمل لتطوير مهاراتي في تعلم الآلة وبناء المنتجات عبر Eventify.'
+            : 'Passionate about the intersection of Artificial Intelligence and Human-Computer Interaction. I\'ve spent the past two years building AI-driven side projects and leading teams through university hackathons. Currently looking for competitions and workshops that sharpen my machine learning and product skills through Eventify.',
     }
     const profile = { ...defaults, ...(saved || {}) }
-
-    // Synchronize skills between onboarding profile and saved profile
-    const effectiveSkills = (saved?.skills && saved.skills.length > 0)
-        ? saved.skills
-        : (userProfile?.skills && userProfile.skills.length > 0)
-            ? userProfile.skills
-            : SKILLS.map((s) => s.label)
-
-    // Synchronize interests between onboarding profile and saved profile
-    const effectiveInterests = (saved?.interests && saved.interests.length > 0)
-        ? saved.interests
-        : (userProfile?.interests && userProfile.interests.length > 0)
-            ? userProfile.interests
-            : [ar ? 'الذكاء الاصطناعي وتعلم الآلة' : 'AI & Machine Learning', ar ? 'الأمن السيبراني وCTF' : 'Cybersecurity & CTF', ar ? 'تطوير الويب' : 'Web Development']
 
     // `focus` ('experience' | 'projects') appends a blank entry and scrolls the form to that section.
     const openEdit = (focus) => {
@@ -118,7 +95,7 @@ export default function Profile() {
         const projects = (saved?.projects ?? DEFAULT_PROJECTS).map(({ title, desc }) => ({ title, desc }))
         if (focus === 'experience') experience.push({ title: '', org: '', period: '', desc: '' })
         if (focus === 'projects') projects.push({ title: '', desc: '' })
-        setDraft({ ...profile, skills: effectiveSkills.join(', '), interests: effectiveInterests.join(', '), experience, projects })
+        setDraft({ ...profile, skills: (saved?.skills ?? SKILLS.map((s) => s.label)).join(', '), experience, projects })
         setEditError('')
         setEditOpen(true)
         if (typeof focus === 'string') {
@@ -126,42 +103,22 @@ export default function Profile() {
         }
     }
 
-    // Open edit modal automatically if triggered from external link/query param (e.g. from Home page)
-    useEffect(() => {
-        const params = new URLSearchParams(location.search)
-        if (location.state?.openEdit || params.get('edit') === 'true') {
-            openEdit()
-            navigate('/app/profile', { replace: true, state: {} })
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [location.search, location.state])
-
     const updateItem = (list, index, key, value) =>
         setDraft((d) => ({ ...d, [list]: d[list].map((item, i) => (i === index ? { ...item, [key]: value } : item)) }))
     const removeItem = (list, index) => setDraft((d) => ({ ...d, [list]: d[list].filter((_, i) => i !== index) }))
     const addItem = (list, blank) => setDraft((d) => ({ ...d, [list]: [...d[list], blank] }))
 
-    const closeEdit = () => {
-        setEditOpen(false)
-        document.body.style.overflow = ''
-    }
-
     const handleSaveProfile = (e) => {
-        if (e?.preventDefault) e.preventDefault()
-        const keepFilled = (list, requiredKey) => (list || [])
-            .map((item) => Object.fromEntries(Object.entries(item).map(([k, v]) => [k, typeof v === 'string' ? v.trim() : (v ?? '')])))
+        e.preventDefault()
+        const keepFilled = (list, requiredKey) => list
+            .map((item) => Object.fromEntries(Object.entries(item).map(([k, v]) => [k, v.trim()])))
             .filter((item) => item[requiredKey])
         const next = {
-            name: (draft.name || '').trim(),
-            headline: (draft.headline || '').trim(),
-            location: (draft.location || '').trim(),
-            about: (draft.about || '').trim(),
-            skills: typeof draft.skills === 'string'
-                ? draft.skills.split(/[,،]/).map((s) => s.trim()).filter(Boolean)
-                : (Array.isArray(draft.skills) ? draft.skills : []),
-            interests: typeof draft.interests === 'string'
-                ? draft.interests.split(/[,،]/).map((s) => s.trim()).filter(Boolean)
-                : (Array.isArray(draft.interests) ? draft.interests : []),
+            name: draft.name.trim(),
+            headline: draft.headline.trim(),
+            location: draft.location.trim(),
+            about: draft.about.trim(),
+            skills: draft.skills.split(/[,،]/).map((s) => s.trim()).filter(Boolean),
             experience: keepFilled(draft.experience, 'title'),
             projects: keepFilled(draft.projects, 'title'),
         }
@@ -169,36 +126,32 @@ export default function Profile() {
             setEditError(ar ? 'الاسم مطلوب' : 'Name is required')
             return
         }
-        setEditError('')
         try { localStorage.setItem(PROFILE_KEY, JSON.stringify(next)) } catch { /* storage unavailable */ }
         setSaved(next)
-        if (typeof updateProfile === 'function') {
-            updateProfile({
-                fullName: next.name,
-                education: next.headline,
-                skills: next.skills,
-                interests: next.interests,
-                experience: next.experience,
-                projects: next.projects,
-            })
-        }
-        closeEdit()
+        setEditOpen(false)
         showToast(ar ? 'تم حفظ الملف الشخصي' : 'Profile saved')
     }
 
     // While the dialog is open the page behind it must not scroll; Escape closes it.
     useEffect(() => {
         if (!editOpen) return undefined
+        const previous = document.body.style.overflow
         document.body.style.overflow = 'hidden'
-        const onKey = (e) => { if (e.key === 'Escape') closeEdit() }
+        const onKey = (e) => { if (e.key === 'Escape') setEditOpen(false) }
         window.addEventListener('keydown', onKey)
         return () => {
-            document.body.style.overflow = ''
+            document.body.style.overflow = previous
             window.removeEventListener('keydown', onKey)
         }
     }, [editOpen])
 
-
+    const NAV_LINKS = [
+        { to: '/app', icon: 'home', label: ar ? 'الرئيسية' : 'Home' },
+        { to: '/app/my-applications', icon: 'assignment_turned_in', label: ar ? 'فعالياتي' : 'My Event' },
+        { to: '/app/posts', icon: 'campaign', label: ar ? 'المنشورات' : 'Posts' },
+        { to: '/app/notifications', icon: 'notifications', label: ar ? 'الإشعارات' : 'Notifications' },
+        { to: '/app/saved', icon: 'bookmark', label: ar ? 'المحفوظات' : 'Saved' },
+    ]
 
     const STATS = [
         { icon: 'emoji_events', color: 'text-primary', bg: 'bg-primary/10', value: '7', label: ar ? 'مسابقات انضممت إليها' : 'Competitions Joined', sub: ar ? '+2 هذا العام' : '+2 this year' },
@@ -280,7 +233,7 @@ export default function Profile() {
 
             {/* Edit Profile Modal */}
             {editOpen && draft && (
-                <div className="fixed inset-0 z-[9998] bg-black/30 backdrop-blur-sm flex items-center justify-center p-4" onMouseDown={(e) => { if (e.target === e.currentTarget) closeEdit() }}>
+                <div className="fixed inset-0 z-[9998] bg-black/30 backdrop-blur-sm flex items-center justify-center p-4" onMouseDown={(e) => { if (e.target === e.currentTarget) setEditOpen(false) }}>
                     <form
                         className="ev-fade-up bg-white dark:bg-slate-800 rounded-2xl max-w-2xl w-full max-h-[90vh] flex flex-col overflow-hidden shadow-2xl border border-gray-100 dark:border-white/10"
                         dir={ar ? 'rtl' : 'ltr'}
@@ -296,7 +249,7 @@ export default function Profile() {
                                 <h3 id="edit-profile-title" className="text-lg font-bold text-gray-900 dark:text-white">{ar ? 'تعديل الملف الشخصي' : 'Edit Profile'}</h3>
                                 <p className="text-sm text-on-surface-variant">{ar ? 'حدّث بياناتك وسيظهر التعديل في ملفك مباشرة.' : 'Update your details and they show on your profile right away.'}</p>
                             </div>
-                            <button type="button" className={`${PRESS} w-9 h-9 shrink-0 rounded-full flex items-center justify-center text-on-surface-variant hover:bg-surface-container`} aria-label={ar ? 'إغلاق' : 'Close'} onClick={closeEdit}>
+                            <button type="button" className={`${PRESS} w-9 h-9 shrink-0 rounded-full flex items-center justify-center text-on-surface-variant hover:bg-surface-container`} aria-label={ar ? 'إغلاق' : 'Close'} onClick={() => setEditOpen(false)}>
                                 <span className="material-symbols-outlined text-[20px]">close</span>
                             </button>
                         </header>
@@ -326,14 +279,6 @@ export default function Profile() {
                                 <label className={LABEL}>
                                     {ar ? 'المهارات (افصل بينها بفاصلة)' : 'Skills (separate with commas)'}
                                     <input className={INPUT} value={draft.skills} onChange={(e) => setDraft({ ...draft, skills: e.target.value })} />
-                                </label>
-                            </fieldset>
-
-                            <fieldset className="space-y-3 rounded-xl border border-outline-variant/50 p-4">
-                                <legend className={LEGEND}><span className="material-symbols-outlined text-[18px] text-[#FF4D2E]">interests</span>{ar ? 'مجالات الاهتمام والشغف' : 'Interests & Learning Aspirations'}</legend>
-                                <label className={LABEL}>
-                                    {ar ? 'المجالات والاهتمامات (افصل بينها بفاصلة)' : 'Topics & Interests (separate with commas)'}
-                                    <input className={INPUT} value={draft.interests || ''} onChange={(e) => setDraft({ ...draft, interests: e.target.value })} placeholder={ar ? 'مثال: الذكاء الاصطناعي، الأمن السيبراني، تطوير الويب' : 'e.g. AI & ML, Cybersecurity, Web Development'} />
                                 </label>
                             </fieldset>
 
@@ -410,10 +355,10 @@ export default function Profile() {
                         <footer className="shrink-0 flex items-center justify-between gap-3 px-6 py-4 border-t border-outline-variant/40 bg-white dark:bg-slate-800">
                             <p className="text-sm text-error" role="alert">{editError}</p>
                             <div className="flex gap-3">
-                                <button type="button" className={`${PRESS} px-5 py-2.5 rounded-full border border-outline-variant font-label-md text-on-surface hover:bg-surface-container`} onClick={closeEdit}>
+                                <button type="button" className={`${PRESS} px-5 py-2.5 rounded-full border border-outline-variant font-label-md text-on-surface hover:bg-surface-container`} onClick={() => setEditOpen(false)}>
                                     {ar ? 'إلغاء' : 'Cancel'}
                                 </button>
-                                <button type="button" className={`${PRESS} px-6 py-2.5 rounded-full font-semibold hover:shadow-lg`} style={{ backgroundColor: '#FF4D2E', color: '#ffffff' }} onClick={handleSaveProfile}>
+                                <button type="submit" className={`${PRESS} px-6 py-2.5 rounded-full font-semibold hover:shadow-lg`} style={{ backgroundColor: '#FF4D2E', color: '#ffffff' }}>
                                     {ar ? 'حفظ' : 'Save'}
                                 </button>
                             </div>
@@ -448,11 +393,54 @@ export default function Profile() {
                 className="max-w-[1280px] mx-auto flex gap-6 px-container-margin-mobile md:px-container-margin-desktop pt-24 pb-0 relative"
                 dir={ar ? 'rtl' : 'ltr'}
             >
-                {/* Left Sidebar (Single Source of Truth) */}
-                <AppSidebar />
+                {/* Left Sidebar */}
+                <aside className="hidden lg:flex flex-col gap-4 sticky top-[calc(72px+24px)] h-[calc(100vh-120px)] w-56 shrink-0 glass-sidebar border border-outline-variant/30 rounded-xl p-4">
+                    <nav className="flex flex-col gap-2">
+                        {NAV_LINKS.map(({ to, icon, label }) => (
+                            <Link
+                                key={to}
+                                className="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-low transition-colors rounded-lg group"
+                                to={to}
+                            >
+                                <span className="material-symbols-outlined text-outline group-hover:text-primary">{icon}</span>
+                                <span className="font-label-md text-label-md">{label}</span>
+                            </Link>
+                        ))}
+                        <Link
+                            className="flex items-center gap-3 px-4 py-3 bg-primary-container/10 text-primary font-bold border-l-4 border-primary rounded-r-lg"
+                            to="/app/profile"
+                        >
+                            <span className="material-symbols-outlined" style={{ fontVariationSettings: '"FILL" 1' }}>account_circle</span>
+                            <span className="font-label-md text-label-md">{ar ? 'الملف الشخصي' : 'Profile'}</span>
+                        </Link>
+                    </nav>
+                    <div className="mt-auto p-4 bg-surface-container-low rounded-xl border border-outline-variant/50">
+                        <p className="font-label-sm text-label-sm text-primary mb-2">{ar ? 'الخطة الاحترافية' : 'PRO PLAN'}</p>
+                        <p className="font-body-md text-body-md text-on-surface-variant mb-4">
+                            {ar ? 'افتح التطابق المتقدم بالذكاء الاصطناعي ورؤى Rafeeq ذات الأولوية.' : 'Unlock advanced AI matching and priority Rafeeq insights.'}
+                        </p>
+                        <button
+                            className="w-full py-2 bg-secondary text-white rounded-lg font-label-md text-label-md hover:opacity-90 transition-opacity"
+                            onClick={() => showToast(ar ? 'ميزة الترقية قريباً!' : 'Upgrade feature coming soon!', 'info')}
+                        >
+                            {ar ? 'ترقية' : 'Upgrade'}
+                        </button>
+                    </div>
+                </aside>
 
                 {/* Main Content */}
                 <main className="flex-1 flex flex-col gap-6 min-w-0 pb-12">
+                    {/* The settings sidebar (with the language switch) is desktop-only, so expose language + theme here on mobile */}
+                    <div className="lg:hidden flex justify-end items-center gap-3">
+                        <AppLangToggle />
+                        <button
+                            className="theme-toggle w-10 h-10 rounded-full flex items-center justify-center text-on-surface-variant hover:text-primary hover:bg-surface-container-low dark:text-gray-300 dark:hover:text-white dark:hover:bg-white/10 transition-colors"
+                            type="button"
+                            aria-label={ar ? 'تبديل السمة' : 'Switch theme'}
+                        >
+                            <span className="material-symbols-outlined text-[20px]">dark_mode</span>
+                        </button>
+                    </div>
                     {/* Profile Header Card */}
                     <section className="ev-fade-up ev-stagger-1 bg-surface-container-lowest rounded-2xl overflow-hidden premium-shadow border border-outline-variant/50">
                         <div className="h-48 w-full bg-cover bg-center relative" style={{ backgroundImage: `url("${coverImg}")` }}>
@@ -466,8 +454,8 @@ export default function Profile() {
                         </div>
                         <div className="px-8 pb-8 relative z-10 space-y-5">
                             <div className={`flex flex-col md:flex-row md:items-end gap-6 ${ar ? 'md:flex-row-reverse' : ''}`}>
-                                <div className="-mt-2 w-28 h-28 rounded-full border-4 border-surface-container-lowest overflow-hidden premium-shadow bg-surface shrink-0 ring-4 ring-transparent hover:ring-[#FF4D2E]/30 hover:shadow-[0_0_30px_rgba(255,77,46,0.3)] transition-all duration-500 group">
-                                    <img className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" alt={ar ? 'صورة الملف الشخصي' : 'Profile'} src={DEFAULT_AVATAR} />
+                                <div className="-mt-2 w-28 h-28 rounded-full border-4 border-surface-container-lowest overflow-hidden premium-shadow bg-surface shrink-0">
+                                    <img className="w-full h-full object-cover" alt={ar ? 'صورة الملف الشخصي' : 'Profile'} src={DEFAULT_AVATAR} />
                                 </div>
                                 <div className={`flex-1 min-w-0 ${ar ? 'text-right' : ''}`}>
                                     <div className={`flex items-center gap-2 ${ar ? 'flex-row-reverse' : ''}`}>
@@ -483,8 +471,8 @@ export default function Profile() {
                                     </p>
                                 </div>
                             </div>
-                            <div className={`flex flex-wrap sm:flex-nowrap gap-2 w-full md:w-auto ${ar ? 'flex-row-reverse' : ''}`}>
-                                <button type="button" className="flex-1 md:flex-none text-center px-6 py-2.5 border border-outline-variant text-primary rounded-full font-label-md text-label-md hover:bg-surface-container-low transition-colors" onClick={openEdit}>
+                            <div className={`flex gap-2 w-full md:w-auto ${ar ? 'flex-row-reverse' : ''}`}>
+                                <button type="button" className="lg:hidden flex-1 md:flex-none text-center px-6 py-2.5 border border-outline-variant text-primary rounded-full font-label-md text-label-md hover:bg-surface-container-low transition-colors" onClick={openEdit}>
                                     {ar ? 'تعديل الملف' : 'Edit Profile'}
                                 </button>
                                 <Link className="flex-1 md:flex-none text-center px-6 py-2.5 rounded-full font-label-md text-label-md transition-colors hover:opacity-90" style={{ backgroundColor: '#FF4D2E', color: '#fff' }} to="/app/explore">
@@ -508,7 +496,7 @@ export default function Profile() {
                         {STATS.map(({ icon, color, bg, value, label, sub }, i) => (
                             <div
                                 key={label}
-                                className="ev-card spotlight row-animated bg-surface-container-lowest p-6 rounded-2xl border border-outline-variant/50 premium-shadow group hover:-translate-y-1.5 hover:shadow-xl hover:border-[#FF4D2E]/40 transition-all duration-300 cursor-default"
+                                className="ev-card spotlight row-animated bg-surface-container-lowest p-6 rounded-2xl border border-outline-variant/50 premium-shadow group hover:-translate-y-1 transition-all duration-300"
                                 style={{ '--stagger-idx': i }}
                             >
                                 <div className={`flex justify-between items-start mb-4 ${ar ? 'flex-row-reverse' : ''}`}>
@@ -554,39 +542,16 @@ export default function Profile() {
                     <section className="ev-fade-up ev-stagger-3 bg-surface-container-lowest p-8 rounded-2xl border border-outline-variant/50 premium-shadow">
                         <h3 className="font-headline-md text-headline-md mb-6">{ar ? 'المهارات' : 'Skills'}</h3>
                         <p className="font-body-md text-body-md text-on-surface-variant mb-6">
-                            {ar ? 'أبرز مهاراتك وقدراتك الأساسية المكتسبة عبر المنصة واستبيان التقييم الذكي.' : 'Showcase the participant\'s core skills and strengths extracted from CV and questionnaire.'}
+                            {ar ? 'أبرز مهاراتك وقدراتك الأساسية المكتسبة عبر المنصة.' : 'Showcase the participant\'s core skills and strengths learned through the platform.'}
                         </p>
                         <div className={`flex flex-wrap gap-3 ${ar ? 'flex-row-reverse' : ''}`}>
-                            {effectiveSkills.map((label, i) => (
+                            {(saved?.skills ? saved.skills.map((label, i) => ({ label, cls: SKILL_STYLES[i % SKILL_STYLES.length] })) : SKILLS).map(({ label, cls }, i) => (
                                 <span
                                     key={label}
-                                    className={`row-animated px-4 py-2 font-label-md text-label-md rounded-full ${SKILL_STYLES[i % SKILL_STYLES.length]} hover:scale-105 transition-transform duration-200 cursor-default`}
+                                    className={`row-animated px-4 py-2 font-label-md text-label-md rounded-full ${cls} hover:scale-105 transition-transform duration-200 cursor-default`}
                                     style={{ '--stagger-idx': i }}
                                 >
                                     {label}
-                                </span>
-                            ))}
-                        </div>
-                    </section>
-
-                    {/* Interests & Aspirations */}
-                    <section className="ev-fade-up ev-stagger-3 bg-surface-container-lowest p-8 rounded-2xl border border-outline-variant/50 premium-shadow">
-                        <div className={`flex items-center justify-between mb-4 ${ar ? 'flex-row-reverse' : ''}`}>
-                            <h3 className="font-headline-md text-headline-md">{ar ? 'مجالات الاهتمام والشغف' : 'Interests & Learning Aspirations'}</h3>
-                            <span className="material-symbols-outlined text-[#FF4D2E]" style={{ fontVariationSettings: '"FILL" 1' }}>auto_awesome</span>
-                        </div>
-                        <p className="font-body-md text-body-md text-on-surface-variant mb-6">
-                            {ar ? 'المجالات والمواضيع التي تتطلع لاستكشافها والتعلم فيها عبر الفعاليات ومسابقات الهاكاثون.' : 'Topics and tracks you are eager to explore and build skills in through events.'}
-                        </p>
-                        <div className={`flex flex-wrap gap-3 ${ar ? 'flex-row-reverse' : ''}`}>
-                            {effectiveInterests.map((interest, i) => (
-                                <span
-                                    key={interest}
-                                    className="row-animated inline-flex items-center gap-2 px-4 py-2 font-label-md text-label-md rounded-full bg-[#FF4D2E]/10 text-[#FF4D2E] border border-[#FF4D2E]/20 hover:scale-105 transition-transform duration-200 cursor-default"
-                                    style={{ '--stagger-idx': i }}
-                                >
-                                    <span className="material-symbols-outlined text-[16px]">stars</span>
-                                    {interest}
                                 </span>
                             ))}
                         </div>
@@ -620,7 +585,7 @@ export default function Profile() {
                                 <div className={ar ? 'text-right' : ''}>
                                     <p className="font-label-md text-label-md">{ar ? 'السيرة الذاتية الحالية' : 'Current resume'}</p>
                                     <p className="font-label-md text-label-md text-on-surface-variant">
-                                        {cvFile ? cvFile.name : (userProfile?.resumeFileName || 'John_Nanna_CV.pdf')} • {cvFile ? (ar ? 'تم الرفع للتو' : 'Just uploaded') : (ar ? 'محللة بالذكاء الاصطناعي' : 'AI Analyzed')}
+                                        {cvFile ? cvFile.name : 'ALI_CV_2024.pdf'} • {cvFile ? (ar ? 'تم الرفع للتو' : 'Just uploaded') : (ar ? 'تم التحديث منذ 3 أيام' : 'Updated 3 days ago')}
                                     </p>
                                 </div>
                                 <button
@@ -650,7 +615,7 @@ export default function Profile() {
                             {shownProjects.map(({ img, title, desc }, index) => (
                                 <div
                                     key={title}
-                                    className="row-animated group bg-surface-container-lowest p-4 rounded-2xl border border-outline-variant/30 hover:border-primary/50 hover:-translate-y-1.5 hover:shadow-xl transition-all duration-300"
+                                    className="row-animated group bg-surface-container-lowest p-4 rounded-2xl border border-outline-variant/30 hover:border-primary/40 hover:-translate-y-1 transition-all duration-300"
                                     style={{ '--stagger-idx': index }}
                                 >
                                     <div className="h-48 bg-surface-container-low rounded-xl overflow-hidden mb-4">
@@ -739,12 +704,12 @@ export default function Profile() {
                                 <span className="material-symbols-outlined text-outline dark:text-gray-400">palette</span>
                                 <span className="font-label-md text-label-md dark:text-gray-200">{ar ? 'السمة' : 'Theme'}</span>
                             </div>
-                            <div className="flex bg-slate-100 dark:bg-slate-800 rounded-full p-1 border border-slate-200 dark:border-white/10">
-                                <button className={`w-8 h-8 rounded-full flex items-center justify-center transition-all ${!isDark ? 'bg-white shadow-sm text-[#FF4D2E]' : 'text-slate-400 hover:text-slate-200'}`} onClick={() => setTheme('light')} aria-label={ar ? 'الوضع الفاتح' : 'Light mode'}>
-                                    <i className="fa-solid fa-sun text-[14px]"></i>
+                            <div className="flex bg-surface-container-high dark:bg-slate-800 rounded-full p-1">
+                                <button className="w-8 h-8 rounded-full bg-white shadow-sm flex items-center justify-center text-primary" onClick={() => setTheme('light')} aria-label={ar ? 'الوضع الفاتح' : 'Light mode'}>
+                                    <span className="material-symbols-outlined text-[18px]">light_mode</span>
                                 </button>
-                                <button className={`w-8 h-8 rounded-full flex items-center justify-center transition-all ${isDark ? 'bg-slate-700 shadow-sm text-amber-400' : 'text-slate-500 hover:text-slate-800'}`} onClick={() => setTheme('dark')} aria-label={ar ? 'الوضع الداكن' : 'Dark mode'}>
-                                    <i className="fa-solid fa-moon text-[14px]"></i>
+                                <button className="w-8 h-8 rounded-full flex items-center justify-center text-outline hover:text-on-surface dark:hover:text-white" onClick={() => setTheme('dark')} aria-label={ar ? 'الوضع الداكن' : 'Dark mode'}>
+                                    <span className="material-symbols-outlined text-[18px]">dark_mode</span>
                                 </button>
                             </div>
                         </div>

@@ -6,7 +6,6 @@ const isEmail = (v) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)
 
 export default function Contact() {
     const { t } = useTranslation()
-
     const [name, setName] = useState('')
     const [email, setEmail] = useState('')
     const [subject, setSubject] = useState('general')
@@ -46,7 +45,6 @@ export default function Contact() {
 
             <main id="main" className="section-pad">
                 <div className="container">
-                    {/* Contact Info & Form */}
                     <div className="contact-grid">
                         <div className="reveal-stagger">
                             <div className="contact-info-card" style={{ '--stagger-idx': 0 }}>
@@ -158,7 +156,6 @@ export default function Contact() {
                             </div>
                         </form>
                     </div>
-
                 </div>
             </main>
         </>

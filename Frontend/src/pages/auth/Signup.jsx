@@ -131,13 +131,6 @@ export default function Signup() {
         if (Object.values(next).some(Boolean) || !terms) return
 
         setSubmitting(true)
-        if (!isOrg) {
-            localStorage.setItem('eventify_isProfileComplete', 'false')
-            try {
-                const existing = JSON.parse(localStorage.getItem('eventify_userProfile') || '{}')
-                localStorage.setItem('eventify_userProfile', JSON.stringify({ ...existing, fullName: fullName.trim() }))
-            } catch {}
-        }
         window.setTimeout(() => {
             setSubmitting(false)
             navigate(isOrg ? '/auth/organization-verification' : '/app')

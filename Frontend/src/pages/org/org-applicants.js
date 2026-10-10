@@ -109,6 +109,24 @@ export function initOrgApplicants() {
         const emptyState = $('#applicants-empty-state');
         const table = $('#applicants-table');
 
+    function animateCount(el, target) {
+        const start = parseInt(el.textContent, 10) || 0;
+        const end = parseInt(target, 10) || 0;
+        if (start === end) {
+            el.textContent = end;
+            return;
+        }
+        const startTime = performance.now();
+        const duration = 600;
+        function tick(now) {
+            const progress = Math.min((now - startTime) / duration, 1);
+            const ease = 1 - Math.pow(1 - progress, 3);
+            el.textContent = Math.round(start + (end - start) * ease);
+            if (progress < 1) requestAnimationFrame(tick);
+        }
+        requestAnimationFrame(tick);
+    }
+
     function updateFilterView() {
         let visibleCount = 0;
         rows.forEach((row) => {

@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import AppPageHead from '../../components/app/AppPageHead'
 import { useOrgPageControls } from './useOrgPageControls.js'
@@ -6,7 +6,6 @@ import LangToggleBtn from '../../components/org/LangToggleBtn'
 import { useLanguage } from '../../hooks/useLanguage'
 import { toast } from '../../utils/toast'
 import '../../styles/org/sidebar.css'
-import OrgSidebar, { OrgMobileHeader } from '../../components/org/OrgSidebar'
 import '../../styles/admin/admin.css'
 import '../../styles/org/org-dashboard.css'
 import '../../styles/org/org-opportunities.css'
@@ -107,11 +106,10 @@ const KPI_FILTERS = [
 
 function AnimatedNumber({ value, duration = 650 }) {
     const [displayVal, setDisplayVal] = useState(0)
-    const startValRef = useRef(0)
 
     useEffect(() => {
         let startTime = null
-        const startVal = startValRef.current
+        const startVal = displayVal
         const targetVal = Number(value) || 0
 
         if (startVal === targetVal) return
@@ -123,9 +121,7 @@ function AnimatedNumber({ value, duration = 650 }) {
             const progress = Math.min((timestamp - startTime) / duration, 1)
             // easeOutCubic curve for smooth decelerating count
             const ease = 1 - Math.pow(1 - progress, 3)
-            const nextVal = Math.round(startVal + (targetVal - startVal) * ease)
-            setDisplayVal(nextVal)
-            startValRef.current = nextVal
+            setDisplayVal(Math.round(startVal + (targetVal - startVal) * ease))
 
             if (progress < 1) {
                 animationFrameId = requestAnimationFrame(step)
@@ -209,9 +205,47 @@ export default function OrgOpportunities() {
     return (
         <>
             <AppPageHead title="My Opportunities | EVENTIFY" />
-            <OrgMobileHeader />
+            <header className="lg:hidden w-full sticky top-0 z-40 flex justify-between items-center px-4 h-16 bg-surface border-b border-border shadow-sm">
+                <Link className="flex items-center gap-2" to="/">
+                    <span className="material-symbols-outlined text-primary" style={{ fontVariationSettings: '"FILL" 1' }}>hub</span>
+                    <span className="font-bold text-headline-lg-mobile text-primary" style={{ fontFamily: "var(--font-display)" }}>EVENTIFY</span>
+                </Link>
+                <div className="flex items-center gap-2">
+                    <LangToggleBtn small />
+                    <button className="theme-toggle icon-btn" type="button" title="Switch theme" aria-label="Switch theme" style={{ width: 36, height: 36 }}>
+                        <span className="material-symbols-outlined" style={{ fontSize: 18 }}>dark_mode</span>
+                    </button>
+                    <span className="admin-badge">Organizer</span>
+                    <button className="mobile-hamburger" id="org-hamburger" aria-label="Open navigation" aria-expanded="false">
+                        <span className="material-symbols-outlined" style={{ fontSize: 22 }}>menu</span>
+                    </button>
+                </div>
+            </header>
             <div className="flex min-h-screen">
-                <OrgSidebar />
+                <aside className="admin-accent-sidebar hidden lg:flex flex-col w-[280px] h-screen sticky top-0 bg-surface border-r border-border z-50 p-6">
+                    <Link className="flex items-center gap-3 mb-2" to="/">
+                        <span className="material-symbols-outlined text-primary text-3xl" style={{ fontVariationSettings: '"FILL" 1' }}>hub</span>
+                        <span className="font-bold text-headline-md text-primary" style={{ fontFamily: "var(--font-display)" }}>EVENTIFY</span>
+                    </Link>
+                    <span className="admin-badge mb-8 w-fit">Organizer console</span>
+                    <nav className="flex flex-1 flex-col gap-1" aria-label="Organizer sections">
+                        <div className="nav-group">
+                            <Link className="nav-link" to="/org/dashboard"><span className="material-symbols-outlined" aria-hidden="true">dashboard</span>Dashboard</Link>
+                            <Link className="nav-link" to="/org/posts"><span className="material-symbols-outlined" aria-hidden="true">campaign</span>Posts</Link>
+                            <Link className="nav-link" to="/org/profile"><span className="material-symbols-outlined" aria-hidden="true">apartment</span>Organization Profile</Link>
+                            <Link className="nav-link" to="/org/opportunities" aria-current="page"><span className="material-symbols-outlined" aria-hidden="true">event_note</span>My Opportunities</Link>
+                            <Link className="nav-link" to="/org/create-event"><span className="material-symbols-outlined" aria-hidden="true">add_circle</span>Create Event</Link>
+                            <Link className="nav-link" to="/org/applicants"><span className="material-symbols-outlined" aria-hidden="true">group</span>Applicants</Link>
+                            <Link className="nav-link" to="/org/report-center"><span className="material-symbols-outlined" aria-hidden="true">bar_chart</span>Reports</Link>
+                            <Link className="nav-link" to="/org/settings"><span className="material-symbols-outlined" aria-hidden="true">settings</span>Settings</Link>
+                        </div>
+                    </nav>
+                    <div className="mt-auto rounded-2xl bg-surface-container p-4">
+                        <p className="mb-2 text-label-sm font-label-sm text-on-surface-variant">ORGANIZATION</p>
+                        <p className="mb-1 font-label-md text-label-md text-on-surface font-semibold">TechGenius Labs</p>
+                        <p className="text-label-sm font-label-sm text-success">Verified organizer since 2024</p>
+                    </div>
+                </aside>
                 <main className="flex-1 w-full px-4 md:px-10 pt-6 pb-24 lg:pb-8">
                     <div className="org-topbar">
                         <h1 className="org-topbar__title">My Opportunities</h1>
@@ -493,6 +527,32 @@ export default function OrgOpportunities() {
             </div>
 
             {/* Mobile Navigation Drawer */}
-            </>
+            <div className="mobile-nav-overlay" id="org-mobile-overlay" />
+            <nav className="mobile-nav-drawer" id="org-mobile-drawer" aria-label="Organizer navigation">
+                <button className="mobile-nav-close" id="org-nav-close" aria-label="Close navigation">
+                    <span className="material-symbols-outlined" style={{ fontSize: 20 }}>close</span>
+                </button>
+                <Link className="flex items-center gap-3 mb-2" to="/">
+                    <span className="material-symbols-outlined text-primary text-3xl" style={{ fontVariationSettings: '"FILL" 1' }}>hub</span>
+                    <span className="font-bold text-headline-md text-primary" style={{ fontFamily: "var(--font-display)" }}>EVENTIFY</span>
+                </Link>
+                <span className="admin-badge mb-6 w-fit">Organizer console</span>
+                <div className="nav-group flex flex-1 flex-col gap-1">
+                    <Link className="nav-link" to="/org/dashboard"><span className="material-symbols-outlined" aria-hidden="true">dashboard</span>Dashboard</Link>
+                    <Link className="nav-link" to="/org/posts"><span className="material-symbols-outlined" aria-hidden="true">campaign</span>Posts</Link>
+                    <Link className="nav-link" to="/org/profile"><span className="material-symbols-outlined" aria-hidden="true">apartment</span>Organization Profile</Link>
+                    <Link className="nav-link" to="/org/opportunities" aria-current="page"><span className="material-symbols-outlined" aria-hidden="true">event_note</span>My Opportunities</Link>
+                    <Link className="nav-link" to="/org/create-event"><span className="material-symbols-outlined" aria-hidden="true">add_circle</span>Create Event</Link>
+                    <Link className="nav-link" to="/org/applicants"><span className="material-symbols-outlined" aria-hidden="true">group</span>Applicants</Link>
+                    <Link className="nav-link" to="/org/report-center"><span className="material-symbols-outlined" aria-hidden="true">bar_chart</span>Reports</Link>
+                    <Link className="nav-link" to="/org/settings"><span className="material-symbols-outlined" aria-hidden="true">settings</span>Settings</Link>
+                </div>
+                <div className="mt-auto rounded-2xl bg-surface-container p-4">
+                    <p className="mb-2 text-label-sm font-label-sm text-on-surface-variant">ORGANIZATION</p>
+                    <p className="mb-1 font-label-md text-label-md text-on-surface font-semibold">TechGenius Labs</p>
+                    <p className="text-label-sm font-label-sm text-success">Verified organizer since 2024</p>
+                </div>
+            </nav>
+        </>
     )
 }
