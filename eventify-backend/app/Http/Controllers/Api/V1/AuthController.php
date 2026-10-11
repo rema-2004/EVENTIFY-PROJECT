@@ -35,6 +35,10 @@ class AuthController extends Controller
             // role/status are NEVER accepted from client input.
         ]);
 
+        // Reload from the database so the DB defaults (role, status)
+        // appear in the response instead of null.
+        $user->refresh();
+
         $token = $user->createToken('eventify-token')->plainTextToken;
 
         return $this->success([
