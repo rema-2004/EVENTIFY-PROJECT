@@ -428,5 +428,6 @@ html.dark .loading-skeleton::after {
 @media(max-width:768px) {
   .footer {
     padding-top: 64px;
+    padding-bottom: 88px;
   }
 }
