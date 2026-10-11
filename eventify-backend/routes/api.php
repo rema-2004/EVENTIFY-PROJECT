@@ -4,6 +4,7 @@ use App\Http\Controllers\Api\V1\AuthController;
 use App\Http\Controllers\Api\V1\OrgAuthController;
 use App\Http\Controllers\Api\V1\EventController;
 use App\Http\Controllers\Api\V1\EventRegistrationController;
+use App\Http\Controllers\Api\V1\CourseController;
 use App\Http\Controllers\Api\V1\Admin\OrganizationManagementController;
 use App\Http\Controllers\Api\V1\Admin\EventManagementController;
 use App\Http\Controllers\Api\V1\Organization\EventController as OrgEventController;
@@ -45,6 +46,12 @@ Route::prefix('v1')->group(function () {
         Route::post('/events/{event}/register', [EventRegistrationController::class, 'register']);
         Route::delete('/events/{event}/register', [EventRegistrationController::class, 'cancel']);
         Route::get('/my/registrations', [EventRegistrationController::class, 'myRegistrations']);
+
+        // Student's own courses
+        Route::get('/my/courses', [CourseController::class, 'index']);
+        Route::post('/my/courses', [CourseController::class, 'store']);
+        Route::patch('/my/courses/{course}', [CourseController::class, 'update']);
+        Route::delete('/my/courses/{course}', [CourseController::class, 'destroy']);
     });
 
     // — Public Events routes (no auth required) ——————————————————————
