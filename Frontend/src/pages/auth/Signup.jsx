@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import AuthLayout from '../../layouts/AuthLayout'
+import { useOnboarding } from '../../context/OnboardingContext'
 
 const isEmail = (v) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)
 const isPhone = (v) => /^[+]?([0-9][\s-()]*){7,15}$/.test(v)
@@ -80,6 +81,7 @@ const emptyErrors = { fullName: '', phone: '', email: '', password: '', confirmP
 export default function Signup() {
     const { t } = useTranslation()
     const navigate = useNavigate()
+    const { setIsProfileComplete } = useOnboarding()
 
     const [accountType, setAccountType] = useState('personal')
     const [fullName, setFullName] = useState('')
@@ -132,6 +134,10 @@ export default function Signup() {
 
         setSubmitting(true)
         if (!isOrg) {
+            const idValue = email.trim().toLowerCase()
+            localStorage.setItem('eventify_current_participant', idValue)
+            setIsProfileComplete(false)
+            localStorage.setItem('eventify_has_unlocked_profile', 'false')
             localStorage.setItem('eventify_isProfileComplete', 'false')
             try {
                 const existing = JSON.parse(localStorage.getItem('eventify_userProfile') || '{}')
