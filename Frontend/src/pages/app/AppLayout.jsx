@@ -2,6 +2,7 @@ import { useEffect } from 'react'
 import { Outlet, useLocation, useNavigate } from 'react-router-dom'
 import AppNavbar from '../../components/app/AppNavbar'
 import AppBottomNav from '../../components/app/AppBottomNav'
+import { useOnboarding } from '../../context/OnboardingContext'
 import '../../styles/app/nav.css'
 import '../../styles/app/app-shell.css'
 import '../../styles/app/app-pages.css'
@@ -18,6 +19,7 @@ const PAGES_WITH_SHARED_NAV = [
     '/app/posts',
     '/app/my-applications',
     '/app/saved',
+    '/app/profile',
 ]
 
 /**
@@ -49,11 +51,22 @@ function useShowNav() {
 export default function AppLayout() {
     const location = useLocation()
     const navigate = useNavigate()
+    const { isProfileComplete } = useOnboarding()
     const { showNavbar, showBottomNav } = useShowNav()
+
+    const shouldShowBottomNav = showBottomNav && isProfileComplete
 
     useEffect(() => {
         window.scrollTo(0, 0)
     }, [location.pathname])
+
+    // Route guard: keep user inside the welcome onboarding flow until complete
+    useEffect(() => {
+        const allowedOnboardingPaths = ['/app', '/app/upload-cv', '/app/wizard-form']
+        if (!isProfileComplete && !allowedOnboardingPaths.includes(location.pathname)) {
+            navigate('/app', { replace: true })
+        }
+    }, [isProfileComplete, location.pathname, navigate])
 
     function handleLegacyNavigation(event) {
         if (event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return
@@ -73,7 +86,7 @@ export default function AppLayout() {
         <div onClickCapture={handleLegacyNavigation}>
             {showNavbar && <AppNavbar />}
             <Outlet />
-            {showBottomNav && <AppBottomNav />}
+            {shouldShowBottomNav && <AppBottomNav />}
         </div>
     )
 }
@@ -82,6 +95,8 @@ export default function AppLayout() {
 
 const PAGE_PATHS = {
     index: '/app',
+    'upload-cv': '/app/upload-cv',
+    'wizard-form': '/app/wizard-form',
     explore: '/app/explore',
     opportunity: '/app/opportunity',
     'participation-type': '/app/participation-type',

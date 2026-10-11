@@ -54,9 +54,6 @@ export default function Explore() {
             ? 'tab-active'
             : 'bg-surface-container text-on-surface-variant hover:bg-primary-container/20'}`
 
-    const show = (value) =>
-        category === 'all' || category === value ? undefined : 'none'
-
     const TABS = ar
         ? [
             { value: 'all', label: 'الكل' },

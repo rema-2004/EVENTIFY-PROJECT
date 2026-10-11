@@ -21,6 +21,7 @@ import { lazy, Suspense, useEffect } from 'react'
 import { Route, Routes } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import VisitorLayout from './layouts/VisitorLayout'
+import WorkspaceLocalization from './i18n/WorkspaceLocalization'
 const Landing = lazy(() => import('./pages/visitor/Landing'))
 const About = lazy(() => import('./pages/visitor/About'))
 const Contact = lazy(() => import('./pages/visitor/Contact'))
@@ -35,8 +36,9 @@ const OrganizationPending = lazy(() => import('./pages/auth/OrganizationPending'
 const Privacy = lazy(() => import('./pages/auth/Privacy'))
 const Terms = lazy(() => import('./pages/auth/Terms'))
 const AppLayout = lazy(() => import('./pages/app/AppLayout'))
-import WorkspaceLocalization from './i18n/WorkspaceLocalization'
 const AppHome = lazy(() => import('./pages/app/index'))
+const UploadCV = lazy(() => import('./pages/app/UploadCV'))
+const WizardForm = lazy(() => import('./pages/app/WizardForm'))
 const Explore = lazy(() => import('./pages/app/explore'))
 const Opportunity = lazy(() => import('./pages/app/opportunity'))
 const ParticipationType = lazy(() => import('./pages/app/participation-type'))
@@ -176,9 +178,13 @@ export default function App() {
                 <Route path="/auth/reset-password" element={<ResetPassword />} />
                 <Route path="/auth/organization-verification" element={<OrganizationVerification />} />
                 <Route path="/auth/organization-pending" element={<OrganizationPending />} />
+                <Route path="/upload-cv" element={<UploadCV />} />
+                <Route path="/wizard-form" element={<WizardForm />} />
 
                 <Route path="/app" element={<AppLayout />}>
                     <Route index element={<AppHome />} />
+                    <Route path="upload-cv" element={<UploadCV />} />
+                    <Route path="wizard-form" element={<WizardForm />} />
                     <Route path="explore" element={<Explore />} />
                     <Route path="opportunity" element={<Opportunity />} />
                     <Route path="participation-type" element={<ParticipationType />} />
