@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\EventRegistrationResource;
 use App\Models\Event;
 use App\Models\EventRegistration;
+use App\Models\User;
 use App\Traits\ApiResponse;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -26,8 +27,11 @@ class EventRegistrationController extends Controller
      */
     public function register(Event $event): JsonResponse
     {
-        /** @var \App\Models\User $user */
-        $user = Auth::user();
+        $user = $this->student();
+
+        if (! $user) {
+            return $this->notStudent();
+        }
 
         if (! $event->isPublished()) {
             // Same generic message as the public show() — don't reveal
@@ -76,8 +80,11 @@ class EventRegistrationController extends Controller
      */
     public function cancel(Event $event): JsonResponse
     {
-        /** @var \App\Models\User $user */
-        $user = Auth::user();
+        $user = $this->student();
+
+        if (! $user) {
+            return $this->notStudent();
+        }
 
         $registration = EventRegistration::where('event_id', $event->id)
             ->where('user_id', $user->id)
@@ -99,8 +106,11 @@ class EventRegistrationController extends Controller
      */
     public function myRegistrations(Request $request): JsonResponse
     {
-        /** @var \App\Models\User $user */
-        $user = Auth::user();
+        $user = $this->student();
+
+        if (! $user) {
+            return $this->notStudent();
+        }
 
         $query = EventRegistration::where('user_id', $user->id)
             ->with(['event', 'team']);
@@ -114,5 +124,21 @@ class EventRegistrationController extends Controller
         $registrations->through(fn (EventRegistration $r) => new EventRegistrationResource($r));
 
         return $this->successWithPagination($registrations, 'Your registrations retrieved');
+    }
+
+    /**
+     * auth:sanctum accepts any token type, so an organization token can
+     * reach this controller — only real student accounts are allowed.
+     */
+    private function student(): ?User
+    {
+        $user = Auth::user();
+
+        return $user instanceof User ? $user : null;
+    }
+
+    private function notStudent(): JsonResponse
+    {
+        return $this->error('Only student accounts can register for events.', 403);
     }
 }
