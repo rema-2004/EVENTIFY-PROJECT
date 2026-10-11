@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import AuthLayout from '../../layouts/AuthLayout'
+import { useOnboarding } from '../../context/OnboardingContext'
 
 const isEmail = (v) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)
 const isPhone = (v) => /^[+]?([0-9][\s-()]*){7,15}$/.test(v)
@@ -43,6 +44,7 @@ const ROLES = [
 export default function Login() {
     const { t } = useTranslation()
     const navigate = useNavigate()
+    const { setIsProfileComplete } = useOnboarding()
 
     const [role, setRole] = useState('participant')
     const [identifier, setIdentifier] = useState('')
@@ -96,6 +98,30 @@ export default function Login() {
         const destination = idValue === ADMIN_EMAIL && pwValue === ADMIN_PASSWORD
             ? '/admin/dashboard'
             : roleConfig.dest
+
+        if (destination === '/app') {
+            localStorage.setItem('eventify_current_participant', idValue)
+            try {
+                const completedUsers = JSON.parse(localStorage.getItem('eventify_completed_participants') || '[]')
+                const isReturning = completedUsers.includes(idValue)
+                const hasUnlocked = localStorage.getItem('eventify_has_unlocked_profile') === 'true'
+                const savedProfile = JSON.parse(localStorage.getItem('eventify_userProfile') || '{}')
+                const hasCV = Boolean(savedProfile?.resumeFileName || savedProfile?.setupMethod)
+
+                if (isReturning || hasUnlocked || hasCV) {
+                    setIsProfileComplete(true)
+                    localStorage.setItem('eventify_has_unlocked_profile', 'true')
+                    localStorage.setItem('eventify_isProfileComplete', 'true')
+                } else {
+                    // First time for this participant: show lock screen
+                    setIsProfileComplete(false)
+                    localStorage.setItem('eventify_has_unlocked_profile', 'false')
+                    localStorage.setItem('eventify_isProfileComplete', 'false')
+                }
+            } catch {
+                setIsProfileComplete(false)
+            }
+        }
 
         setSubmitting(true)
         window.setTimeout(() => {

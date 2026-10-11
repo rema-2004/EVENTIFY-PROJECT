@@ -15,11 +15,24 @@ const INITIAL_PROFILE = {
 }
 
 export function OnboardingProvider({ children }) {
-    // Default to true for ready-to-explore demo; explicit 'false' when reset for onboarding test
+    // Participant enters for the first time -> lock screen appears. If returning / has CV / completed, normal access.
     const [isProfileComplete, setIsProfileCompleteState] = useState(() => {
+        const hasUnlocked = localStorage.getItem('eventify_has_unlocked_profile')
+        if (hasUnlocked === 'true') return true
+        if (hasUnlocked === 'false') return false
+
+        // If the participant already has an uploaded CV or completed setup
+        try {
+            const savedProfile = JSON.parse(localStorage.getItem('eventify_userProfile') || '{}')
+            if (savedProfile?.resumeFileName || savedProfile?.setupMethod) {
+                return true
+            }
+        } catch {}
+
         const saved = localStorage.getItem('eventify_isProfileComplete')
-        if (saved !== null) return saved === 'true'
-        return true
+        if (saved === 'true') return true
+        // First-time participant defaults to false (showing the lock screen)
+        return false
     })
 
     const [userProfile, setUserProfile] = useState(() => {
@@ -55,8 +68,29 @@ export function OnboardingProvider({ children }) {
         localStorage.setItem('eventify_userProfile', JSON.stringify(userProfile))
     }, [userProfile])
 
+    const markParticipantCompleted = () => {
+        try {
+            const current = localStorage.getItem('eventify_current_participant')
+            if (current) {
+                const completedUsers = JSON.parse(localStorage.getItem('eventify_completed_participants') || '[]')
+                if (!completedUsers.includes(current)) {
+                    completedUsers.push(current)
+                    localStorage.setItem('eventify_completed_participants', JSON.stringify(completedUsers))
+                }
+            }
+        } catch {}
+    }
+
     const setIsProfileComplete = (status) => {
-        setIsProfileCompleteState(Boolean(status))
+        const flag = Boolean(status)
+        setIsProfileCompleteState(flag)
+        localStorage.setItem('eventify_isProfileComplete', String(flag))
+        if (flag) {
+            localStorage.setItem('eventify_has_unlocked_profile', 'true')
+            markParticipantCompleted()
+        } else {
+            localStorage.setItem('eventify_has_unlocked_profile', 'false')
+        }
     }
 
     const updateProfile = (data) => {
@@ -100,14 +134,25 @@ export function OnboardingProvider({ children }) {
         })
         setIsProfileCompleteState(true)
         localStorage.setItem('eventify_isProfileComplete', 'true')
+        localStorage.setItem('eventify_has_unlocked_profile', 'true')
+        markParticipantCompleted()
     }
 
     const resetProfile = () => {
         setUserProfile(INITIAL_PROFILE)
         setIsProfileCompleteState(false)
         localStorage.setItem('eventify_isProfileComplete', 'false')
+        localStorage.setItem('eventify_has_unlocked_profile', 'false')
         localStorage.removeItem('eventify_userProfile')
         localStorage.removeItem(PROFILE_KEY)
+        try {
+            const current = localStorage.getItem('eventify_current_participant')
+            if (current) {
+                const completedUsers = JSON.parse(localStorage.getItem('eventify_completed_participants') || '[]')
+                const filtered = completedUsers.filter((u) => u !== current)
+                localStorage.setItem('eventify_completed_participants', JSON.stringify(filtered))
+            }
+        } catch {}
     }
 
     return (
