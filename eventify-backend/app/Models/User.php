@@ -115,6 +115,11 @@ class User extends Authenticatable
         return $this->hasMany(ChallengeSubmission::class);
     }
 
+    public function savedOpportunities(): HasMany
+    {
+        return $this->hasMany(SavedOpportunity::class);
+    }
+
     // ── Query scopes ──────────────────────────────────────────
 
     public function scopeActive(Builder $query): Builder

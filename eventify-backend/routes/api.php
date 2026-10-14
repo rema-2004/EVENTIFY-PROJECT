@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\V1\EventController;
 use App\Http\Controllers\Api\V1\EventRegistrationController;
 use App\Http\Controllers\Api\V1\CourseController;
 use App\Http\Controllers\Api\V1\ChallengeSubmissionController;
+use App\Http\Controllers\Api\V1\SavedOpportunityController;
 use App\Http\Controllers\Api\V1\Admin\OrganizationManagementController;
 use App\Http\Controllers\Api\V1\Admin\EventManagementController;
 use App\Http\Controllers\Api\V1\Organization\EventController as OrgEventController;
@@ -59,6 +60,11 @@ Route::prefix('v1')->group(function () {
         Route::post('/my/challenge-submissions', [ChallengeSubmissionController::class, 'store']);
         Route::patch('/my/challenge-submissions/{challengeSubmission}', [ChallengeSubmissionController::class, 'update']);
         Route::delete('/my/challenge-submissions/{challengeSubmission}', [ChallengeSubmissionController::class, 'destroy']);
+
+        // Student's saved opportunities (bookmarked events)
+        Route::get('/my/saved-opportunities', [SavedOpportunityController::class, 'index']);
+        Route::post('/events/{event}/save', [SavedOpportunityController::class, 'store']);
+        Route::delete('/events/{event}/save', [SavedOpportunityController::class, 'destroy']);
     });
 
     // — Public Events routes (no auth required) ——————————————————————
