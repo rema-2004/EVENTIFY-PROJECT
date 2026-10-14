@@ -5,6 +5,7 @@ use App\Http\Controllers\Api\V1\OrgAuthController;
 use App\Http\Controllers\Api\V1\EventController;
 use App\Http\Controllers\Api\V1\EventRegistrationController;
 use App\Http\Controllers\Api\V1\CourseController;
+use App\Http\Controllers\Api\V1\ChallengeSubmissionController;
 use App\Http\Controllers\Api\V1\Admin\OrganizationManagementController;
 use App\Http\Controllers\Api\V1\Admin\EventManagementController;
 use App\Http\Controllers\Api\V1\Organization\EventController as OrgEventController;
@@ -52,6 +53,12 @@ Route::prefix('v1')->group(function () {
         Route::post('/my/courses', [CourseController::class, 'store']);
         Route::patch('/my/courses/{course}', [CourseController::class, 'update']);
         Route::delete('/my/courses/{course}', [CourseController::class, 'destroy']);
+
+        // Student's own challenge submissions
+        Route::get('/my/challenge-submissions', [ChallengeSubmissionController::class, 'index']);
+        Route::post('/my/challenge-submissions', [ChallengeSubmissionController::class, 'store']);
+        Route::patch('/my/challenge-submissions/{challengeSubmission}', [ChallengeSubmissionController::class, 'update']);
+        Route::delete('/my/challenge-submissions/{challengeSubmission}', [ChallengeSubmissionController::class, 'destroy']);
     });
 
     // — Public Events routes (no auth required) ——————————————————————
