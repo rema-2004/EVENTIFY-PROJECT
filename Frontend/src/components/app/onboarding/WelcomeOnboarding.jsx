@@ -1,8 +1,10 @@
+import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useLanguage } from '../../../hooks/useLanguage'
 import { useOnboarding } from '../../../context/OnboardingContext'
 
 export default function WelcomeOnboarding() {
+    const [hoveredCard, setHoveredCard] = useState(null)
     const navigate = useNavigate()
     const { language } = useLanguage()
     const ar = language === 'ar'
