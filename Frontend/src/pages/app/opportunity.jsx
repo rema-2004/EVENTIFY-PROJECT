@@ -180,8 +180,8 @@ export default function Opportunity() {
                                 </span>
                             </div>
                             <Link
-                                className="block w-full text-center py-3.5 rounded-full font-label-lg shadow-md active:scale-95 transition-all"
-                                style={{ backgroundColor: '#FF4D2E', color: '#fff' }}
+                                className="block w-full text-center py-3.5 rounded-full font-label-lg shadow-md active:scale-95 transition-all font-bold text-white"
+                                style={{ backgroundColor: '#FF4D2E' }}
                                 to="/app/participation-type"
                             >
                                 {ar ? 'تقدّم الآن' : 'Apply Now'}
