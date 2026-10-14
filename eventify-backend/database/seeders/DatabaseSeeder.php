@@ -25,5 +25,6 @@ class DatabaseSeeder extends Seeder
         $this->call(EventSeeder::class);
         $this->call(ProfileDataSeeder::class);
         $this->call(SavedOpportunitySeeder::class);
+        $this->call(NotificationSeeder::class);
     }
 }

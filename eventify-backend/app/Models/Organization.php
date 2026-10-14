@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\DatabaseNotification;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
@@ -41,6 +42,18 @@ class Organization extends Authenticatable
             'password' => 'hashed',
             'verified_at' => 'datetime',
         ];
+    }
+
+    protected static function booted(): void
+    {
+        // The notifications table uses a polymorphic relation (no foreign
+        // key), so the database cannot cascade-delete its rows. Clean them
+        // up on permanent deletion only; a soft-deleted account keeps them.
+        static::forceDeleted(function (self $organization) {
+            DatabaseNotification::where('notifiable_type', $organization->getMorphClass())
+                ->where('notifiable_id', $organization->getKey())
+                ->delete();
+        });
     }
 
     public function isApproved(): bool

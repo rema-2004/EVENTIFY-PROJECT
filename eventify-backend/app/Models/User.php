@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\DatabaseNotification;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
@@ -46,6 +47,18 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    protected static function booted(): void
+    {
+        // The notifications table uses a polymorphic relation (no foreign
+        // key), so the database cannot cascade-delete its rows. Clean them
+        // up on permanent deletion only; a soft-deleted account keeps them.
+        static::forceDeleted(function (self $user) {
+            DatabaseNotification::where('notifiable_type', $user->getMorphClass())
+                ->where('notifiable_id', $user->getKey())
+                ->delete();
+        });
     }
 
     public function isAdmin(): bool
@@ -88,7 +101,7 @@ class User extends Authenticatable
         return static::where('phone', static::normalizePhone($login))->first();
     }
 
-        // ── Relationships ──────────────────────────────────────────
+    // ── Relationships ──────────────────────────────────────────
 
     public function registrations(): HasMany
     {
