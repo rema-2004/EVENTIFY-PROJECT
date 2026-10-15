@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\EventRegistrationResource;
+use App\Models\AuditLog;
 use App\Models\Event;
 use App\Models\EventRegistration;
 use App\Models\User;
@@ -64,6 +65,15 @@ class EventRegistrationController extends Controller
             ]
         );
 
+        AuditLog::record(
+            type: AuditLog::TYPE_CREATE,
+            action: 'Registered for Event',
+            location: AuditLog::LOCATION_EVENTS,
+            actor: $user,
+            target: $event,
+            details: 'Participant registered for an event.',
+        );
+
         $registration->load(['event', 'team']);
 
         return $this->success(
@@ -95,6 +105,15 @@ class EventRegistrationController extends Controller
         }
 
         $registration->update(['status' => EventRegistration::STATUS_CANCELLED]);
+
+        AuditLog::record(
+            type: AuditLog::TYPE_UPDATE,
+            action: 'Cancelled Registration',
+            location: AuditLog::LOCATION_EVENTS,
+            actor: $user,
+            target: $event,
+            details: 'Participant cancelled their registration for an event.',
+        );
 
         return $this->success(null, 'Registration cancelled successfully');
     }
