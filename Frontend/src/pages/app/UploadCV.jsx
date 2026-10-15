@@ -269,7 +269,7 @@ export default function UploadCV() {
                             <span>{ar ? 'تحليل السيرة الذاتية الذكي بالذكاء الاصطناعي' : 'AI Resume Parsing & Extraction'}</span>
                         </div>
                         <h1 className="text-3xl sm:text-4xl font-black text-white">
-                            Upload Your Resume
+                            {ar ? 'رفع السيرة الذاتية' : 'Upload Your Resume'}
                         </h1>
                         <p className="text-sm text-gray-400 max-w-md mx-auto leading-relaxed">
                             {ar

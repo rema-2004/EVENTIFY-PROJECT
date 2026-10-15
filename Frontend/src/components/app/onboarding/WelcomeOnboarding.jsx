@@ -96,10 +96,10 @@ export default function WelcomeOnboarding() {
 
                         <div className="space-y-2 mb-6">
                             <h2 className="text-2xl font-black text-slate-900 dark:text-white group-hover:text-[#FF4D2E] transition-colors">
-                                Upload Your Resume
+                                {ar ? 'رفع السيرة الذاتية' : 'Upload Your Resume'}
                             </h2>
                             <p className="text-sm text-[#D83A1E] dark:text-[#FF8566] font-bold">
-                                {ar ? 'رفع السيرة الذاتية الذكية' : 'AI Resume Parsing'}
+                                {ar ? 'استخراج وتحليل ذكي بالذكاء الاصطناعي' : 'AI Resume Parsing'}
                             </p>
                             <p className="text-xs text-slate-600 dark:text-gray-400 leading-relaxed pt-1 font-medium">
                                 {ar
@@ -130,7 +130,7 @@ export default function WelcomeOnboarding() {
                         className="w-full mt-4 py-3.5 px-6 rounded-xl bg-gradient-to-r from-[#FF4D2E] to-[#FF6B4A] hover:from-[#e03e22] hover:to-[#FF4D2E] text-white font-bold text-sm shadow-[0_4px_16px_rgba(255,77,46,0.35)] transition-all active:scale-95 flex items-center justify-center gap-2 group-hover:shadow-[0_4px_22px_rgba(255,77,46,0.5)] cursor-pointer"
                     >
                         <span className="material-symbols-outlined text-[18px]">upload</span>
-                        <span>Upload PDF / Word</span>
+                        <span>{ar ? 'رفع ملف PDF أو Word' : 'Upload PDF / Word'}</span>
                     </button>
                 </div>
 
@@ -157,10 +157,10 @@ export default function WelcomeOnboarding() {
 
                         <div className="space-y-2 mb-6">
                             <h2 className="text-2xl font-black text-slate-900 dark:text-white group-hover:text-[#FF4D2E] dark:group-hover:text-[#FF8566] transition-colors">
-                                Build Manually
+                                {ar ? 'إدخال البيانات يدوياً' : 'Build Manually'}
                             </h2>
                             <p className="text-sm text-slate-600 dark:text-gray-400 font-bold">
-                                {ar ? 'عين بياناتك (بدون سيرة ذاتية)' : 'No Resume Required'}
+                                {ar ? 'بدون سيرة ذاتية (استبيان سريع)' : 'No Resume Required'}
                             </p>
                             <p className="text-xs text-slate-600 dark:text-gray-400 leading-relaxed pt-1 font-medium">
                                 {ar
@@ -191,7 +191,7 @@ export default function WelcomeOnboarding() {
                         className="w-full mt-4 py-3.5 px-6 rounded-xl bg-slate-900 hover:bg-[#FF4D2E] text-white border border-slate-900 hover:border-[#FF4D2E] dark:bg-white/10 dark:hover:bg-[#FF4D2E]/20 dark:text-white dark:hover:text-[#FF4D2E] dark:border-white/20 dark:hover:border-[#FF4D2E]/50 font-bold text-sm transition-all active:scale-95 flex items-center justify-center gap-2 shadow-sm cursor-pointer"
                     >
                         <span className="material-symbols-outlined text-[18px]">assignment_turned_in</span>
-                        <span>{ar ? 'ابدأ بالأسئلة السريعة' : 'Fill Form'}</span>
+                        <span>{ar ? 'ابدأ بالأسئلة السريعة' : 'Start Quick Questions'}</span>
                     </button>
                 </div>
             </div>
@@ -234,11 +234,11 @@ export default function WelcomeOnboarding() {
                         {/* Top Teaser */}
                         <div className="relative z-10 flex justify-between items-start">
                             <span className="px-2.5 py-0.5 rounded-full bg-white/15 text-white/90 text-[11px] font-semibold tracking-wider uppercase">
-                                HACKATHON
+                                {ar ? 'هاكاثون' : 'HACKATHON'}
                             </span>
                             <div className="px-2.5 py-0.5 rounded-full bg-[#FF4D2E]/30 text-[#FF8566] text-xs font-bold flex items-center gap-1">
                                 <span className="material-symbols-outlined text-[13px]">lock</span>
-                                <span>98% Match</span>
+                                <span>{ar ? 'مطابقة 98%' : '98% Match'}</span>
                             </div>
                         </div>
 
@@ -248,7 +248,7 @@ export default function WelcomeOnboarding() {
                                 <span className="material-symbols-outlined text-2xl animate-pulse">lock</span>
                             </div>
                             <span className="text-sm font-bold text-white group-hover:text-[#FF4D2E] transition-colors">
-                                Prepare your profile to unlock
+                                {ar ? 'أكمل ملفك الشخصي لفتح هذه الفعالية' : 'Prepare your profile to unlock'}
                             </span>
                             <span className="text-xs text-slate-300">
                                 {ar ? 'اضغط هنا لرفع سيرتك الذاتية وفتح الفعالية' : 'Click to upload resume & unlock'}
@@ -279,11 +279,11 @@ export default function WelcomeOnboarding() {
                         {/* Top Teaser */}
                         <div className="relative z-10 flex justify-between items-start">
                             <span className="px-2.5 py-0.5 rounded-full bg-white/15 text-white/90 text-[11px] font-semibold tracking-wider uppercase">
-                                DATA SPRINT
+                                {ar ? 'تحدي بيانات' : 'DATA SPRINT'}
                             </span>
                             <div className="px-2.5 py-0.5 rounded-full bg-purple-500/30 text-purple-200 text-xs font-bold flex items-center gap-1">
                                 <span className="material-symbols-outlined text-[13px]">lock</span>
-                                <span>98% Match</span>
+                                <span>{ar ? 'مطابقة 98%' : '98% Match'}</span>
                             </div>
                         </div>
 
@@ -293,7 +293,7 @@ export default function WelcomeOnboarding() {
                                 <span className="material-symbols-outlined text-2xl animate-pulse">lock</span>
                             </div>
                             <span className="text-sm font-bold text-white group-hover:text-[#FF8566] transition-colors">
-                                Prepare your profile to unlock
+                                {ar ? 'أكمل ملفك الشخصي لفتح هذه الفعالية' : 'Prepare your profile to unlock'}
                             </span>
                             <span className="text-xs text-slate-300">
                                 {ar ? 'اضغط هنا للبدء بالأسئلة السريعة وفتح الفعالية' : 'Click to fill wizard & unlock'}

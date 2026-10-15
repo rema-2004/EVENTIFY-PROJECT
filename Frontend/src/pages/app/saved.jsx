@@ -1,54 +1,98 @@
 import AppFooter from '../../components/app/AppFooter'
 import AppPageHead from '../../components/app/AppPageHead'
 import { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { useLanguage } from '../../hooks/useLanguage'
 
 const INITIAL_ITEMS = [
     {
         id: 1,
-        img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuB9CEnFNI0sa64wtdt1xcbuCO2ctuePljYf3b0mGoAfsaVbTQZl6EUEKGeq_A-lCje6-84UGOy-xM_EX1fj34sF-YWMO-_0SG4_iedT1vjYrRw5UpEFxOlngZ_cDhCxJRFxyyChSuzfbQzaifbDrY-ySQm0SZNqdXFNpNdzVSiaboP2NAJ4pYTV-P32G1lYqug8kLksnCytiGNYKiUHGIacjDYyZIZ5HHucNTeyCLWQmzn3HRdmrm8n18EIgGN0AobDjfqjTG3DQkjK',
+        slug: 'cyber-sentinel-ctf',
+        categoryKey: 'competition',
+        participationType: 'solo',
+        img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBv-V-8GjFWlxuhqQq9nPPBCQKNIYRDy0-x7U8GZDqCxf3lpcSiGNgXTpm9Dp9vtBNtYRJM9-o_XfAV_yWpqjCDBHhA3Xin8gTKbYsCIpYqce02UMEzafn25IYfHI6hd-IasfwMRqIx3qADrfqnj7m-D_PHpWiW6GRyb70Zw9C6yT7Xu6xsRz80sxxnJdXORtOzWdcpjojOlvDh2cdJULC_KUcENGeijXkCPjAA02-axN9qR_MrffMvhq-xjwZhj4cy_sT0Lsf7llBS',
         catColor: 'bg-secondary',
-        cat: { en: 'HACKATHON', ar: 'هاكاثون' },
-        title: { en: 'Global AI Innovation Challenge', ar: 'تحدي الابتكار العالمي بالذكاء الاصطناعي' },
-        sub: { en: 'By TechGenius Labs · Remote', ar: 'بواسطة TechGenius Labs · عن بُعد' },
+        cat: { en: 'CTF CHALLENGE', ar: 'تحدي أمني فردي' },
+        title: { en: 'Cyber Sentinel Solo CTF', ar: 'مسابقة Cyber Sentinel CTF الفردية' },
+        sub: { en: 'Solo Participation Only · Cybersecurity CTF', ar: 'مشاركة فردية فقط · اختبار أمني فردي' },
         tags: [
             { label: { en: 'Competition', ar: 'مسابقة' }, cls: 'bg-surface-container text-on-surface' },
-            { label: { en: '98%', ar: '98%' }, cls: 'bg-secondary/10 text-secondary font-mono' },
+            { label: { en: 'Solo Only', ar: 'فردي فقط' }, cls: 'bg-amber-500/10 text-amber-700 dark:text-amber-400 font-bold' },
+            { label: { en: '88%', ar: '88%' }, cls: 'bg-secondary/10 text-secondary font-mono' },
         ],
     },
     {
         id: 2,
+        slug: 'global-ai-innovation-challenge',
+        categoryKey: 'competition',
+        participationType: 'team',
+        img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuB9CEnFNI0sa64wtdt1xcbuCO2ctuePljYf3b0mGoAfsaVbTQZl6EUEKGeq_A-lCje6-84UGOy-xM_EX1fj34sF-YWMO-_0SG4_iedT1vjYrRw5UpEFxOlngZ_cDhCxJRFxyyChSuzfbQzaifbDrY-ySQm0SZNqdXFNpNdzVSiaboP2NAJ4pYTV-P32G1lYqug8kLksnCytiGNYKiUHGIacjDYyZIZ5HHucNTeyCLWQmzn3HRdmrm8n18EIgGN0AobDjfqjTG3DQkjK',
+        catColor: 'bg-secondary',
+        cat: { en: 'HACKATHON', ar: 'هاكاثون جماعي' },
+        title: { en: 'Global AI Innovation Challenge', ar: 'تحدي الابتكار العالمي بالذكاء الاصطناعي' },
+        sub: { en: 'By TechGenius Labs · Remote · Teams Only', ar: 'بواسطة TechGenius Labs · عن بُعد · فرق فقط' },
+        tags: [
+            { label: { en: 'Competition', ar: 'مسابقة' }, cls: 'bg-surface-container text-on-surface' },
+            { label: { en: 'Team Only', ar: 'جماعي فقط' }, cls: 'bg-[#FF4D2E]/10 text-[#FF4D2E] font-bold' },
+            { label: { en: '98%', ar: '98%' }, cls: 'bg-secondary/10 text-secondary font-mono' },
+        ],
+    },
+    {
+        id: 3,
+        slug: 'deep-learning-mastery',
+        categoryKey: 'workshop',
+        participationType: 'both',
         img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBcUXLF60F3KbDnIVZepTTte_yzkhe3rkuMtXTXTMQzA1gyVuzXN1NQ0DXC7XHQBDIHEA2TXLK8EoSvioCS5PoWNoZKnVI7YeLCAxqcRtKE-cfSsrD6X3yBiiGI_J0DdnCu4vgHVOf7tn5UW93gDceqUiZ4hVu5ZCvSuDbEd3Dm8uTINHyELfvrJM4AvcW6lRAm2zAmGTlp9N7rNMUMizYToAN1_rTfY1KtEjsmeIx--zlkOzEz07DRgirbjC8bnSBfxNFTTtVBYuqf',
         catColor: '#FF4D2E',
         cat: { en: 'WORKSHOP', ar: 'ورشة عمل' },
         title: { en: 'Deep Learning Mastery', ar: 'إتقان التعلم العميق' },
         sub: { en: 'University of Technology · Hybrid', ar: 'جامعة التكنولوجيا · هجين' },
         tags: [
-            { label: { en: 'Workshop', ar: 'ورشة' }, cls: 'bg-surface-container text-on-surface' },
-            { label: { en: 'Hands-on', ar: 'تطبيقي' }, cls: 'bg-secondary/10 text-secondary' },
+            { label: { en: 'Workshop', ar: 'ورشة عمل' }, cls: 'bg-surface-container text-on-surface' },
+            { label: { en: 'Hands-on', ar: 'تطبيقي' }, cls: 'bg-blue-500/10 text-blue-700 dark:text-blue-400 font-bold' },
         ],
     },
     {
-        id: 3,
-        img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuAoXFluzheWmZ490MELdToAMEYpR_txVKV30osgae_hCJtZOTitQ7q-hlRINJEb6yu8WczfucSzRFeg7_ASopSg4PYi40bcSgLBAzpyDWcgZltV0lVaadKj9Hxg_0-MIvEynOlpWfO6oad4LDePXnQqUogQYAUOomnsxNQRm0sYppi6tcEF-XVtGAmZwLlJ7Zzvf2ojEvEnU0EwWkAE_qpAYRfUYUWLDeKx1nnQtM-6DxX8uCm13GfTKpd5tCt-XHKS5s04qO3jTwFA',
-        catColor: 'bg-secondary',
-        cat: { en: 'COMPETITION', ar: 'مسابقة' },
-        title: { en: 'Frontend Wizards 2024', ar: 'Frontend Wizards 2024' },
-        sub: { en: 'DevCommunity Hub · London, UK', ar: 'DevCommunity Hub · لندن، المملكة المتحدة' },
+        id: 4,
+        slug: 'product-strategy-course',
+        categoryKey: 'course',
+        participationType: 'solo',
+        img: null,
+        catColor: 'bg-primary',
+        cat: { en: 'COURSE', ar: 'دورة تدريبية' },
+        title: { en: 'Product Strategy Course', ar: 'دورة استراتيجية المنتج' },
+        sub: { en: '6-Week Certificate Program', ar: 'برنامج شهادة 6 أسابيع' },
         tags: [
-            { label: { en: 'Competition', ar: 'مسابقة' }, cls: 'bg-surface-container text-on-surface' },
-            { label: { en: 'Top 10', ar: 'أفضل 10' }, cls: 'bg-secondary/10 text-secondary' },
+            { label: { en: 'Course', ar: 'دورة' }, cls: 'bg-surface-container text-on-surface' },
+            { label: { en: 'Certified', ar: 'معتمدة' }, cls: 'bg-purple-500/10 text-purple-700 dark:text-purple-400 font-bold' },
         ],
     },
 ]
 
 export default function Saved() {
+    const navigate = useNavigate()
     const { language } = useLanguage()
     const ar = language === 'ar'
 
     const [items, setItems] = useState(INITIAL_ITEMS)
     const [toast, setToast] = useState(null)
+
+    const openItem = (item) => {
+        const compData = {
+            id: item.slug || `saved-${item.id}`,
+            title: ar ? item.title.ar : item.title.en,
+            type: ar ? item.cat.ar : item.cat.en,
+            sub: ar ? item.sub.ar : item.sub.en,
+            cat: item.categoryKey || 'competition',
+            participationType: item.participationType || 'solo',
+            img: item.img || null,
+            match: 95,
+        }
+        try {
+            sessionStorage.setItem('eventify_selected_competition', JSON.stringify(compData))
+        } catch {}
+        navigate('/app/opportunity', { state: { competition: compData } })
+    }
 
     const showToast = (msg) => {
         setToast(msg)
@@ -173,13 +217,14 @@ export default function Saved() {
                                             ))}
                                         </div>
                                         <div className={`flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-center ${ar ? 'sm:flex-row-reverse' : ''}`}>
-                                            <Link
-                                                className="inline-flex items-center justify-center rounded-full px-4 py-2 font-label-md text-label-md hover:shadow-lg transition-all"
-                                                style={{ backgroundColor: '#FF4D2E', color: '#ffffff' }}
-                                                to="/app/opportunity"
+                                            <button
+                                                type="button"
+                                                className="inline-flex items-center justify-center rounded-full px-4 py-2 font-label-md text-label-md hover:shadow-lg transition-all text-white cursor-pointer"
+                                                style={{ backgroundColor: '#FF4D2E' }}
+                                                onClick={() => openItem(item)}
                                             >
                                                 {ar ? 'اذهب للفرصة' : 'Go to opportunity'}
-                                            </Link>
+                                            </button>
                                             <button
                                                 className="inline-flex items-center justify-center rounded-full border border-outline-variant px-4 py-2 text-on-surface font-label-md text-label-md hover:border-primary hover:text-primary hover:shadow-sm transition-all"
                                                 onClick={() => removeItem(item.id)}

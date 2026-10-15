@@ -1,15 +1,78 @@
 import AppLangToggle from '../../components/app/AppLangToggle'
 import AppFooter from '../../components/app/AppFooter'
 import AppPageHead from '../../components/app/AppPageHead'
-import { useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { useState, useEffect } from 'react'
+import { Link, useNavigate, useLocation } from 'react-router-dom'
 import { useLanguage } from '../../hooks/useLanguage'
 
 export default function ParticipationType() {
     const { language } = useLanguage()
     const ar = language === 'ar'
     const navigate = useNavigate()
+    const location = useLocation()
+    const compFromState = location.state?.competition
+
+    // Track simulated override if user toggles buttons
+    const [simulatedType, setSimulatedType] = useState(null)
+
+    const getStoredComp = () => {
+        try {
+            const raw = sessionStorage.getItem('eventify_selected_competition')
+            return raw ? JSON.parse(raw) : null
+        } catch {
+            return null
+        }
+    }
+
+    // Current competition: always prefers navigated state, then stored, then fallback
+    const comp = compFromState || getStoredComp() || {
+        id: 'global-ai-innovation-challenge',
+        title: ar ? 'تحدي الابتكار العالمي بالذكاء الاصطناعي' : 'Global AI Innovation Challenge',
+        cat: 'competition',
+        participationType: 'team',
+    }
+
+    // Reset simulatedType whenever comp changes
+    useEffect(() => {
+        setSimulatedType(null)
+    }, [comp?.id, comp?.participationType])
+
+    const participationType = simulatedType || comp?.participationType || 'team'
     const [selected, setSelected] = useState(null)
+
+    const isOptionAllowed = (key) => {
+        // عند اختيار مسابقة تيم: يتعطل الخيار الفردي
+        if (participationType === 'team') {
+            return key !== 'solo'
+        }
+        // عند اختيار مسابقة فردية: يتعطل خيار الفريق وخيار إنشاء فريق
+        if (participationType === 'solo') {
+            return key === 'solo'
+        }
+        // عند اختيار كلاهما: جميع الخيارات متاحة ومفعلة
+        return true
+    }
+
+    const getDisabledReason = (key) => {
+        if (participationType === 'team' && key === 'solo') {
+            return ar
+                ? '🔒 معطّل: المسابقة تشترط المشاركة ضمن فريق'
+                : '🔒 Disabled: Team required'
+        }
+        if (participationType === 'solo' && (key === 'team' || key === 'create')) {
+            return ar
+                ? '🔒 معطّل: المسابقة مخصصة للمتسابقين الأفراد فقط'
+                : '🔒 Disabled: Solo participants only'
+        }
+        return ''
+    }
+
+    // إعادة ضبط التحديد تلقائياً إذا أصبح الخيار المختار غير متاح
+    useEffect(() => {
+        if (selected && !isOptionAllowed(selected)) {
+            setSelected(null)
+        }
+    }, [participationType])
 
     const OPTIONS = [
         {
@@ -186,7 +249,56 @@ export default function ParticipationType() {
                 <div className="fixed top-12 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-gradient-to-b from-[#FF4D2E]/10 via-[#FF4D2E]/5 to-transparent blur-3xl pointer-events-none -z-10" />
 
                 <main className="flex-grow flex items-center justify-center p-4 sm:p-8">
-                    <div className="w-full max-w-5xl mx-auto space-y-10 my-auto">
+                    <div className="w-full max-w-5xl mx-auto space-y-8 my-auto">
+
+                        {/* Active Competition Indicator & Simulation Switcher */}
+                        <div className="max-w-3xl mx-auto p-4 rounded-2xl bg-surface-container-low/70 border border-outline-variant/40 flex flex-col sm:flex-row items-center justify-between gap-3 text-sm shadow-sm backdrop-blur">
+                            <div className={`flex items-center gap-3 ${ar ? 'flex-row-reverse text-right' : ''}`}>
+                                <div className="w-10 h-10 rounded-xl bg-primary/10 text-primary flex items-center justify-center shrink-0">
+                                    <span className="material-symbols-outlined text-[22px]">emoji_events</span>
+                                </div>
+                                <div>
+                                    <div className="font-bold text-on-surface leading-tight text-base">
+                                        {comp.title}
+                                    </div>
+                                    <div className={`text-xs text-on-surface-variant flex items-center gap-1.5 mt-0.5 ${ar ? 'flex-row-reverse' : ''}`}>
+                                        <span>{ar ? 'نوع المشاركة المسموح:' : 'Allowed Mode:'}</span>
+                                        <span className="font-bold text-primary">
+                                            {participationType === 'team'
+                                                ? (ar ? '👥 تيم (يتعطل الفردي)' : '👥 Team (Solo Disabled)')
+                                                : participationType === 'solo'
+                                                ? (ar ? '👤 فردي (يتعطل التيم)' : '👤 Solo (Teams Disabled)')
+                                                : (ar ? '👥+👤 كلاهما (جميع الخيارات مفعلة)' : '👥+👤 Both (All Active)')}
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* Live Simulation Switcher (Quick test pills) */}
+                            <div className={`flex items-center gap-1 bg-surface rounded-xl p-1 border border-outline-variant/40 shrink-0 ${ar ? 'flex-row-reverse' : ''}`}>
+                                <span className="text-[10px] font-bold uppercase tracking-wider text-on-surface-variant px-1.5 hidden sm:inline">
+                                    {ar ? 'محاكاة:' : 'Test:'}
+                                </span>
+                                {[
+                                    { val: 'team', labelAr: 'تيم', labelEn: 'Team' },
+                                    { val: 'solo', labelAr: 'فردي', labelEn: 'Solo' },
+                                    { val: 'both', labelAr: 'كلاهما', labelEn: 'Both' },
+                                ].map((t) => (
+                                    <button
+                                        key={t.val}
+                                        type="button"
+                                        className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
+                                            participationType === t.val
+                                                ? 'bg-[#FF4D2E] text-white shadow-sm'
+                                                : 'text-on-surface-variant hover:text-on-surface hover:bg-surface-container'
+                                        }`}
+                                        onClick={() => setSimulatedType(t.val)}
+                                    >
+                                        {ar ? t.labelAr : t.labelEn}
+                                    </button>
+                                ))}
+                            </div>
+                        </div>
 
                         {/* Step indicator + heading */}
                         <div className="text-center space-y-3">
@@ -202,8 +314,8 @@ export default function ParticipationType() {
                                 </h1>
                                 <p className="text-on-surface-variant text-base max-w-lg mx-auto">
                                     {ar
-                                        ? 'اختر شكل المشاركة الأنسب لك. يمكنك خوض المسابقة منفرداً أو ضمن فريق.'
-                                        : 'Select your preferred formation mode. Compete solo or assemble/join a team.'}
+                                        ? 'اختر شكل المشاركة الأنسب لك وفقاً لشروط وقواعد هذه المسابقة.'
+                                        : 'Select your preferred formation mode according to this competition rules.'}
                                 </p>
                             </div>
                         </div>
@@ -211,28 +323,51 @@ export default function ParticipationType() {
                         {/* 3 Rich Visual Cards Grid */}
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                             {OPTIONS.map((opt) => {
-                                const isActive = selected === opt.key
+                                const allowed = isOptionAllowed(opt.key)
+                                const isActive = selected === opt.key && allowed
+                                const disabledReason = !allowed ? getDisabledReason(opt.key) : null
+
                                 return (
                                     <div
                                         key={opt.key}
                                         role="button"
-                                        tabIndex={0}
-                                        className={`group relative p-6 rounded-3xl border-2 transition-all duration-300 text-left flex flex-col justify-between cursor-pointer ${
+                                        tabIndex={allowed ? 0 : -1}
+                                        aria-disabled={!allowed}
+                                        className={`group relative p-6 rounded-3xl border-2 transition-all duration-300 text-left flex flex-col justify-between ${
                                             ar ? 'text-right' : 'text-left'
                                         } ${
-                                            isActive
-                                                ? 'border-[#FF4D2E] bg-surface/95 dark:bg-slate-900/95 -translate-y-2 shadow-2xl shadow-[#FF4D2E]/15 ring-4 ring-[#FF4D2E]/10'
-                                                : 'bg-surface/80 dark:bg-slate-900/80 border-outline-variant/60 hover:border-outline-variant hover:bg-surface hover:-translate-y-1.5 shadow-sm'
+                                            !allowed
+                                                ? 'opacity-40 grayscale-[60%] cursor-not-allowed bg-surface-container-low/40 border-dashed border-outline-variant select-none'
+                                                : isActive
+                                                ? 'border-[#FF4D2E] bg-surface/95 dark:bg-slate-900/95 -translate-y-2 shadow-2xl shadow-[#FF4D2E]/15 ring-4 ring-[#FF4D2E]/10 cursor-pointer'
+                                                : 'bg-surface/80 dark:bg-slate-900/80 border-outline-variant/60 hover:border-outline-variant hover:bg-surface hover:-translate-y-1.5 shadow-sm cursor-pointer'
                                         }`}
-                                        onClick={() => setSelected(opt.key)}
-                                        onKeyDown={(e) => e.key === 'Enter' && setSelected(opt.key)}
+                                        onClick={() => {
+                                            if (!allowed) return
+                                            setSelected(opt.key)
+                                        }}
+                                        onKeyDown={(e) => {
+                                            if (allowed && e.key === 'Enter') setSelected(opt.key)
+                                        }}
                                     >
                                         {/* Active Checkmark Pill */}
-                                        <div className={`absolute top-4 ${ar ? 'left-4' : 'right-4'} z-20 transition-all duration-300 ${isActive ? 'opacity-100 scale-100' : 'opacity-0 scale-75'}`}>
-                                            <div className="w-6 h-6 rounded-full bg-[#FF4D2E] text-white flex items-center justify-center shadow-md">
-                                                <span className="material-symbols-outlined text-[16px]">check</span>
+                                        {allowed && (
+                                            <div className={`absolute top-4 ${ar ? 'left-4' : 'right-4'} z-20 transition-all duration-300 ${isActive ? 'opacity-100 scale-100' : 'opacity-0 scale-75'}`}>
+                                                <div className="w-6 h-6 rounded-full bg-[#FF4D2E] text-white flex items-center justify-center shadow-md">
+                                                    <span className="material-symbols-outlined text-[16px]">check</span>
+                                                </div>
                                             </div>
-                                        </div>
+                                        )}
+
+                                        {/* Lock Badge if Disabled */}
+                                        {!allowed && (
+                                            <div className={`absolute top-4 ${ar ? 'left-4' : 'right-4'} z-20`}>
+                                                <div className="px-2.5 py-1 rounded-full bg-error/15 border border-error/30 text-error flex items-center gap-1 font-bold text-[11px] shadow-sm">
+                                                    <span className="material-symbols-outlined text-[14px]">lock</span>
+                                                    <span>{ar ? 'معطّل' : 'Locked'}</span>
+                                                </div>
+                                            </div>
+                                        )}
 
                                         {/* Graphic Illustration Container */}
                                         <div className="mb-6">
@@ -242,21 +377,29 @@ export default function ParticipationType() {
                                         {/* Content Block */}
                                         <div className="space-y-2 mb-6 flex-grow">
                                             <div className={`flex items-center justify-between ${ar ? 'flex-row-reverse' : ''}`}>
-                                                <h3 className="font-bold text-xl text-on-surface group-hover:text-primary transition-colors">
+                                                <h3 className={`font-bold text-xl transition-colors ${allowed ? 'text-on-surface group-hover:text-primary' : 'text-on-surface-variant'}`}>
                                                     {ar ? opt.title.ar : opt.title.en}
                                                 </h3>
                                             </div>
                                             <p className="text-xs text-on-surface-variant leading-relaxed">
                                                 {ar ? opt.desc.ar : opt.desc.en}
                                             </p>
+
+                                            {/* Disabled explanation message */}
+                                            {!allowed && (
+                                                <div className={`pt-2 text-xs font-bold text-error flex items-center gap-1 ${ar ? 'flex-row-reverse' : ''}`}>
+                                                    <span className="material-symbols-outlined text-[15px]">info</span>
+                                                    <span>{disabledReason}</span>
+                                                </div>
+                                            )}
                                         </div>
 
                                         {/* Footer Badge & Arrow */}
                                         <div className={`pt-3 border-t border-outline-variant/40 flex items-center justify-between ${ar ? 'flex-row-reverse' : ''}`}>
-                                            <span className={`px-2.5 py-1 rounded-full text-[11px] font-bold tracking-wider uppercase border ${opt.badgeBg}`}>
+                                            <span className={`px-2.5 py-1 rounded-full text-[11px] font-bold tracking-wider uppercase border ${allowed ? opt.badgeBg : 'bg-surface-container text-on-surface-variant/60 border-outline-variant/30'}`}>
                                                 {ar ? opt.badge.ar : opt.badge.en}
                                             </span>
-                                            <span className="material-symbols-outlined text-outline text-[18px] group-hover:translate-x-1 group-hover:text-primary transition-all">
+                                            <span className={`material-symbols-outlined text-[18px] transition-all ${allowed ? 'text-outline group-hover:translate-x-1 group-hover:text-primary' : 'text-outline-variant/40'}`}>
                                                 {ar ? 'arrow_back' : 'arrow_forward'}
                                             </span>
                                         </div>
@@ -272,7 +415,7 @@ export default function ParticipationType() {
                                 className="w-full sm:w-72 py-4 px-8 rounded-full font-bold text-base shadow-xl shadow-[#FF4D2E]/25 hover:shadow-2xl hover:shadow-[#FF4D2E]/40 active:scale-95 transition-all duration-200 disabled:opacity-40 disabled:cursor-not-allowed disabled:active:scale-100 disabled:shadow-none text-white"
                                 style={{ backgroundColor: '#FF4D2E' }}
                                 disabled={!selected}
-                                onClick={() => selectedOpt && navigate(selectedOpt.to)}
+                                onClick={() => selectedOpt && navigate(selectedOpt.to, { state: { competition: comp, type: selected } })}
                             >
                                 {ar ? 'متابعة الخطوة التالية' : 'Continue to Next Step'}
                             </button>
