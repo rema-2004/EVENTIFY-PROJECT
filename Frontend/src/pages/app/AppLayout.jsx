@@ -71,10 +71,17 @@ export default function AppLayout() {
     function handleLegacyNavigation(event) {
         if (event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return
 
-        const anchor = event.target.closest('a[href]')
         const legacyClick = event.target.closest('[onclick]')
         const inlineHref = legacyClick?.getAttribute('onclick')?.match(/location\.href\s*=\s*['"]([^'"]+)['"]/)?.[1]
-        const destination = resolvePagePath(anchor?.getAttribute('href')) || resolvePagePath(inlineHref)
+
+        const anchor = event.target.closest('a[href]')
+        const rawHref = anchor?.getAttribute('href') || ''
+
+        // Only intercept if it's an explicit legacy HTML link or inline onclick
+        const isLegacyHtml = /\.html?([?#]|$)/i.test(rawHref)
+        if (!inlineHref && !isLegacyHtml) return
+
+        const destination = resolvePagePath(rawHref) || resolvePagePath(inlineHref)
         if (!destination) return
 
         event.preventDefault()

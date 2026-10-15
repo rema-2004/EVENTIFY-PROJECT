@@ -2,7 +2,7 @@ import AppLangToggle from '../../components/app/AppLangToggle'
 import AppFooter from '../../components/app/AppFooter'
 import AppPageHead from '../../components/app/AppPageHead'
 import { useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useNavigate, useLocation } from 'react-router-dom'
 import { useLanguage } from '../../hooks/useLanguage'
 import { TEAM_LIMITS, teamSizeOptions } from './team-limits'
 
@@ -12,6 +12,14 @@ export default function CreateTeam() {
     const { language } = useLanguage()
     const ar = language === 'ar'
     const navigate = useNavigate()
+    const { state } = useLocation()
+    const comp = state?.competition || (() => {
+        try {
+            return JSON.parse(sessionStorage.getItem('eventify_selected_competition') || '{}')
+        } catch {
+            return null
+        }
+    })()
 
     // Team formation mode: 'ready' (جاهز ومكتمل) vs 'recruiting' (ناقص العدد ويبحث عن أعضاء)
     const [teamMode, setTeamMode] = useState('ready')
@@ -107,6 +115,7 @@ export default function CreateTeam() {
                 members: invitedMembers,
                 maxMembers,
                 visible,
+                competition: comp,
             },
         })
     }

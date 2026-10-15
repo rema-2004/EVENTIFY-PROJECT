@@ -91,8 +91,13 @@ export default function Teams() {
     const { language } = useLanguage()
     const ar = language === 'ar'
     const navigate = useNavigate()
-    const requestToJoin = (team) =>
-        navigate('/app/registration-success', { state: { type: 'join', team: team.name } })
+    const requestToJoin = (team) => {
+        let comp = null
+        try {
+            comp = JSON.parse(sessionStorage.getItem('eventify_selected_competition') || '{}')
+        } catch {}
+        navigate('/app/registration-success', { state: { type: 'join', team: team.name, competition: comp } })
+    }
 
     const [selectedSkills, setSelectedSkills] = useState([])
     const [searchQuery, setSearchQuery] = useState('')

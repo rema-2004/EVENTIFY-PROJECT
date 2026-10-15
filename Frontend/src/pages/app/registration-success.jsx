@@ -8,46 +8,137 @@ export default function RegistrationSuccess() {
     const { language } = useLanguage()
     const ar = language === 'ar'
     const { state } = useLocation()
+
+    // Retrieve opportunity object from state or sessionStorage
+    const comp = state?.competition || state?.opportunity || (() => {
+        try {
+            return JSON.parse(
+                sessionStorage.getItem('eventify_selected_competition') ||
+                sessionStorage.getItem('eventify_selected_opportunity') ||
+                '{}'
+            )
+        } catch {
+            return null
+        }
+    })()
+
+    const cat = comp?.cat || 'competition'
+    const opportunityTitle = comp?.title || (ar ? 'تحدي الابتكار العالمي بالذكاء الاصطناعي' : 'Global AI Innovation Challenge')
+
     const type = state?.type ?? 'solo'
     const team = state?.team || (ar ? 'فريقك' : 'your team')
     const mode = state?.mode ?? 'ready'
     const members = state?.members ?? []
-    const competition = ar ? 'تحدي الابتكار العالمي بالذكاء الاصطناعي' : 'Global AI Innovation Challenge'
 
-    // Copy and icons per registration path
-    const OUTCOMES = {
-        solo: {
-            icon: 'person', pending: false,
-            title: ar ? 'تم التسجيل بنجاح!' : 'Registration Successful!',
-            body: ar
-                ? <>سُجِّلت كمشارك فردي في <span className="font-bold text-on-surface">{competition}</span>. ملفك مكتمل وأنت جاهز لخوض التحدي.</>
-                : <>You're registered as a solo participant for <span className="font-bold text-on-surface">{competition}</span>. You're all set to compete on your own.</>,
-            label: ar ? 'مشاركة فردية' : 'Solo competitor',
-        },
-        create: {
-            icon: mode === 'ready' ? 'groups' : 'add_circle', pending: false,
-            title: mode === 'ready'
-                ? (ar ? 'تم تسجيل وتوثيق الفريق بنجاح!' : 'Complete Team Registered!')
-                : (ar ? 'تم إنشاء الفريق!' : 'Team Created!'),
-            body: ar
-                ? (mode === 'ready'
-                    ? <>سُجِّل فريقك <span className="font-bold text-on-surface">"{team}"</span> رسمياً في <span className="font-bold text-on-surface">{competition}</span> مع <span className="font-bold text-primary">{members.length}</span> من زملائك المضافين.</>
-                    : <>أنشأت فريق <span className="font-bold text-on-surface">"{team}"</span> وسُجِّلت كقائد له في <span className="font-bold text-on-surface">{competition}</span>. فريقك الآن معروض في لوحة الاستكشاف لاستقبال المتسابقين.</>)
-                : (mode === 'ready'
-                    ? <>Your squad <span className="font-bold text-on-surface">"{team}"</span> was officially registered for <span className="font-bold text-on-surface">{competition}</span> with <span className="font-bold text-primary">{members.length}</span> linked teammates.</>
-                    : <>You created <span className="font-bold text-on-surface">"{team}"</span> as team leader. Your team is now live on Explore ready to receive candidate requests.</>),
-            label: mode === 'ready' ? (ar ? 'فريق جاهز ومكتمل' : 'Full Squad') : (ar ? 'قائد فريق (يبحث عن أعضاء)' : 'Team Leader (Recruiting)'),
-        },
-        join: {
-            icon: 'groups', pending: true,
-            title: ar ? 'تم إرسال طلب الانضمام!' : 'Join Request Sent!',
-            body: ar
-                ? <>أُرسل طلب انضمامك إلى <span className="font-bold text-on-surface">{team}</span>. يكتمل تسجيلك النهائي في <span className="font-bold text-on-surface">{competition}</span> فور موافقة قائد الفريق.</>
-                : <>Your request to join <span className="font-bold text-on-surface">{team}</span> was dispatched. Your registration completes once the leader approves.</>,
-            label: ar ? 'بانتظار موافقة القائد' : 'Pending leader approval',
-        },
+    // Copy, step badge, and icons per category & registration path
+    const getOutcome = () => {
+        if (cat === 'course') {
+            return {
+                icon: 'school',
+                pending: false,
+                stepBadge: ar ? 'الخطوة 2 من 2 · تأكيد التسجيل بالدورة' : 'Step 2 of 2 · Course Registration Confirmed',
+                title: ar ? 'تم التسجيل في الدورة بنجاح!' : 'Course Registration Confirmed!',
+                body: ar
+                    ? <>سُجِّلت بنجاح في الدورة التدريبية <span className="font-bold text-on-surface">"{opportunityTitle}"</span>. ملفك مكتمل وبإمكانك الآن الوصول لمنهج الدورة وبدء التعلم فور انطلاقها.</>
+                    : <>You're enrolled in <span className="font-bold text-on-surface">"{opportunityTitle}"</span>. You're all set to access the curriculum and start learning.</>,
+                label: ar ? 'دورة تدريبية (تسجيل فردي معتمد)' : 'Training Course (Certified Individual)',
+                emailNote: ar
+                    ? 'تم إرسال رابط الانضمام ومنهاج الدورة التدريبية إلى بريدك الإلكتروني.'
+                    : 'A confirmation with syllabus and course portal link has been sent to your email.',
+                detailsBtn: ar ? 'تفاصيل الدورة' : 'Course Details',
+            }
+        }
+
+        if (cat === 'workshop') {
+            return {
+                icon: 'terminal',
+                pending: false,
+                stepBadge: ar ? 'الخطوة 2 من 2 · تأكيد حجز مقعد الورشة' : 'Step 2 of 2 · Workshop Seat Confirmed',
+                title: ar ? 'تم حجز مقعدك في الورشة بنجاح!' : 'Workshop Seat Reserved!',
+                body: ar
+                    ? <>تم تأكيد حجز مقعدك في ورشة العمل التفاعلية <span className="font-bold text-on-surface">"{opportunityTitle}"</span>. جهّز أدواتك لحضور الجلسة التطبيقية المباشرة.</>
+                    : <>Your seat is reserved for the workshop <span className="font-bold text-on-surface">"{opportunityTitle}"</span>. Get ready for the live hands-on session.</>,
+                label: ar ? 'ورشة عمل تطبيقية (مقعد مؤكد)' : 'Interactive Workshop (Confirmed Seat)',
+                emailNote: ar
+                    ? 'تم إرسال تذكرة الحضور ورابط القاعة الافتراضية للورشة إلى بريدك الإلكتروني.'
+                    : 'Your workshop access pass and workspace link have been sent to your email.',
+                detailsBtn: ar ? 'تفاصيل الورشة' : 'Workshop Details',
+            }
+        }
+
+        if (cat === 'event') {
+            return {
+                icon: 'campaign',
+                pending: false,
+                stepBadge: ar ? 'الخطوة 2 من 2 · تأكيد الحضور بالفعالية' : 'Step 2 of 2 · Event Pass Confirmed',
+                title: ar ? 'تم تأكيد حضورك في الفعالية!' : 'Attendance Confirmed!',
+                body: ar
+                    ? <>تم تأكيد تسجيلك وحجز تذكرة حضور <span className="font-bold text-on-surface">"{opportunityTitle}"</span> مجاناً. نتطلع لمشاركتك والتفاعل معك خلال الفعالية.</>
+                    : <>Your free access pass for <span className="font-bold text-on-surface">"{opportunityTitle}"</span> has been confirmed. We look forward to seeing you!</>,
+                label: ar ? 'تذكرة حضور فعالية / مؤتمر' : 'Event / Conference Pass',
+                emailNote: ar
+                    ? 'تم إرسال تذكرة الدخول الرقمية والجدول الزمني للفعالية إلى بريدك الإلكتروني.'
+                    : 'Your digital entrance pass and schedule have been sent to your email.',
+                detailsBtn: ar ? 'تفاصيل الفعالية' : 'Event Details',
+            }
+        }
+
+        // Default: competition
+        const OUTCOMES = {
+            solo: {
+                icon: 'person',
+                pending: false,
+                stepBadge: ar ? 'الخطوة 3 من 3 · تأكيد التسجيل' : 'Step 3 of 3 · Confirmation',
+                title: ar ? 'تم التسجيل بنجاح!' : 'Registration Successful!',
+                body: ar
+                    ? <>سُجِّلت كمشارك فردي في <span className="font-bold text-on-surface">"{opportunityTitle}"</span>. ملفك مكتمل وأنت جاهز لخوض التحدي.</>
+                    : <>You're registered as a solo participant for <span className="font-bold text-on-surface">"{opportunityTitle}"</span>. You're all set to compete on your own.</>,
+                label: ar ? 'مشاركة فردية' : 'Solo competitor',
+                emailNote: ar
+                    ? 'تم إرسال إشعار تأكيد إلى بريدك الإلكتروني يتضمن التفاصيل والخطوات التالية.'
+                    : 'A confirmation has been sent to your email with next steps and deadlines.',
+                detailsBtn: ar ? 'تفاصيل المسابقة' : 'Competition Details',
+            },
+            create: {
+                icon: mode === 'ready' ? 'groups' : 'add_circle',
+                pending: false,
+                stepBadge: ar ? 'الخطوة 3 من 3 · تأكيد التسجيل' : 'Step 3 of 3 · Confirmation',
+                title: mode === 'ready'
+                    ? (ar ? 'تم تسجيل وتوثيق الفريق بنجاح!' : 'Complete Team Registered!')
+                    : (ar ? 'تم إنشاء الفريق!' : 'Team Created!'),
+                body: ar
+                    ? (mode === 'ready'
+                        ? <>سُجِّل فريقك <span className="font-bold text-on-surface">"{team}"</span> رسمياً في <span className="font-bold text-on-surface">"{opportunityTitle}"</span> مع <span className="font-bold text-primary">{members.length}</span> من زملائك المضافين.</>
+                        : <>أنشأت فريق <span className="font-bold text-on-surface">"{team}"</span> وسُجِّلت كقائد له في <span className="font-bold text-on-surface">"{opportunityTitle}"</span>. فريقك الآن معروض في لوحة الاستكشاف لاستقبال المتسابقين.</>)
+                    : (mode === 'ready'
+                        ? <>Your squad <span className="font-bold text-on-surface">"{team}"</span> was officially registered for <span className="font-bold text-on-surface">"{opportunityTitle}"</span> with <span className="font-bold text-primary">{members.length}</span> linked teammates.</>
+                        : <>You created <span className="font-bold text-on-surface">"{team}"</span> as team leader in <span className="font-bold text-on-surface">"{opportunityTitle}"</span>. Your team is now live on Explore ready to receive candidate requests.</>),
+                label: mode === 'ready' ? (ar ? 'فريق جاهز ومكتمل' : 'Full Squad') : (ar ? 'قائد فريق (يبحث عن أعضاء)' : 'Team Leader (Recruiting)'),
+                emailNote: ar
+                    ? 'تم إرسال إشعار تأكيد إلى بريدك الإلكتروني يتضمن التفاصيل والخطوات التالية.'
+                    : 'A confirmation has been sent to your email with next steps and deadlines.',
+                detailsBtn: ar ? 'تفاصيل المسابقة' : 'Competition Details',
+            },
+            join: {
+                icon: 'groups',
+                pending: true,
+                stepBadge: ar ? 'الخطوة 3 من 3 · إرسال طلب الانضمام' : 'Step 3 of 3 · Request Sent',
+                title: ar ? 'تم إرسال طلب الانضمام!' : 'Join Request Sent!',
+                body: ar
+                    ? <>أُرسل طلب انضمامك إلى <span className="font-bold text-on-surface">"{team}"</span>. يكتمل تسجيلك النهائي في <span className="font-bold text-on-surface">"{opportunityTitle}"</span> فور موافقة قائد الفريق.</>
+                    : <>Your request to join <span className="font-bold text-on-surface">"{team}"</span> was dispatched. Your registration completes once the leader approves.</>,
+                label: ar ? 'بانتظار موافقة القائد' : 'Pending leader approval',
+                emailNote: ar
+                    ? 'تم إرسال إشعار تأكيد إلى بريدك الإلكتروني يتضمن تفاصيل طلبك.'
+                    : 'A notification has been sent to your email with your join request details.',
+                detailsBtn: ar ? 'تفاصيل المسابقة' : 'Competition Details',
+            },
+        }
+
+        return OUTCOMES[type] ?? OUTCOMES.solo
     }
-    const outcome = OUTCOMES[type] ?? OUTCOMES.solo
+
+    const outcome = getOutcome()
 
     return (
         <>
@@ -83,11 +174,11 @@ export default function RegistrationSuccess() {
                 <main className="flex-grow flex items-center justify-center p-4 sm:p-8">
                     <div className="w-full max-w-xl mx-auto text-center space-y-8 my-auto">
 
-                        {/* Step 3 of 3 badge */}
+                        {/* Step badge */}
                         <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-surface-container-high/80 backdrop-blur-md rounded-full border border-outline-variant/40 shadow-sm">
                             <span className={`w-2 h-2 rounded-full ${outcome.pending ? 'bg-amber-500 animate-ping' : 'bg-emerald-500'}`} />
                             <span className="font-bold text-xs uppercase tracking-wider text-on-surface-variant">
-                                {ar ? 'الخطوة 3 من 3 · تأكيد التسجيل' : 'Step 3 of 3 · Confirmation'}
+                                {outcome.stepBadge}
                             </span>
                         </div>
 
@@ -134,13 +225,11 @@ export default function RegistrationSuccess() {
                             <div className={`flex items-center gap-3 ${ar ? 'flex-row-reverse' : ''}`}>
                                 <span className="material-symbols-outlined text-primary">mail</span>
                                 <span className="font-body-sm text-body-sm text-on-surface-variant">
-                                    {ar
-                                        ? 'تم إرسال إشعار تأكيد إلى بريدك الإلكتروني يتضمن التفاصيل والخطوات التالية.'
-                                        : 'A confirmation has been sent to your email with next steps and deadlines.'}
+                                    {outcome.emailNote}
                                 </span>
                             </div>
 
-                            {/* Linked members preview (if any) */}
+                            {/* Linked members preview (if any for created team) */}
                             {type === 'create' && members.length > 0 && (
                                 <div className="pt-3 border-t border-outline-variant/40 space-y-2">
                                     <span className="text-xs font-bold text-on-surface-variant block">
@@ -163,11 +252,12 @@ export default function RegistrationSuccess() {
                             <Link
                                 className="w-full sm:w-auto py-3.5 px-8 rounded-full border border-outline-variant text-on-surface font-bold text-sm hover:bg-surface-container-high active:scale-95 transition-all text-center"
                                 to="/app/opportunity"
+                                state={{ competition: comp }}
                             >
-                                {ar ? 'تفاصيل المسابقة' : 'Competition Details'}
+                                {outcome.detailsBtn}
                             </Link>
 
-                            {type === 'create' && mode === 'recruiting' && (
+                            {cat === 'competition' && type === 'create' && mode === 'recruiting' && (
                                 <Link
                                     className="w-full sm:w-auto py-3.5 px-8 rounded-full border border-outline-variant text-on-surface font-bold text-sm hover:bg-surface-container-high active:scale-95 transition-all text-center flex items-center justify-center gap-1.5"
                                     to="/app/team-dashboard"
