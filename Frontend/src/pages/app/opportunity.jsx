@@ -338,7 +338,7 @@ export default function Opportunity() {
 
             {/* Toast */}
             {toast && (
-                <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-[9999] flex items-center gap-2 px-5 py-3 rounded-full shadow-xl font-label-md text-white" style={{ backgroundColor: '#1e7a4f' }}>
+                <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-[9999] flex items-center gap-2 px-5 py-3 rounded-full shadow-xl font-label-md text-white fade-in-up" style={{ backgroundColor: '#1e7a4f' }}>
                     <span className="material-symbols-outlined text-[18px]" style={{ fontVariationSettings: '"FILL" 1' }}>check_circle</span>
                     {toast}
                 </div>
@@ -378,7 +378,7 @@ export default function Opportunity() {
                                     </span>
                                 </div>
                             )}
-                            <div className={`absolute top-4 ${ar ? 'left-4' : 'right-4'} px-3 py-1.5 bg-secondary text-white rounded-lg font-label-sm flex items-center gap-1 shadow-lg backdrop-blur-sm animate-[fadeIn_0.5s_ease-out]`}>
+                            <div className={`absolute top-4 ${ar ? 'left-4' : 'right-4'} px-3 py-1.5 bg-secondary text-white rounded-lg font-label-sm flex items-center gap-1 shadow-lg backdrop-blur-sm fade-in`}>
                                 <span className="material-symbols-outlined text-[16px]">bolt</span>
                                 {ar ? 'تطابق ' : ''}<AnimatedCounter value={comp.match || 98} suffix="%" />{ar ? '' : ' Match for you'}
                             </div>

@@ -342,7 +342,7 @@ export default function OrgApplicants() {
                                             <th style={{ textAlign: "right" }}>Decision</th>
                                         </tr>
                                     </thead>
-                                    <tbody>
+                                    <tbody key={currentEventId + '-' + activeFilter + '-' + safePage} className="fade-in">
                                         {paginatedApplicants.map(a => (
                                             <tr key={a.id} className="applicant-row" data-status={statuses[a.id]} data-id={a.id}>
                                                 <td>
@@ -376,7 +376,7 @@ export default function OrgApplicants() {
                                 </table>
                             </div>
                         ) : (
-                            <div className="applicants-empty">
+                            <div className="applicants-empty fade-in">
                                 <div className="applicants-empty__icon">
                                     <span className="material-symbols-outlined" style={{ fontSize: 26 }} aria-hidden="true">group_off</span>
                                 </div>

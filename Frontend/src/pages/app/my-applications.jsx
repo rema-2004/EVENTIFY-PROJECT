@@ -123,7 +123,7 @@ export default function MyApplications() {
                 </div>
 
                 {/* Applications List */}
-                <div key={activeFilter} className="flex flex-col gap-4">
+                <div key={activeFilter} className="flex flex-col gap-4 fade-in">
                     {visible.map((app, idx) => (
                         <div
                             key={app.id}

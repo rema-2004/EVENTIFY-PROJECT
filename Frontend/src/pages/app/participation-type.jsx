@@ -321,7 +321,7 @@ export default function ParticipationType() {
                         </div>
 
                         {/* 3 Rich Visual Cards Grid */}
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <div key={participationType} className="grid grid-cols-1 md:grid-cols-3 gap-6 fade-in">
                             {OPTIONS.map((opt) => {
                                 const allowed = isOptionAllowed(opt.key)
                                 const isActive = selected === opt.key && allowed

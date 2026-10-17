@@ -186,7 +186,7 @@ export default function Teams() {
                     </div>
 
                     {/* Teams Grid */}
-                    <div key={selectedSkills.join('-') + '-' + searchQuery} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div key={selectedSkills.join('-') + '-' + searchQuery} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 fade-in">
                         {visible.map((team, idx) =>
                             team.featured ? (
                                 /* Featured wide card */

@@ -165,7 +165,7 @@ export default function OrgProfile() {
                         </div>
                     </div>
                     {/* Organization Showcase Hero */}
-                    <section className="org-showcase-card">
+                    <section className="org-showcase-card row-animated" style={{ '--stagger-idx': 0 }}>
                         <div className="org-showcase-banner" />
                         <div className="org-showcase-body">
                             <div className="org-identity-bar">
@@ -231,7 +231,7 @@ export default function OrgProfile() {
                         {/* Left Column */}
                         <div className="space-y-6">
                             {/* About Organization */}
-                            <section className="org-section-card">
+                            <section className="org-section-card row-animated" style={{ '--stagger-idx': 1 }}>
                                 <div className="mb-4 flex items-center justify-between">
                                     <div>
                                         <span className="org-section-eyebrow">
@@ -279,7 +279,7 @@ export default function OrgProfile() {
                                 </div>
                             </section>
                             {/* Featured Programs */}
-                            <section className="org-section-card">
+                            <section className="org-section-card row-animated" style={{ '--stagger-idx': 2 }}>
                                 <div className="mb-4 flex items-center justify-between">
                                     <div>
                                         <span className="org-section-eyebrow">Featured programs</span>
@@ -350,7 +350,7 @@ export default function OrgProfile() {
                         {/* Right Column */}
                         <div className="space-y-6">
                             {/* Institutional Details */}
-                            <section className="org-section-card">
+                            <section className="org-section-card row-animated" style={{ '--stagger-idx': 3 }}>
                                 <span className="org-section-eyebrow">Institutional details</span>
                                 <h3 className="org-section-title mb-4">Contact and location</h3>
                                 <div className="space-y-3">
@@ -401,7 +401,7 @@ export default function OrgProfile() {
                                 </div>
                             </section>
                             {/* Verification Status */}
-                            <section className="org-section-card">
+                            <section className="org-section-card row-animated" style={{ '--stagger-idx': 4 }}>
                                 <span className="org-section-eyebrow">Verification</span>
                                 <h3 className="org-section-title mb-4">Trust status</h3>
                                 <div className="space-y-3">

@@ -319,7 +319,7 @@ export default function OrgPosts() {
                                     </div>
 
                                     {showAllExplore && (
-                                        <div className="max-h-80 space-y-2 overflow-y-auto pr-1">
+                                        <div className="max-h-80 space-y-2 overflow-y-auto pr-1 fade-in">
                                             {EXPLORE_POSTS.map((ep, i) => (
                                                 <button
                                                     key={i}
@@ -368,10 +368,10 @@ export default function OrgPosts() {
             {/* Explore Post Modal */}
             {modal.open && (
                 <div
-                    className="fixed inset-0 z-[60] flex items-center justify-center bg-black/40 p-4"
+                    className="fixed inset-0 z-[60] flex items-center justify-center bg-black/40 p-4 fade-in"
                     onClick={e => { if (e.target === e.currentTarget) setModal(m => ({ ...m, open: false })) }}
                 >
-                    <div className="soft-card w-full max-w-lg rounded-[30px] border border-outline-variant/50 p-6 shadow-2xl">
+                    <div className="soft-card w-full max-w-lg rounded-[30px] border border-outline-variant/50 p-6 shadow-2xl fade-in-up">
                         <div className="flex items-start justify-between gap-4">
                             <div>
                                 <p className="text-label-md font-semibold text-primary">{modal.org}</p>

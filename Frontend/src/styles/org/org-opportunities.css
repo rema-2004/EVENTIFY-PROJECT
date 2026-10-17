@@ -486,34 +486,34 @@ html.dark .opp-empty__icon {
 /* ===== Staggered Entrance Animations ===== */
 @media (prefers-reduced-motion: no-preference) {
     .opp-stat-grid .stat-card {
-        animation: opp-fade-up 0.4s cubic-bezier(0.22, 1, 0.36, 1) both;
+        animation: opp-fade-up 0.24s cubic-bezier(0.16, 1, 0.3, 1) both;
     }
 
     .opp-stat-grid .stat-card:nth-child(1) {
-        animation-delay: 0.04s;
+        animation-delay: 0.02s;
     }
 
     .opp-stat-grid .stat-card:nth-child(2) {
-        animation-delay: 0.08s;
+        animation-delay: 0.04s;
     }
 
     .opp-stat-grid .stat-card:nth-child(3) {
-        animation-delay: 0.12s;
+        animation-delay: 0.06s;
     }
 
     .opp-stat-grid .stat-card:nth-child(4) {
-        animation-delay: 0.16s;
+        animation-delay: 0.08s;
     }
 
     .opp-panel {
-        animation: opp-fade-up 0.44s cubic-bezier(0.22, 1, 0.36, 1) both;
-        animation-delay: 0.18s;
+        animation: opp-fade-up 0.24s cubic-bezier(0.16, 1, 0.3, 1) both;
+        animation-delay: 0.08s;
     }
 
     @keyframes opp-fade-up {
         from {
             opacity: 0;
-            transform: translateY(10px);
+            transform: translateY(6px);
         }
 
         to {
@@ -544,7 +544,7 @@ select:focus-visible {
 @keyframes row-stagger-in {
     0% {
         opacity: 0;
-        transform: translateY(8px);
+        transform: translateY(6px);
     }
     100% {
         opacity: 1;
@@ -553,8 +553,8 @@ select:focus-visible {
 }
 
 .opp-table tbody tr.row-animated {
-    animation: row-stagger-in 0.32s cubic-bezier(0.16, 1, 0.3, 1) both;
-    animation-delay: calc(var(--stagger-idx, 0) * 45ms);
+    animation: row-stagger-in 0.24s cubic-bezier(0.16, 1, 0.3, 1) both;
+    animation-delay: calc(var(--stagger-idx, 0) * 28ms);
 }
 
 @keyframes resubmit-glow-pulse {

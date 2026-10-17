@@ -136,7 +136,7 @@ export default function RafeeqVoice() {
                                 : 'Tap the mic and speak naturally. Your words will be transcribed into the chat.'}
                         </p>
                         {status && (
-                            <p className="font-label-sm text-label-sm text-on-surface-variant" role="status" aria-live="polite">
+                            <p className="font-label-sm text-label-sm text-on-surface-variant fade-in" role="status" aria-live="polite">
                                 {status}
                             </p>
                         )}

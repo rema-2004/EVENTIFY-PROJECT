@@ -295,7 +295,7 @@ export default function Explore() {
 
             {/* Toast */}
             {toast && (
-                <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-[9999] flex items-center gap-2 px-5 py-3 rounded-full shadow-xl font-label-md text-white animate-bounce bg-[#1e7a4f]">
+                <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-[9999] flex items-center gap-2 px-5 py-3 rounded-full shadow-xl font-label-md text-white fade-in-up bg-[#1e7a4f]">
                     <span className="material-symbols-outlined text-[18px]" style={{ fontVariationSettings: '"FILL" 1' }}>check_circle</span>
                     {toast.msg}
                 </div>
@@ -392,7 +392,7 @@ export default function Explore() {
                 </div>
 
                 {/* Results Grid */}
-                <div key={`${category}-${participationFilter}-${searchQuery}`} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-gutter">
+                <div key={`${category}-${participationFilter}-${searchQuery}`} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-gutter fade-in">
                     {filteredCards.map((card, idx) => (
                         <div
                             key={card.id}

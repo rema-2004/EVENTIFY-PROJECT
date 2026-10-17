@@ -463,7 +463,7 @@ export default function AppHome() {
         ))}
     </div>
 </div>
-<div key={eventFilter} className="grid grid-cols-1 md:grid-cols-12 gap-gutter">
+<div key={eventFilter} className="grid grid-cols-1 md:grid-cols-12 gap-gutter fade-in">
 {(eventFilter === 'all' || eventFilter === 'event') && (
     <div className="md:col-span-8 bg-surface-container-lowest dark:bg-slate-900/60 border border-outline-variant/30 dark:border-white/10 rounded-xl overflow-hidden shadow-sm flex flex-col md:flex-row md:min-h-[22rem] ev-card spotlight cursor-pointer row-animated transition-all duration-300 hover:-translate-y-1 hover:shadow-lg" style={{ '--stagger-idx': 0 }} onClick={() => openOpportunity({
         id: 'global-ai-summit-2024',

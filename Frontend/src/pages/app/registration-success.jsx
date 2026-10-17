@@ -172,7 +172,7 @@ export default function RegistrationSuccess() {
                 <div className="fixed top-12 left-1/2 -translate-x-1/2 w-[700px] h-[400px] bg-gradient-to-b from-emerald-500/10 via-[#FF4D2E]/10 to-transparent blur-3xl pointer-events-none -z-10" />
 
                 <main className="flex-grow flex items-center justify-center p-4 sm:p-8">
-                    <div className="w-full max-w-xl mx-auto text-center space-y-8 my-auto">
+                    <div className="w-full max-w-xl mx-auto text-center space-y-8 my-auto fade-in-up">
 
                         {/* Step badge */}
                         <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-surface-container-high/80 backdrop-blur-md rounded-full border border-outline-variant/40 shadow-sm">

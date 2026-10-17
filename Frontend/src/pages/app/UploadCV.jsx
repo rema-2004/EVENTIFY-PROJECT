@@ -196,10 +196,10 @@ export default function UploadCV() {
         <div className="min-h-screen bg-[#0E1116] text-white flex flex-col justify-between py-6 px-4 relative">
             {/* Unlock Celebration Modal */}
             {isUnlocking && (
-                <div className="fixed inset-0 z-[9999] bg-[#0E1116]/95 backdrop-blur-xl flex flex-col items-center justify-center p-6 text-center">
+                <div className="fixed inset-0 z-[9999] bg-[#0E1116]/95 backdrop-blur-xl flex flex-col items-center justify-center p-6 text-center fade-in">
                     <div className="relative mb-6">
                         <div className="absolute inset-0 bg-[#FF4D2E]/30 rounded-full blur-2xl animate-pulse" />
-                        <div className="relative w-28 h-28 rounded-full bg-slate-900 border-2 border-[#FF4D2E] flex items-center justify-center text-[#FF4D2E] shadow-[0_0_50px_rgba(255,77,46,0.6)] animate-bounce">
+                        <div className="relative w-28 h-28 rounded-full bg-slate-900 border-2 border-[#FF4D2E] flex items-center justify-center text-[#FF4D2E] shadow-[0_0_50px_rgba(255,77,46,0.6)] fade-in-up">
                             <span className="material-symbols-outlined text-6xl">
                                 lock_open
                             </span>
@@ -262,7 +262,7 @@ export default function UploadCV() {
 
             {/* STAGE 1: Dropzone / Select File (Spacious max-w-4xl) */}
             {stage === 'dropzone' && (
-                <div className="max-w-4xl w-full mx-auto my-auto space-y-8 py-4">
+                <div className="max-w-4xl w-full mx-auto my-auto space-y-8 py-4 fade-in">
                     <div className="text-center space-y-3">
                         <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#FF4D2E]/10 border border-[#FF4D2E]/30 text-[#FF8566] text-xs font-semibold">
                             <span className="material-symbols-outlined text-[16px]">auto_awesome</span>
@@ -343,11 +343,11 @@ export default function UploadCV() {
 
             {/* STAGE 2: Analyzing Resume */}
             {stage === 'analyzing' && (
-                <div className="max-w-3xl w-full mx-auto my-auto flex flex-col items-center text-center space-y-6 py-8">
+                <div className="max-w-3xl w-full mx-auto my-auto flex flex-col items-center text-center space-y-6 py-8 fade-in">
                     <div className="relative w-32 h-32 flex items-center justify-center">
                         <div className="absolute inset-0 rounded-full bg-[#FF4D2E]/20 blur-xl animate-pulse" />
                         <div className="relative w-28 h-28 rounded-3xl bg-slate-900/90 border-2 border-[#FF4D2E] flex items-center justify-center text-[#FF4D2E] shadow-[0_0_40px_rgba(255,77,46,0.4)]">
-                            <span className="material-symbols-outlined text-6xl animate-bounce">
+                            <span className="material-symbols-outlined text-6xl animate-pulse">
                                 description
                             </span>
                             <div className="absolute left-2 right-2 h-1 bg-gradient-to-r from-transparent via-[#FF4D2E] to-transparent rounded animate-ping top-1/2 -translate-y-1/2" />
@@ -385,7 +385,7 @@ export default function UploadCV() {
 
             {/* STAGE 3: Review & Edit Profile (Spacious max-w-5xl) */}
             {stage === 'review' && (
-                <div className="max-w-5xl w-full mx-auto my-auto space-y-6 py-4">
+                <div className="max-w-5xl w-full mx-auto my-auto space-y-6 py-4 fade-in">
                     <div className="flex items-center justify-between border-b border-white/10 pb-4">
                         <div>
                             <div className="inline-flex items-center gap-1.5 text-xs text-[#FF8566] font-bold mb-1">

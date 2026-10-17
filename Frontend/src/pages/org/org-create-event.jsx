@@ -267,7 +267,7 @@ export default function OrgCreateEvent() {
                             onSubmit={e => e.preventDefault()}
                         >
                             {/* Step 1: Event Details */}
-                            <section className={step === 1 ? 'flex flex-col gap-6 row-animated' : 'hidden'} data-step={1}>
+                            <section className={step === 1 ? 'flex flex-col gap-6 row-animated fade-in' : 'hidden'} data-step={1}>
                                 <div className="form-group">
                                     <label className="form-label" htmlFor="ev-title">
                                         Event Title <span style={{ color: "var(--accent)" }}>*</span>
@@ -390,7 +390,7 @@ export default function OrgCreateEvent() {
                             </section>
 
                             {/* Step 2: Review */}
-                            <section className={step === 2 ? 'flex flex-col gap-5 row-animated' : 'hidden'} data-step={2}>
+                            <section className={step === 2 ? 'flex flex-col gap-5 row-animated fade-in' : 'hidden'} data-step={2}>
                                 <div>
                                     <h3 className="font-headline-lg text-title-lg text-on-surface mb-1">Review your event details</h3>
                                     <p style={{ fontSize: "13.5px", color: "var(--text-muted)" }}>
@@ -416,7 +416,7 @@ export default function OrgCreateEvent() {
                             </section>
 
                             {/* Step 3: Publish */}
-                            <section className={step === 3 ? 'flex flex-col items-center gap-3 py-6 text-center row-animated' : 'hidden'} data-step={3}>
+                            <section className={step === 3 ? 'flex flex-col items-center gap-3 py-6 text-center row-animated fade-in' : 'hidden'} data-step={3}>
                                 <div className="publish-success-card">
                                     <div className="publish-icon animate-[successPop_0.4s_cubic-bezier(0.16,1,0.3,1)]">
                                         <span className="material-symbols-outlined" aria-hidden="true">task_alt</span>

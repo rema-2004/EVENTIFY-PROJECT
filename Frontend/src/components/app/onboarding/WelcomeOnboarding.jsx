@@ -1,10 +1,8 @@
-import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useLanguage } from '../../../hooks/useLanguage'
 import { useOnboarding } from '../../../context/OnboardingContext'
 
 export default function WelcomeOnboarding() {
-    const [hoveredCard, setHoveredCard] = useState(null)
     const navigate = useNavigate()
     const { language } = useLanguage()
     const ar = language === 'ar'
@@ -19,7 +17,7 @@ export default function WelcomeOnboarding() {
     }
 
     return (
-        <div className="relative min-h-[88vh] flex flex-col justify-between max-w-5xl mx-auto px-4 py-6 overflow-hidden">
+        <div className="relative min-h-[88vh] flex flex-col justify-between max-w-5xl mx-auto px-4 py-6 overflow-hidden fade-in">
             {/* Ambient Background Glows */}
             <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-3xl h-96 bg-gradient-to-b from-[#FF4D2E]/15 via-[#8B5CF6]/10 to-transparent blur-3xl pointer-events-none -z-10" />
             <div className="absolute top-1/3 -left-32 w-72 h-72 bg-[#FF4D2E]/10 rounded-full blur-3xl pointer-events-none -z-10" />

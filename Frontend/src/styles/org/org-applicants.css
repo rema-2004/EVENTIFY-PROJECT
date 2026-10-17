@@ -702,13 +702,13 @@ html.dark .applicants-empty__icon {
 /* ===== Staggered Entrance Animations ===== */
 @media (prefers-reduced-motion: no-preference) {
     .applicants-panel {
-        animation: app-panel-fade 0.4s cubic-bezier(0.22, 1, 0.36, 1) both;
+        animation: app-panel-fade 0.24s cubic-bezier(0.16, 1, 0.3, 1) both;
     }
 
     @keyframes app-panel-fade {
         from {
             opacity: 0;
-            transform: translateY(10px);
+            transform: translateY(6px);
         }
 
         to {

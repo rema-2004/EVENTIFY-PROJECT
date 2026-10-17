@@ -187,7 +187,7 @@ export default function AppNavbar() {
                         {/* Dropdown Menu */}
                         {dropdownOpen && (
                             <div
-                                className={`absolute top-full mt-2.5 ${isAr ? 'left-0' : 'right-0'} w-64 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/90 dark:border-white/10 shadow-2xl p-3 z-50 transition-all`}
+                                className={`absolute top-full mt-2.5 ${isAr ? 'left-0' : 'right-0'} w-64 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/90 dark:border-white/10 shadow-2xl p-3 z-50 transition-all fade-in-up`}
                                 dir={isAr ? 'rtl' : 'ltr'}
                             >
                                 {/* Current User Info */}

@@ -109,7 +109,7 @@ export default function Saved() {
             <AppPageHead title={ar ? 'المحفوظات | EVENTIFY' : 'Saved | EVENTIFY'} />
 
             {toast && (
-                <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-[9999] flex items-center gap-2 px-5 py-3 rounded-full shadow-xl font-label-md text-white animate-bounce bg-[#1e7a4f]">
+                <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-[9999] flex items-center gap-2 px-5 py-3 rounded-full shadow-xl font-label-md text-white fade-in-up bg-[#1e7a4f]">
                     <span className="material-symbols-outlined text-[18px]" style={{ fontVariationSettings: '"FILL" 1' }}>check_circle</span>
                     {toast}
                 </div>
@@ -160,7 +160,7 @@ export default function Saved() {
 
                     {/* Cards or Empty state */}
                     {items.length === 0 ? (
-                        <div className="flex flex-col items-center justify-center py-24 gap-4 text-center">
+                        <div className="flex flex-col items-center justify-center py-24 gap-4 text-center fade-in">
                             <span className="material-symbols-outlined text-6xl text-outline">bookmark</span>
                             <h3 className="font-title-lg text-title-lg">
                                 {ar ? 'لا يوجد شيء محفوظ بعد' : 'Nothing saved yet'}
@@ -179,7 +179,7 @@ export default function Saved() {
                             </Link>
                         </div>
                     ) : (
-                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 fade-in">
                             {items.map((item, idx) => (
                                 <div 
                                     key={item.id} 

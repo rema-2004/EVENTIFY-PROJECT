@@ -96,7 +96,7 @@ export default function ResetPassword() {
     return (
         <AuthLayout visual={<Visual t={t} />}>
             {!done ? (
-                <div className="relative z-10 max-w-md w-full mx-auto auth-card border border-white/40 rounded-[20px] p-6 sm:p-8">
+                <div key="form" className="relative z-10 max-w-md w-full mx-auto auth-card border border-white/40 rounded-[20px] p-6 sm:p-8 fade-in">
                     <Link className="flex w-fit items-center gap-1 text-on-surface-variant hover:text-primary font-label-md text-label-md mb-5 transition-colors" to="/auth/login">
                         <span className="material-symbols-outlined text-[18px]">arrow_back</span> {t('auth.forgotPassword.backToLogin')}
                     </Link>
@@ -121,7 +121,7 @@ export default function ResetPassword() {
                                 t={t}
                             />
                             {password && (
-                                <p className="text-sm text-on-surface-variant">
+                                <p className="text-sm text-on-surface-variant fade-in">
                                     {t('auth.signup.strengthLabel')}{' '}
                                     <span className={`font-semibold ${strength === 'weak' ? 'text-error' : strength === 'medium' ? 'text-amber-600' : 'text-emerald-600'}`}>
                                         {t(`auth.signup.strength.${strength}`)}
@@ -154,7 +154,7 @@ export default function ResetPassword() {
                     </form>
                 </div>
             ) : (
-                <div className="relative z-10 max-w-md w-full mx-auto auth-card border border-white/40 rounded-[20px] p-6 sm:p-8 text-center">
+                <div key="done" className="relative z-10 max-w-md w-full mx-auto auth-card border border-white/40 rounded-[20px] p-6 sm:p-8 text-center fade-in">
                     <div className="mx-auto mb-5 flex h-16 w-16 items-center justify-center rounded-full bg-success/10 text-success">
                         <span className="material-symbols-outlined text-3xl" style={{ fontVariationSettings: "'FILL' 1" }}>check_circle</span>
                     </div>

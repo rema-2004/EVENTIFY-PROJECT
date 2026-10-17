@@ -4,7 +4,7 @@ import AppPageHead from '../../components/app/AppPageHead'
 import { useState } from 'react'
 import { Link, useNavigate, useLocation } from 'react-router-dom'
 import { useLanguage } from '../../hooks/useLanguage'
-import { TEAM_LIMITS, teamSizeOptions } from './team-limits'
+import { teamSizeOptions } from './team-limits'
 
 const QUICK_SKILL_SUGGESTIONS = ['React', 'Python', 'Tailwind', 'AI / LLMs', 'UI/UX Design', 'Node.js', 'PyTorch']
 
@@ -538,7 +538,7 @@ export default function CreateTeam() {
                                 </div>
 
                                 {memberError && (
-                                    <div className={`p-3 rounded-xl bg-error/10 border border-error/20 flex items-center gap-2 text-xs text-error font-medium ${ar ? 'flex-row-reverse' : ''}`}>
+                                    <div className={`p-3 rounded-xl bg-error/10 border border-error/20 flex items-center gap-2 text-xs text-error font-medium fade-in ${ar ? 'flex-row-reverse' : ''}`}>
                                         <span className="material-symbols-outlined text-[18px]">warning</span>
                                         <span>{memberError}</span>
                                     </div>
@@ -565,7 +565,7 @@ export default function CreateTeam() {
                                     {skills.map((s) => (
                                         <div
                                             key={s}
-                                            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-gradient-to-r from-primary/10 to-primary/5 border border-primary/25 text-primary text-xs font-bold animate-[successPop_0.25s_cubic-bezier(0.16,1,0.3,1)]"
+                                            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-gradient-to-r from-primary/10 to-primary/5 border border-primary/25 text-primary text-xs font-bold fade-in"
                                         >
                                             <span>{s}</span>
                                             <button

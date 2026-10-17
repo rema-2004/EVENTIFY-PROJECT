@@ -865,7 +865,7 @@ export default function AdminUsers() {
                                 </div>
                             </div>
                         </div>
-                        <div className="empty-state" id="users-empty" hidden="">
+                        <div className="empty-state fade-in" id="users-empty" hidden="">
                             <span className="empty-state__icon">
                                 <span className="material-symbols-outlined" aria-hidden="true">
                                     person_search

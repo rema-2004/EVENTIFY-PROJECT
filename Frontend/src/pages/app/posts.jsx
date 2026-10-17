@@ -102,7 +102,7 @@ function PostCard({ post, ar, idx = 0 }) {
             {post.details && (
                 <>
                     {expanded && (
-                        <p className={`mt-3 font-body-sm text-body-sm text-on-surface-variant animate-[fadeIn_0.3s_ease-out] ${ar ? 'text-right' : ''}`}>
+                        <p className={`mt-3 font-body-sm text-body-sm text-on-surface-variant fade-in ${ar ? 'text-right' : ''}`}>
                             {ar ? post.details.ar : post.details.en}
                         </p>
                     )}

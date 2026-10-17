@@ -461,7 +461,7 @@ export default function AdminAuditLog() {
                             <div className="skeleton skeleton-line" />
                             <div className="skeleton skeleton-line" />
                         </div>
-                        <div id="audit-empty" className="empty-state" hidden={true}>
+                        <div id="audit-empty" className="empty-state fade-in" hidden={true}>
                             <span className="empty-state__icon">
                                 <span className="material-symbols-outlined" aria-hidden="true">
                                     history_toggle_off

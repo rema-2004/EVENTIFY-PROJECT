@@ -210,7 +210,7 @@ export default function Landing() {
         rpIndex = (rpIndex + 1) % phrases.length
         if (rpText) rpText.textContent = phrases[rpIndex]
         rpText?.classList.remove('rp-hide')
-      }, 300)
+      }, 160)
     }
     const rpTimer = setInterval(rotatePlaceholder, 3000)
     cleanups.push(() => clearInterval(rpTimer))
@@ -328,15 +328,30 @@ export default function Landing() {
         const question = pill.dataset.question || ''
         const answer = pill.dataset.answer || ''
 
-        if (userBubble) userBubble.textContent = question
+        if (userBubble) {
+          userBubble.textContent = question
+          userBubble.classList.remove('fade-in')
+          void userBubble.offsetWidth
+          userBubble.classList.add('fade-in')
+        }
         if (aiMsg) aiMsg.style.display = 'none'
-        if (typingMsg) typingMsg.style.display = 'flex'
+        if (typingMsg) {
+          typingMsg.style.display = 'flex'
+          typingMsg.classList.remove('fade-in')
+          void typingMsg.offsetWidth
+          typingMsg.classList.add('fade-in')
+        }
 
         setTimeout(() => {
           if (typingMsg) typingMsg.style.display = 'none'
-          if (aiMsg) aiMsg.style.display = 'flex'
+          if (aiMsg) {
+            aiMsg.style.display = 'flex'
+            aiMsg.classList.remove('fade-in-up')
+            void aiMsg.offsetWidth
+            aiMsg.classList.add('fade-in-up')
+          }
           if (aiBubble) aiBubble.textContent = answer
-        }, 450)
+        }, 320)
       })
     })
 

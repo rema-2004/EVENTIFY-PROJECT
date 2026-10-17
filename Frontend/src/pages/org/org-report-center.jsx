@@ -485,7 +485,7 @@ export default function OrgReportCenter() {
                                                 <th style={{ textAlign: 'right' }}>Actions</th>
                                             </tr>
                                         </thead>
-                                        <tbody>
+                                        <tbody key={currentPage + '-' + filterType + '-' + filterEvent + '-' + filterStatus} className="fade-in">
                                             {pageItems.map(r => (
                                                 <tr key={r.id}>
                                                     <td className="font-medium text-on-surface">{r.name}</td>
@@ -536,9 +536,9 @@ export default function OrgReportCenter() {
             {/* Mobile Navigation Drawer */}
             {/* Create Report Modal */}
             {createModal.open && (
-                <div className="fixed inset-0 z-[60] flex items-center justify-center p-4 org-report-backdrop"
+                <div className="fixed inset-0 z-[60] flex items-center justify-center p-4 org-report-backdrop fade-in"
                     onClick={e => { if (e.target === e.currentTarget) setCreateModal({ open: false }) }}>
-                    <div className="confirm-dialog confirm-dialog--wide" style={{ position: 'static', margin: 0 }}>
+                    <div className="confirm-dialog confirm-dialog--wide fade-in-up" style={{ position: 'static', margin: 0 }}>
                         <h3>Create Report</h3>
                         <form onSubmit={handleCreate}>
                             <div style={{ marginBottom: 14 }}>
@@ -635,9 +635,9 @@ export default function OrgReportCenter() {
 
             {/* Delete Confirm Modal */}
             {deleteModal.open && (
-                <div className="fixed inset-0 z-[60] flex items-center justify-center p-4 org-report-backdrop"
+                <div className="fixed inset-0 z-[60] flex items-center justify-center p-4 org-report-backdrop fade-in"
                     onClick={e => { if (e.target === e.currentTarget) setDeleteModal({ open: false, id: null, name: '' }) }}>
-                    <div className="confirm-dialog" style={{ position: 'static', margin: 0 }}>
+                    <div className="confirm-dialog fade-in-up" style={{ position: 'static', margin: 0 }}>
                         <h3>Are you sure you want to delete this report?</h3>
                         <p>{deleteModal.name}</p>
                         <div className="confirm-dialog__actions">
@@ -650,9 +650,9 @@ export default function OrgReportCenter() {
 
             {/* Preview Modal */}
             {previewModal.open && previewModal.report && previewContent && (
-                <div className="fixed inset-0 z-[60] flex items-center justify-center p-4 org-report-backdrop"
+                <div className="fixed inset-0 z-[60] flex items-center justify-center p-4 org-report-backdrop fade-in"
                     onClick={e => { if (e.target === e.currentTarget) setPreviewModal({ open: false, report: null }) }}>
-                    <div className="confirm-dialog confirm-dialog--wide" style={{ position: 'static', margin: 0, maxHeight: '90vh', overflowY: 'auto' }}>
+                    <div className="confirm-dialog confirm-dialog--wide fade-in-up" style={{ position: 'static', margin: 0, maxHeight: '90vh', overflowY: 'auto' }}>
                         <div className="flex items-start justify-between gap-4">
                             <div>
                                 <p style={{ fontSize: 12, fontWeight: 700, color: 'var(--accent)', textTransform: 'uppercase' }}>TechGenius Labs</p>

@@ -214,7 +214,7 @@ export default function Notifications() {
                     </section>
 
                     {/* Notification Cards */}
-                    <div key={filter} className="flex flex-col gap-4">
+                    <div key={filter} className="flex flex-col gap-4 fade-in">
                         {NOTIFS.filter(visible).map((n, idx) => {
                             if (n.isFriendRequest) {
                                 return (

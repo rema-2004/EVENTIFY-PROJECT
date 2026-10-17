@@ -371,7 +371,7 @@ export default function OrgOpportunities() {
                                             <th style={{ textAlign: isRtl ? 'left' : 'right' }}>{isRtl ? 'الإجراءات' : 'Actions'}</th>
                                         </tr>
                                     </thead>
-                                    <tbody key={activeFilter + (search ? '-search' : '')}>
+                                    <tbody key={activeFilter + (search ? '-search' : '')} className="fade-in">
                                         {visible.map((opp, index) => {
                                             const badge = STATUS_BADGE[opp.status]
                                             const isEnded = opp.status === 'ended'

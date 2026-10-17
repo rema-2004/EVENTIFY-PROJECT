@@ -270,7 +270,7 @@ export default function Profile() {
 
             {/* Toast */}
             {toast && (
-                <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-[9999] flex items-center gap-2 px-5 py-3 rounded-full shadow-xl font-label-md text-white" style={{ backgroundColor: toast.tone === 'success' ? '#1e7a4f' : '#FF4D2E' }}>
+                <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-[9999] flex items-center gap-2 px-5 py-3 rounded-full shadow-xl font-label-md text-white fade-in-up" style={{ backgroundColor: toast.tone === 'success' ? '#1e7a4f' : '#FF4D2E' }}>
                     <span className="material-symbols-outlined text-[18px]" style={{ fontVariationSettings: '"FILL" 1' }}>
                         {toast.tone === 'success' ? 'check_circle' : 'info'}
                     </span>
@@ -280,7 +280,7 @@ export default function Profile() {
 
             {/* Edit Profile Modal */}
             {editOpen && draft && (
-                <div className="fixed inset-0 z-[9998] bg-black/30 backdrop-blur-sm flex items-center justify-center p-4" onMouseDown={(e) => { if (e.target === e.currentTarget) closeEdit() }}>
+                <div className="fixed inset-0 z-[9998] bg-black/30 backdrop-blur-sm flex items-center justify-center p-4 fade-in" onMouseDown={(e) => { if (e.target === e.currentTarget) closeEdit() }}>
                     <form
                         className="ev-fade-up bg-white dark:bg-slate-800 rounded-2xl max-w-2xl w-full max-h-[90vh] flex flex-col overflow-hidden shadow-2xl border border-gray-100 dark:border-white/10"
                         dir={ar ? 'rtl' : 'ltr'}
@@ -424,8 +424,8 @@ export default function Profile() {
 
             {/* Certificate Modal */}
             {certModal && (
-                <div className="fixed inset-0 z-[9998] bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 animate-[fadeIn_0.2s_ease-out]" onClick={() => setCertModal(null)}>
-                    <div className="bg-white dark:bg-slate-800 rounded-2xl p-8 max-w-md w-full shadow-2xl border border-gray-100 dark:border-white/10 animate-[successPop_0.4s_cubic-bezier(0.16,1,0.3,1)]" onClick={(e) => e.stopPropagation()}>
+                <div className="fixed inset-0 z-[9998] bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 fade-in" onClick={() => setCertModal(null)}>
+                    <div className="bg-white dark:bg-slate-800 rounded-2xl p-8 max-w-md w-full shadow-2xl border border-gray-100 dark:border-white/10 ev-fade-up" onClick={(e) => e.stopPropagation()}>
                         <div className="text-center space-y-4">
                             <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto">
                                 <span className="material-symbols-outlined text-primary text-3xl" style={{ fontVariationSettings: '"FILL" 1' }}>workspace_premium</span>

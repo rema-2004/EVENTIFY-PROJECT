@@ -422,7 +422,7 @@ export default function AdminEvents() {
                                 </div>
                             </div>
                         ))}
-                        <div className="empty-state" id="events-empty" hidden="">
+                        <div className="empty-state fade-in" id="events-empty" hidden="">
                             <span className="empty-state__icon">
                                 <span className="material-symbols-outlined" aria-hidden="true">
                                     event_busy

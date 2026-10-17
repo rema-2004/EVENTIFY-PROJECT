@@ -176,7 +176,7 @@ export default function TeamDashboard() {
                                     </div>
                                 </div>
                             ) : (
-                                <div className="bg-surface-container-lowest border border-outline-variant rounded-xl p-6 text-center">
+                                <div className="bg-surface-container-lowest border border-outline-variant rounded-xl p-6 text-center fade-in">
                                     <p className="font-label-md text-label-md" style={{ color: requestStatus === 'accepted' ? '#FF4D2E' : 'var(--color-on-surface-variant)' }}>
                                         {requestStatus === 'accepted'
                                             ? (ar ? '✓ تم قبول الطلب' : '✓ Request accepted')
