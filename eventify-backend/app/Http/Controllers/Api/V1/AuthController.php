@@ -8,6 +8,7 @@ use App\Http\Requests\Auth\LoginRequest;
 use App\Http\Requests\Auth\RegisterRequest;
 use App\Http\Requests\Auth\ResetPasswordRequest;
 use App\Http\Resources\UserResource;
+use App\Models\AuditLog;
 use App\Models\User;
 use App\Traits\ApiResponse;
 use App\Traits\HandlesPasswordReset;
@@ -39,6 +40,15 @@ class AuthController extends Controller
         // appear in the response instead of null.
         $user->refresh();
 
+        AuditLog::record(
+            type: AuditLog::TYPE_CREATE,
+            action: 'Registered Account',
+            location: AuditLog::LOCATION_USERS,
+            actor: $user,
+            target: $user,
+            details: 'A new student account was registered.',
+        );
+
         $token = $user->createToken('eventify-token')->plainTextToken;
 
         return $this->success([
@@ -58,10 +68,30 @@ class AuthController extends Controller
         $user = User::findByLogin($request->identifier());
 
         if (! $user || ! Hash::check($validated['password'], $user->password)) {
+            // $user is null when no account matches. The identifier the
+            // person typed is deliberately NOT stored.
+            AuditLog::record(
+                type: AuditLog::TYPE_LOGIN,
+                action: 'Login',
+                location: AuditLog::LOCATION_DASHBOARD,
+                actor: $user,
+                status: AuditLog::STATUS_FAILED,
+                details: 'Login attempt failed due to invalid credentials.',
+            );
+
             return $this->error('Invalid credentials', 401);
         }
 
         if (! $user->isActive()) {
+            AuditLog::record(
+                type: AuditLog::TYPE_LOGIN,
+                action: 'Login',
+                location: AuditLog::LOCATION_DASHBOARD,
+                actor: $user,
+                status: AuditLog::STATUS_FAILED,
+                details: 'Login was blocked because the account is ' . $user->status . '.',
+            );
+
             return $this->error(
                 'Your account is ' . $user->status . '. Please contact support.',
                 403
@@ -69,6 +99,14 @@ class AuthController extends Controller
         }
 
         $token = $user->createToken('eventify-token')->plainTextToken;
+
+        AuditLog::record(
+            type: AuditLog::TYPE_LOGIN,
+            action: 'Login',
+            location: AuditLog::LOCATION_DASHBOARD,
+            actor: $user,
+            details: 'User successfully logged into the platform.',
+        );
 
         return $this->success([
             'user' => new UserResource($user),
@@ -90,6 +128,14 @@ class AuthController extends Controller
         if ($token instanceof PersonalAccessToken) {
             $token->delete();
         }
+
+        AuditLog::record(
+            type: AuditLog::TYPE_LOGOUT,
+            action: 'Logout',
+            location: AuditLog::LOCATION_DASHBOARD,
+            actor: $user,
+            details: 'User session was ended.',
+        );
 
         return $this->success(null, 'Logged out successfully');
     }
@@ -150,6 +196,15 @@ class AuthController extends Controller
 
         // Revoke all existing sessions for security, since the password changed.
         $user->tokens()->delete();
+
+        AuditLog::record(
+            type: AuditLog::TYPE_UPDATE,
+            action: 'Reset Password',
+            location: AuditLog::LOCATION_SECURITY,
+            actor: $user,
+            sensitive: true,
+            details: 'Password was reset using a reset link.',
+        );
 
         return $this->success(null, 'Password has been reset successfully. Please log in again.');
     }

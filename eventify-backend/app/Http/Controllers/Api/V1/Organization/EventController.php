@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Organization\StoreEventRequest;
 use App\Http\Requests\Organization\UpdateEventRequest;
 use App\Http\Resources\EventResource;
+use App\Models\AuditLog;
 use App\Models\Event;
 use App\Models\Organization;
 use App\Traits\ApiResponse;
@@ -105,6 +106,17 @@ class EventController extends Controller
             return $event;
         });
 
+        AuditLog::record(
+            type: AuditLog::TYPE_CREATE,
+            action: 'Created Event',
+            location: AuditLog::LOCATION_EVENTS,
+            actor: $organization,
+            target: $event,
+            details: $event->isPendingReview()
+                ? 'A new event was created and submitted for review.'
+                : 'A new event was saved as a draft.',
+        );
+
         $event->load(['organization', 'competition']);
 
         return $this->success(
@@ -171,6 +183,17 @@ class EventController extends Controller
             }
         });
 
+        AuditLog::record(
+            type: AuditLog::TYPE_UPDATE,
+            action: 'Updated Event',
+            location: AuditLog::LOCATION_EVENTS,
+            actor: $organization,
+            target: $event,
+            details: $event->isPendingReview()
+                ? 'The event was edited and submitted for review.'
+                : 'Event details were edited by the organization.',
+        );
+
         $event->load(['organization', 'competition']);
 
         return $this->success(new EventResource($event), 'Event updated');
@@ -193,6 +216,17 @@ class EventController extends Controller
         }
 
         $event->delete();
+
+        // Logged after the delete: the title is still on the model and is
+        // copied into the row, so it stays readable.
+        AuditLog::record(
+            type: AuditLog::TYPE_DELETE,
+            action: 'Deleted Event',
+            location: AuditLog::LOCATION_EVENTS,
+            actor: $organization,
+            target: $event,
+            details: 'A draft event was deleted by the organization.',
+        );
 
         return $this->success(null, 'Draft deleted successfully');
     }

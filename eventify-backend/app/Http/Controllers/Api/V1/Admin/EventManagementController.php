@@ -5,10 +5,12 @@ namespace App\Http\Controllers\Api\V1\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\RejectEventRequest;
 use App\Http\Resources\EventResource;
+use App\Models\AuditLog;
 use App\Models\Event;
 use App\Traits\ApiResponse;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class EventManagementController extends Controller
 {
@@ -66,6 +68,15 @@ class EventManagementController extends Controller
             'admin_notes' => null, // clear any previous rejection note
         ]);
 
+        AuditLog::record(
+            type: AuditLog::TYPE_APPROVE,
+            action: 'Approved Event',
+            location: AuditLog::LOCATION_EVENTS,
+            actor: Auth::user(),
+            target: $event,
+            details: 'Event was reviewed, approved and published.',
+        );
+
         $event->load(['organization', 'competition']);
 
         return $this->success(new EventResource($event), 'Event approved and published successfully');
@@ -87,6 +98,15 @@ class EventManagementController extends Controller
             'status' => Event::STATUS_REJECTED,
             'admin_notes' => $request->validated('admin_notes'),
         ]);
+
+        AuditLog::record(
+            type: AuditLog::TYPE_REJECT,
+            action: 'Rejected Event',
+            location: AuditLog::LOCATION_EVENTS,
+            actor: Auth::user(),
+            target: $event,
+            details: $request->validated('admin_notes'),
+        );
 
         $event->load(['organization', 'competition']);
 

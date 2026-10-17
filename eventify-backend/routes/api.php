@@ -9,6 +9,7 @@ use App\Http\Controllers\Api\V1\ChallengeSubmissionController;
 use App\Http\Controllers\Api\V1\SavedOpportunityController;
 use App\Http\Controllers\Api\V1\Admin\OrganizationManagementController;
 use App\Http\Controllers\Api\V1\Admin\EventManagementController;
+use App\Http\Controllers\Api\V1\Admin\AuditLogController;
 use App\Http\Controllers\Api\V1\Organization\EventController as OrgEventController;
 use Illuminate\Support\Facades\Route;
 
@@ -100,6 +101,10 @@ Route::prefix('v1')->group(function () {
         Route::get('/events/{event}', [EventManagementController::class, 'show']);
         Route::patch('/events/{event}/approve', [EventManagementController::class, 'approve']);
         Route::patch('/events/{event}/reject', [EventManagementController::class, 'reject']);
+
+        // Audit log (read-only)
+        Route::get('/audit-logs', [AuditLogController::class, 'index']);
+        Route::get('/audit-logs/summary', [AuditLogController::class, 'summary']);
     });
 
 });
