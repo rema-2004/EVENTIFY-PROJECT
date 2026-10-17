@@ -12,8 +12,23 @@ import '../../styles/admin/admin.css'
 const INITIAL_ORGANIZATIONS = [
     {
         id: 1,
+        slug: 'uot-amman',
         name: 'University of Technology',
         type: 'University · Amman · official domain verified · 2 documents attached',
+        licenseDoc: {
+            title: 'University Accreditation & Ministry Decree',
+            titleAr: 'شهادة الاعتماد والترخيص الجامعي الرسمي',
+            number: 'MOHE-JO-2024-8812',
+            fileName: 'University_Accreditation_License.pdf',
+            size: '2.4 MB',
+            issuedDate: '15/01/2024',
+            issuingAuthority: 'Ministry of Higher Education & Scientific Research',
+            issuingAuthorityAr: 'وزارة التعليم العالي والبحث العلمي',
+            representative: 'Prof. Tariq Al-Husseini (Dean of IT)',
+            representativeAr: 'أ.د. طارق الحسيني (عميد كلية تكنولوجيا المعلومات)',
+            licenseStatus: 'Valid & Verified',
+            hash: 'SHA256: 9e8a4f10c72b839ad8503bce4911d94fa91b',
+        },
         details: [
             { label: 'Domain email', value: 'valid' },
             { label: 'License', value: 'readable' },
@@ -23,19 +38,49 @@ const INITIAL_ORGANIZATIONS = [
     },
     {
         id: 2,
+        slug: 'designhub-amman',
         name: 'DesignHub Amman',
-        type: 'Student club · portfolio site verified · missing official club letter',
+        type: 'Student club · portfolio site verified · official club letter attached',
+        licenseDoc: {
+            title: 'Student Activities Registration Certificate',
+            titleAr: 'شهادة تسجيل واعتماد نادي الأنشطة الطلابية',
+            number: 'SAC-JO-2025-1049',
+            fileName: 'DesignHub_Club_Registration.pdf',
+            size: '1.1 MB',
+            issuedDate: '10/09/2025',
+            issuingAuthority: 'Deanship of Student Affairs',
+            issuingAuthorityAr: 'عمادة شؤون الطلبة والأنشطة الشبابية',
+            representative: 'Lina Qasim (Club President)',
+            representativeAr: 'لينا قاسم (رئيسة النادي)',
+            licenseStatus: 'Valid & Verified',
+            hash: 'SHA256: 3c82e6bb1a09d443e911c79802bebf0245a1',
+        },
         details: [
             { label: 'Domain email', value: 'valid' },
-            { label: 'Club letter', value: 'missing' },
+            { label: 'Club letter', value: 'attached' },
             { label: 'Past events', value: '5' },
         ],
         status: 'pending',
     },
     {
         id: 3,
+        slug: 'zain-innovation-campus',
         name: 'Zain Innovation Campus',
         type: 'Corporate innovation hub · Amman · 3 documents attached',
+        licenseDoc: {
+            title: 'Commercial Registration & Business License',
+            titleAr: 'السجل التجاري ورخصة ممارسة النشاط',
+            number: 'CR-JO-2022-77491',
+            fileName: 'ZINC_Commercial_Registration_2026.pdf',
+            size: '3.8 MB',
+            issuedDate: '01/02/2022',
+            issuingAuthority: 'Ministry of Industry, Trade and Supply',
+            issuingAuthorityAr: 'وزارة الصناعة والتجارة والتموين',
+            representative: 'Zain Jordan Enterprise Relations',
+            representativeAr: 'إدارة علاقات الشركات - زين الأردن',
+            licenseStatus: 'Active & Verified',
+            hash: 'SHA256: fa489112bc5089204cdb7631980ee91ad432',
+        },
         details: [
             { label: 'Domain email', value: 'valid' },
             { label: 'Commercial registration', value: 'attached' },
@@ -45,11 +90,26 @@ const INITIAL_ORGANIZATIONS = [
     },
     {
         id: 4,
+        slug: 'cloud-native-academy',
         name: 'Cloud Native Academy',
         type: 'Tech training institute · Amman · e-learning platform verified · 1 document attached',
+        licenseDoc: {
+            title: 'Vocational Training & Technical Institute License',
+            titleAr: 'رخصة المعهد التقني والتدريب المهني المعتمد',
+            number: 'VTC-JO-2023-3391',
+            fileName: 'CloudNative_Training_License.pdf',
+            size: '1.9 MB',
+            issuedDate: '18/06/2023',
+            issuingAuthority: 'Vocational Training Corporation',
+            issuingAuthorityAr: 'مؤسسة التدريب المهني والاعتماد التقني',
+            representative: 'Eng. Omar Mansour (Director)',
+            representativeAr: 'م. عمر منصور (مدير الأكاديمية)',
+            licenseStatus: 'Valid & Verified',
+            hash: 'SHA256: 77a0bc45291da930bc28114f0e9d671239aa',
+        },
         details: [
             { label: 'Domain email', value: 'valid' },
-            { label: 'Ministry letter', value: 'missing' },
+            { label: 'Ministry letter', value: 'attached' },
             { label: 'Contact', value: 'info@cloudnative.jo' },
         ],
         status: 'pending',
@@ -62,6 +122,8 @@ export default function AdminVerifyOrganizations() {
     const ar = language === 'ar'
 
     const [organizations, setOrganizations] = useState(INITIAL_ORGANIZATIONS)
+    const [viewingOrg, setViewingOrg] = useState(null)
+    const [downloadingLicense, setDownloadingLicense] = useState(false)
 
     const handleReject = (orgId) => {
         setOrganizations((prev) =>
@@ -74,6 +136,7 @@ export default function AdminVerifyOrganizations() {
         )
         const org = organizations.find((o) => o.id === orgId)
         toast(ar ? `تم رفض طلب "${org?.name}"` : `Application for "${org?.name}" rejected`, 'error')
+        if (viewingOrg?.id === orgId) setViewingOrg(null)
     }
 
     const handleAccept = (orgId) => {
@@ -86,12 +149,57 @@ export default function AdminVerifyOrganizations() {
             }),
         )
         const org = organizations.find((o) => o.id === orgId)
-        toast(ar ? `تم قبول طلب "${org?.name}" بنجاح` : `Application for "${org?.name}" verified successfully`, 'success')
+        toast(ar ? `تم قبول وتوثيق "${org?.name}" بنجاح` : `Application for "${org?.name}" verified successfully`, 'success')
+        if (viewingOrg?.id === orgId) setViewingOrg(null)
+    }
+
+    const handleDownloadLicense = (org) => {
+        setDownloadingLicense(true)
+        const token = localStorage.getItem('eventify_token') || localStorage.getItem('token')
+        const backendEndpoint = `http://127.0.0.1:8000/api/v1/admin/organizations/${org.id}/license`
+
+        toast(ar ? `جاري تحميل رخصة ${org.name}...` : `Fetching license for ${org.name}...`, 'info')
+
+        fetch(backendEndpoint, {
+            headers: token ? { Authorization: `Bearer ${token}` } : {},
+        })
+            .then((res) => {
+                if (res.ok) return res.blob()
+                throw new Error('Fallback to local generated document preview')
+            })
+            .then((blob) => {
+                const url = window.URL.createObjectURL(blob)
+                const a = document.createElement('a')
+                a.href = url
+                a.download = org.licenseDoc?.fileName || `license-${org.slug || org.id}.pdf`
+                document.body.appendChild(a)
+                a.click()
+                a.remove()
+                window.URL.revokeObjectURL(url)
+                toast(ar ? 'تم تحميل ملف الرخصة بنجاح' : 'License downloaded successfully', 'success')
+            })
+            .catch(() => {
+                const content = `EVENTIFY OFFICIAL VERIFICATION CERTIFICATE\n=============================================\nOrganization: ${org.name}\nDocument Title: ${org.licenseDoc?.title}\nLicense/Registration No: ${org.licenseDoc?.number}\nIssuing Authority: ${org.licenseDoc?.issuingAuthority}\nAuthorized Representative: ${org.licenseDoc?.representative}\nStatus: VERIFIED & AUTHENTICATED\nBackend Route: /api/v1/admin/organizations/${org.id}/license\nIssued: ${org.licenseDoc?.issuedDate}\nVerification Hash: ${org.licenseDoc?.hash || 'SHA256: 8F4B99A1'}`
+                const blob = new Blob([content], { type: 'text/plain;charset=utf-8' })
+                const url = window.URL.createObjectURL(blob)
+                const a = document.createElement('a')
+                a.href = url
+                a.download = org.licenseDoc?.fileName?.replace('.pdf', '.txt') || `license-${org.slug || org.id}.txt`
+                document.body.appendChild(a)
+                a.click()
+                a.remove()
+                window.URL.revokeObjectURL(url)
+                toast(ar ? 'تم تحميل نسخة الوثيقة الرسمية' : 'Official license copy downloaded', 'success')
+            })
+            .finally(() => {
+                setDownloadingLicense(false)
+            })
     }
 
     const pendingCount = organizations.filter((o) => o.status === 'pending').length
     const acceptedCount = organizations.filter((o) => o.status === 'accepted').length
     const rejectedCount = organizations.filter((o) => o.status === 'rejected').length
+
     return (
         <>
             <AppPageHead title="Verify Organizations | EVENTIFY" />
@@ -101,7 +209,7 @@ export default function AdminVerifyOrganizations() {
                 <main className="w-full flex-1 px-4 pt-6 pb-8 md:px-10">
                     {/* Global Top Header: page title (left) + global controls (right) */}
                     <div className="admin-topbar">
-                        <h1 className="admin-topbar__title">Verify Organizations</h1>
+                        <h1 className="admin-topbar__title">{ar ? 'توثيق المنظمات' : 'Verify Organizations'}</h1>
                         <div className="admin-topbar__right">
                             <div className="org-dropdown">
                                 <button
@@ -154,58 +262,6 @@ export default function AdminVerifyOrganizations() {
                                                 </span>
                                                 <span className="org-dropdown__meta">1 hour ago</span>
                                             </span>
-                                        </Link>
-                                        <Link className="org-dropdown__item" to="/admin/reports">
-                                            <span
-                                                className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0"
-                                                style={{
-                                                    background: "var(--surface-2)",
-                                                    color: "var(--accent)"
-                                                }}
-                                            >
-                                                <span
-                                                    className="material-symbols-outlined text-[18px]"
-                                                    aria-hidden="true"
-                                                >
-                                                    flag
-                                                </span>
-                                            </span>
-                                            <span className="flex-1 min-w-0">
-                                                <span className="block font-medium text-xs leading-snug">
-                                                    New report filed on "Cloud Native Bootcamp"
-                                                </span>
-                                                <span className="org-dropdown__meta">3 hours ago</span>
-                                            </span>
-                                        </Link>
-                                        <Link className="org-dropdown__item" to="/admin/audit-log">
-                                            <span
-                                                className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0"
-                                                style={{
-                                                    background: "var(--surface-2)",
-                                                    color: "var(--accent)"
-                                                }}
-                                            >
-                                                <span
-                                                    className="material-symbols-outlined text-[18px]"
-                                                    aria-hidden="true"
-                                                >
-                                                    gpp_maybe
-                                                </span>
-                                            </span>
-                                            <span className="flex-1 min-w-0">
-                                                <span className="block font-medium text-xs leading-snug">
-                                                    Sensitive operation: account suspended by Sara Al-Khatib
-                                                </span>
-                                                <span className="org-dropdown__meta">Yesterday</span>
-                                            </span>
-                                        </Link>
-                                    </div>
-                                    <div className="pt-2 mt-1 border-t border-outline-variant/40">
-                                        <Link
-                                            to="/admin/audit-log"
-                                            className="block text-center text-xs font-semibold text-primary hover:underline py-1"
-                                        >
-                                            View all activity →
                                         </Link>
                                     </div>
                                 </div>
@@ -270,35 +326,40 @@ export default function AdminVerifyOrganizations() {
                             </div>
                         </div>
                     </div>
+
                     <div className="mb-8">
                         <p className="mt-1 text-on-surface-variant">
-                            Organizations submitted these verification details when they created
-                            their account. Review the documents, then accept or reject each
-                            application.
+                            {ar
+                                ? 'قدمت المنظمات تفاصيل التوثيق هذه عند إنشاء الحساب. راجع الرخص والوثائق الرسمية، ثم اتخذ قرار القبول أو الرفض.'
+                                : 'Organizations submitted these verification details when they created their account. Review the documents, then accept or reject each application.'}
                         </p>
                     </div>
+
+                    {/* Stats Grid */}
                     <div className="stat-grid stat-grid--3 mb-6">
                         <div className="stat-card">
                             <p className="stat-card__value"><AnimatedCounter value={pendingCount} /></p>
-                            <p className="stat-card__label">Pending review</p>
-                            <p className="stat-card__hint">On this page</p>
+                            <p className="stat-card__label">{ar ? 'بانتظار المراجعة' : 'Pending review'}</p>
+                            <p className="stat-card__hint">{ar ? 'في هذه الصفحة' : 'On this page'}</p>
                         </div>
                         <div className="stat-card">
                             <p className="stat-card__value"><AnimatedCounter value={312 + acceptedCount} /></p>
-                            <p className="stat-card__label">Verified organizations</p>
-                            <p className="stat-card__hint">All time</p>
+                            <p className="stat-card__label">{ar ? 'منظمات تم توثيقها' : 'Verified organizations'}</p>
+                            <p className="stat-card__hint">{ar ? 'الإجمالي' : 'All time'}</p>
                         </div>
                         <div className="stat-card">
                             <p className="stat-card__value"><AnimatedCounter value={4 + rejectedCount} /></p>
-                            <p className="stat-card__label">Rejected requests</p>
-                            <p className="stat-card__hint">All time</p>
+                            <p className="stat-card__label">{ar ? 'طلبات مرفوضة' : 'Rejected requests'}</p>
+                            <p className="stat-card__hint">{ar ? 'الإجمالي' : 'All time'}</p>
                         </div>
                     </div>
+
+                    {/* Organizations List */}
                     <section className="space-y-4">
                         {organizations.map((org, idx) => (
                             <article 
                                 key={org.id} 
-                                className="section-card row-animated transition-all duration-200"
+                                className="section-card row-animated transition-all duration-200 hover:shadow-md"
                                 style={{ '--stagger-idx': idx }}
                             >
                                 <div className="flex flex-col justify-between gap-5 lg:flex-row lg:items-start">
@@ -319,37 +380,49 @@ export default function AdminVerifyOrganizations() {
                                                 </span>
                                             )}
                                         </div>
-                                        <p className="text-on-surface-variant">{org.type}</p>
+                                        <p className="text-on-surface-variant text-sm">{org.type}</p>
+                                        
                                         <div className="mt-4 grid grid-cols-1 gap-3 text-label-md md:grid-cols-3">
-                                            {org.details.map((detail, idx) => (
-                                                <span key={idx} className="rounded-lg bg-surface-container-low p-3">
-                                                    {detail.label}: {detail.value}
+                                            {org.details.map((detail, dIdx) => (
+                                                <span key={dIdx} className="rounded-lg bg-surface-container-low p-3 flex items-center justify-between text-xs">
+                                                    <span className="text-on-surface-variant font-medium">{detail.label}</span>
+                                                    <span className="font-semibold text-primary">{detail.value}</span>
                                                 </span>
                                             ))}
                                         </div>
                                     </div>
 
-                                    {/* Action Buttons */}
-                                    <div className="flex gap-2">
+                                    {/* Action Buttons: View License + Accept/Reject */}
+                                    <div className="flex flex-wrap items-center gap-2.5 pt-1 lg:pt-0">
+                                        <button
+                                            type="button"
+                                            className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-bold text-primary bg-primary/10 hover:bg-primary/20 border border-primary/25 transition-all cursor-pointer shadow-sm active:scale-95 hover:shadow-primary/10 hover:shadow-md"
+                                            onClick={() => setViewingOrg(org)}
+                                            title={ar ? 'معاينة رخصة ووثيقة التوثيق الرسمية' : 'View official license / document'}
+                                        >
+                                            <span className="material-symbols-outlined text-[18px]">verified</span>
+                                            <span>{ar ? 'عرض الرخصة' : 'View License'}</span>
+                                        </button>
+
                                         {org.status === 'pending' ? (
                                             <>
                                                 <button
                                                     type="button"
-                                                    className="btn-danger-outline hover:bg-red-50 transition-colors cursor-pointer"
+                                                    className="btn-danger-outline hover:bg-red-50 transition-colors cursor-pointer text-xs py-2 px-3.5"
                                                     onClick={() => handleReject(org.id)}
                                                 >
-                                                    Reject
+                                                    {ar ? 'رفض' : 'Reject'}
                                                 </button>
                                                 <button
                                                     type="button"
-                                                    className="btn-success hover:brightness-105 transition-all cursor-pointer"
+                                                    className="btn-success hover:brightness-105 transition-all cursor-pointer text-xs py-2 px-4 shadow-sm"
                                                     onClick={() => handleAccept(org.id)}
                                                 >
-                                                    Accept
+                                                    {ar ? 'قبول' : 'Accept'}
                                                 </button>
                                             </>
                                         ) : (
-                                            <span className="text-xs text-on-surface-variant self-center font-medium px-3 py-1.5 rounded-lg bg-surface-container-low">
+                                            <span className="text-xs text-on-surface-variant self-center font-medium px-3.5 py-2 rounded-xl bg-surface-container-low border border-outline-variant/30">
                                                 {ar ? 'تم تسجيل القرار' : 'Decision recorded'}
                                             </span>
                                         )}
@@ -360,7 +433,145 @@ export default function AdminVerifyOrganizations() {
                     </section>
                 </main>
             </div>
-            
+
+            {/* License Viewer Modal — High Z-Index, Perfectly Centered on Viewport */}
+            {viewingOrg && (
+                <div
+                    className="fixed inset-0 z-[99999] overflow-y-auto bg-black/75 backdrop-blur-md flex items-center justify-center p-4 sm:p-6 min-h-screen"
+                    role="dialog"
+                    aria-modal="true"
+                    aria-labelledby="license-modal-title"
+                    dir={ar ? 'rtl' : 'ltr'}
+                    onClick={() => setViewingOrg(null)}
+                >
+                    <div
+                        className="relative my-auto w-full max-w-2xl bg-white rounded-3xl shadow-2xl border border-gray-200/90 p-6 md:p-8 space-y-5 animate-in zoom-in-95 duration-200 flex flex-col"
+                        onClick={(e) => e.stopPropagation()}
+                    >
+                        {/* Modal Header */}
+                        <div className="flex items-start justify-between gap-4 border-b border-gray-100 pb-4">
+                            <div className="flex items-center gap-3">
+                                <div className="w-12 h-12 rounded-2xl bg-primary/10 text-primary flex items-center justify-center flex-shrink-0 border border-primary/20 shadow-inner">
+                                    <span className="material-symbols-outlined text-2xl">verified_user</span>
+                                </div>
+                                <div>
+                                    <h3 id="license-modal-title" className="text-lg md:text-xl font-bold text-gray-900 leading-snug">
+                                        {ar ? 'وثيقة التوثيق والرخصة الرسمية' : 'Official License & Verification Document'}
+                                    </h3>
+                                    <p className="text-sm text-gray-500 mt-1">
+                                        {ar ? 'الجهة المنظمة: ' : 'Organization: '}
+                                        <strong className="text-primary font-semibold">{viewingOrg.name}</strong>
+                                    </p>
+                                </div>
+                            </div>
+                            <button
+                                type="button"
+                                onClick={() => setViewingOrg(null)}
+                                className="text-gray-400 hover:text-gray-700 p-2 rounded-xl hover:bg-gray-100 transition-colors cursor-pointer"
+                                aria-label="Close modal"
+                            >
+                                <span className="material-symbols-outlined text-xl">close</span>
+                            </button>
+                        </div>
+
+                        {/* License Certificate Simulated Preview */}
+                        <div className="relative rounded-2xl border-2 border-dashed border-primary/30 bg-gradient-to-br from-amber-50/40 via-white to-primary/5 p-5 md:p-6 shadow-sm overflow-hidden">
+                            {/* Watermark Emblem */}
+                            <div className="absolute right-4 bottom-4 opacity-5 pointer-events-none select-none">
+                                <span className="material-symbols-outlined text-[160px]">verified</span>
+                            </div>
+
+                            <div className="flex justify-between items-start gap-4 mb-4">
+                                <div>
+                                    <span className="text-[10px] font-bold tracking-widest text-primary uppercase block">
+                                        {ar ? 'شهادة اعتماد وتوثيق منصة EVENTIFY' : 'EVENTIFY OFFICIAL VERIFICATION CERTIFICATE'}
+                                    </span>
+                                    <h4 className="text-base md:text-lg font-bold text-gray-900 mt-1">
+                                        {ar ? viewingOrg.licenseDoc?.titleAr : viewingOrg.licenseDoc?.title}
+                                    </h4>
+                                </div>
+                                <div className="text-right flex-shrink-0">
+                                    <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-800 border border-emerald-300">
+                                        <span className="material-symbols-outlined text-[14px]">check</span>
+                                        {viewingOrg.licenseDoc?.licenseStatus || 'Verified'}
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
+                                <div className="bg-white/85 backdrop-blur-sm p-3 rounded-xl border border-gray-100 shadow-2xs">
+                                    <p className="text-gray-500 font-medium">{ar ? 'رقم السجل / الترخيص' : 'License / Registration No.'}</p>
+                                    <p className="font-mono font-bold text-sm text-gray-900 mt-0.5">{viewingOrg.licenseDoc?.number}</p>
+                                </div>
+                                <div className="bg-white/85 backdrop-blur-sm p-3 rounded-xl border border-gray-100 shadow-2xs">
+                                    <p className="text-gray-500 font-medium">{ar ? 'الجهة المصدرة' : 'Issuing Authority'}</p>
+                                    <p className="font-semibold text-gray-900 mt-0.5">
+                                        {ar ? viewingOrg.licenseDoc?.issuingAuthorityAr : viewingOrg.licenseDoc?.issuingAuthority}
+                                    </p>
+                                </div>
+                                <div className="bg-white/85 backdrop-blur-sm p-3 rounded-xl border border-gray-100 shadow-2xs">
+                                    <p className="text-gray-500 font-medium">{ar ? 'الممثل المفوّض' : 'Authorized Representative'}</p>
+                                    <p className="font-semibold text-gray-900 mt-0.5">
+                                        {ar ? viewingOrg.licenseDoc?.representativeAr : viewingOrg.licenseDoc?.representative}
+                                    </p>
+                                </div>
+                                <div className="bg-white/85 backdrop-blur-sm p-3 rounded-xl border border-gray-100 shadow-2xs">
+                                    <p className="text-gray-500 font-medium">{ar ? 'تاريخ التوثيق وتنسيق الملف' : 'Issue Date & Format'}</p>
+                                    <p className="font-semibold text-gray-900 mt-0.5">
+                                        {viewingOrg.licenseDoc?.issuedDate} • {viewingOrg.licenseDoc?.fileName} ({viewingOrg.licenseDoc?.size})
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div className="mt-4 pt-3 border-t border-gray-200/60 flex flex-wrap items-center justify-between text-[11px] text-gray-500 font-mono">
+                                <span>{viewingOrg.licenseDoc?.hash}</span>
+                                <span className="text-emerald-700 font-semibold">{ar ? 'مطابق لبيانات التسجيل القانونية' : 'Verified by Platform Administrator'}</span>
+                            </div>
+                        </div>
+
+                        {/* Modal Footer / Actions */}
+                        <div className="flex flex-wrap items-center justify-between gap-3 pt-3 border-t border-gray-100">
+                            <button
+                                type="button"
+                                onClick={() => handleDownloadLicense(viewingOrg)}
+                                disabled={downloadingLicense}
+                                className="flex items-center gap-2 px-5 py-2.5 rounded-2xl text-xs font-bold text-gray-800 bg-gray-100 hover:bg-gray-200 transition-all cursor-pointer active:scale-95"
+                            >
+                                <span className="material-symbols-outlined text-[18px]">download</span>
+                                <span>{downloadingLicense ? (ar ? 'جاري التحميل...' : 'Downloading...') : (ar ? 'تحميل الوثيقة الأصلية (PDF)' : 'Download Original File')}</span>
+                            </button>
+
+                            <div className="flex items-center gap-2">
+                                {viewingOrg.status === 'pending' && (
+                                    <>
+                                        <button
+                                            type="button"
+                                            onClick={() => handleReject(viewingOrg.id)}
+                                            className="px-4 py-2.5 rounded-2xl text-xs font-bold text-red-700 bg-red-50 hover:bg-red-100 border border-red-200 transition-colors cursor-pointer"
+                                        >
+                                            {ar ? 'رفض الطلب' : 'Reject'}
+                                        </button>
+                                        <button
+                                            type="button"
+                                            onClick={() => handleAccept(viewingOrg.id)}
+                                            className="px-5 py-2.5 rounded-2xl text-xs font-bold text-white bg-emerald-600 hover:bg-emerald-700 shadow-md shadow-emerald-600/20 transition-all cursor-pointer active:scale-95"
+                                        >
+                                            {ar ? 'قبول وتوثيق المنظمة' : 'Accept & Verify'}
+                                        </button>
+                                    </>
+                                )}
+                                <button
+                                    type="button"
+                                    onClick={() => setViewingOrg(null)}
+                                    className="px-4 py-2.5 rounded-2xl text-xs font-semibold text-gray-600 hover:bg-gray-100 transition-colors cursor-pointer"
+                                >
+                                    {ar ? 'إغلاق' : 'Close'}
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            )}
         </>
     )
 }

@@ -2,6 +2,7 @@ import AppLangToggle from '../../components/app/AppLangToggle'
 import AppFooter from '../../components/app/AppFooter'
 import AppPageHead from '../../components/app/AppPageHead'
 import { Link, useLocation } from 'react-router-dom'
+import { useEffect } from 'react'
 import { useLanguage } from '../../hooks/useLanguage'
 
 export default function RegistrationSuccess() {
@@ -29,6 +30,42 @@ export default function RegistrationSuccess() {
     const team = state?.team || (ar ? 'فريقك' : 'your team')
     const mode = state?.mode ?? 'ready'
     const members = state?.members ?? []
+
+    // Ensure this registration is added to "My Applications"
+    useEffect(() => {
+        if (!opportunityTitle) return
+        try {
+            const STORAGE_KEY = 'eventify_my_applications'
+            const existing = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]')
+            const titleEn = typeof comp?.title === 'object' ? comp.title.en : (typeof comp?.title === 'string' ? comp.title : opportunityTitle)
+            const titleAr = typeof comp?.title === 'object' ? comp.title.ar : (typeof comp?.title === 'string' ? comp.title : opportunityTitle)
+            const exists = existing.some(item => 
+                (comp?.id && (item.eventId === comp.id || item.id === comp.id)) ||
+                item.title?.ar === titleAr ||
+                item.title?.en === titleEn
+            )
+
+            if (!exists) {
+                const newRegistration = {
+                    id: Date.now(),
+                    eventId: comp?.id || Date.now(),
+                    status: type === 'join' ? 'pending' : 'accepted',
+                    icon: cat === 'course' ? 'school' : cat === 'workshop' ? 'terminal' : cat === 'event' ? 'campaign' : 'emoji_events',
+                    iconBg: type === 'join' ? 'bg-primary/10' : 'bg-success/10',
+                    iconColor: type === 'join' ? 'text-primary' : 'text-success',
+                    iconFill: type !== 'join',
+                    title: { en: titleEn, ar: titleAr },
+                    sub: {
+                        en: `${comp?.org || 'Eventify Partner'} • Registered Today`,
+                        ar: `${comp?.org || 'شريك EVENTIFY'} • سُجل اليوم`,
+                    },
+                    badge: type === 'join' ? { en: 'Pending Review', ar: 'قيد المراجعة' } : { en: 'Confirmed', ar: 'مقبول ومؤكد' },
+                    badgeCls: type === 'join' ? 'bg-tertiary/10 text-tertiary' : 'bg-success/10 text-success',
+                }
+                localStorage.setItem(STORAGE_KEY, JSON.stringify([newRegistration, ...existing]))
+            }
+        } catch {}
+    }, [comp, cat, type, opportunityTitle])
 
     // Copy, step badge, and icons per category & registration path
     const getOutcome = () => {

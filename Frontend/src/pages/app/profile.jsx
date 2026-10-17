@@ -201,9 +201,33 @@ export default function Profile() {
 
 
     const STATS = [
-        { icon: 'emoji_events', color: 'text-primary', bg: 'bg-primary/10', value: '7', label: ar ? 'مسابقات انضممت إليها' : 'Competitions Joined', sub: ar ? '+2 هذا العام' : '+2 this year' },
-        { icon: 'bookmark_added', color: 'text-secondary', bg: 'bg-secondary/10', value: '18', label: ar ? 'فرص محفوظة' : 'Saved Opportunities', sub: ar ? 'جديد' : 'New' },
-        { icon: 'group', color: 'text-tertiary', bg: 'bg-tertiary/10', value: '4', label: ar ? 'فرق قدتها' : 'Teams Led', sub: ar ? 'أعلى 5%' : 'Top 5%' },
+        {
+            icon: 'emoji_events',
+            color: 'text-primary',
+            bg: 'bg-primary/10',
+            value: '7',
+            label: ar ? 'مسابقات انضممت إليها' : 'Competitions Joined',
+            sub: ar ? '+2 هذا العام' : '+2 this year',
+            to: '/app/my-applications',
+        },
+        {
+            icon: 'bookmark_added',
+            color: 'text-secondary',
+            bg: 'bg-secondary/10',
+            value: '18',
+            label: ar ? 'فرص محفوظة' : 'Saved Opportunities',
+            sub: ar ? 'انقر للعرض' : 'Click to view',
+            to: '/app/saved',
+        },
+        {
+            icon: 'group',
+            color: 'text-tertiary',
+            bg: 'bg-tertiary/10',
+            value: '4',
+            label: ar ? 'فرق قدتها' : 'Teams Led',
+            sub: ar ? 'أعلى 5%' : 'Top 5%',
+            to: '/app/teams',
+        },
     ]
 
     const EXPERIENCE = [
@@ -505,22 +529,52 @@ export default function Profile() {
 
                     {/* Stats */}
                     <section className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                        {STATS.map(({ icon, color, bg, value, label, sub }, i) => (
-                            <div
-                                key={label}
-                                className="ev-card spotlight row-animated bg-surface-container-lowest p-6 rounded-2xl border border-outline-variant/50 premium-shadow group hover:-translate-y-1.5 hover:shadow-xl hover:border-[#FF4D2E]/40 transition-all duration-300 cursor-default"
-                                style={{ '--stagger-idx': i }}
-                            >
-                                <div className={`flex justify-between items-start mb-4 ${ar ? 'flex-row-reverse' : ''}`}>
-                                    <span className={`material-symbols-outlined ${color} p-2 ${bg} rounded-lg group-hover:scale-110 transition-transform duration-300`}>{icon}</span>
-                                    <span className="font-label-sm text-label-sm text-outline">{sub}</span>
+                        {STATS.map(({ icon, color, bg, value, label, sub, to }, i) => {
+                            const CardInner = (
+                                <>
+                                    <div className={`flex justify-between items-start mb-4 ${ar ? 'flex-row-reverse' : ''}`}>
+                                        <span className={`material-symbols-outlined ${color} p-2 ${bg} rounded-lg group-hover:scale-110 transition-transform duration-300`}>{icon}</span>
+                                        <div className={`flex items-center gap-1 text-outline group-hover:text-primary transition-colors font-label-sm text-label-sm ${ar ? 'flex-row-reverse' : ''}`}>
+                                            <span>{sub}</span>
+                                            {to && (
+                                                <span
+                                                    className="material-symbols-outlined text-[16px] transition-transform duration-300 group-hover:translate-x-1"
+                                                    style={{ transform: ar ? 'scaleX(-1)' : 'none' }}
+                                                >
+                                                    arrow_forward
+                                                </span>
+                                            )}
+                                        </div>
+                                    </div>
+                                    <p className="font-mono text-headline-lg text-on-surface" data-count>
+                                        <AnimatedCounter value={parseInt(value, 10)} />
+                                    </p>
+                                    <p className="font-label-md text-label-md text-on-surface-variant group-hover:text-on-surface transition-colors">{label}</p>
+                                </>
+                            )
+
+                            const cardClasses = "ev-card spotlight row-animated bg-surface-container-lowest p-6 rounded-2xl border border-outline-variant/50 premium-shadow group hover:-translate-y-1.5 hover:shadow-xl hover:border-[#FF4D2E]/40 transition-all duration-300 block text-start cursor-pointer"
+
+                            return to ? (
+                                <Link
+                                    key={label}
+                                    to={to}
+                                    className={cardClasses}
+                                    style={{ '--stagger-idx': i }}
+                                    title={ar ? `الانتقال إلى ${label}` : `Go to ${label}`}
+                                >
+                                    {CardInner}
+                                </Link>
+                            ) : (
+                                <div
+                                    key={label}
+                                    className={cardClasses}
+                                    style={{ '--stagger-idx': i }}
+                                >
+                                    {CardInner}
                                 </div>
-                                <p className="font-mono text-headline-lg text-on-surface" data-count>
-                                    <AnimatedCounter value={parseInt(value, 10)} />
-                                </p>
-                                <p className="font-label-md text-label-md text-on-surface-variant">{label}</p>
-                            </div>
-                        ))}
+                            )
+                        })}
                     </section>
 
                     {/* Experience */}
