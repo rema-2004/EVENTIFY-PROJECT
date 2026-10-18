@@ -5,12 +5,15 @@ namespace App\Http\Controllers\Api\V1\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\RejectEventRequest;
 use App\Http\Resources\EventResource;
+use App\Mail\EventRejectedMail;
 use App\Models\AuditLog;
 use App\Models\Event;
 use App\Traits\ApiResponse;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
+use Throwable;
 
 class EventManagementController extends Controller
 {
@@ -108,8 +111,35 @@ class EventManagementController extends Controller
             details: $request->validated('admin_notes'),
         );
 
+        $this->sendRejectionEmail($event, $request->validated('admin_notes'));
+
         $event->load(['organization', 'competition']);
 
         return $this->success(new EventResource($event), 'Event rejected');
+    }
+
+    /**
+     * Tells the organization why its event was rejected.
+     *
+     * The rejection has already been saved at this point, so a mail
+     * failure (bad SMTP settings, mail server down) must never undo it
+     * or turn the admin's request into an error — it is reported to the
+     * log instead.
+     */
+    private function sendRejectionEmail(Event $event, string $reason): void
+    {
+        $organization = $event->organization;
+
+        if (! $organization) {
+            return;
+        }
+
+        try {
+            Mail::to($organization->email)->send(
+                new EventRejectedMail($organization->name, $event->title, $reason)
+            );
+        } catch (Throwable $e) {
+            report($e);
+        }
     }
 }
