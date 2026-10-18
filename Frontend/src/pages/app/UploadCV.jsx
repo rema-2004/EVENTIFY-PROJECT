@@ -193,13 +193,13 @@ export default function UploadCV() {
     }
 
     return (
-        <div className="min-h-screen bg-[#0E1116] text-white flex flex-col justify-between py-6 px-4 relative">
+        <div className="min-h-screen bg-[#FAFAF8] dark:bg-[#0E1116] text-[#0E1116] dark:text-white flex flex-col justify-between py-6 px-4 relative">
             {/* Unlock Celebration Modal */}
             {isUnlocking && (
-                <div className="fixed inset-0 z-[9999] bg-[#0E1116]/95 backdrop-blur-xl flex flex-col items-center justify-center p-6 text-center fade-in">
+                <div className="fixed inset-0 z-[9999] bg-[#ffffff]/95 dark:bg-[#0E1116]/95 backdrop-blur-xl flex flex-col items-center justify-center p-6 text-center fade-in">
                     <div className="relative mb-6">
                         <div className="absolute inset-0 bg-[#FF4D2E]/30 rounded-full blur-2xl animate-pulse" />
-                        <div className="relative w-28 h-28 rounded-full bg-slate-900 border-2 border-[#FF4D2E] flex items-center justify-center text-[#FF4D2E] shadow-[0_0_50px_rgba(255,77,46,0.6)] fade-in-up">
+                        <div className="relative w-28 h-28 rounded-full bg-[#F7F6F3] dark:bg-slate-900 border-2 border-[#FF4D2E] flex items-center justify-center text-[#FF4D2E] shadow-[0_0_50px_rgba(255,77,46,0.6)] fade-in-up">
                             <span className="material-symbols-outlined text-6xl">
                                 lock_open
                             </span>
@@ -207,16 +207,16 @@ export default function UploadCV() {
                         <div className="absolute -top-3 -right-3 text-amber-400 animate-spin">
                             <span className="material-symbols-outlined text-3xl">auto_awesome</span>
                         </div>
-                        <div className="absolute -bottom-2 -left-3 text-green-400">
+                        <div className="absolute -bottom-2 -left-3 text-green-600 dark:text-green-400">
                             <span className="material-symbols-outlined text-2xl">verified</span>
                         </div>
                     </div>
 
                     <div className="space-y-3 max-w-sm">
-                        <h2 className="text-2xl sm:text-3xl font-extrabold text-white">
+                        <h2 className="text-2xl sm:text-3xl font-extrabold text-[#0E1116] dark:text-white">
                             {ar ? 'تم تجهيز ملفك بنجاح!' : 'Profile Ready & Unlocked!'}
                         </h2>
-                        <p className="text-sm text-gray-300">
+                        <p className="text-sm text-gray-700 dark:text-gray-300">
                             {ar
                                 ? 'يقوم الذكاء الاصطناعي الآن بفتح الفعاليات والهاكاثونات المطابقة لمهاراتك وخبراتك...'
                                 : 'AI matching engine has unlocked opportunities with up to 98% match!'}
@@ -230,11 +230,11 @@ export default function UploadCV() {
             )}
 
             {/* Top Navigation Bar (Spacious max-w-5xl) */}
-            <div className="max-w-5xl w-full mx-auto flex items-center justify-between pb-4 border-b border-white/10">
+            <div className="max-w-5xl w-full mx-auto flex items-center justify-between pb-4 border-b border-black/10 dark:border-white/10">
                 <button
                     type="button"
                     onClick={handleBack}
-                    className="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-white/5 hover:bg-white/10 text-gray-300 hover:text-white transition-all text-xs font-semibold cursor-pointer border border-white/10"
+                    className="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-black/[0.03] dark:bg-white/5 hover:bg-black/10 dark:hover:bg-white/10 text-gray-700 dark:text-gray-300 hover:text-[#0E1116] dark:hover:text-white transition-all text-xs font-semibold cursor-pointer border border-black/10 dark:border-white/10"
                     title={ar ? 'تراجع والعودة لشاشة الترحيب' : 'Back to welcome screen'}
                     aria-label={ar ? 'رجوع' : 'Back'}
                 >
@@ -252,7 +252,7 @@ export default function UploadCV() {
                 <button
                     type="button"
                     onClick={() => navigate('/app/wizard-form')}
-                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white/5 hover:bg-[#FF4D2E]/20 text-xs text-gray-300 hover:text-[#FF8566] transition-all border border-white/10 font-semibold cursor-pointer"
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-black/[0.03] dark:bg-white/5 hover:bg-[#FF4D2E]/20 text-xs text-gray-700 dark:text-gray-300 hover:text-[#FF8566] transition-all border border-black/10 dark:border-white/10 font-semibold cursor-pointer"
                     title={ar ? 'تخطي الرفع وتعبئة البيانات يدوياً' : 'Skip upload and fill manually instead'}
                 >
                     <span className="material-symbols-outlined text-[15px]">edit_note</span>
@@ -264,14 +264,14 @@ export default function UploadCV() {
             {stage === 'dropzone' && (
                 <div className="max-w-4xl w-full mx-auto my-auto space-y-8 py-4 fade-in">
                     <div className="text-center space-y-3">
-                        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#FF4D2E]/10 border border-[#FF4D2E]/30 text-[#FF8566] text-xs font-semibold">
+                        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#FF4D2E]/10 border border-[#FF4D2E]/30 text-[#E23B1C] dark:text-[#FF8566] text-xs font-semibold">
                             <span className="material-symbols-outlined text-[16px]">auto_awesome</span>
                             <span>{ar ? 'تحليل السيرة الذاتية الذكي بالذكاء الاصطناعي' : 'AI Resume Parsing & Extraction'}</span>
                         </div>
-                        <h1 className="text-3xl sm:text-4xl font-black text-white">
+                        <h1 className="text-3xl sm:text-4xl font-black text-[#0E1116] dark:text-white">
                             {ar ? 'رفع السيرة الذاتية' : 'Upload Your Resume'}
                         </h1>
-                        <p className="text-sm text-gray-400 max-w-md mx-auto leading-relaxed">
+                        <p className="text-sm text-gray-500 dark:text-gray-400 max-w-md mx-auto leading-relaxed">
                             {ar
                                 ? 'ارفع سيرتك الذاتية بصيغة PDF أو Word ليقوم الذكاء الاصطناعي باستخراج مهاراتك وخبراتك تلقائياً وبدقة'
                                 : 'Upload PDF or DOCX to auto-extract your skills, background, and match top competitions with AI'}
@@ -289,7 +289,7 @@ export default function UploadCV() {
                     {/* Dropzone Card - Generous & Inviting */}
                     <div
                         onClick={() => fileInputRef.current?.click()}
-                        className="border-2 border-dashed border-[#FF4D2E]/40 hover:border-[#FF4D2E] rounded-3xl p-10 sm:p-14 bg-slate-900/40 hover:bg-slate-900/70 transition-all cursor-pointer flex flex-col items-center justify-center text-center space-y-4 group shadow-[0_0_35px_rgba(255,77,46,0.1)] hover:shadow-[0_0_50px_rgba(255,77,46,0.2)]"
+                        className="border-2 border-dashed border-[#FF4D2E]/40 hover:border-[#FF4D2E] rounded-3xl p-10 sm:p-14 bg-[#ffffff] dark:bg-slate-900/40 hover:bg-[#FFF5F2] dark:hover:bg-slate-900/70 transition-all cursor-pointer flex flex-col items-center justify-center text-center space-y-4 group shadow-[0_0_35px_rgba(255,77,46,0.1)] hover:shadow-[0_0_50px_rgba(255,77,46,0.2)]"
                     >
                         <div className="w-20 h-20 rounded-2xl bg-[#FF4D2E]/10 border border-[#FF4D2E]/30 flex items-center justify-center text-[#FF4D2E] group-hover:scale-110 transition-transform">
                             <span className="material-symbols-outlined text-5xl">
@@ -297,10 +297,10 @@ export default function UploadCV() {
                             </span>
                         </div>
                         <div className="space-y-1">
-                            <p className="text-base sm:text-lg font-bold text-white">
+                            <p className="text-base sm:text-lg font-bold text-[#0E1116] dark:text-white">
                                 {ar ? 'اسحب الملف وأفلته هنا أو تصفح جهازك' : 'Drag & drop file here or browse files'}
                             </p>
-                            <p className="text-xs text-gray-400">
+                            <p className="text-xs text-gray-500 dark:text-gray-400">
                                 PDF, DOCX (Max: 10MB) • {ar ? 'معالجة آمنة وفورية' : 'Instant & Secure parsing'}
                             </p>
                         </div>
@@ -317,16 +317,16 @@ export default function UploadCV() {
                         <button
                             type="button"
                             onClick={() => startAnalysis('john_nanna_resume.pdf')}
-                            className="text-xs sm:text-sm text-gray-400 hover:text-[#FF4D2E] underline underline-offset-4 transition-colors font-medium"
+                            className="text-xs sm:text-sm text-gray-500 dark:text-gray-400 hover:text-[#FF4D2E] underline underline-offset-4 transition-colors font-medium"
                         >
                             {ar ? 'أو تجربة سيرة ذاتية نموذجية تلقائياً (Demo)' : 'Or try with sample resume (Demo)'}
                         </button>
 
-                        <div className="pt-2 border-t border-white/5">
+                        <div className="pt-2 border-t border-black/5 dark:border-white/5">
                             <button
                                 type="button"
                                 onClick={() => navigate('/app/wizard-form')}
-                                className="inline-flex items-center gap-2 text-xs sm:text-sm font-semibold text-gray-400 hover:text-[#FF8566] transition-colors group cursor-pointer"
+                                className="inline-flex items-center gap-2 text-xs sm:text-sm font-semibold text-gray-500 dark:text-gray-400 hover:text-[#FF8566] transition-colors group cursor-pointer"
                             >
                                 <span>{ar ? 'ليس لديك سيرة ذاتية جاهزة؟' : "Don't have a resume ready?"}</span>
                                 <span className="text-[#FF4D2E] underline underline-offset-4 group-hover:text-[#FF8566] inline-flex items-center gap-0.5">
@@ -346,7 +346,7 @@ export default function UploadCV() {
                 <div className="max-w-3xl w-full mx-auto my-auto flex flex-col items-center text-center space-y-6 py-8 fade-in">
                     <div className="relative w-32 h-32 flex items-center justify-center">
                         <div className="absolute inset-0 rounded-full bg-[#FF4D2E]/20 blur-xl animate-pulse" />
-                        <div className="relative w-28 h-28 rounded-3xl bg-slate-900/90 border-2 border-[#FF4D2E] flex items-center justify-center text-[#FF4D2E] shadow-[0_0_40px_rgba(255,77,46,0.4)]">
+                        <div className="relative w-28 h-28 rounded-3xl bg-[#ffffff] dark:bg-slate-900/90 border-2 border-[#FF4D2E] flex items-center justify-center text-[#FF4D2E] shadow-[0_0_40px_rgba(255,77,46,0.4)]">
                             <span className="material-symbols-outlined text-6xl animate-pulse">
                                 description
                             </span>
@@ -355,7 +355,7 @@ export default function UploadCV() {
                     </div>
 
                     <div className="space-y-2">
-                        <h2 className="text-2xl font-bold tracking-tight text-white">
+                        <h2 className="text-2xl font-bold tracking-tight text-[#0E1116] dark:text-white">
                             Analyzing Resume
                         </h2>
                         <p className="text-sm text-[#FF4D2E] font-medium animate-pulse">
@@ -364,13 +364,13 @@ export default function UploadCV() {
                     </div>
 
                     <div className="w-full max-w-md space-y-2">
-                        <div className="w-full h-2 rounded-full bg-white/10 overflow-hidden">
+                        <div className="w-full h-2 rounded-full bg-black/10 dark:bg-white/10 overflow-hidden">
                             <div
                                 className="h-full bg-gradient-to-r from-[#FF4D2E] to-[#FF8566] transition-all duration-500 rounded-full"
                                 style={{ width: `${analyzingProgress}%` }}
                             />
                         </div>
-                        <div className="flex justify-between text-[11px] text-gray-400">
+                        <div className="flex justify-between text-[11px] text-gray-500 dark:text-gray-400">
                             <span>
                                 {analyzingStep === 0 && (ar ? 'قراءة الملف...' : 'Reading document...')}
                                 {analyzingStep === 1 && (ar ? 'استخراج المهارات...' : 'Extracting skills...')}
@@ -386,26 +386,26 @@ export default function UploadCV() {
             {/* STAGE 3: Review & Edit Profile (Spacious max-w-5xl) */}
             {stage === 'review' && (
                 <div className="max-w-5xl w-full mx-auto my-auto space-y-6 py-4 fade-in">
-                    <div className="flex items-center justify-between border-b border-white/10 pb-4">
+                    <div className="flex items-center justify-between border-b border-black/10 dark:border-white/10 pb-4">
                         <div>
-                            <div className="inline-flex items-center gap-1.5 text-xs text-[#FF8566] font-bold mb-1">
+                            <div className="inline-flex items-center gap-1.5 text-xs text-[#E23B1C] dark:text-[#FF8566] font-bold mb-1">
                                 <span className="material-symbols-outlined text-[15px]">auto_awesome</span>
                                 <span>{ar ? 'البيانات المستخرجة بالذكاء الاصطناعي' : 'AI Extracted Profile Data'}</span>
                             </div>
-                            <h2 className="text-2xl font-black text-white">
+                            <h2 className="text-2xl font-black text-[#0E1116] dark:text-white">
                                 Review & Edit Profile
                             </h2>
-                            <p className="text-xs text-gray-400">
+                            <p className="text-xs text-gray-500 dark:text-gray-400">
                                 {ar ? 'راجع وتأكد من بياناتك قبل حفظ الملف الشخصي وتفعيله' : 'Verify and fine-tune your details before unlocking'}
                             </p>
                         </div>
-                        <span className="hidden sm:inline-block px-3 py-1 rounded-full bg-green-500/10 border border-green-500/30 text-green-400 text-xs font-semibold">
+                        <span className="hidden sm:inline-block px-3 py-1 rounded-full bg-green-500/10 border border-green-500/30 text-green-600 dark:text-green-400 text-xs font-semibold">
                             ✔ 100% Parsed
                         </span>
                     </div>
 
                     {/* Section Switcher Tabs */}
-                    <div className="flex gap-2 p-1.5 bg-slate-900/80 rounded-2xl border border-white/10 overflow-x-auto">
+                    <div className="flex gap-2 p-1.5 bg-[#EFEDE8] dark:bg-slate-900/80 rounded-2xl border border-black/10 dark:border-white/10 overflow-x-auto">
                         {[
                             { id: 'basics', label: ar ? 'المعلومات والنبذة' : 'Basic Info & About', icon: 'person' },
                             { id: 'skills', label: ar ? 'المهارات' : 'Skills', icon: 'psychology' },
@@ -419,7 +419,7 @@ export default function UploadCV() {
                                 className={`flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-bold transition-all whitespace-nowrap cursor-pointer ${
                                     activeTab === tab.id
                                         ? 'bg-[#FF4D2E] text-white shadow-md'
-                                        : 'text-gray-400 hover:text-white hover:bg-white/5'
+                                        : 'text-gray-500 dark:text-gray-400 hover:text-[#0E1116] dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/5'
                                 }`}
                             >
                                 <span className="material-symbols-outlined text-[16px]">{tab.icon}</span>
@@ -430,59 +430,59 @@ export default function UploadCV() {
 
                     {/* TAB 1: Basic Info & About */}
                     {activeTab === 'basics' && (
-                        <div className="space-y-4 bg-slate-900/60 p-5 rounded-2xl border border-white/10 animate-in fade-in">
+                        <div className="space-y-4 bg-[#F7F6F3] dark:bg-slate-900/60 p-5 rounded-2xl border border-black/10 dark:border-white/10 animate-in fade-in">
                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                 <div className="space-y-1.5">
-                                    <label className="text-xs font-semibold text-gray-300">
+                                    <label className="text-xs font-semibold text-gray-700 dark:text-gray-300">
                                         {ar ? 'الاسم الكامل' : 'Full Name'}
                                     </label>
                                     <input
                                         type="text"
                                         value={formData.name}
                                         onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                                        className="w-full py-2.5 px-3.5 rounded-xl bg-slate-950 border border-white/15 focus:border-[#FF4D2E] text-white text-sm focus:outline-none"
+                                        className="w-full py-2.5 px-3.5 rounded-xl bg-[#ffffff] dark:bg-slate-950 border border-black/15 dark:border-white/15 focus:border-[#FF4D2E] text-[#0E1116] dark:text-white text-sm focus:outline-none"
                                         placeholder="Full Name"
                                     />
                                 </div>
                                 <div className="space-y-1.5">
-                                    <label className="text-xs font-semibold text-gray-300">
+                                    <label className="text-xs font-semibold text-gray-700 dark:text-gray-300">
                                         {ar ? 'المسمى المهني / التخصص' : 'Professional Headline'}
                                     </label>
                                     <input
                                         type="text"
                                         value={formData.headline}
                                         onChange={(e) => setFormData({ ...formData, headline: e.target.value })}
-                                        className="w-full py-2.5 px-3.5 rounded-xl bg-slate-950 border border-white/15 focus:border-[#FF4D2E] text-white text-sm focus:outline-none"
+                                        className="w-full py-2.5 px-3.5 rounded-xl bg-[#ffffff] dark:bg-slate-950 border border-black/15 dark:border-white/15 focus:border-[#FF4D2E] text-[#0E1116] dark:text-white text-sm focus:outline-none"
                                         placeholder="e.g. Computer Science & AI"
                                     />
                                 </div>
                             </div>
 
                             <div className="space-y-1.5">
-                                <label className="text-xs font-semibold text-gray-300">
+                                <label className="text-xs font-semibold text-gray-700 dark:text-gray-300">
                                     {ar ? 'الموقع' : 'Location'}
                                 </label>
                                 <input
                                     type="text"
                                     value={formData.location}
                                     onChange={(e) => setFormData({ ...formData, location: e.target.value })}
-                                    className="w-full py-2.5 px-3.5 rounded-xl bg-slate-950 border border-white/15 focus:border-[#FF4D2E] text-white text-sm focus:outline-none"
+                                    className="w-full py-2.5 px-3.5 rounded-xl bg-[#ffffff] dark:bg-slate-950 border border-black/15 dark:border-white/15 focus:border-[#FF4D2E] text-[#0E1116] dark:text-white text-sm focus:outline-none"
                                     placeholder="e.g. Amman, Jordan"
                                 />
                             </div>
 
                             <div className="space-y-1.5">
-                                <div className="flex justify-between items-center text-xs text-gray-300">
+                                <div className="flex justify-between items-center text-xs text-gray-700 dark:text-gray-300">
                                     <label className="font-semibold">
                                         {ar ? 'نبذة عني (About)' : 'About / Bio'}
                                     </label>
-                                    <span className="text-[11px] text-gray-400">{formData.about.length} / 500</span>
+                                    <span className="text-[11px] text-gray-500 dark:text-gray-400">{formData.about.length} / 500</span>
                                 </div>
                                 <textarea
                                     rows={3}
                                     value={formData.about}
                                     onChange={(e) => setFormData({ ...formData, about: e.target.value })}
-                                    className="w-full py-2.5 px-3.5 rounded-xl bg-slate-950 border border-white/15 focus:border-[#FF4D2E] text-white text-sm focus:outline-none leading-relaxed"
+                                    className="w-full py-2.5 px-3.5 rounded-xl bg-[#ffffff] dark:bg-slate-950 border border-black/15 dark:border-white/15 focus:border-[#FF4D2E] text-[#0E1116] dark:text-white text-sm focus:outline-none leading-relaxed"
                                     placeholder="Write a brief introduction about your focus and ambitions..."
                                 />
                             </div>
@@ -491,24 +491,24 @@ export default function UploadCV() {
 
                     {/* TAB 2: Skills */}
                     {activeTab === 'skills' && (
-                        <div className="space-y-4 bg-slate-900/60 p-5 rounded-2xl border border-white/10 animate-in fade-in">
-                            <div className="flex justify-between items-center text-xs text-gray-300">
+                        <div className="space-y-4 bg-[#F7F6F3] dark:bg-slate-900/60 p-5 rounded-2xl border border-black/10 dark:border-white/10 animate-in fade-in">
+                            <div className="flex justify-between items-center text-xs text-gray-700 dark:text-gray-300">
                                 <span className="font-semibold">{ar ? 'المهارات التقنية' : 'Technical Skills'}</span>
-                                <span className="text-[11px] text-gray-400">{formData.skills.length} {ar ? 'مهارات محددة' : 'skills added'}</span>
+                                <span className="text-[11px] text-gray-500 dark:text-gray-400">{formData.skills.length} {ar ? 'مهارات محددة' : 'skills added'}</span>
                             </div>
 
                             {/* Tags list */}
-                            <div className="flex flex-wrap gap-2 p-3 rounded-xl bg-slate-950 border border-white/10 min-h-[64px]">
+                            <div className="flex flex-wrap gap-2 p-3 rounded-xl bg-[#ffffff] dark:bg-slate-950 border border-black/10 dark:border-white/10 min-h-[64px]">
                                 {formData.skills.map((skill) => (
                                     <span
                                         key={skill}
-                                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#FF4D2E]/20 border border-[#FF4D2E]/40 text-[#FF8566] text-xs font-semibold"
+                                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#FF4D2E]/20 border border-[#FF4D2E]/40 text-[#E23B1C] dark:text-[#FF8566] text-xs font-semibold"
                                     >
                                         <span>{skill}</span>
                                         <button
                                             type="button"
                                             onClick={() => handleRemoveSkill(skill)}
-                                            className="hover:text-white transition-colors cursor-pointer"
+                                            className="hover:text-[#0E1116] dark:hover:text-white transition-colors cursor-pointer"
                                         >
                                             <span className="material-symbols-outlined text-[14px]">close</span>
                                         </button>
@@ -523,7 +523,7 @@ export default function UploadCV() {
                                     value={newSkillInput}
                                     onChange={(e) => setNewSkillInput(e.target.value)}
                                     placeholder={ar ? 'أضف مهارة أخرى واضغط Enter...' : 'Add another skill (e.g. Flutter, Docker)...'}
-                                    className="flex-1 py-2.5 px-3.5 text-xs rounded-xl bg-slate-950 border border-white/15 focus:border-[#FF4D2E] text-white focus:outline-none"
+                                    className="flex-1 py-2.5 px-3.5 text-xs rounded-xl bg-[#ffffff] dark:bg-slate-950 border border-black/15 dark:border-white/15 focus:border-[#FF4D2E] text-[#0E1116] dark:text-white focus:outline-none"
                                 />
                                 <button
                                     type="submit"
@@ -538,13 +538,13 @@ export default function UploadCV() {
 
                     {/* TAB 3: Experience */}
                     {activeTab === 'experience' && (
-                        <div className="space-y-4 bg-slate-900/60 p-5 rounded-2xl border border-white/10 animate-in fade-in">
-                            <div className="flex justify-between items-center text-xs text-gray-300">
+                        <div className="space-y-4 bg-[#F7F6F3] dark:bg-slate-900/60 p-5 rounded-2xl border border-black/10 dark:border-white/10 animate-in fade-in">
+                            <div className="flex justify-between items-center text-xs text-gray-700 dark:text-gray-300">
                                 <span className="font-semibold">{ar ? 'الخبرات والتجارب' : 'Experience & Roles'}</span>
                                 <button
                                     type="button"
                                     onClick={handleAddExperience}
-                                    className="inline-flex items-center gap-1 text-xs text-[#FF8566] hover:text-[#FF4D2E] font-bold cursor-pointer"
+                                    className="inline-flex items-center gap-1 text-xs text-[#E23B1C] dark:text-[#FF8566] hover:text-[#FF4D2E] font-bold cursor-pointer"
                                 >
                                     <span className="material-symbols-outlined text-[16px]">add_circle</span>
                                     <span>{ar ? 'إضافة خبرة أخرى' : 'Add Experience'}</span>
@@ -555,14 +555,14 @@ export default function UploadCV() {
                                 {formData.experience.map((exp, index) => (
                                     <div
                                         key={index}
-                                        className="p-4 rounded-xl bg-slate-950 border border-white/10 space-y-3 relative group"
+                                        className="p-4 rounded-xl bg-[#ffffff] dark:bg-slate-950 border border-black/10 dark:border-white/10 space-y-3 relative group"
                                     >
                                         <div className="flex justify-between items-start">
-                                            <span className="text-[11px] font-bold text-gray-400">#{index + 1}</span>
+                                            <span className="text-[11px] font-bold text-gray-500 dark:text-gray-400">#{index + 1}</span>
                                             <button
                                                 type="button"
                                                 onClick={() => handleRemoveExperience(index)}
-                                                className="text-gray-400 hover:text-red-400 transition-colors cursor-pointer"
+                                                className="text-gray-500 dark:text-gray-400 hover:text-red-400 transition-colors cursor-pointer"
                                                 title={ar ? 'حذف' : 'Remove'}
                                             >
                                                 <span className="material-symbols-outlined text-[18px]">delete</span>
@@ -575,14 +575,14 @@ export default function UploadCV() {
                                                 value={exp.title}
                                                 onChange={(e) => handleUpdateExperience(index, 'title', e.target.value)}
                                                 placeholder={ar ? 'المسمى الوظيفي (مثال: متدرب برمجيات)' : 'Role Title (e.g. Software Intern)'}
-                                                className="py-2 px-3 text-xs rounded-lg bg-slate-900 border border-white/15 focus:border-[#FF4D2E] text-white focus:outline-none"
+                                                className="py-2 px-3 text-xs rounded-lg bg-[#F7F6F3] dark:bg-slate-900 border border-black/15 dark:border-white/15 focus:border-[#FF4D2E] text-[#0E1116] dark:text-white focus:outline-none"
                                             />
                                             <input
                                                 type="text"
                                                 value={exp.org}
                                                 onChange={(e) => handleUpdateExperience(index, 'org', e.target.value)}
                                                 placeholder={ar ? 'الجهة / الشركة / الجامعة' : 'Company / Organization'}
-                                                className="py-2 px-3 text-xs rounded-lg bg-slate-900 border border-white/15 focus:border-[#FF4D2E] text-white focus:outline-none"
+                                                className="py-2 px-3 text-xs rounded-lg bg-[#F7F6F3] dark:bg-slate-900 border border-black/15 dark:border-white/15 focus:border-[#FF4D2E] text-[#0E1116] dark:text-white focus:outline-none"
                                             />
                                         </div>
 
@@ -591,7 +591,7 @@ export default function UploadCV() {
                                                 value={exp.period}
                                                 onChange={(e) => handleUpdateExperience(index, 'period', e.target.value)}
                                                 placeholder={ar ? 'الفترة (مثال: صيف 2024 • 3 أشهر)' : 'Period (e.g. Summer 2024 • 3 months)'}
-                                                className="w-full py-2 px-3 text-xs rounded-lg bg-slate-900 border border-white/15 focus:border-[#FF4D2E] text-white focus:outline-none"
+                                                className="w-full py-2 px-3 text-xs rounded-lg bg-[#F7F6F3] dark:bg-slate-900 border border-black/15 dark:border-white/15 focus:border-[#FF4D2E] text-[#0E1116] dark:text-white focus:outline-none"
                                         />
 
                                         <textarea
@@ -599,7 +599,7 @@ export default function UploadCV() {
                                             value={exp.desc}
                                             onChange={(e) => handleUpdateExperience(index, 'desc', e.target.value)}
                                             placeholder={ar ? 'وصف مختصر للمهام والإنجازات...' : 'Short description of responsibilities and impact...'}
-                                            className="w-full py-2 px-3 text-xs rounded-lg bg-slate-900 border border-white/15 focus:border-[#FF4D2E] text-white focus:outline-none leading-relaxed"
+                                            className="w-full py-2 px-3 text-xs rounded-lg bg-[#F7F6F3] dark:bg-slate-900 border border-black/15 dark:border-white/15 focus:border-[#FF4D2E] text-[#0E1116] dark:text-white focus:outline-none leading-relaxed"
                                         />
                                     </div>
                                 ))}
@@ -609,13 +609,13 @@ export default function UploadCV() {
 
                     {/* TAB 4: Featured Projects */}
                     {activeTab === 'projects' && (
-                        <div className="space-y-4 bg-slate-900/60 p-5 rounded-2xl border border-white/10 animate-in fade-in">
-                            <div className="flex justify-between items-center text-xs text-gray-300">
+                        <div className="space-y-4 bg-[#F7F6F3] dark:bg-slate-900/60 p-5 rounded-2xl border border-black/10 dark:border-white/10 animate-in fade-in">
+                            <div className="flex justify-between items-center text-xs text-gray-700 dark:text-gray-300">
                                 <span className="font-semibold">{ar ? 'المشاريع البارزة' : 'Featured Projects'}</span>
                                 <button
                                     type="button"
                                     onClick={handleAddProject}
-                                    className="inline-flex items-center gap-1 text-xs text-[#FF8566] hover:text-[#FF4D2E] font-bold cursor-pointer"
+                                    className="inline-flex items-center gap-1 text-xs text-[#E23B1C] dark:text-[#FF8566] hover:text-[#FF4D2E] font-bold cursor-pointer"
                                 >
                                     <span className="material-symbols-outlined text-[16px]">add_circle</span>
                                     <span>{ar ? 'إضافة مشروع آخر' : 'Add Project'}</span>
@@ -626,14 +626,14 @@ export default function UploadCV() {
                                 {formData.projects.map((proj, index) => (
                                     <div
                                         key={index}
-                                        className="p-4 rounded-xl bg-slate-950 border border-white/10 space-y-3 relative"
+                                        className="p-4 rounded-xl bg-[#ffffff] dark:bg-slate-950 border border-black/10 dark:border-white/10 space-y-3 relative"
                                     >
                                         <div className="flex justify-between items-start">
-                                            <span className="text-[11px] font-bold text-gray-400">#{index + 1}</span>
+                                            <span className="text-[11px] font-bold text-gray-500 dark:text-gray-400">#{index + 1}</span>
                                             <button
                                                 type="button"
                                                 onClick={() => handleRemoveProject(index)}
-                                                className="text-gray-400 hover:text-red-400 transition-colors cursor-pointer"
+                                                className="text-gray-500 dark:text-gray-400 hover:text-red-400 transition-colors cursor-pointer"
                                                 title={ar ? 'حذف' : 'Remove'}
                                             >
                                                 <span className="material-symbols-outlined text-[18px]">delete</span>
@@ -646,14 +646,14 @@ export default function UploadCV() {
                                                 value={proj.title}
                                                 onChange={(e) => handleUpdateProject(index, 'title', e.target.value)}
                                                 placeholder={ar ? 'اسم المشروع' : 'Project Title'}
-                                                className="py-2 px-3 text-xs rounded-lg bg-slate-900 border border-white/15 focus:border-[#FF4D2E] text-white focus:outline-none"
+                                                className="py-2 px-3 text-xs rounded-lg bg-[#F7F6F3] dark:bg-slate-900 border border-black/15 dark:border-white/15 focus:border-[#FF4D2E] text-[#0E1116] dark:text-white focus:outline-none"
                                             />
                                             <input
                                                 type="text"
                                                 value={proj.context}
                                                 onChange={(e) => handleUpdateProject(index, 'context', e.target.value)}
                                                 placeholder={ar ? 'السياق / الفعالية (مثال: هاكاثون الابتكار)' : 'Context / Event (e.g. AI Hackathon)'}
-                                                className="py-2 px-3 text-xs rounded-lg bg-slate-900 border border-white/15 focus:border-[#FF4D2E] text-white focus:outline-none"
+                                                className="py-2 px-3 text-xs rounded-lg bg-[#F7F6F3] dark:bg-slate-900 border border-black/15 dark:border-white/15 focus:border-[#FF4D2E] text-[#0E1116] dark:text-white focus:outline-none"
                                             />
                                         </div>
 
@@ -662,7 +662,7 @@ export default function UploadCV() {
                                             value={proj.desc}
                                             onChange={(e) => handleUpdateProject(index, 'desc', e.target.value)}
                                             placeholder={ar ? 'وصف المشروع والتقنيات المستخدمة...' : 'Short description and tech stack...'}
-                                            className="w-full py-2 px-3 text-xs rounded-lg bg-slate-900 border border-white/15 focus:border-[#FF4D2E] text-white focus:outline-none leading-relaxed"
+                                            className="w-full py-2 px-3 text-xs rounded-lg bg-[#F7F6F3] dark:bg-slate-900 border border-black/15 dark:border-white/15 focus:border-[#FF4D2E] text-[#0E1116] dark:text-white focus:outline-none leading-relaxed"
                                         />
                                     </div>
                                 ))}
@@ -676,7 +676,7 @@ export default function UploadCV() {
                             type="button"
                             onClick={() => setStage('dropzone')}
                             disabled={isSaving}
-                            className="w-full sm:w-auto py-3.5 px-6 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-gray-300 hover:text-white font-semibold text-sm transition-all cursor-pointer text-center"
+                            className="w-full sm:w-auto py-3.5 px-6 rounded-xl bg-black/[0.03] dark:bg-white/5 hover:bg-black/10 dark:hover:bg-white/10 border border-black/10 dark:border-white/10 text-gray-700 dark:text-gray-300 hover:text-[#0E1116] dark:hover:text-white font-semibold text-sm transition-all cursor-pointer text-center"
                         >
                             {ar ? 'تراجع / تغيير الملف' : 'Back / Change File'}
                         </button>

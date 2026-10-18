@@ -140,7 +140,7 @@ export default function WelcomeOnboarding() {
                     className="relative group cursor-pointer rounded-3xl bg-white dark:bg-gradient-to-b dark:from-slate-900/80 dark:via-slate-950/90 dark:to-black border-2 border-slate-200/90 hover:border-[#FF4D2E]/60 dark:border-white/15 dark:hover:border-[#FF4D2E]/60 p-7 sm:p-8 flex flex-col justify-between shadow-[0_10px_35px_rgba(0,0,0,0.05)] hover:shadow-[0_15px_45px_rgba(255,77,46,0.18)] dark:shadow-xl dark:hover:shadow-[0_0_40px_rgba(255,77,46,0.2)] transition-all duration-300 hover:-translate-y-1.5 overflow-hidden"
                 >
                     {/* Top Glow bar */}
-                    <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-transparent via-purple-500/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+                    <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-transparent via-[#FF4D2E]/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
 
                     {/* Step Count Badge */}
                     <div className="absolute top-4 right-4 text-[11px] bg-slate-100 dark:bg-white/10 border border-slate-200 dark:border-white/15 text-slate-700 dark:text-gray-300 px-3 py-1 rounded-full font-bold flex items-center gap-1 shadow-sm">
@@ -149,7 +149,7 @@ export default function WelcomeOnboarding() {
                     </div>
 
                     <div>
-                        <div className="w-20 h-20 rounded-2xl bg-purple-50 dark:bg-white/5 border border-purple-200/80 dark:border-white/10 flex items-center justify-center text-purple-600 dark:text-purple-400 group-hover:text-[#FF4D2E] dark:group-hover:text-[#FF8566] mb-6 group-hover:scale-110 group-hover:border-[#FF4D2E]/40 shadow-sm transition-all duration-300">
+                        <div className="w-20 h-20 rounded-2xl bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10 flex items-center justify-center text-slate-500 dark:text-gray-400 group-hover:text-[#FF4D2E] dark:group-hover:text-[#FF8566] mb-6 group-hover:scale-110 group-hover:border-[#FF4D2E]/40 shadow-sm transition-all duration-300">
                             <span className="material-symbols-outlined text-4xl">auto_fix_high</span>
                         </div>
 
@@ -169,11 +169,11 @@ export default function WelcomeOnboarding() {
                             {/* Features list */}
                             <div className="pt-3 space-y-2 text-[12px] text-slate-700 dark:text-gray-300 font-medium">
                                 <div className="flex items-center gap-2">
-                                    <span className="text-purple-600 dark:text-purple-400 font-bold group-hover:text-[#FF4D2E]">✔</span>
+                                    <span className="text-slate-400 dark:text-gray-500 font-bold group-hover:text-[#FF4D2E]">✔</span>
                                     <span>{ar ? 'مناسب لمن ليس لديه سيرة جاهزة' : 'Ideal if you don\'t have a resume ready'}</span>
                                 </div>
                                 <div className="flex items-center gap-2">
-                                    <span className="text-purple-600 dark:text-purple-400 font-bold group-hover:text-[#FF4D2E]">✔</span>
+                                    <span className="text-slate-400 dark:text-gray-500 font-bold group-hover:text-[#FF4D2E]">✔</span>
                                     <span>{ar ? 'اختيار تفضيلات المشاركة الفردية والجماعية' : 'Set solo/team hackathon preferences'}</span>
                                 </div>
                             </div>
