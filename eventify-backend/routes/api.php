@@ -11,6 +11,7 @@ use App\Http\Controllers\Api\V1\Admin\OrganizationManagementController;
 use App\Http\Controllers\Api\V1\Admin\EventManagementController;
 use App\Http\Controllers\Api\V1\Admin\AuditLogController;
 use App\Http\Controllers\Api\V1\Organization\EventController as OrgEventController;
+use App\Http\Controllers\Api\V1\Organization\ApplicantController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -83,6 +84,11 @@ Route::prefix('v1')->group(function () {
         Route::post('/org/events', [OrgEventController::class, 'store']);
         Route::patch('/org/events/{event}', [OrgEventController::class, 'update']);
         Route::delete('/org/events/{event}', [OrgEventController::class, 'destroy']);
+
+        // Applicants of the organization's events (review registrations)
+        Route::get('/org/events/{event}/registrations', [ApplicantController::class, 'index']);
+        Route::patch('/org/events/{event}/registrations/{registration}/approve', [ApplicantController::class, 'approve']);
+        Route::patch('/org/events/{event}/registrations/{registration}/reject', [ApplicantController::class, 'reject']);
     });
 
     // — Protected Admin routes (require Bearer token + role=admin) ————————
