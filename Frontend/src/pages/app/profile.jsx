@@ -104,6 +104,10 @@ export default function Profile() {
     } else if (!profile.about) {
         profile.about = defaults.about
     }
+    // The setup forms pre-fill the location in whichever language was active; show that default in the current one.
+    if (profile.location === 'Amman, Jordan' || profile.location === 'عمّان، الأردن') {
+        profile.location = ar ? 'عمّان، الأردن' : 'Amman, Jordan'
+    }
 
     // Synchronize skills between onboarding profile and saved profile
     const effectiveSkills = (saved?.skills && saved.skills.length > 0)
