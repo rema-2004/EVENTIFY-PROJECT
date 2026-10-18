@@ -239,7 +239,7 @@ html.dark .opp-filter-btn .filter-count {
     width: 100%;
     border-collapse: collapse;
     font-size: 13.5px;
-    text-align: left;
+    text-align: start;
 }
 
 .opp-table th {
@@ -279,6 +279,17 @@ html.dark .opp-filter-btn .filter-count {
     font-variant-numeric: tabular-nums;
     font-size: 13px;
     color: var(--text);
+}
+
+/* Arabic: no letter-spacing/uppercase (breaks joined letters) and no monospace dates */
+html[dir="rtl"] .opp-table th {
+    letter-spacing: 0;
+    text-transform: none;
+    text-align: start;
+}
+
+html[dir="rtl"] .opp-table .mono {
+    font-family: var(--font-body);
 }
 
 /* Opportunity Entity Card inside Table */
