@@ -64,9 +64,18 @@ html.dark textarea {
     color: var(--color-on-surface);
     border-color: rgba(255, 255, 255, 0.14);
 }
-html.dark input.bg-transparent, html.dark textarea.bg-transparent { background-color: transparent; }
-html.dark input.border-none, html.dark textarea.border-none { border-color: transparent; }
+/* Same selector weight as the rule above, so fields embedded in a styled
+   wrapper (search pills, tag inputs) stay see-through. */
+html.dark input:not([type="file"]):not([type="checkbox"]):not([type="radio"]).bg-transparent,
+html.dark textarea.bg-transparent { background-color: transparent; }
+html.dark input:not([type="file"]):not([type="checkbox"]):not([type="radio"]):is(.border-none, .border-0),
+html.dark textarea:is(.border-none, .border-0) { border-color: transparent; }
 html.dark input::placeholder, html.dark textarea::placeholder { color: #8a867e; opacity: 1; }
+/* Org/admin theme button: moon in light mode, sun in dark mode (same as the app navbar). */
+.theme-toggle .icon-light { display: none; }
+html.dark .theme-toggle .icon-light { display: inline-block; }
+html.dark .theme-toggle .icon-dark { display: none; }
+
 html.dark input[type="checkbox"], html.dark input[type="radio"] {
     background-color: #1c1f24 !important;
     border-color: rgba(255, 255, 255, 0.25) !important;

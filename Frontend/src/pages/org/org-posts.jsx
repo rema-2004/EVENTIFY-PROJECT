@@ -156,7 +156,7 @@ export default function OrgPosts() {
                             </div>
                             <LangToggleBtn />
                             <button className="theme-toggle icon-btn" type="button" title="Switch theme" aria-label="Switch theme">
-                                <span className="material-symbols-outlined">dark_mode</span>
+                                <span className="material-symbols-outlined icon-dark">dark_mode</span><span className="material-symbols-outlined icon-light">light_mode</span>
                             </button>
                             <div className="org-dropdown">
                                 <button className="dash-profile" id="org-profile-toggle" type="button" aria-label="Organization menu" aria-expanded="false">

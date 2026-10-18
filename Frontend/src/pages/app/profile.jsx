@@ -7,6 +7,7 @@ import { useLanguage } from '../../hooks/useLanguage'
 import { useState, useRef, useEffect } from 'react'
 import AnimatedCounter from '../../components/shared/AnimatedCounter'
 import { useOnboarding } from '../../context/OnboardingContext'
+import { autoAbout, isAutoAbout } from '../../utils/autoAbout'
 
 const DEFAULT_COVER = 'https://lh3.googleusercontent.com/aida-public/AB6AXuBeHOaLhImSXpSf94lw-SYxPYBwlc5gBXk7btOOFAhqx_oZFBSKtgn_P2pIGvFfCBhoMLxLxt6nkAaVv6TstLXm2DSDLS1AOT6QH_IRGTfXo2OtjjsArXHvWKur1GZZ2eDK6qHuSbQcfxMGo0fzNj2QnZzFWPIyhuDuCUdRosBAChWJFtM6RTcO8__ey71pVTFe5E9QEaseLBt6QNApMCSG2FDAAUMEE4xtjtfwbTwTctscv_cpXmi6Kt9_szB4pNw3Yn5KbAGVUlRw'
 const DEFAULT_AVATAR = 'https://lh3.googleusercontent.com/aida-public/AB6AXuDsQh5xOHYdmYcFmjJRpba3iiPC5g3JPTyK7qlEyYGrWLO_FtAHZOzRW4cX1RMPUClIy0d90XrNRLcOHNKGQkJKGdAt1u1Ukq4lYdrRDfJqdzzKVIyNbQ2FgWThdiwD06oY_uvI63tt40yB9wAi_f92Yb_O6IrGry-GNDu_3j-NEv3cU8WRQgm1fNlsToUpHXTKZszchQ4CRvtQhgyxMTzzWqjh7YpyYoacng83yN5O38dvrRRbO8B2iYc2p5lfWbCbUaTJ-KCVF07o'
@@ -97,6 +98,12 @@ export default function Profile() {
             : 'Passionate about the intersection of Artificial Intelligence and Human-Computer Interaction. Currently looking for competitions and workshops that sharpen my machine learning and product skills through Eventify.'),
     }
     const profile = { ...defaults, ...(saved || {}) }
+    // A bio generated from the quick questions follows the site language.
+    if (userProfile?.education && isAutoAbout(profile.about, userProfile.education)) {
+        profile.about = autoAbout(userProfile.education, ar)
+    } else if (!profile.about) {
+        profile.about = defaults.about
+    }
 
     // Synchronize skills between onboarding profile and saved profile
     const effectiveSkills = (saved?.skills && saved.skills.length > 0)

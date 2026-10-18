@@ -129,7 +129,7 @@
 .opp-search input,
 .opp-search input[type="search"] {
     flex: 1;
-    border: none;
+    border: none !important;
     box-shadow: none;
     background: transparent !important;
     outline: none;

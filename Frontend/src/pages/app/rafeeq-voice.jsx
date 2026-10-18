@@ -107,7 +107,7 @@ export default function RafeeqVoice() {
                 <h1 className="sr-only">{ar ? 'واجهة رفيق الصوتية' : 'Rafeeq voice interface'}</h1>
                 <div className="flex w-full max-w-sm flex-col items-center gap-6">
                     <div className="relative mb-8">
-                        <span className="pointer-events-none absolute -inset-12 rounded-full bg-[#fff0eb]" aria-hidden="true" />
+                        <span className="pointer-events-none absolute -inset-12 rounded-full bg-[#fff0eb] dark:bg-[#FF4D2E]/10" aria-hidden="true" />
                         <button
                             className="relative flex h-44 w-44 items-center justify-center rounded-full text-white shadow-xl transition-transform hover:scale-105 active:scale-95"
                             type="button"

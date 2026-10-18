@@ -303,9 +303,8 @@ export default function WizardForm() {
                 headline: formData.headline.trim(),
                 education: formData.headline.trim(),
                 location: (formData.location || 'Amman, Jordan').trim(),
-                about: (formData.about || (ar
-                    ? `طالب ومطور مهتم بـ ${formData.headline}. أبحث عن المشاركة في الهاكاثونات والفعاليات التقنية وتطوير المشاريع المبتكرة.`
-                    : `Passionate developer focused on ${formData.headline}. Looking to participate in top hackathons, tech workshops, and innovative projects.`)).trim(),
+                // Left empty when skipped: the profile builds it in the current language (utils/autoAbout).
+                about: (formData.about || '').trim(),
                 skills: formData.skills,
                 interests: (formData.interests && formData.interests.length > 0)
                     ? formData.interests

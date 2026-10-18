@@ -273,7 +273,7 @@ export default function AdminVerifyOrganizations() {
                                 title="Switch theme"
                                 aria-label="Switch theme"
                             >
-                                <span className="material-symbols-outlined">dark_mode</span>
+                                <span className="material-symbols-outlined icon-dark">dark_mode</span><span className="material-symbols-outlined icon-light">light_mode</span>
                             </button>
                             <div className="org-dropdown">
                                 <button
@@ -368,13 +368,13 @@ export default function AdminVerifyOrganizations() {
                                             <h3 className="text-title-lg font-semibold">{org.name}</h3>
                                             {org.status === 'pending' && <span className="badge badge--pending">{ar ? 'قيد المراجعة' : 'Pending'}</span>}
                                             {org.status === 'accepted' && (
-                                                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200 shadow-sm">
+                                                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200 dark:bg-emerald-500/15 dark:text-emerald-300 dark:border-emerald-500/30shadow-sm">
                                                     <span className="material-symbols-outlined text-[16px]">check_circle</span>
                                                     {ar ? 'تم التحقق' : 'Verified'}
                                                 </span>
                                             )}
                                             {org.status === 'rejected' && (
-                                                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-red-50 text-red-700 border border-red-200 shadow-sm">
+                                                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-red-50 text-red-700 border border-red-200 dark:bg-red-500/10 dark:text-red-300 dark:border-red-500/30 shadow-sm">
                                                     <span className="material-symbols-outlined text-[16px]">cancel</span>
                                                     {ar ? 'مرفوض' : 'Rejected'}
                                                 </span>
@@ -445,20 +445,20 @@ export default function AdminVerifyOrganizations() {
                     onClick={() => setViewingOrg(null)}
                 >
                     <div
-                        className="relative my-auto w-full max-w-2xl bg-white rounded-3xl shadow-2xl border border-gray-200/90 p-6 md:p-8 space-y-5 animate-in zoom-in-95 duration-200 flex flex-col"
+                        className="relative my-auto w-full max-w-2xl bg-white rounded-3xl shadow-2xl border border-gray-200/90 dark:border-white/10 p-6 md:p-8 space-y-5 animate-in zoom-in-95 duration-200 flex flex-col"
                         onClick={(e) => e.stopPropagation()}
                     >
                         {/* Modal Header */}
-                        <div className="flex items-start justify-between gap-4 border-b border-gray-100 pb-4">
+                        <div className="flex items-start justify-between gap-4 border-b border-gray-100 dark:border-white/10 pb-4">
                             <div className="flex items-center gap-3">
                                 <div className="w-12 h-12 rounded-2xl bg-primary/10 text-primary flex items-center justify-center flex-shrink-0 border border-primary/20 shadow-inner">
                                     <span className="material-symbols-outlined text-2xl">verified_user</span>
                                 </div>
                                 <div>
-                                    <h3 id="license-modal-title" className="text-lg md:text-xl font-bold text-gray-900 leading-snug">
+                                    <h3 id="license-modal-title" className="text-lg md:text-xl font-bold text-gray-900 dark:text-white leading-snug">
                                         {ar ? 'وثيقة التوثيق والرخصة الرسمية' : 'Official License & Verification Document'}
                                     </h3>
-                                    <p className="text-sm text-gray-500 mt-1">
+                                    <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
                                         {ar ? 'الجهة المنظمة: ' : 'Organization: '}
                                         <strong className="text-primary font-semibold">{viewingOrg.name}</strong>
                                     </p>
@@ -467,7 +467,7 @@ export default function AdminVerifyOrganizations() {
                             <button
                                 type="button"
                                 onClick={() => setViewingOrg(null)}
-                                className="text-gray-400 hover:text-gray-700 p-2 rounded-xl hover:bg-gray-100 transition-colors cursor-pointer"
+                                className="text-gray-400 hover:text-gray-700 dark:hover:text-white p-2 rounded-xl hover:bg-gray-100 dark:hover:bg-[#23262c] transition-colors cursor-pointer"
                                 aria-label="Close modal"
                             >
                                 <span className="material-symbols-outlined text-xl">close</span>
@@ -475,7 +475,7 @@ export default function AdminVerifyOrganizations() {
                         </div>
 
                         {/* License Certificate Simulated Preview */}
-                        <div className="relative rounded-2xl border-2 border-dashed border-primary/30 bg-gradient-to-br from-amber-50/40 via-white to-primary/5 p-5 md:p-6 shadow-sm overflow-hidden">
+                        <div className="relative rounded-2xl border-2 border-dashed border-primary/30 bg-gradient-to-br from-amber-50/40 via-white to-primary/5 dark:from-[#FF4D2E]/10 dark:via-[#16181c] dark:to-[#16181c] p-5 md:p-6 shadow-sm overflow-hidden">
                             {/* Watermark Emblem */}
                             <div className="absolute right-4 bottom-4 opacity-5 pointer-events-none select-none">
                                 <span className="material-symbols-outlined text-[160px]">verified</span>
@@ -486,12 +486,12 @@ export default function AdminVerifyOrganizations() {
                                     <span className="text-[10px] font-bold tracking-widest text-primary uppercase block">
                                         {ar ? 'شهادة اعتماد وتوثيق منصة EVENTIFY' : 'EVENTIFY OFFICIAL VERIFICATION CERTIFICATE'}
                                     </span>
-                                    <h4 className="text-base md:text-lg font-bold text-gray-900 mt-1">
+                                    <h4 className="text-base md:text-lg font-bold text-gray-900 dark:text-white mt-1">
                                         {ar ? viewingOrg.licenseDoc?.titleAr : viewingOrg.licenseDoc?.title}
                                     </h4>
                                 </div>
                                 <div className="text-right flex-shrink-0">
-                                    <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-800 border border-emerald-300">
+                                    <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-800 border border-emerald-300 dark:bg-emerald-500/15 dark:text-emerald-300 dark:border-emerald-500/30">
                                         <span className="material-symbols-outlined text-[14px]">check</span>
                                         {viewingOrg.licenseDoc?.licenseStatus || 'Verified'}
                                     </span>
@@ -499,43 +499,43 @@ export default function AdminVerifyOrganizations() {
                             </div>
 
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
-                                <div className="bg-white/85 backdrop-blur-sm p-3 rounded-xl border border-gray-100 shadow-2xs">
-                                    <p className="text-gray-500 font-medium">{ar ? 'رقم السجل / الترخيص' : 'License / Registration No.'}</p>
-                                    <p className="font-mono font-bold text-sm text-gray-900 mt-0.5">{viewingOrg.licenseDoc?.number}</p>
+                                <div className="bg-white/85 backdrop-blur-sm p-3 rounded-xl border border-gray-100 dark:border-white/10 shadow-2xs">
+                                    <p className="text-gray-500 dark:text-gray-400 font-medium">{ar ? 'رقم السجل / الترخيص' : 'License / Registration No.'}</p>
+                                    <p className="font-mono font-bold text-sm text-gray-900 dark:text-white mt-0.5">{viewingOrg.licenseDoc?.number}</p>
                                 </div>
-                                <div className="bg-white/85 backdrop-blur-sm p-3 rounded-xl border border-gray-100 shadow-2xs">
-                                    <p className="text-gray-500 font-medium">{ar ? 'الجهة المصدرة' : 'Issuing Authority'}</p>
-                                    <p className="font-semibold text-gray-900 mt-0.5">
+                                <div className="bg-white/85 backdrop-blur-sm p-3 rounded-xl border border-gray-100 dark:border-white/10 shadow-2xs">
+                                    <p className="text-gray-500 dark:text-gray-400 font-medium">{ar ? 'الجهة المصدرة' : 'Issuing Authority'}</p>
+                                    <p className="font-semibold text-gray-900 dark:text-white mt-0.5">
                                         {ar ? viewingOrg.licenseDoc?.issuingAuthorityAr : viewingOrg.licenseDoc?.issuingAuthority}
                                     </p>
                                 </div>
-                                <div className="bg-white/85 backdrop-blur-sm p-3 rounded-xl border border-gray-100 shadow-2xs">
-                                    <p className="text-gray-500 font-medium">{ar ? 'الممثل المفوّض' : 'Authorized Representative'}</p>
-                                    <p className="font-semibold text-gray-900 mt-0.5">
+                                <div className="bg-white/85 backdrop-blur-sm p-3 rounded-xl border border-gray-100 dark:border-white/10 shadow-2xs">
+                                    <p className="text-gray-500 dark:text-gray-400 font-medium">{ar ? 'الممثل المفوّض' : 'Authorized Representative'}</p>
+                                    <p className="font-semibold text-gray-900 dark:text-white mt-0.5">
                                         {ar ? viewingOrg.licenseDoc?.representativeAr : viewingOrg.licenseDoc?.representative}
                                     </p>
                                 </div>
-                                <div className="bg-white/85 backdrop-blur-sm p-3 rounded-xl border border-gray-100 shadow-2xs">
-                                    <p className="text-gray-500 font-medium">{ar ? 'تاريخ التوثيق وتنسيق الملف' : 'Issue Date & Format'}</p>
-                                    <p className="font-semibold text-gray-900 mt-0.5">
+                                <div className="bg-white/85 backdrop-blur-sm p-3 rounded-xl border border-gray-100 dark:border-white/10 shadow-2xs">
+                                    <p className="text-gray-500 dark:text-gray-400 font-medium">{ar ? 'تاريخ التوثيق وتنسيق الملف' : 'Issue Date & Format'}</p>
+                                    <p className="font-semibold text-gray-900 dark:text-white mt-0.5">
                                         {viewingOrg.licenseDoc?.issuedDate} • {viewingOrg.licenseDoc?.fileName} ({viewingOrg.licenseDoc?.size})
                                     </p>
                                 </div>
                             </div>
 
-                            <div className="mt-4 pt-3 border-t border-gray-200/60 flex flex-wrap items-center justify-between text-[11px] text-gray-500 font-mono">
+                            <div className="mt-4 pt-3 border-t border-gray-200/60 dark:border-white/10 flex flex-wrap items-center justify-between text-[11px] text-gray-500 dark:text-gray-400 font-mono">
                                 <span>{viewingOrg.licenseDoc?.hash}</span>
-                                <span className="text-emerald-700 font-semibold">{ar ? 'مطابق لبيانات التسجيل القانونية' : 'Verified by Platform Administrator'}</span>
+                                <span className="text-emerald-700 dark:text-emerald-400 font-semibold">{ar ? 'مطابق لبيانات التسجيل القانونية' : 'Verified by Platform Administrator'}</span>
                             </div>
                         </div>
 
                         {/* Modal Footer / Actions */}
-                        <div className="flex flex-wrap items-center justify-between gap-3 pt-3 border-t border-gray-100">
+                        <div className="flex flex-wrap items-center justify-between gap-3 pt-3 border-t border-gray-100 dark:border-white/10">
                             <button
                                 type="button"
                                 onClick={() => handleDownloadLicense(viewingOrg)}
                                 disabled={downloadingLicense}
-                                className="flex items-center gap-2 px-5 py-2.5 rounded-2xl text-xs font-bold text-gray-800 bg-gray-100 hover:bg-gray-200 transition-all cursor-pointer active:scale-95"
+                                className="flex items-center gap-2 px-5 py-2.5 rounded-2xl text-xs font-bold text-gray-800 bg-gray-100 hover:bg-gray-200 dark:text-white dark:bg-[#23262c] dark:hover:bg-[#2b2f36] transition-all cursor-pointer active:scale-95"
                             >
                                 <span className="material-symbols-outlined text-[18px]">download</span>
                                 <span>{downloadingLicense ? (ar ? 'جاري التحميل...' : 'Downloading...') : (ar ? 'تحميل الوثيقة الأصلية (PDF)' : 'Download Original File')}</span>
@@ -547,7 +547,7 @@ export default function AdminVerifyOrganizations() {
                                         <button
                                             type="button"
                                             onClick={() => handleReject(viewingOrg.id)}
-                                            className="px-4 py-2.5 rounded-2xl text-xs font-bold text-red-700 bg-red-50 hover:bg-red-100 border border-red-200 transition-colors cursor-pointer"
+                                            className="px-4 py-2.5 rounded-2xl text-xs font-bold text-red-700 bg-red-50 hover:bg-red-100 border border-red-200 dark:text-red-300 dark:bg-red-500/10 dark:hover:bg-red-500/20 dark:border-red-500/30 transition-colors cursor-pointer"
                                         >
                                             {ar ? 'رفض الطلب' : 'Reject'}
                                         </button>
