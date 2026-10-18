@@ -1,5 +1,27 @@
 /* Dark-mode overrides for the static Tailwind color utilities.
    Ported from Frontend-Eventifiy/assets/js/theme.js (installThemeOverrides). */
+
+/* The class overrides below only match exact names (.bg-surface), so opacity
+   variants (bg-surface/90), gradient stops (via-surface) and focus:/hover:
+   variants kept the light @theme values. Re-pointing the tokens themselves
+   makes every Tailwind utility built on them follow the theme. */
+html.dark {
+    --color-background: #0b0c0e;
+    --color-surface: #0b0c0e;
+    --color-surface-bright: #23262c;
+    --color-surface-dim: #0b0c0e;
+    --color-surface-container-lowest: #16181c;
+    --color-surface-container-low: #1c1f24;
+    --color-surface-container: #23262c;
+    --color-surface-container-high: #23262c;
+    --color-surface-container-highest: #2b2f36;
+    --color-surface-variant: #23262c;
+    --color-on-background: #f5f4f1;
+    --color-on-surface: #f5f4f1;
+    --color-on-surface-variant: #a8a49c;
+    --color-outline-variant: rgba(255, 255, 255, 0.14);
+}
+
 html.dark body { background-color: #0b0c0e !important; color: #f5f4f1 !important; }
 html.dark .bg-background, html.dark .bg-surface { background-color: #0b0c0e !important; }
 html.dark .bg-surface-container-lowest { background-color: #16181c !important; }
@@ -33,6 +55,18 @@ html.dark .text-success { color: #5fd09a !important; }
 html.dark [class*="bg-success-container"] .text-success,
 html.dark .bg-success-container.text-success { color: #1e7a4f !important; }
 html.dark [class*="border-outline-variant"] { border-color: rgba(255, 255, 255, 0.14) !important; }
+/* theme.css paints every field white with dark text and has no dark twin,
+   which left fields as white boxes or dark-on-dark text. */
+html.dark input:not([type="file"]):not([type="checkbox"]):not([type="radio"]),
+html.dark select,
+html.dark textarea {
+    background-color: var(--color-surface-container-low);
+    color: var(--color-on-surface);
+    border-color: rgba(255, 255, 255, 0.14);
+}
+html.dark input.bg-transparent, html.dark textarea.bg-transparent { background-color: transparent; }
+html.dark input.border-none, html.dark textarea.border-none { border-color: transparent; }
+html.dark input::placeholder, html.dark textarea::placeholder { color: #8a867e; opacity: 1; }
 html.dark input[type="checkbox"], html.dark input[type="radio"] {
     background-color: #1c1f24 !important;
     border-color: rgba(255, 255, 255, 0.25) !important;
