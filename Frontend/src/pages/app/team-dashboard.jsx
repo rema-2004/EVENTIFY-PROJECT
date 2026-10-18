@@ -2,7 +2,7 @@ import AppLangToggle from '../../components/app/AppLangToggle'
 import AppFooter from '../../components/app/AppFooter'
 import AppPageHead from '../../components/app/AppPageHead'
 import { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import { useLanguage } from '../../hooks/useLanguage'
 import AnimatedCounter from '../../components/shared/AnimatedCounter'
 
@@ -36,8 +36,16 @@ const MEMBERS = [
 export default function TeamDashboard() {
     const { language } = useLanguage()
     const ar = language === 'ar'
+    const location = useLocation()
 
     const [requestStatus, setRequestStatus] = useState(null)
+
+    // TODO: replace with the real flag from the backend
+    const isLeader = true
+    const maxMembers = 6
+    // Demo: the join-request notification opens this page with state { joinRequest: true }.
+    // TODO: replace with the real pending join requests from the backend
+    const hasPendingRequests = Boolean(location.state?.joinRequest)
 
     return (
         <>
@@ -78,7 +86,7 @@ export default function TeamDashboard() {
                             </span>
                             <span className="text-outline mx-2">•</span>
                             <span className="font-label-md text-label-md text-on-surface-variant" data-count>
-                                <AnimatedCounter value={4} /> / 6 {ar ? 'أعضاء' : 'Members'}
+                                <AnimatedCounter value={MEMBERS.length} /> / {maxMembers} {ar ? 'أعضاء' : 'Members'}
                             </span>
                         </div>
                     </div>
@@ -87,13 +95,16 @@ export default function TeamDashboard() {
                             <span className="material-symbols-outlined text-[18px]">settings</span>
                             {ar ? 'إعدادات الفريق' : 'Team Settings'}
                         </button>
-                        <button
-                            className="flex items-center gap-2 px-6 py-3 rounded-full font-label-md text-label-md shadow-md active:scale-95 transition-all"
-                            style={{ backgroundColor: '#FF4D2E', color: '#fff' }}
-                        >
-                            <span className="material-symbols-outlined text-[18px]">add</span>
-                            {ar ? 'دعوة عضو' : 'Invite Member'}
-                        </button>
+                        {isLeader && (
+                            <Link
+                                className="flex items-center gap-2 px-6 py-3 rounded-full font-label-md text-label-md shadow-md active:scale-95 transition-all"
+                                style={{ backgroundColor: '#FF4D2E', color: '#fff' }}
+                                to="/app/request-member"
+                            >
+                                <span className="material-symbols-outlined text-[18px]">add</span>
+                                {ar ? 'طلب عضو جديد' : 'Request New Member'}
+                            </Link>
+                        )}
                     </div>
                 </div>
 
@@ -106,11 +117,17 @@ export default function TeamDashboard() {
                             <div className={`flex items-center justify-between mb-6 ${ar ? 'flex-row-reverse' : ''}`}>
                                 <h3 className={`font-headline-md text-headline-md text-on-surface flex items-center gap-2 ${ar ? 'flex-row-reverse' : ''}`}>
                                     {ar ? 'طلبات الانضمام المعلّقة' : 'Pending Join Requests'}
-                                    <span className="bg-error-container text-error text-label-sm px-2 py-0.5 rounded-full">1</span>
+                                    {hasPendingRequests && <span className="bg-error-container text-error text-label-sm px-2 py-0.5 rounded-full">1</span>}
                                 </h3>
                             </div>
 
-                            {requestStatus === null ? (
+                            {!hasPendingRequests ? (
+                                <div className="bg-surface-container-lowest border border-outline-variant rounded-xl p-6 text-center">
+                                    <p className="font-label-md text-label-md text-on-surface-variant">
+                                        {ar ? 'لا توجد طلبات انضمام حالياً' : 'No pending join requests'}
+                                    </p>
+                                </div>
+                            ) : requestStatus === null ? (
                                 <div className="bg-surface-container-lowest border border-outline-variant rounded-xl p-6 shadow-sm relative overflow-hidden">
                                     <div className={`absolute top-0 ${ar ? 'right-0' : 'left-0'} w-1 h-full`} style={{ backgroundColor: '#FF4D2E' }} />
                                     <div className={`flex flex-col md:flex-row gap-6 ${ar ? 'md:flex-row-reverse' : ''}`}>
