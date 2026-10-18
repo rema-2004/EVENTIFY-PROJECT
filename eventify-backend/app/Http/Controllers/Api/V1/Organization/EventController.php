@@ -134,9 +134,13 @@ class EventController extends Controller
             return $this->error('Forbidden. This event does not belong to your organization.', 403);
         }
 
-        if ($event->status !== Event::STATUS_DRAFT) {
-            return $this->error('Only draft events can be edited.', 422);
+        // Drafts can be edited freely. A rejected event can be edited too,
+        // so the organization can fix it and resubmit for a new review.
+        if (! in_array($event->status, [Event::STATUS_DRAFT, Event::STATUS_REJECTED], true)) {
+            return $this->error('Only draft or rejected events can be edited.', 422);
         }
+
+        $wasRejected = $event->status === Event::STATUS_REJECTED;
 
         $validated = $request->validated();
 
@@ -149,6 +153,13 @@ class EventController extends Controller
                 $validated['status'] = $validated['action'] === 'submit'
                     ? Event::STATUS_PENDING_REVIEW
                     : Event::STATUS_DRAFT;
+
+                // A resubmitted event starts a fresh review — drop the old
+                // rejection reason so it can never reach the public API
+                // after the event is approved.
+                if ($validated['action'] === 'submit') {
+                    $validated['admin_notes'] = null;
+                }
             }
             unset($validated['action'], $validated['team_size'], $validated['prize']);
 
@@ -189,9 +200,11 @@ class EventController extends Controller
             location: AuditLog::LOCATION_EVENTS,
             actor: $organization,
             target: $event,
-            details: $event->isPendingReview()
-                ? 'The event was edited and submitted for review.'
-                : 'Event details were edited by the organization.',
+            details: match (true) {
+                $event->isPendingReview() && $wasRejected => 'The rejected event was edited and resubmitted for review.',
+                $event->isPendingReview() => 'The event was edited and submitted for review.',
+                default => 'Event details were edited by the organization.',
+            },
         );
 
         $event->load(['organization', 'competition']);
