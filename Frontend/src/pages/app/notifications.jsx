@@ -5,7 +5,85 @@ import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useLanguage } from '../../hooks/useLanguage'
 
+// TODO: the backend returns the vacant roles of each withdrawal
+const TWO_LEFT_ROLES = [
+    { en: 'Cloud Infrastructure', ar: 'البنية السحابية' },
+    { en: 'Data Engineering', ar: 'هندسة البيانات' },
+]
+const ONE_LEFT_ROLES = [
+    { en: 'Product Design', ar: 'تصميم المنتج' },
+]
+
 const NOTIFS = [
+    {
+        id: 10, status: 'unread', category: 'team', to: '/app/team-dashboard',
+        icon: 'group_add', iconColor: 'text-primary', iconBg: 'bg-primary/10', iconBorder: 'border-primary/20',
+        accent: '#FF4D2E',
+        badge: { en: 'Join Request', ar: 'طلب انضمام' },
+        badgeColor: 'text-primary',
+        time: { en: '5m ago', ar: 'منذ 5 دقائق' },
+        unread: true,
+        bodyJsx: (ar) => (
+            <p className="font-body-md text-body-md text-on-surface">
+                {ar
+                    ? <><span className="font-semibold">Alex Rivera</span> أرسل طلباً للانضمام إلى فريقك <span className="font-semibold text-primary">'AI Pioneers'</span>.</>
+                    : <><span className="font-semibold">Alex Rivera</span> requested to join your team <span className="font-semibold text-primary">'AI Pioneers'</span>.</>}
+            </p>
+        ),
+        tags: [],
+        // Opens the team dashboard where the pending join request is shown
+        action: {
+            label: { en: 'View request', ar: 'عرض الطلب' },
+            to: '/app/team-dashboard',
+            state: { joinRequest: true },
+        },
+    },
+    {
+        id: 8, status: 'unread', category: 'team', to: '/app/request-member',
+        icon: 'person_remove', iconColor: 'text-error', iconBg: 'bg-error/10', iconBorder: 'border-error/20',
+        accent: '#FF4D2E',
+        badge: { en: 'Team Update', ar: 'تحديث الفريق' },
+        badgeColor: 'text-error',
+        time: { en: '10m ago', ar: 'منذ 10 دقائق' },
+        unread: true,
+        bodyJsx: (ar) => (
+            <p className="font-body-md text-body-md text-on-surface">
+                {ar
+                    ? <><span className="font-semibold">James Wilson</span> و<span className="font-semibold">Marcus Thorne</span> انسحبا من فريقك <span className="font-semibold text-primary">'AI Pioneers'</span>. هل تريد البحث عن عضوين جديدين؟</>
+                    : <><span className="font-semibold">James Wilson</span> and <span className="font-semibold">Marcus Thorne</span> have left your team <span className="font-semibold text-primary">'AI Pioneers'</span>. Would you like to search for two new members?</>}
+            </p>
+        ),
+        tags: [],
+        // Opens the request form with one box per member who left
+        action: {
+            label: { en: 'Search for a new member', ar: 'البحث عن عضو جديد' },
+            to: '/app/request-member',
+            state: { vacantRoles: TWO_LEFT_ROLES },
+        },
+    },
+    {
+        id: 9, status: 'unread', category: 'team', to: '/app/request-member',
+        icon: 'person_remove', iconColor: 'text-error', iconBg: 'bg-error/10', iconBorder: 'border-error/20',
+        accent: '#FF4D2E',
+        badge: { en: 'Team Update', ar: 'تحديث الفريق' },
+        badgeColor: 'text-error',
+        time: { en: '25m ago', ar: 'منذ 25 دقيقة' },
+        unread: true,
+        bodyJsx: (ar) => (
+            <p className="font-body-md text-body-md text-on-surface">
+                {ar
+                    ? <><span className="font-semibold">Elena Rodriguez</span> انسحبت من فريقك <span className="font-semibold text-primary">'AI Pioneers'</span>. هل تريد البحث عن عضو جديد؟</>
+                    : <><span className="font-semibold">Elena Rodriguez</span> has left your team <span className="font-semibold text-primary">'AI Pioneers'</span>. Would you like to search for a new member?</>}
+            </p>
+        ),
+        tags: [],
+        // Opens the request form with one box per member who left
+        action: {
+            label: { en: 'Search for a new member', ar: 'البحث عن عضو جديد' },
+            to: '/app/request-member',
+            state: { vacantRoles: ONE_LEFT_ROLES },
+        },
+    },
     {
         id: 1, status: 'unread', category: 'ai', to: '/app/opportunity',
         icon: 'auto_awesome', iconColor: 'text-secondary', iconBg: 'bg-secondary/10', iconBorder: 'border-secondary/20',
@@ -290,7 +368,7 @@ export default function Notifications() {
                                     key={n.id}
                                     className={`group relative bg-surface-container-lowest p-5 rounded-xl border border-outline-variant/50 flex gap-4 cursor-pointer row-animated hover:-translate-y-0.5 hover:shadow-md transition-all duration-200 overflow-hidden ${ar ? 'flex-row-reverse' : ''}`}
                                     style={{ '--stagger-idx': idx }}
-                                    onClick={() => navigate(n.to)}
+                                    onClick={() => navigate(n.action?.to || n.to, { state: n.action?.state })}
                                 >
                                     <div className={`shrink-0 w-12 h-12 rounded-full flex items-center justify-center border ${n.iconBg} ${n.iconBorder}`}>
                                         <span className={`material-symbols-outlined ${n.iconColor}`} style={{ fontVariationSettings: '"FILL" 1' }}>{n.icon}</span>
@@ -315,6 +393,17 @@ export default function Notifications() {
                                                         {ar ? tag.label.ar : tag.label.en}
                                                     </span>
                                                 ))}
+                                            </div>
+                                        )}
+                                        {n.action && (
+                                            <div className={`mt-3 flex ${ar ? 'flex-row-reverse' : ''}`}>
+                                                <button
+                                                    className="px-6 py-2 rounded-full font-label-md text-label-md active:scale-95 transition-transform"
+                                                    style={{ backgroundColor: '#FF4D2E', color: '#fff' }}
+                                                    onClick={(e) => { e.stopPropagation(); navigate(n.action.to, { state: n.action.state }) }}
+                                                >
+                                                    {ar ? n.action.label.ar : n.action.label.en}
+                                                </button>
                                             </div>
                                         )}
                                     </div>

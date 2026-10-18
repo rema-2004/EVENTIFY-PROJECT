@@ -45,6 +45,7 @@ const ParticipationType = lazy(() => import('./pages/app/participation-type'))
 const CreateTeam = lazy(() => import('./pages/app/create-team'))
 const Teams = lazy(() => import('./pages/app/teams'))
 const TeamDashboard = lazy(() => import('./pages/app/team-dashboard'))
+const RequestMember = lazy(() => import('./pages/app/request-member'))
 const RegistrationSuccess = lazy(() => import('./pages/app/registration-success'))
 const MyApplications = lazy(() => import('./pages/app/my-applications'))
 const Saved = lazy(() => import('./pages/app/saved'))
@@ -191,6 +192,7 @@ export default function App() {
                     <Route path="create-team" element={<CreateTeam />} />
                     <Route path="teams" element={<Teams />} />
                     <Route path="team-dashboard" element={<TeamDashboard />} />
+                    <Route path="request-member" element={<RequestMember />} />
                     <Route path="registration-success" element={<RegistrationSuccess />} />
                     <Route path="my-applications" element={<MyApplications />} />
                     <Route path="saved" element={<Saved />} />

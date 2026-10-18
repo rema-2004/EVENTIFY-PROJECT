@@ -139,37 +139,31 @@ export default function MyApplications() {
                     const merged = [...backendApps, ...prev.filter(p => !existingIds.has(p.eventId))]
                     try {
                         localStorage.setItem(STORAGE_KEY, JSON.stringify(merged))
-                    } catch {}
+                    } catch { /* ignore */ }
                     return merged
                 })
             })
-            .catch(() => {
-                // Ignore API network errors; local state remains active
-            })
+            .catch(() => { /* backend unavailable — keep local data */ })
 
         return () => { isMounted = false }
     }, [])
 
     const counts = {
         all: applications.length,
-        pending: applications.filter((a) => a.status === 'pending').length,
-        accepted: applications.filter((a) => a.status === 'accepted').length,
-        rejected: applications.filter((a) => a.status === 'rejected').length,
-        cancelled: applications.filter((a) => a.status === 'cancelled').length,
+        pending: applications.filter(a => a.status === 'pending').length,
+        accepted: applications.filter(a => a.status === 'accepted').length,
+        rejected: applications.filter(a => a.status === 'rejected').length,
+        cancelled: applications.filter(a => a.status === 'cancelled').length,
     }
 
-    const visible = applications.filter(
-        (a) => activeFilter === 'all' || a.status === activeFilter
-    )
+    const visible = applications.filter(a => activeFilter === 'all' || a.status === activeFilter)
 
-    const handleConfirmCancel = async () => {
+    const confirmCancel = async () => {
         if (!confirmModal.app) return
         setConfirmModal(prev => ({ ...prev, loading: true }))
+        const app = confirmModal.app
+        const eventId = app.eventId || app.id
 
-        const appToCancel = confirmModal.app
-        const eventId = appToCancel.eventId || appToCancel.id
-
-        // Attempt API call to backend route: DELETE /api/v1/events/{event}/register
         try {
             const token = localStorage.getItem('eventify_token') || localStorage.getItem('token')
             if (token) {
@@ -185,35 +179,28 @@ export default function MyApplications() {
             console.warn('Backend cancellation API call notice:', err)
         }
 
-        // Update local state and storage
         setApplications(prev => {
-            const next = prev.map(item => {
-                if (item.id === appToCancel.id) {
-                    return {
-                        ...item,
-                        status: 'cancelled',
-                        badge: { en: 'Cancelled', ar: 'تم الإلغاء' },
-                        badgeCls: 'bg-outline-variant/30 text-outline',
-                        icon: 'event_busy',
-                        iconBg: 'bg-outline-variant/20',
-                        iconColor: 'text-outline',
-                        dim: true,
-                    }
-                }
-                return item
-            })
+            const updated = prev.map(a => a.id === app.id ? {
+                ...a,
+                status: 'cancelled',
+                badge: { en: 'Cancelled', ar: 'تم الإلغاء' },
+                badgeCls: 'bg-outline-variant/30 text-outline',
+                icon: 'event_busy',
+                iconBg: 'bg-outline-variant/20',
+                iconColor: 'text-outline',
+                dim: true,
+            } : a)
             try {
-                localStorage.setItem(STORAGE_KEY, JSON.stringify(next))
-            } catch {}
-            return next
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(updated))
+            } catch { /* ignore */ }
+            return updated
         })
 
         setConfirmModal({ open: false, app: null, loading: false })
-
         toast(
             ar
-                ? `تم إلغاء التسجيل في "${appToCancel.title.ar}" بنجاح.`
-                : `Successfully cancelled registration for "${appToCancel.title.en}".`,
+                ? `تم إلغاء التسجيل في "${app.title.ar}" بنجاح.`
+                : `Successfully cancelled registration for "${app.title.en}".`,
             'success'
         )
     }
@@ -226,7 +213,7 @@ export default function MyApplications() {
                 className="pt-24 pb-12 px-container-margin-mobile md:px-container-margin-desktop max-w-[1280px] mx-auto flex flex-col gap-stack_gap_md"
                 dir={ar ? 'rtl' : 'ltr'}
             >
-                {/* Header */}
+                {/* Page header */}
                 <section className="bg-surface-container-lowest rounded-2xl p-6 md:p-8 premium-shadow border border-outline-variant/50">
                     <h1 className="font-headline-lg text-headline-lg mb-1">
                         {ar ? 'طلباتي' : 'My Applications'}
@@ -234,7 +221,7 @@ export default function MyApplications() {
                     <p className="font-body-md text-body-md text-on-surface-variant">
                         {ar
                             ? 'كل فرصة وفعالية تقدّمت إليها في مكان واحد — تابع حالة طلبك أو انسحب عند الحاجة.'
-                            : 'Every opportunity and event you\'ve applied to in one place — track your application status or withdraw when needed.'}
+                            : "Every opportunity and event you've applied to in one place — track your application status or withdraw when needed."}
                     </p>
                 </section>
 
@@ -343,11 +330,9 @@ export default function MyApplications() {
                         <div className="w-14 h-14 rounded-full bg-error/10 text-error flex items-center justify-center mx-auto mb-4">
                             <span className="material-symbols-outlined text-3xl">event_busy</span>
                         </div>
-
                         <h3 className="font-headline-sm text-headline-sm text-center font-bold text-on-surface mb-2">
                             {ar ? 'تأكيد إلغاء التسجيل' : 'Confirm Registration Cancellation'}
                         </h3>
-
                         <p className="font-body-md text-body-md text-center text-on-surface-variant mb-4">
                             {ar
                                 ? 'هل أنت متأكد من رغبتك في إلغاء تسجيلك والانسحاب من هذه الفعالية؟'
@@ -383,7 +368,7 @@ export default function MyApplications() {
                             <button
                                 type="button"
                                 disabled={confirmModal.loading}
-                                onClick={handleConfirmCancel}
+                                onClick={confirmCancel}
                                 className="flex-1 py-2.5 px-4 rounded-full bg-error text-white hover:bg-error/90 active:scale-95 transition-all font-label-md text-label-md flex items-center justify-center gap-2 font-semibold shadow-sm"
                             >
                                 {confirmModal.loading ? (
