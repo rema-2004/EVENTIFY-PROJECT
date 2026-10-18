@@ -303,9 +303,8 @@ export default function WizardForm() {
                 headline: formData.headline.trim(),
                 education: formData.headline.trim(),
                 location: (formData.location || 'Amman, Jordan').trim(),
-                about: (formData.about || (ar
-                    ? `طالب ومطور مهتم بـ ${formData.headline}. أبحث عن المشاركة في الهاكاثونات والفعاليات التقنية وتطوير المشاريع المبتكرة.`
-                    : `Passionate developer focused on ${formData.headline}. Looking to participate in top hackathons, tech workshops, and innovative projects.`)).trim(),
+                // Left empty when skipped: the profile builds it in the current language (utils/autoAbout).
+                about: (formData.about || '').trim(),
                 skills: formData.skills,
                 interests: (formData.interests && formData.interests.length > 0)
                     ? formData.interests
@@ -320,13 +319,13 @@ export default function WizardForm() {
     }
 
     return (
-        <div className="min-h-screen bg-[#0E1116] text-white flex flex-col justify-between py-6 px-4 relative">
+        <div className="min-h-screen bg-[#FAFAF8] dark:bg-[#0E1116] text-[#0E1116] dark:text-white flex flex-col justify-between py-6 px-4 relative">
             {/* Unlock Celebration Modal */}
             {isUnlocking && (
-                <div className="fixed inset-0 z-[9999] bg-[#0E1116]/95 backdrop-blur-xl flex flex-col items-center justify-center p-6 text-center fade-in">
+                <div className="fixed inset-0 z-[9999] bg-[#ffffff]/95 dark:bg-[#0E1116]/95 backdrop-blur-xl flex flex-col items-center justify-center p-6 text-center fade-in">
                     <div className="relative mb-6">
                         <div className="absolute inset-0 bg-[#FF4D2E]/30 rounded-full blur-2xl animate-pulse" />
-                        <div className="relative w-28 h-28 rounded-full bg-slate-900 border-2 border-[#FF4D2E] flex items-center justify-center text-[#FF4D2E] shadow-[0_0_50px_rgba(255,77,46,0.6)] fade-in-up">
+                        <div className="relative w-28 h-28 rounded-full bg-[#F7F6F3] dark:bg-slate-900 border-2 border-[#FF4D2E] flex items-center justify-center text-[#FF4D2E] shadow-[0_0_50px_rgba(255,77,46,0.6)] fade-in-up">
                             <span className="material-symbols-outlined text-6xl">
                                 lock_open
                             </span>
@@ -334,16 +333,16 @@ export default function WizardForm() {
                         <div className="absolute -top-3 -right-3 text-amber-400 animate-spin">
                             <span className="material-symbols-outlined text-3xl">auto_awesome</span>
                         </div>
-                        <div className="absolute -bottom-2 -left-3 text-green-400">
+                        <div className="absolute -bottom-2 -left-3 text-green-600 dark:text-green-400">
                             <span className="material-symbols-outlined text-2xl">verified</span>
                         </div>
                     </div>
 
                     <div className="space-y-3 max-w-sm">
-                        <h2 className="text-2xl sm:text-3xl font-extrabold text-white">
+                        <h2 className="text-2xl sm:text-3xl font-extrabold text-[#0E1116] dark:text-white">
                             {ar ? 'تم تجهيز ملفك بنجاح!' : 'Profile Ready & Unlocked!'}
                         </h2>
-                        <p className="text-sm text-gray-300">
+                        <p className="text-sm text-gray-700 dark:text-gray-300">
                             {ar
                                 ? 'يقوم الذكاء الاصطناعي الآن بفتح الفعاليات والهاكاثونات المطابقة لمهاراتك وتخصصك...'
                                 : 'AI matching engine has unlocked opportunities tailored specifically to your profile!'}
@@ -357,12 +356,12 @@ export default function WizardForm() {
             )}
 
             {/* Top Navigation Bar with Step Count */}
-            <div className="max-w-5xl w-full mx-auto pb-4 border-b border-white/10 space-y-3">
+            <div className="max-w-5xl w-full mx-auto pb-4 border-b border-black/10 dark:border-white/10 space-y-3">
                 <div className="flex items-center justify-between">
                     <button
                         type="button"
                         onClick={handleBack}
-                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white/5 hover:bg-white/10 text-gray-300 hover:text-white transition-all text-xs font-semibold cursor-pointer border border-white/10"
+                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-black/[0.03] dark:bg-white/5 hover:bg-black/10 dark:hover:bg-white/10 text-gray-700 dark:text-gray-300 hover:text-[#0E1116] dark:hover:text-white transition-all text-xs font-semibold cursor-pointer border border-black/10 dark:border-white/10"
                         title={ar ? 'رجوع' : 'Back'}
                         aria-label={ar ? 'رجوع' : 'Back'}
                     >
@@ -373,10 +372,10 @@ export default function WizardForm() {
                     </button>
 
                     <div className="text-center">
-                        <h1 className="text-base font-bold text-white">
+                        <h1 className="text-base font-bold text-[#0E1116] dark:text-white">
                             {ar ? 'الاستبيان السريع' : 'Quick Questionnaire'}
                         </h1>
-                        <span className="text-xs text-[#FF8566] font-semibold">
+                        <span className="text-xs text-[#E23B1C] dark:text-[#FF8566] font-semibold">
                             {ar
                                 ? `الخطوة ${currentStep} من ${totalSteps}${currentStep >= 3 ? ' (اختياري)' : ' (إلزامي)'}`
                                 : `Step ${currentStep} of ${totalSteps}${currentStep >= 3 ? ' (Optional)' : ' (Mandatory)'}`}
@@ -389,7 +388,7 @@ export default function WizardForm() {
                             <button
                                 type="button"
                                 onClick={handleSkipExperience}
-                                className="text-xs text-gray-400 hover:text-[#FF8566] underline underline-offset-2 transition-colors cursor-pointer"
+                                className="text-xs text-gray-500 dark:text-gray-400 hover:text-[#FF8566] underline underline-offset-2 transition-colors cursor-pointer"
                             >
                                 {ar ? 'تخطي' : 'Skip'}
                             </button>
@@ -398,7 +397,7 @@ export default function WizardForm() {
                             <button
                                 type="button"
                                 onClick={handleSkipInterests}
-                                className="text-xs text-gray-400 hover:text-[#FF8566] underline underline-offset-2 transition-colors cursor-pointer"
+                                className="text-xs text-gray-500 dark:text-gray-400 hover:text-[#FF8566] underline underline-offset-2 transition-colors cursor-pointer"
                             >
                                 {ar ? 'تخطي' : 'Skip'}
                             </button>
@@ -407,7 +406,7 @@ export default function WizardForm() {
                 </div>
 
                 {/* Progress Bar */}
-                <div className="w-full h-1.5 rounded-full bg-white/10 overflow-hidden">
+                <div className="w-full h-1.5 rounded-full bg-black/10 dark:bg-white/10 overflow-hidden">
                     <div
                         className="h-full bg-gradient-to-r from-[#FF4D2E] to-[#FF8566] transition-all duration-300 rounded-full"
                         style={{ width: `${(currentStep / totalSteps) * 100}%` }}
@@ -421,14 +420,14 @@ export default function WizardForm() {
                 {currentStep === 1 && (
                     <div className="space-y-6 animate-in fade-in">
                         <div className="space-y-1">
-                            <div className="inline-flex items-center gap-1.5 text-xs text-[#FF8566] font-bold">
+                            <div className="inline-flex items-center gap-1.5 text-xs text-[#E23B1C] dark:text-[#FF8566] font-bold">
                                 <span className="material-symbols-outlined text-[14px]">school</span>
                                 <span>{ar ? '1. المعلومات الأساسية (إلزامي)' : '1. Basic Info (Mandatory)'}</span>
                             </div>
-                            <h2 className="text-xl sm:text-2xl font-black text-white">
+                            <h2 className="text-xl sm:text-2xl font-black text-[#0E1116] dark:text-white">
                                 {ar ? 'شو تخصصك ومجالك الأساسي؟' : 'What is your title & specialization?'}
                             </h2>
-                            <p className="text-xs text-gray-400">
+                            <p className="text-xs text-gray-500 dark:text-gray-400">
                                 {ar
                                     ? 'يجب ملء المسمى والتخصص للبدء، اختر أحد المجالات أو اكتب تخصصك بالتحديد'
                                     : 'Title/specialization is required so AI can match relevant hackathons.'}
@@ -446,12 +445,12 @@ export default function WizardForm() {
                                         onClick={() => handleSelectMajor(major)}
                                         className={`p-3.5 rounded-2xl border text-left transition-all cursor-pointer flex items-center gap-3 ${
                                             isSelected
-                                                ? 'bg-[#FF4D2E]/15 border-[#FF4D2E] text-white shadow-[0_0_20px_rgba(255,77,46,0.25)] ring-1 ring-[#FF4D2E]'
-                                                : 'bg-slate-900/80 border-white/10 hover:border-white/25 text-gray-300 hover:bg-slate-900'
+                                                ? 'bg-[#FF4D2E]/15 border-[#FF4D2E] text-[#0E1116] dark:text-white shadow-[0_0_20px_rgba(255,77,46,0.25)] ring-1 ring-[#FF4D2E]'
+                                                : 'bg-[#ffffff] dark:bg-slate-900/80 border-black/10 dark:border-white/10 hover:border-black/25 dark:hover:border-white/25 text-gray-700 dark:text-gray-300 hover:bg-[#FFF5F2] dark:hover:bg-slate-900'
                                         }`}
                                     >
                                         <div className={`w-9 h-9 rounded-xl flex items-center justify-center shrink-0 ${
-                                            isSelected ? 'bg-[#FF4D2E] text-white' : 'bg-white/5 text-gray-400'
+                                            isSelected ? 'bg-[#FF4D2E] text-white' : 'bg-black/[0.03] dark:bg-white/5 text-gray-500 dark:text-gray-400'
                                         }`}>
                                             <span className="material-symbols-outlined text-[20px]">
                                                 {major.icon}
@@ -468,13 +467,13 @@ export default function WizardForm() {
                         </div>
 
                         {/* Detailed Title / Location Inputs - Spacious 3 Columns */}
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-3 border-t border-white/10">
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-3 border-t border-black/10 dark:border-white/10">
                             <div className="space-y-1 md:col-span-1">
-                                <label className="text-xs font-semibold text-gray-300 flex items-center justify-between">
+                                <label className="text-xs font-semibold text-gray-700 dark:text-gray-300 flex items-center justify-between">
                                     <span>
                                         {ar ? 'المسمى / التخصص *' : 'Title / Specialization *'}
                                     </span>
-                                    <span className="text-[10px] text-[#FF8566] font-bold">
+                                    <span className="text-[10px] text-[#E23B1C] dark:text-[#FF8566] font-bold">
                                         {ar ? 'إلزامي' : 'Required'}
                                     </span>
                                 </label>
@@ -482,8 +481,8 @@ export default function WizardForm() {
                                     type="text"
                                     value={formData.headline}
                                     onChange={(e) => setFormData({ ...formData, headline: e.target.value })}
-                                    className={`w-full py-2.5 px-3.5 rounded-xl bg-slate-900 border text-white text-xs focus:outline-none transition-colors ${
-                                        !isStep1Valid ? 'border-red-500/50 focus:border-red-500' : 'border-white/15 focus:border-[#FF4D2E]'
+                                    className={`w-full py-2.5 px-3.5 rounded-xl bg-[#F7F6F3] dark:bg-slate-900 border text-[#0E1116] dark:text-white text-xs focus:outline-none transition-colors ${
+                                        !isStep1Valid ? 'border-red-500/50 focus:border-red-500' : 'border-black/15 dark:border-white/15 focus:border-[#FF4D2E]'
                                     }`}
                                     placeholder={ar ? 'مثال: مهندس برمجيات / علوم حاسوب' : 'e.g. Software Engineer / Computer Science'}
                                     required
@@ -497,27 +496,27 @@ export default function WizardForm() {
                             </div>
 
                             <div className="space-y-1">
-                                <label className="text-xs font-semibold text-gray-300">
+                                <label className="text-xs font-semibold text-gray-700 dark:text-gray-300">
                                     {ar ? 'الاسم' : 'Name'}
                                 </label>
                                 <input
                                     type="text"
                                     value={formData.name}
                                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                                    className="w-full py-2.5 px-3.5 rounded-xl bg-slate-900 border border-white/15 focus:border-[#FF4D2E] text-white text-xs focus:outline-none"
+                                    className="w-full py-2.5 px-3.5 rounded-xl bg-[#F7F6F3] dark:bg-slate-900 border border-black/15 dark:border-white/15 focus:border-[#FF4D2E] text-[#0E1116] dark:text-white text-xs focus:outline-none"
                                     placeholder="John Nanna"
                                 />
                             </div>
 
                             <div className="space-y-1">
-                                <label className="text-xs font-semibold text-gray-300">
+                                <label className="text-xs font-semibold text-gray-700 dark:text-gray-300">
                                     {ar ? 'الموقع' : 'Location'}
                                 </label>
                                 <input
                                     type="text"
                                     value={formData.location}
                                     onChange={(e) => setFormData({ ...formData, location: e.target.value })}
-                                    className="w-full py-2.5 px-3.5 rounded-xl bg-slate-900 border border-white/15 focus:border-[#FF4D2E] text-white text-xs focus:outline-none"
+                                    className="w-full py-2.5 px-3.5 rounded-xl bg-[#F7F6F3] dark:bg-slate-900 border border-black/15 dark:border-white/15 focus:border-[#FF4D2E] text-[#0E1116] dark:text-white text-xs focus:outline-none"
                                     placeholder="Amman, Jordan"
                                 />
                             </div>
@@ -529,14 +528,14 @@ export default function WizardForm() {
                 {currentStep === 2 && (
                     <div className="space-y-4 animate-in fade-in">
                         <div className="space-y-1">
-                            <div className="inline-flex items-center gap-1.5 text-xs text-[#FF8566] font-bold">
+                            <div className="inline-flex items-center gap-1.5 text-xs text-[#E23B1C] dark:text-[#FF8566] font-bold">
                                 <span className="material-symbols-outlined text-[14px]">psychology</span>
                                 <span>{ar ? '2. المهارات التقنية (إلزامي)' : '2. Skills (Mandatory)'}</span>
                             </div>
-                            <h2 className="text-xl sm:text-2xl font-black text-white">
+                            <h2 className="text-xl sm:text-2xl font-black text-[#0E1116] dark:text-white">
                                 {ar ? 'حدد مهاراتك وتقنياتك' : 'Select your skills & tools'}
                             </h2>
-                            <p className="text-xs text-gray-400">
+                            <p className="text-xs text-gray-500 dark:text-gray-400">
                                 {ar
                                     ? 'يجب اختيار مهارة واحدة على الأقل للمتابعة وحساب نسبة المطابقة بالذكاء الاصطناعي'
                                     : 'At least one skill must be selected for the AI matcher to work.'}
@@ -556,7 +555,7 @@ export default function WizardForm() {
                                             className={`px-3 py-1.5 rounded-full text-xs font-semibold transition-all cursor-pointer border ${
                                                 isSelected
                                                     ? 'bg-[#FF4D2E] text-white border-[#FF4D2E] shadow-sm scale-105'
-                                                    : 'bg-slate-900 text-gray-300 border-white/15 hover:border-white/30'
+                                                    : 'bg-[#F7F6F3] dark:bg-slate-900 text-gray-700 dark:text-gray-300 border-black/15 dark:border-white/15 hover:border-black/30 dark:hover:border-white/30'
                                             }`}
                                         >
                                             {isSelected && <span className="mr-1 font-bold">✔</span>}
@@ -568,10 +567,10 @@ export default function WizardForm() {
                         </div>
 
                         {/* Selected skills summary */}
-                        <div className="p-3 rounded-xl bg-slate-900/60 border border-white/10 space-y-2">
-                            <div className="flex justify-between items-center text-[11px] text-gray-400">
+                        <div className="p-3 rounded-xl bg-[#F7F6F3] dark:bg-slate-900/60 border border-black/10 dark:border-white/10 space-y-2">
+                            <div className="flex justify-between items-center text-[11px] text-gray-500 dark:text-gray-400">
                                 <span>{ar ? 'المهارات المحددة في ملفك:' : 'Selected Skills:'}</span>
-                                <span className={formData.skills.length > 0 ? 'text-[#FF8566] font-bold' : 'text-red-400 font-bold'}>
+                                <span className={formData.skills.length > 0 ? 'text-[#E23B1C] dark:text-[#FF8566] font-bold' : 'text-red-400 font-bold'}>
                                     {formData.skills.length} {formData.skills.length === 0 && (ar ? '(اختر مهارة واحدة على الأقل)' : '(pick at least 1)')}
                                 </span>
                             </div>
@@ -580,13 +579,13 @@ export default function WizardForm() {
                                     {formData.skills.map((skill) => (
                                         <span
                                             key={skill}
-                                            className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-[#FF4D2E]/20 text-[#FF8566] text-[11px] font-semibold border border-[#FF4D2E]/30"
+                                            className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-[#FF4D2E]/20 text-[#E23B1C] dark:text-[#FF8566] text-[11px] font-semibold border border-[#FF4D2E]/30"
                                         >
                                             <span>{skill}</span>
                                             <button
                                                 type="button"
                                                 onClick={() => toggleSkill(skill)}
-                                                className="hover:text-white cursor-pointer ml-1"
+                                                className="hover:text-[#0E1116] dark:hover:text-white cursor-pointer ml-1"
                                                 aria-label={`Remove ${skill}`}
                                             >
                                                 ×
@@ -608,11 +607,11 @@ export default function WizardForm() {
                                 value={customSkillInput}
                                 onChange={(e) => setCustomSkillInput(e.target.value)}
                                 placeholder={ar ? 'إضافة مهارة أخرى (مثال: Flutter, AWS)...' : 'Add another skill (e.g. Flutter, AWS)...'}
-                                className="flex-1 py-2 px-3 text-xs rounded-xl bg-slate-900 border border-white/15 focus:border-[#FF4D2E] text-white focus:outline-none"
+                                className="flex-1 py-2 px-3 text-xs rounded-xl bg-[#F7F6F3] dark:bg-slate-900 border border-black/15 dark:border-white/15 focus:border-[#FF4D2E] text-[#0E1116] dark:text-white focus:outline-none"
                             />
                             <button
                                 type="submit"
-                                className="px-3.5 py-2 text-xs rounded-xl bg-white/10 hover:bg-[#FF4D2E] text-white font-bold transition-colors cursor-pointer"
+                                className="px-3.5 py-2 text-xs rounded-xl bg-black/10 dark:bg-white/10 hover:bg-[#FF4D2E] text-[#0E1116] dark:text-white hover:text-white font-bold transition-colors cursor-pointer"
                             >
                                 {ar ? 'إضافة' : 'Add'}
                             </button>
@@ -625,18 +624,18 @@ export default function WizardForm() {
                     <div className="space-y-4 animate-in fade-in">
                         <div className="space-y-1">
                             <div className="flex justify-between items-center">
-                                <div className="inline-flex items-center gap-1.5 text-xs text-gray-400 font-bold">
+                                <div className="inline-flex items-center gap-1.5 text-xs text-gray-500 dark:text-gray-400 font-bold">
                                     <span className="material-symbols-outlined text-[14px]">work</span>
                                     <span>{ar ? '3. الخبرات (اختياري)' : '3. Experience (Optional)'}</span>
                                 </div>
-                                <span className="text-[11px] px-2 py-0.5 rounded-md bg-white/10 text-gray-300 font-semibold">
+                                <span className="text-[11px] px-2 py-0.5 rounded-md bg-black/10 dark:bg-white/10 text-gray-700 dark:text-gray-300 font-semibold">
                                     {ar ? 'اختياري' : 'Optional'}
                                 </span>
                             </div>
-                            <h2 className="text-xl sm:text-2xl font-black text-white">
+                            <h2 className="text-xl sm:text-2xl font-black text-[#0E1116] dark:text-white">
                                 {ar ? 'هل لديك خبرات سابقة أو تدريب؟' : 'Any prior experience or internships?'}
                             </h2>
-                            <p className="text-xs text-gray-400">
+                            <p className="text-xs text-gray-500 dark:text-gray-400">
                                 {ar
                                     ? 'يمكنك ملء بيانات خبراتك، أو الضغط على "تخطي هذه الخطوة" والمتابعة بدون خبرة'
                                     : 'You can fill in your experience, or click "Skip this step" to proceed without it.'}
@@ -647,17 +646,17 @@ export default function WizardForm() {
                             {formData.experience.map((exp, index) => (
                                 <div
                                     key={index}
-                                    className="p-3.5 rounded-xl bg-slate-950 border border-white/10 space-y-2.5 relative"
+                                    className="p-3.5 rounded-xl bg-[#ffffff] dark:bg-slate-950 border border-black/10 dark:border-white/10 space-y-2.5 relative"
                                 >
                                     <div className="flex justify-between items-center">
-                                        <span className="text-[11px] font-bold text-gray-400">
+                                        <span className="text-[11px] font-bold text-gray-500 dark:text-gray-400">
                                             {ar ? `خبرة #${index + 1}` : `Experience #${index + 1}`}
                                         </span>
                                         {formData.experience.length > 1 && (
                                             <button
                                                 type="button"
                                                 onClick={() => handleRemoveExperience(index)}
-                                                className="text-gray-400 hover:text-red-400 transition-colors cursor-pointer"
+                                                className="text-gray-500 dark:text-gray-400 hover:text-red-400 transition-colors cursor-pointer"
                                                 title={ar ? 'حذف' : 'Remove'}
                                             >
                                                 <span className="material-symbols-outlined text-[16px]">delete</span>
@@ -671,14 +670,14 @@ export default function WizardForm() {
                                             value={exp.title}
                                             onChange={(e) => handleUpdateExperience(index, 'title', e.target.value)}
                                             placeholder={ar ? 'المسمى (مثال: متدرب برمجيات)' : 'Role Title (e.g. Software Intern)'}
-                                            className="py-2 px-3 text-xs rounded-lg bg-slate-900 border border-white/15 focus:border-[#FF4D2E] text-white focus:outline-none"
+                                            className="py-2 px-3 text-xs rounded-lg bg-[#F7F6F3] dark:bg-slate-900 border border-black/15 dark:border-white/15 focus:border-[#FF4D2E] text-[#0E1116] dark:text-white focus:outline-none"
                                         />
                                         <input
                                             type="text"
                                             value={exp.org}
                                             onChange={(e) => handleUpdateExperience(index, 'org', e.target.value)}
                                             placeholder={ar ? 'الجهة / الشركة / الجامعة' : 'Company / Organization'}
-                                            className="py-2 px-3 text-xs rounded-lg bg-slate-900 border border-white/15 focus:border-[#FF4D2E] text-white focus:outline-none"
+                                            className="py-2 px-3 text-xs rounded-lg bg-[#F7F6F3] dark:bg-slate-900 border border-black/15 dark:border-white/15 focus:border-[#FF4D2E] text-[#0E1116] dark:text-white focus:outline-none"
                                         />
                                     </div>
 
@@ -687,7 +686,7 @@ export default function WizardForm() {
                                         value={exp.period}
                                         onChange={(e) => handleUpdateExperience(index, 'period', e.target.value)}
                                         placeholder={ar ? 'الفترة (مثال: صيف 2024 • 3 أشهر)' : 'Period (e.g. Summer 2024)'}
-                                        className="w-full py-2 px-3 text-xs rounded-lg bg-slate-900 border border-white/15 focus:border-[#FF4D2E] text-white focus:outline-none"
+                                        className="w-full py-2 px-3 text-xs rounded-lg bg-[#F7F6F3] dark:bg-slate-900 border border-black/15 dark:border-white/15 focus:border-[#FF4D2E] text-[#0E1116] dark:text-white focus:outline-none"
                                     />
 
                                     <textarea
@@ -695,7 +694,7 @@ export default function WizardForm() {
                                         value={exp.desc}
                                         onChange={(e) => handleUpdateExperience(index, 'desc', e.target.value)}
                                         placeholder={ar ? 'وصف مختصر للمهام والإنجازات...' : 'Short description...'}
-                                        className="w-full py-2 px-3 text-xs rounded-lg bg-slate-900 border border-white/15 focus:border-[#FF4D2E] text-white focus:outline-none leading-relaxed"
+                                        className="w-full py-2 px-3 text-xs rounded-lg bg-[#F7F6F3] dark:bg-slate-900 border border-black/15 dark:border-white/15 focus:border-[#FF4D2E] text-[#0E1116] dark:text-white focus:outline-none leading-relaxed"
                                     />
                                 </div>
                             ))}
@@ -704,7 +703,7 @@ export default function WizardForm() {
                         <button
                             type="button"
                             onClick={handleAddExperience}
-                            className="inline-flex items-center gap-1 text-xs text-[#FF8566] hover:text-[#FF4D2E] font-bold cursor-pointer"
+                            className="inline-flex items-center gap-1 text-xs text-[#E23B1C] dark:text-[#FF8566] hover:text-[#FF4D2E] font-bold cursor-pointer"
                         >
                             <span className="material-symbols-outlined text-[16px]">add_circle</span>
                             <span>{ar ? 'إضافة خبرة أخرى' : 'Add another experience'}</span>
@@ -717,18 +716,18 @@ export default function WizardForm() {
                     <div className="space-y-4 animate-in fade-in">
                         <div className="space-y-1">
                             <div className="flex justify-between items-center">
-                                <div className="inline-flex items-center gap-1.5 text-xs text-[#FF8566] font-bold">
+                                <div className="inline-flex items-center gap-1.5 text-xs text-[#E23B1C] dark:text-[#FF8566] font-bold">
                                     <span className="material-symbols-outlined text-[14px]">local_fire_department</span>
                                     <span>{ar ? '4. مجالات الاهتمام والشغف' : '4. Areas of Interest & Goals'}</span>
                                 </div>
-                                <span className="text-[11px] px-2 py-0.5 rounded-md bg-white/10 text-gray-300 font-semibold">
+                                <span className="text-[11px] px-2 py-0.5 rounded-md bg-black/10 dark:bg-white/10 text-gray-700 dark:text-gray-300 font-semibold">
                                     {ar ? 'اختياري' : 'Optional'}
                                 </span>
                             </div>
-                            <h2 className="text-xl sm:text-2xl font-black text-white">
+                            <h2 className="text-xl sm:text-2xl font-black text-[#0E1116] dark:text-white">
                                 {ar ? 'شو المجالات اللي حابب تستكشفها وتتعلمها؟' : 'What topics are you eager to explore?'}
                             </h2>
-                            <p className="text-xs text-gray-400">
+                            <p className="text-xs text-gray-500 dark:text-gray-400">
                                 {ar
                                     ? 'اختر مجالات اهتمامك وشغفك لنرشح لك ورش العمل، الهاكاثونات، والمسابقات الأنسب لمستواك.'
                                     : 'Select topics you want to explore so AI recommends relevant workshops, student hackathons, and learning sprints.'}
@@ -747,12 +746,12 @@ export default function WizardForm() {
                                         onClick={() => toggleInterest(label)}
                                         className={`p-3 rounded-xl border text-left transition-all cursor-pointer flex items-center gap-2.5 ${
                                             isSelected
-                                                ? 'bg-[#FF4D2E]/20 border-[#FF4D2E] text-white shadow-[0_0_15px_rgba(255,77,46,0.25)] ring-1 ring-[#FF4D2E]'
-                                                : 'bg-slate-900/80 border-white/10 hover:border-white/25 text-gray-300 hover:bg-slate-900'
+                                                ? 'bg-[#FF4D2E]/20 border-[#FF4D2E] text-[#0E1116] dark:text-white shadow-[0_0_15px_rgba(255,77,46,0.25)] ring-1 ring-[#FF4D2E]'
+                                                : 'bg-[#ffffff] dark:bg-slate-900/80 border-black/10 dark:border-white/10 hover:border-black/25 dark:hover:border-white/25 text-gray-700 dark:text-gray-300 hover:bg-[#FFF5F2] dark:hover:bg-slate-900'
                                         }`}
                                     >
                                         <div className={`w-7 h-7 rounded-lg flex items-center justify-center shrink-0 ${
-                                            isSelected ? 'bg-[#FF4D2E] text-white' : 'bg-white/5 text-gray-400'
+                                            isSelected ? 'bg-[#FF4D2E] text-white' : 'bg-black/[0.03] dark:bg-white/5 text-gray-500 dark:text-gray-400'
                                         }`}>
                                             <span className="material-symbols-outlined text-[17px]">{item.icon}</span>
                                         </div>
@@ -771,26 +770,26 @@ export default function WizardForm() {
                                 value={customInterestInput}
                                 onChange={(e) => setCustomInterestInput(e.target.value)}
                                 placeholder={ar ? 'أضف مجال أو اهتمام آخر...' : 'Add another topic of interest...'}
-                                className="flex-1 py-2.5 px-3.5 text-xs rounded-xl bg-slate-900 border border-white/15 focus:border-[#FF4D2E] text-white focus:outline-none"
+                                className="flex-1 py-2.5 px-3.5 text-xs rounded-xl bg-[#F7F6F3] dark:bg-slate-900 border border-black/15 dark:border-white/15 focus:border-[#FF4D2E] text-[#0E1116] dark:text-white focus:outline-none"
                             />
                             <button
                                 type="submit"
                                 disabled={!customInterestInput.trim()}
-                                className="py-2.5 px-4 rounded-xl bg-white/10 hover:bg-white/15 disabled:opacity-40 text-xs font-bold text-white transition-colors cursor-pointer"
+                                className="py-2.5 px-4 rounded-xl bg-black/10 dark:bg-white/10 hover:bg-black/15 dark:hover:bg-white/15 disabled:opacity-40 text-xs font-bold text-[#0E1116] dark:text-white transition-colors cursor-pointer"
                             >
                                 {ar ? 'إضافة' : 'Add'}
                             </button>
                         </form>
 
                         {/* Optional Accordion: Have a project? Add it optionally without pressure */}
-                        <div className="pt-3 border-t border-white/10">
+                        <div className="pt-3 border-t border-black/10 dark:border-white/10">
                             <button
                                 type="button"
                                 onClick={() => setShowProjectFields((prev) => !prev)}
-                                className="w-full flex items-center justify-between text-xs text-gray-400 hover:text-white transition-colors cursor-pointer py-1"
+                                className="w-full flex items-center justify-between text-xs text-gray-500 dark:text-gray-400 hover:text-[#0E1116] dark:hover:text-white transition-colors cursor-pointer py-1"
                             >
                                 <span className="flex items-center gap-1.5 font-medium">
-                                    <span className="material-symbols-outlined text-[15px] text-[#FF8566]">rocket_launch</span>
+                                    <span className="material-symbols-outlined text-[15px] text-[#E23B1C] dark:text-[#FF8566]">rocket_launch</span>
                                     {ar ? 'هل لديك مشروع سابق ترغب بإبرازه؟ (اختياري تماماً)' : 'Have a project you want to mention? (Optional)'}
                                 </span>
                                 <span className="material-symbols-outlined text-[16px]">
@@ -799,20 +798,20 @@ export default function WizardForm() {
                             </button>
 
                             {showProjectFields && (
-                                <div className="mt-2 space-y-2 p-3.5 rounded-xl bg-slate-950/80 border border-white/10 max-w-2xl">
+                                <div className="mt-2 space-y-2 p-3.5 rounded-xl bg-[#ffffff]/80 dark:bg-slate-950/80 border border-black/10 dark:border-white/10 max-w-2xl">
                                     <input
                                         type="text"
                                         value={formData.projects[0]?.title || ''}
                                         onChange={(e) => handleUpdateProject(0, 'title', e.target.value)}
                                         placeholder={ar ? 'اسم المشروع (مثال: Smart Task Manager)' : 'Project title'}
-                                        className="w-full py-2.5 px-3.5 text-xs rounded-lg bg-slate-900 border border-white/15 focus:border-[#FF4D2E] text-white focus:outline-none"
+                                        className="w-full py-2.5 px-3.5 text-xs rounded-lg bg-[#F7F6F3] dark:bg-slate-900 border border-black/15 dark:border-white/15 focus:border-[#FF4D2E] text-[#0E1116] dark:text-white focus:outline-none"
                                     />
                                     <input
                                         type="text"
                                         value={formData.projects[0]?.desc || ''}
                                         onChange={(e) => handleUpdateProject(0, 'desc', e.target.value)}
                                         placeholder={ar ? 'وصف مختصر للمشروع أو التقنيات المستخدمة...' : 'Brief description...'}
-                                        className="w-full py-2.5 px-3.5 text-xs rounded-lg bg-slate-900 border border-white/15 focus:border-[#FF4D2E] text-white focus:outline-none"
+                                        className="w-full py-2.5 px-3.5 text-xs rounded-lg bg-[#F7F6F3] dark:bg-slate-900 border border-black/15 dark:border-white/15 focus:border-[#FF4D2E] text-[#0E1116] dark:text-white focus:outline-none"
                                     />
                                 </div>
                             )}
@@ -822,7 +821,7 @@ export default function WizardForm() {
             </div>
 
             {/* Bottom Actions Bar (Spacious Full Width) */}
-            <div className="max-w-5xl w-full mx-auto pt-4 border-t border-white/10">
+            <div className="max-w-5xl w-full mx-auto pt-4 border-t border-black/10 dark:border-white/10">
                 <div className="max-w-md mx-auto space-y-2">
                     {currentStep === 1 && (
                         <button
@@ -868,7 +867,7 @@ export default function WizardForm() {
                             <button
                                 type="button"
                                 onClick={handleSkipExperience}
-                                className="w-full py-2.5 px-4 rounded-xl text-xs text-gray-400 hover:text-white hover:bg-white/5 transition-colors flex items-center justify-center gap-1 cursor-pointer border border-white/5"
+                                className="w-full py-2.5 px-4 rounded-xl text-xs text-gray-500 dark:text-gray-400 hover:text-[#0E1116] dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/5 transition-colors flex items-center justify-center gap-1 cursor-pointer border border-black/5 dark:border-white/5"
                             >
                                 <span className="material-symbols-outlined text-[15px]">fast_forward</span>
                                 <span>{ar ? 'تخطي هذه الخطوة' : 'Skip this step'}</span>
@@ -905,7 +904,7 @@ export default function WizardForm() {
                                 type="button"
                                 onClick={handleSkipInterests}
                                 disabled={isSaving}
-                                className="w-full py-2.5 px-4 rounded-xl text-xs text-gray-400 hover:text-white hover:bg-white/5 transition-colors flex items-center justify-center gap-1 cursor-pointer border border-white/5"
+                                className="w-full py-2.5 px-4 rounded-xl text-xs text-gray-500 dark:text-gray-400 hover:text-[#0E1116] dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/5 transition-colors flex items-center justify-center gap-1 cursor-pointer border border-black/5 dark:border-white/5"
                             >
                                 <span className="material-symbols-outlined text-[15px]">fast_forward</span>
                                 <span>{ar ? 'تخطي هذه الخطوة' : 'Skip this step'}</span>

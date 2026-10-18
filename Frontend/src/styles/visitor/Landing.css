@@ -718,6 +718,8 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible{
   font-size:14px;font-weight:600;transition:top .25s ease;
 }
 .skip-link:focus{top:16px;}
+/* --secondary turns near-white in dark mode, so the label must turn dark. */
+html.dark .skip-link{color:#0E1116;}
 
 /* ===== DYNAMIC CSS - PROFESSIONAL EFFECTS ===== */
 

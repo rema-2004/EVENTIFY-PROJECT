@@ -87,8 +87,11 @@ export function OrgMobileHeader() {
                     aria-label={ar ? 'تبديل المظهر' : 'Switch theme'}
                     style={{ width: 36, height: 36 }}
                 >
-                    <span className="material-symbols-outlined" style={{ fontSize: 18 }}>
+                    <span className="material-symbols-outlined icon-dark" style={{ fontSize: 18 }}>
                         dark_mode
+                    </span>
+                    <span className="material-symbols-outlined icon-light" style={{ fontSize: 18 }}>
+                        light_mode
                     </span>
                 </button>
                 <span className="admin-badge">{ar ? 'المنظم' : 'Organizer'}</span>

@@ -237,7 +237,7 @@ export default function AdminEvents() {
                                 title="Switch theme"
                                 aria-label="Switch theme"
                             >
-                                <span className="material-symbols-outlined">dark_mode</span>
+                                <span className="material-symbols-outlined icon-dark">dark_mode</span><span className="material-symbols-outlined icon-light">light_mode</span>
                             </button>
                             <div className="org-dropdown">
                                 <button
@@ -444,29 +444,29 @@ export default function AdminEvents() {
                             onClick={handleCloseRejectModal}
                         >
                             <div
-                                className="w-full max-w-lg bg-white rounded-3xl shadow-2xl border border-gray-100 p-6 md:p-8 space-y-6 animate-in zoom-in-95 duration-200"
+                                className="w-full max-w-lg bg-white rounded-3xl shadow-2xl border border-gray-100 dark:border-white/10 p-6 md:p-8 space-y-6 animate-in zoom-in-95 duration-200"
                                 onClick={(e) => e.stopPropagation()}
                             >
                                 {/* Modal Header */}
                                 <div className="flex items-start justify-between gap-4">
                                     <div className="flex items-center gap-3">
-                                        <div className="w-12 h-12 rounded-2xl bg-red-50 text-red-600 flex items-center justify-center flex-shrink-0 border border-red-100">
+                                        <div className="w-12 h-12 rounded-2xl bg-red-50 text-red-600 dark:bg-red-500/10 dark:text-red-400 flex items-center justify-center flex-shrink-0 border border-red-100 dark:border-red-500/20">
                                             <span className="material-symbols-outlined text-2xl">report_problem</span>
                                         </div>
                                         <div>
-                                            <h3 id="reject-event-modal-title" className="text-lg md:text-xl font-bold text-gray-900">
+                                            <h3 id="reject-event-modal-title" className="text-lg md:text-xl font-bold text-gray-900 dark:text-white">
                                                 {ar ? 'سبب الرفض' : 'Rejection Reason'}
                                             </h3>
-                                            <p className="text-sm text-gray-500 mt-0.5">
+                                            <p className="text-sm text-gray-500 dark:text-gray-400 mt-0.5">
                                                 {ar ? 'الفعالية: ' : 'Event: '}
-                                                <strong className="text-gray-800 font-semibold">{selectedEvent?.title}</strong>
+                                                <strong className="text-gray-800 dark:text-gray-200 font-semibold">{selectedEvent?.title}</strong>
                                             </p>
                                         </div>
                                     </div>
                                     <button
                                         type="button"
                                         onClick={handleCloseRejectModal}
-                                        className="text-gray-400 hover:text-gray-600 p-1.5 rounded-xl hover:bg-gray-100 transition-colors cursor-pointer"
+                                        className="text-gray-400 hover:text-gray-600 dark:hover:text-white p-1.5 rounded-xl hover:bg-gray-100 dark:hover:bg-[#23262c] transition-colors cursor-pointer"
                                         aria-label="Close modal"
                                     >
                                         <span className="material-symbols-outlined text-xl">close</span>
@@ -475,7 +475,7 @@ export default function AdminEvents() {
 
                                 {/* Modal Body: Required Textarea */}
                                 <div className="space-y-2">
-                                    <label htmlFor="event-rejection-reason" className="block text-sm font-semibold text-gray-700">
+                                    <label htmlFor="event-rejection-reason" className="block text-sm font-semibold text-gray-700 dark:text-gray-300">
                                         {ar ? 'يرجى كتابة سبب رفض الفعالية' : 'Please provide a rejection reason'} <span className="text-red-500">*</span>
                                     </label>
                                     <textarea
@@ -489,7 +489,7 @@ export default function AdminEvents() {
                                                 ? 'اكتب سبب الرفض بالتفصيل هنا (مثال: محتوى الفعالية غير مكتمل، الموعد يتعارض، الشروط غير مستوفاة)...'
                                                 : 'Provide the reason for rejecting this event (e.g. incomplete agenda, missing prerequisites, policy non-compliance)...'
                                         }
-                                        className="w-full p-3.5 text-sm bg-gray-50 border border-gray-200 rounded-2xl focus:outline-none focus:border-red-500 focus:bg-white focus:ring-4 focus:ring-red-500/10 transition-all resize-none text-gray-800"
+                                        className="w-full p-3.5 text-sm bg-gray-50 border border-gray-200 dark:border-white/15 rounded-2xl focus:outline-none focus:border-red-500 focus:bg-white focus:ring-4 focus:ring-red-500/10 transition-all resize-none text-gray-800 dark:text-white"
                                         autoFocus
                                     />
                                     <div className="flex justify-between items-center text-xs text-gray-400 px-1">
@@ -499,11 +499,11 @@ export default function AdminEvents() {
                                 </div>
 
                                 {/* Modal Footer / Actions */}
-                                <div className="flex items-center justify-end gap-3 pt-3 border-t border-gray-100">
+                                <div className="flex items-center justify-end gap-3 pt-3 border-t border-gray-100 dark:border-white/10">
                                     <button
                                         type="button"
                                         onClick={handleCloseRejectModal}
-                                        className="px-5 py-2.5 rounded-2xl text-sm font-medium text-gray-700 bg-gray-100 hover:bg-gray-200 transition-colors cursor-pointer"
+                                        className="px-5 py-2.5 rounded-2xl text-sm font-medium text-gray-700 bg-gray-100 hover:bg-gray-200 dark:text-white dark:bg-[#23262c] dark:hover:bg-[#2b2f36] transition-colors cursor-pointer"
                                     >
                                         {ar ? 'إلغاء' : 'Cancel'}
                                     </button>
@@ -514,7 +514,7 @@ export default function AdminEvents() {
                                         disabled={!rejectionReason.trim()}
                                         className={`flex items-center gap-2 px-6 py-2.5 rounded-2xl text-sm font-semibold transition-all cursor-pointer ${
                                             !rejectionReason.trim()
-                                                ? 'bg-red-200 text-white cursor-not-allowed opacity-60'
+                                                ? 'bg-red-200 dark:bg-red-500/30 text-white cursor-not-allowed opacity-60'
                                                 : 'bg-red-600 hover:bg-red-700 text-white shadow-lg shadow-red-600/25 active:scale-95'
                                         }`}
                                     >
