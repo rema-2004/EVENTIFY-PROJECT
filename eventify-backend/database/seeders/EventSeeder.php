@@ -38,6 +38,9 @@ class EventSeeder extends Seeder
             'id' => $hackathon->id,
             'prize' => '$10,000 Prize Pool',
             'team_size' => '2-4 members',
+            'participation_type' => Competition::PARTICIPATION_TEAM,
+            'min_team_size' => 2,
+            'max_team_size' => 4,
         ]);
 
         Event::create([
