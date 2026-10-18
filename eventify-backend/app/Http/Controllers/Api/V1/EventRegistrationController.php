@@ -20,8 +20,9 @@ class EventRegistrationController extends Controller
     /**
      * POST /api/v1/events/{event}/register
      *
-     * Handles the SIMPLE registration path: instant confirmation for
-     * Workshop/Event/Course, and solo participation for Competition.
+     * Handles the SIMPLE registration path: an individual student applies
+     * to an event. The registration starts as "pending" and waits for the
+     * organization to approve or reject it.
      * Team-based competition entry (create/join a team) is handled by
      * separate endpoints in TeamController — those create their own
      * event_registrations row with team_id set, not this one.
@@ -63,16 +64,28 @@ class EventRegistrationController extends Controller
             return $this->error('You are already registered for this event.', 422);
         }
 
-        // updateOrCreate — reuses the row if the user previously cancelled,
-        // instead of hitting the unique(event_id, user_id) constraint.
+        // A student rejected the maximum number of times can't apply again.
+        // This MUST run before updateOrCreate below, otherwise the rejected
+        // row would be silently reset back to "pending".
+        if ($existing && $existing->isPermanentlyRejected()) {
+            return $this->error('Your registration was rejected and you can no longer apply to this event.', 422);
+        }
+
+        // updateOrCreate — reuses the row if the user previously cancelled
+        // or was rejected (once), instead of hitting the
+        // unique(event_id, user_id) constraint. The review fields are
+        // cleared for the new attempt; rejection_count is NOT touched,
+        // so earlier rejections still count.
         // registered_at is set explicitly: the model's booted() only
         // fires on INSERT, not on this UPDATE path.
         $registration = EventRegistration::updateOrCreate(
             ['event_id' => $event->id, 'user_id' => $user->id],
             [
                 'team_id' => null,
-                'status' => EventRegistration::STATUS_CONFIRMED,
+                'status' => EventRegistration::STATUS_PENDING,
                 'registered_at' => now(),
+                'rejection_reason' => null,
+                'reviewed_at' => null,
             ]
         );
 
@@ -89,7 +102,7 @@ class EventRegistrationController extends Controller
 
         return $this->success(
             new EventRegistrationResource($registration),
-            'Registered successfully',
+            'Registration submitted. Waiting for the organization to review it.',
             201
         );
     }
