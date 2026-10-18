@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Organization;
 
+use App\Models\Competition;
 use App\Models\Event;
 use App\Traits\ApiResponse;
 use Illuminate\Contracts\Validation\Validator;
@@ -27,6 +28,17 @@ class StoreEventRequest extends FormRequest
         // to actually be shown to the public once approved.
         $isSubmit = $this->input('action') === 'submit';
 
+        // Participation rules only apply to competitions, and the team
+        // size limits only when teams can take part.
+        $isCompetition = $this->input('type') === Event::TYPE_COMPETITION;
+        $teamsAllowed = in_array($this->input('participation_type'), [
+            Competition::PARTICIPATION_TEAM,
+            Competition::PARTICIPATION_BOTH,
+        ], true);
+
+        $requireParticipation = $isSubmit && $isCompetition;
+        $requireTeamSize = $isSubmit && $isCompetition && $teamsAllowed;
+
         return [
             'title' => ['required', 'string', 'max:200'],
             'type' => ['required', 'string', Rule::in([
@@ -51,8 +63,37 @@ class StoreEventRequest extends FormRequest
             'cover_image' => ['nullable', 'image', 'mimes:png,jpg,jpeg,webp', 'max:5120'], // 5MB
 
             // Competition-only fields — ignored for other types.
+            // team_size is the old free-text field, kept for compatibility;
+            // the structured fields below are what the rules are enforced on.
             'team_size' => ['nullable', 'string', 'max:100'],
             'prize' => ['nullable', 'string', 'max:255'],
+
+            'participation_type' => [
+                $requireParticipation ? 'required' : 'nullable',
+                'string',
+                Rule::in([
+                    Competition::PARTICIPATION_SOLO,
+                    Competition::PARTICIPATION_TEAM,
+                    Competition::PARTICIPATION_BOTH,
+                ]),
+            ],
+            // A team needs at least 2 members; 50 is a sanity cap.
+            // A solo-only competition has no team size at all.
+            'min_team_size' => [
+                $requireTeamSize ? 'required' : 'nullable',
+                'integer',
+                'min:2',
+                'max:50',
+                'prohibited_if:participation_type,solo',
+            ],
+            'max_team_size' => [
+                $requireTeamSize ? 'required' : 'nullable',
+                'integer',
+                'min:2',
+                'max:50',
+                'prohibited_if:participation_type,solo',
+                Rule::when($this->filled('min_team_size'), ['gte:min_team_size']),
+            ],
 
             'action' => ['required', 'string', Rule::in(['draft', 'submit'])],
         ];

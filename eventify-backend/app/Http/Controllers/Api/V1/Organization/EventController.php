@@ -7,6 +7,7 @@ use App\Http\Requests\Organization\StoreEventRequest;
 use App\Http\Requests\Organization\UpdateEventRequest;
 use App\Http\Resources\EventResource;
 use App\Models\AuditLog;
+use App\Models\Competition;
 use App\Models\Event;
 use App\Models\Organization;
 use App\Traits\ApiResponse;
@@ -97,9 +98,16 @@ class EventController extends Controller
             }
 
             if ($event->type === Event::TYPE_COMPETITION) {
+                $participationType = $validated['participation_type'] ?? null;
+                $isSolo = $participationType === Competition::PARTICIPATION_SOLO;
+
                 $event->competition()->create([
                     'team_size' => $validated['team_size'] ?? null,
                     'prize' => $validated['prize'] ?? null,
+                    'participation_type' => $participationType,
+                    // A solo-only competition never carries a team size.
+                    'min_team_size' => $isSolo ? null : ($validated['min_team_size'] ?? null),
+                    'max_team_size' => $isSolo ? null : ($validated['max_team_size'] ?? null),
                 ]);
             }
 
@@ -161,7 +169,14 @@ class EventController extends Controller
                     $validated['admin_notes'] = null;
                 }
             }
-            unset($validated['action'], $validated['team_size'], $validated['prize']);
+            unset(
+                $validated['action'],
+                $validated['team_size'],
+                $validated['prize'],
+                $validated['participation_type'],
+                $validated['min_team_size'],
+                $validated['max_team_size'],
+            );
 
             if ($request->hasFile('cover_image')) {
                 if ($event->cover_image && Storage::disk('public')->exists($event->cover_image)) {
@@ -175,18 +190,34 @@ class EventController extends Controller
             $type = $request->input('type', $event->type);
 
             if ($type === Event::TYPE_COMPETITION) {
-                // team_size/prize are only overwritten when actually sent
+                $stored = $event->competition;
+
+                // Competition fields are only overwritten when actually sent
                 // in this request — otherwise a partial update (e.g. just
                 // the title) would silently wipe the existing values.
+                $participationType = $request->has('participation_type')
+                    ? $request->input('participation_type')
+                    : $stored?->participation_type;
+
+                $isSolo = $participationType === Competition::PARTICIPATION_SOLO;
+
                 $event->competition()->updateOrCreate(
                     [],
                     [
                         'team_size' => $request->has('team_size')
                             ? $request->input('team_size')
-                            : $event->competition?->team_size,
+                            : $stored?->team_size,
                         'prize' => $request->has('prize')
                             ? $request->input('prize')
-                            : $event->competition?->prize,
+                            : $stored?->prize,
+                        'participation_type' => $participationType,
+                        // A solo-only competition never carries a team size.
+                        'min_team_size' => $isSolo ? null : ($request->has('min_team_size')
+                            ? $request->input('min_team_size')
+                            : $stored?->min_team_size),
+                        'max_team_size' => $isSolo ? null : ($request->has('max_team_size')
+                            ? $request->input('max_team_size')
+                            : $stored?->max_team_size),
                     ]
                 );
             } else {

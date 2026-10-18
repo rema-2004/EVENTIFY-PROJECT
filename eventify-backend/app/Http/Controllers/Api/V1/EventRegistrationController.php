@@ -44,6 +44,17 @@ class EventRegistrationController extends Controller
             return $this->error('Registration is closed for this event.', 422);
         }
 
+        // A team-only competition can't be joined as an individual.
+        // (Older competitions have no participation_type, which counts
+        // as "both", so allowsSolo() is true for them.)
+        if ($event->isCompetition()) {
+            $event->loadMissing('competition');
+
+            if ($event->competition && ! $event->competition->allowsSolo()) {
+                return $this->error('This competition requires a team.', 422);
+            }
+        }
+
         $existing = EventRegistration::where('event_id', $event->id)
             ->where('user_id', $user->id)
             ->first();

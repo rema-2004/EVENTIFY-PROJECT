@@ -4,8 +4,10 @@ namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\EventResource;
+use App\Models\Competition;
 use App\Models\Event;
 use App\Traits\ApiResponse;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -16,7 +18,14 @@ class EventController extends Controller
     /**
      * GET /api/v1/events
      * GET /api/v1/events?type=workshop&search=AI&status=live
+     * GET /api/v1/events?participation_type=solo|team|both
      * Public — only published events are ever visible here.
+     *
+     * participation_type only matches competitions, and is an exact match:
+     *   solo -> solo competitions only
+     *   team -> team competitions only
+     *   both -> "both" competitions, plus older ones with no value set
+     *           (a NULL participation_type means "both")
      */
     public function index(Request $request): JsonResponse
     {
@@ -30,6 +39,24 @@ class EventController extends Controller
             'ended' => $query->ended(),
             default => null,
         };
+
+        $participation = $request->query('participation_type');
+
+        if (in_array($participation, [
+            Competition::PARTICIPATION_SOLO,
+            Competition::PARTICIPATION_TEAM,
+            Competition::PARTICIPATION_BOTH,
+        ], true)) {
+            $query->whereHas('competition', function (Builder $competition) use ($participation) {
+                $competition->where(function (Builder $rule) use ($participation) {
+                    $rule->where('participation_type', $participation);
+
+                    if ($participation === Competition::PARTICIPATION_BOTH) {
+                        $rule->orWhereNull('participation_type');
+                    }
+                });
+            });
+        }
 
         $events = $query->latest()->paginate(15);
 
