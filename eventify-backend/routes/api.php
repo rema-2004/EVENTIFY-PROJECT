@@ -7,11 +7,13 @@ use App\Http\Controllers\Api\V1\EventRegistrationController;
 use App\Http\Controllers\Api\V1\CourseController;
 use App\Http\Controllers\Api\V1\ChallengeSubmissionController;
 use App\Http\Controllers\Api\V1\SavedOpportunityController;
+use App\Http\Controllers\Api\V1\ProfileController;
 use App\Http\Controllers\Api\V1\Admin\OrganizationManagementController;
 use App\Http\Controllers\Api\V1\Admin\EventManagementController;
 use App\Http\Controllers\Api\V1\Admin\AuditLogController;
 use App\Http\Controllers\Api\V1\Organization\EventController as OrgEventController;
 use App\Http\Controllers\Api\V1\Organization\ApplicantController;
+use App\Http\Controllers\Api\V1\Organization\ProfileController as OrgProfileController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -46,6 +48,10 @@ Route::prefix('v1')->group(function () {
         Route::post('/logout', [AuthController::class, 'logout']);
         Route::get('/me', [AuthController::class, 'me']);
 
+        // Student's own profile and password
+        Route::patch('/profile', [ProfileController::class, 'update']);
+        Route::patch('/password', [ProfileController::class, 'changePassword']);
+
         // Event registration
         Route::post('/events/{event}/register', [EventRegistrationController::class, 'register']);
         Route::delete('/events/{event}/register', [EventRegistrationController::class, 'cancel']);
@@ -77,6 +83,10 @@ Route::prefix('v1')->group(function () {
     Route::middleware('auth:organization')->group(function () {
         Route::post('/org/logout', [OrgAuthController::class, 'logout']);
         Route::get('/org/me', [OrgAuthController::class, 'me']);
+
+        // Organization's own profile and password
+        Route::patch('/org/profile', [OrgProfileController::class, 'update']);
+        Route::patch('/org/password', [OrgProfileController::class, 'changePassword']);
 
         // Organization's own events
         Route::get('/org/events', [OrgEventController::class, 'index']);
