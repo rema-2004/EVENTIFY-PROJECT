@@ -14,6 +14,7 @@ use App\Http\Controllers\Api\V1\Admin\AuditLogController;
 use App\Http\Controllers\Api\V1\Admin\UserManagementController;
 use App\Http\Controllers\Api\V1\Organization\EventController as OrgEventController;
 use App\Http\Controllers\Api\V1\Organization\ApplicantController;
+use App\Http\Controllers\Api\V1\Organization\DashboardController;
 use App\Http\Controllers\Api\V1\Organization\ProfileController as OrgProfileController;
 use Illuminate\Support\Facades\Route;
 
@@ -84,6 +85,9 @@ Route::prefix('v1')->group(function () {
     Route::middleware('auth:organization')->group(function () {
         Route::post('/org/logout', [OrgAuthController::class, 'logout']);
         Route::get('/org/me', [OrgAuthController::class, 'me']);
+
+        // Organization dashboard (overview numbers for the logged-in organization)
+        Route::get('/org/dashboard', [DashboardController::class, 'index']);
 
         // Organization's own profile and password
         Route::patch('/org/profile', [OrgProfileController::class, 'update']);
