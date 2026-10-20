@@ -11,6 +11,7 @@ use App\Http\Controllers\Api\V1\ProfileController;
 use App\Http\Controllers\Api\V1\Admin\OrganizationManagementController;
 use App\Http\Controllers\Api\V1\Admin\EventManagementController;
 use App\Http\Controllers\Api\V1\Admin\AuditLogController;
+use App\Http\Controllers\Api\V1\Admin\UserManagementController;
 use App\Http\Controllers\Api\V1\Organization\EventController as OrgEventController;
 use App\Http\Controllers\Api\V1\Organization\ApplicantController;
 use App\Http\Controllers\Api\V1\Organization\ProfileController as OrgProfileController;
@@ -117,6 +118,12 @@ Route::prefix('v1')->group(function () {
         Route::get('/events/{event}', [EventManagementController::class, 'show']);
         Route::patch('/events/{event}/approve', [EventManagementController::class, 'approve']);
         Route::patch('/events/{event}/reject', [EventManagementController::class, 'reject']);
+
+        // Users management (students)
+        Route::get('/users', [UserManagementController::class, 'index']);
+        Route::patch('/users/{user}/suspend', [UserManagementController::class, 'suspend']);
+        Route::patch('/users/{user}/ban', [UserManagementController::class, 'ban']);
+        Route::patch('/users/{user}/activate', [UserManagementController::class, 'activate']);
 
         // Audit log (read-only)
         Route::get('/audit-logs', [AuditLogController::class, 'index']);
