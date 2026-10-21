@@ -8,6 +8,7 @@ use App\Http\Requests\Auth\ResetPasswordRequest;
 use App\Http\Requests\Organization\LoginOrganizationRequest;
 use App\Http\Requests\Organization\RegisterOrganizationRequest;
 use App\Http\Resources\OrganizationResource;
+use App\Models\AuditLog;
 use App\Models\Organization;
 use App\Traits\ApiResponse;
 use App\Traits\HandlesPasswordReset;
@@ -42,6 +43,17 @@ class OrgAuthController extends Controller
 
         // Tokens are issued on the "organization" Sanctum guard automatically,
         // because Organization uses HasApiTokens just like User does.
+        $organization->refresh();
+
+        AuditLog::record(
+            type: AuditLog::TYPE_CREATE,
+            action: 'Registered Organization',
+            location: AuditLog::LOCATION_ORGANIZATIONS,
+            actor: $organization,
+            target: $organization,
+            details: 'A new organization registered and is awaiting admin approval.',
+        );
+
         $token = $organization->createToken('eventify-org-token')->plainTextToken;
 
         return $this->success([
@@ -60,14 +72,43 @@ class OrgAuthController extends Controller
         $organization = Organization::where('email', $validated['email'])->first();
 
         if (! $organization || ! Hash::check($validated['password'], $organization->password)) {
+            // $organization is null when no account matches. The email the
+            // person typed is deliberately NOT stored.
+            AuditLog::record(
+                type: AuditLog::TYPE_LOGIN,
+                action: 'Login',
+                location: AuditLog::LOCATION_DASHBOARD,
+                actor: $organization,
+                status: AuditLog::STATUS_FAILED,
+                details: 'Login attempt failed due to invalid credentials.',
+            );
+
             return $this->error('Invalid credentials', 401);
         }
 
         if ($organization->status === Organization::STATUS_SUSPENDED) {
+            AuditLog::record(
+                type: AuditLog::TYPE_LOGIN,
+                action: 'Login',
+                location: AuditLog::LOCATION_DASHBOARD,
+                actor: $organization,
+                status: AuditLog::STATUS_FAILED,
+                details: 'Login was blocked because the organization is suspended.',
+            );
+
             return $this->error('Your organization account has been suspended. Please contact support.', 403);
         }
 
         if ($organization->status === Organization::STATUS_REJECTED) {
+            AuditLog::record(
+                type: AuditLog::TYPE_LOGIN,
+                action: 'Login',
+                location: AuditLog::LOCATION_DASHBOARD,
+                actor: $organization,
+                status: AuditLog::STATUS_FAILED,
+                details: 'Login was blocked because the organization application was rejected.',
+            );
+
             return $this->error('Your organization application was rejected. Please contact support.', 403);
         }
 
@@ -76,6 +117,14 @@ class OrgAuthController extends Controller
         // (logo, license, description) while waiting for admin approval.
 
         $token = $organization->createToken('eventify-org-token')->plainTextToken;
+
+        AuditLog::record(
+            type: AuditLog::TYPE_LOGIN,
+            action: 'Login',
+            location: AuditLog::LOCATION_DASHBOARD,
+            actor: $organization,
+            details: 'Organization successfully logged into the platform.',
+        );
 
         return $this->success([
             'organization' => new OrganizationResource($organization),
@@ -98,6 +147,14 @@ class OrgAuthController extends Controller
         if ($token instanceof PersonalAccessToken) {
             $token->delete();
         }
+
+        AuditLog::record(
+            type: AuditLog::TYPE_LOGOUT,
+            action: 'Logout',
+            location: AuditLog::LOCATION_DASHBOARD,
+            actor: $organization,
+            details: 'Organization session was ended.',
+        );
 
         return $this->success(null, 'Logged out successfully');
     }
@@ -163,6 +220,15 @@ class OrgAuthController extends Controller
         $this->deleteResetToken('organization_password_reset_tokens', $validated['email']);
 
         $organization->tokens()->delete();
+
+        AuditLog::record(
+            type: AuditLog::TYPE_UPDATE,
+            action: 'Reset Password',
+            location: AuditLog::LOCATION_SECURITY,
+            actor: $organization,
+            sensitive: true,
+            details: 'Password was reset using a reset link.',
+        );
 
         return $this->success(null, 'Password has been reset successfully. Please log in again.');
     }

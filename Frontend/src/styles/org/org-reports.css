@@ -604,24 +604,24 @@ div.confirm-dialog { height: fit-content; }
 
 /* Content entry: table rows, empty state and refresh skeleton fade up as they render */
 @keyframes reports-row-in {
-    from { opacity: 0; transform: translateY(12px); }
+    from { opacity: 0; transform: translateY(6px); }
     to   { opacity: 1; transform: none; }
 }
 @media (prefers-reduced-motion: no-preference) {
     .reports-table tbody tr {
-        animation: reports-row-in .45s cubic-bezier(0.22, 1, 0.36, 1) both;
+        animation: reports-row-in 0.24s cubic-bezier(0.16, 1, 0.3, 1) both;
     }
-    .reports-table tbody tr:nth-child(1) { animation-delay: .03s; }
-    .reports-table tbody tr:nth-child(2) { animation-delay: .08s; }
-    .reports-table tbody tr:nth-child(3) { animation-delay: .13s; }
-    .reports-table tbody tr:nth-child(4) { animation-delay: .18s; }
-    .reports-table tbody tr:nth-child(5) { animation-delay: .23s; }
-    .reports-table tbody tr:nth-child(6) { animation-delay: .28s; }
+    .reports-table tbody tr:nth-child(1) { animation-delay: .02s; }
+    .reports-table tbody tr:nth-child(2) { animation-delay: .04s; }
+    .reports-table tbody tr:nth-child(3) { animation-delay: .06s; }
+    .reports-table tbody tr:nth-child(4) { animation-delay: .08s; }
+    .reports-table tbody tr:nth-child(5) { animation-delay: .10s; }
+    .reports-table tbody tr:nth-child(6) { animation-delay: .12s; }
     .reports-pagination,
     #org-reports-empty,
     .empty-state,
     .reports-panel > .skeleton {
-        animation: reports-row-in .45s cubic-bezier(0.22, 1, 0.36, 1) both;
+        animation: reports-row-in 0.24s cubic-bezier(0.16, 1, 0.3, 1) both;
     }
 }
 

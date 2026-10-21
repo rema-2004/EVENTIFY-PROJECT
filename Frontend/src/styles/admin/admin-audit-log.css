@@ -438,3 +438,10 @@ html.dark .audit-avatar {
         grid-template-columns: 1fr;
     }
 }
+
+#audit-details-dialog {
+    position: fixed !important;
+    inset: 0 !important;
+    margin: auto !important;
+    z-index: 99999 !important;
+}

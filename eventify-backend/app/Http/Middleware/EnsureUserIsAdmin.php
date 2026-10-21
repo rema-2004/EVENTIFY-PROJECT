@@ -15,13 +15,15 @@ class EnsureUserIsAdmin
     /**
      * Blocks any request where the authenticated user is not an admin.
      * Must run AFTER auth:sanctum (so Auth::user() is already resolved).
+     *
+     * auth:sanctum also accepts organization tokens, and an Organization
+     * has no isAdmin() — so the account type is checked first.
      */
     public function handle(Request $request, Closure $next): Response
     {
-        /** @var User|null $user */
         $user = $request->user();
 
-        if (! $user || ! $user->isAdmin()) {
+        if (! $user instanceof User || ! $user->isAdmin()) {
             return $this->error('Forbidden. Admin access required.', 403);
         }
 

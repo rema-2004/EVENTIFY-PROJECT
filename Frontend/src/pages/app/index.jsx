@@ -3,6 +3,8 @@ import { Link, useNavigate } from 'react-router-dom'
 import AppPageHead from '../../components/app/AppPageHead'
 import AppFooter from '../../components/app/AppFooter'
 import { useLanguage } from '../../hooks/useLanguage'
+import { useOnboarding } from '../../context/OnboardingContext'
+import WelcomeOnboarding from '../../components/app/onboarding/WelcomeOnboarding'
 
 function SaveButton({ id, saved, ar, onToggle }) {
     return (
@@ -25,11 +27,41 @@ export default function AppHome() {
     const navigate = useNavigate()
     const { language } = useLanguage()
     const ar = language === 'ar'
-    const openOpportunity = () => navigate('/app/opportunity')
+    const { isProfileComplete, resetProfile, userProfile } = useOnboarding()
+    const openOpportunity = (item) => {
+        const compData = item && typeof item === 'object' && item.title ? {
+            id: item.id || (typeof item.title === 'string' ? item.title.toLowerCase().replace(/\s+/g, '-') : 'comp'),
+            title: typeof item.title === 'string' ? item.title : (ar ? item.title?.ar : item.title?.en),
+            type: typeof item.type === 'string' ? item.type : (ar ? item.type?.ar : item.type?.en),
+            sub: item.sub || item.meta || '',
+            cat: item.cat || 'competition',
+            participationType: item.participationType || 'solo',
+            img: item.img || null,
+            match: item.match || 95,
+        } : {
+            id: 'cyber-sentinel-ctf',
+            title: ar ? 'مسابقة Cyber Sentinel CTF الفردية' : 'Cyber Sentinel Solo CTF',
+            cat: 'competition',
+            participationType: 'solo',
+        }
+        try {
+            sessionStorage.setItem('eventify_selected_competition', JSON.stringify(compData))
+        } catch {}
+        navigate('/app/opportunity', { state: { competition: compData } })
+    }
     const [isRafeeqOpen, setIsRafeeqOpen] = useState(false)
     const [eventFilter, setEventFilter] = useState('all')
     const [saved, setSaved] = useState(new Set())
     const [toast, setToast] = useState(null)
+
+    // Dynamic skills & major from parsed CV or Wizard
+    const userSkills = (userProfile?.skills && userProfile.skills.length > 0)
+        ? userProfile.skills
+        : ['AI', 'Backend', 'React']
+    const userMajor = userProfile?.education || userProfile?.headline || (ar ? 'علوم الحاسوب والذكاء الاصطناعي' : 'Computer Science & AI')
+    const skill1 = userSkills[0] || 'AI'
+    const skill2 = userSkills[1] || 'Backend'
+    const skill3 = userSkills[2] || 'React'
 
     const toggleRafeeq = () => setIsRafeeqOpen((prev) => !prev)
 
@@ -62,6 +94,19 @@ export default function AppHome() {
         return () => clearTimeout(timer)
     }, [])
 
+    // Step 2 from Flow: If profile is not complete, render WelcomeOnboarding!
+    if (!isProfileComplete) {
+        return (
+            <>
+                <AppPageHead title="EVENTIFY | Welcome & Profile Setup" />
+                <main className="pt-20 pb-16 px-container-margin-mobile md:px-container-margin-desktop max-w-[1280px] mx-auto">
+                    <WelcomeOnboarding />
+                </main>
+                <AppFooter />
+            </>
+        )
+    }
+
     return (
         <>
             <AppPageHead title="EVENTIFY | AI-Powered Opportunity Hub" />
@@ -75,6 +120,47 @@ export default function AppHome() {
                 </div>
             )}
             <main className="pt-24 pb-12 px-container-margin-mobile md:px-container-margin-desktop max-w-[1280px] mx-auto space-y-12">
+
+                {/* Profile Completed Notification Bar */}
+                <div className="flex flex-wrap items-center justify-between gap-4 p-4 rounded-2xl bg-gradient-to-r from-emerald-950/70 via-slate-900/90 to-slate-900/80 border border-emerald-500/30 text-emerald-300 shadow-lg">
+                    <div className="flex items-center gap-3">
+                        <div className="w-10 h-10 rounded-xl bg-emerald-500/20 border border-emerald-500/30 flex items-center justify-center text-emerald-400">
+                            <span className="material-symbols-outlined text-[22px]">verified</span>
+                        </div>
+                        <div>
+                            <div className="font-bold text-white text-sm flex items-center gap-2">
+                                <span>{ar ? 'تم اكتمال الملف الشخصي بنجاح' : 'Profile Complete'}</span>
+                                <span className="text-xs px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300">
+                                    {userProfile.fullName || 'John Nanna'}
+                                </span>
+                            </div>
+                            <div className="text-xs text-gray-300">
+                                {ar
+                                    ? 'تم تفعيل التوصيات الذكية والفرص المقترحة بنسبة تطابق تصل إلى 98%'
+                                    : 'Smart recommendations unlocked with up to 98% match'}
+                            </div>
+                        </div>
+                    </div>
+                    <div className="flex items-center gap-2">
+                        <Link
+                            to="/app/profile?edit=true"
+                            state={{ openEdit: true }}
+                            className="px-3 py-1.5 rounded-lg bg-white/10 hover:bg-white/15 text-white text-xs font-medium transition-colors flex items-center gap-1"
+                        >
+                            <span className="material-symbols-outlined text-[14px]">edit</span>
+                            <span>{ar ? 'تعديل الملف الشخصي' : 'Edit Profile'}</span>
+                        </Link>
+                        <button
+                            type="button"
+                            onClick={resetProfile}
+                            className="px-3 py-1.5 rounded-lg bg-red-500/15 hover:bg-red-500/25 border border-red-500/30 text-red-300 text-xs font-medium transition-colors flex items-center gap-1"
+                            title="Reset to test onboarding again"
+                        >
+                            <span className="material-symbols-outlined text-[14px]">refresh</span>
+                            <span>{ar ? 'إعادة ضبط للاختبار' : 'Reset Flow'}</span>
+                        </button>
+                    </div>
+                </div>
 
 {/* ── Hero Section ─────────────────────────────────────────── */}
 <section className={`app-hero relative overflow-hidden rounded-xl px-8 py-16 md:px-16 md:py-24 flex flex-col items-start space-y-6 ${ar ? 'text-right items-end' : 'text-left items-start'}`}>
@@ -110,8 +196,8 @@ export default function AppHome() {
     <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 border border-white/15 font-label-sm text-label-sm">
         <span className="material-symbols-outlined text-green-400 text-[18px]">task_alt</span>
         {ar
-            ? 'تم تحليل السيرة بنجاح — تم التعرف على تخصص هندسة البرمجيات والذكاء الاصطناعي'
-            : 'AI & Software Engineering Profile Detected — Successfully Analyzed'}
+            ? `تم تحليل السيرة بنجاح — تم التعرف على تخصص ${userMajor}`
+            : `${userMajor} Profile Detected — Successfully Analyzed`}
     </span>
     <Link
         className="inline-flex items-center gap-1.5 px-4 py-2 border border-white/20 rounded-lg font-label-sm text-white/80 hover:text-white hover:border-white/40 transition-colors"
@@ -160,7 +246,7 @@ export default function AppHome() {
             {ar ? 'موصى به لك' : 'Recommended For You'}
         </h2>
         <p className="font-body-md text-body-md text-on-surface-variant dark:text-gray-300">
-            {ar ? 'مطابق لمهاراتك وخبراتك في سيرتك الذاتية، تم التحديث للتو.' : 'Matched against the skills and experience in your CV, refreshed just now.'}
+            {ar ? `مطابق لمهاراتك (${skill1}، ${skill2}) وتخصصك في ${userMajor}، تم التحديث للتو.` : `Matched against your skills (${skill1}, ${skill2}) and background in ${userMajor}, refreshed just now.`}
         </p>
     </div>
     <Link className="text-primary font-label-md hover:underline" to="/app/explore">
@@ -170,73 +256,108 @@ export default function AppHome() {
 <div className="recommended-grid grid grid-cols-1 md:grid-cols-3 gap-gutter items-stretch">
 
 {/* Card 1 */}
-<div className="ev-fade-up ev-stagger-2 ev-card spotlight bg-surface-container-lowest dark:bg-slate-900/80 border border-outline-variant/30 dark:border-white/10 rounded-xl overflow-hidden shadow-sm group border-l-4 border-l-secondary">
+<div className="ev-fade-up ev-stagger-2 ev-card spotlight bg-surface-container-lowest dark:bg-slate-900/80 border border-outline-variant/30 dark:border-white/10 rounded-xl overflow-hidden shadow-sm group border-l-4 border-l-secondary cursor-pointer" onClick={() => openOpportunity({
+    id: 'cyber-sentinel-ctf',
+    title: ar ? 'مسابقة CTF الأمنية الفردية' : 'CTF Solo Hackathon',
+    type: ar ? 'هاكاثون فردي' : 'SOLO HACKATHON',
+    sub: 'By CyberSecurity Alliance · Remote',
+    cat: 'competition',
+    participationType: 'solo',
+    match: 98,
+    img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuB9CEnFNI0sa64wtdt1xcbuCO2ctuePljYf3b0mGoAfsaVbTQZl6EUEKGeq_A-lCje6-84UGOy-xM_EX1fj34sF-YWMO-_0SG4_iedT1vjYrRw5UpEFxOlngZ_cDhCxJRFxyyChSuzfbQzaifbDrY-ySQm0SZNqdXFNpNdzVSiaboP2NAJ4pYTV-P32G1lYqug8kLksnCytiGNYKiUHGIacjDYyZIZ5HHucNTeyCLWQmzn3HRdmrm8n18EIgGN0AobDjfqjTG3DQkjK',
+})}>
     <div className="h-48 home-card-media relative overflow-hidden">
-        <img className="ev-card-img w-full h-full object-cover" alt="Global AI hackathon" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB9CEnFNI0sa64wtdt1xcbuCO2ctuePljYf3b0mGoAfsaVbTQZl6EUEKGeq_A-lCje6-84UGOy-xM_EX1fj34sF-YWMO-_0SG4_iedT1vjYrRw5UpEFxOlngZ_cDhCxJRFxyyChSuzfbQzaifbDrY-ySQm0SZNqdXFNpNdzVSiaboP2NAJ4pYTV-P32G1lYqug8kLksnCytiGNYKiUHGIacjDYyZIZ5HHucNTeyCLWQmzn3HRdmrm8n18EIgGN0AobDjfqjTG3DQkjK"/>
+        <img className="ev-card-img w-full h-full object-cover" alt="CTF Hackathon" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB9CEnFNI0sa64wtdt1xcbuCO2ctuePljYf3b0mGoAfsaVbTQZl6EUEKGeq_A-lCje6-84UGOy-xM_EX1fj34sF-YWMO-_0SG4_iedT1vjYrRw5UpEFxOlngZ_cDhCxJRFxyyChSuzfbQzaifbDrY-ySQm0SZNqdXFNpNdzVSiaboP2NAJ4pYTV-P32G1lYqug8kLksnCytiGNYKiUHGIacjDYyZIZ5HHucNTeyCLWQmzn3HRdmrm8n18EIgGN0AobDjfqjTG3DQkjK"/>
         <div className="absolute top-3 right-3 px-3 py-1 bg-secondary text-white rounded-lg font-label-sm flex items-center gap-1 shadow-lg" data-count>
-            <span className="material-symbols-outlined text-[14px]">bolt</span> 98%
+            <span className="material-symbols-outlined text-[14px]">bolt</span> 98% Match
         </div>
     </div>
     <div className="p-6 space-y-4 home-card-body">
         <div>
-            <span className="font-label-sm text-label-sm uppercase text-secondary">{ar ? 'هاكاثون' : 'HACKATHON'}</span>
-            <Link className="block" to="/app/opportunity">
-                <h3 className="font-title-md text-title-md text-on-background dark:text-white line-clamp-1 mt-1 hover:text-primary transition-colors">
-                    {ar ? 'تحدي الابتكار العالمي بالذكاء الاصطناعي' : 'Global AI Innovation Challenge'}
-                </h3>
-            </Link>
-            <p className="font-body-sm text-body-sm text-on-surface-variant dark:text-gray-300">By TechGenius Labs</p>
+            <div className="flex items-center justify-between">
+                <span className="font-label-sm text-label-sm uppercase text-secondary">{ar ? 'هاكاثون' : 'HACKATHON'}</span>
+                <span className="text-[11px] font-bold px-2 py-0.5 rounded-full bg-amber-500/10 text-amber-700 dark:text-amber-400 border border-amber-500/30 flex items-center gap-1">
+                    <span className="material-symbols-outlined text-[12px]">person</span>
+                    {ar ? 'فردي فقط' : 'Solo Only'}
+                </span>
+            </div>
+            <h3 className="font-title-md text-title-md text-on-background dark:text-white line-clamp-1 mt-1 hover:text-primary transition-colors">
+                {ar ? 'مسابقة CTF الأمنية الفردية' : 'CTF Solo Hackathon'}
+            </h3>
+            <p className="font-body-sm text-body-sm text-on-surface-variant dark:text-gray-300">By CyberSecurity Alliance</p>
             <div className="flex flex-wrap gap-1.5 pt-2">
-                <span className="px-2 py-0.5 rounded-full bg-surface-container dark:bg-slate-800 font-label-sm text-label-sm text-on-surface-variant dark:text-gray-300">{ar ? 'من سيرتك: Python' : 'From your CV: Python'}</span>
-                <span className="px-2 py-0.5 rounded-full bg-surface-container dark:bg-slate-800 font-label-sm text-label-sm text-on-surface-variant dark:text-gray-300">{ar ? 'تعلم الآلة' : 'Machine Learning'}</span>
+                <span className="px-2 py-0.5 rounded-full bg-surface-container dark:bg-slate-800 font-label-sm text-label-sm text-on-surface-variant dark:text-gray-300">{ar ? `من مهاراتك: ${skill2}` : `From your skills: ${skill2}`}</span>
+                <span className="px-2 py-0.5 rounded-full bg-surface-container dark:bg-slate-800 font-label-sm text-label-sm text-on-surface-variant dark:text-gray-300">{ar ? 'أمن سيبراني' : 'Cybersecurity'}</span>
             </div>
         </div>
         <div className="flex items-center gap-4 text-outline dark:text-gray-400 font-label-sm">
-            <div className="flex items-center gap-1"><span className="material-symbols-outlined text-[18px]">calendar_month</span> Oct 24</div>
+            <div className="flex items-center gap-1"><span className="material-symbols-outlined text-[18px]">calendar_month</span> Oct 28</div>
             <div className="flex items-center gap-1"><span className="material-symbols-outlined text-[18px]">location_on</span> {ar ? 'عن بُعد' : 'Remote'}</div>
         </div>
         <div className="flex gap-2 pt-2 home-card-actions">
-            <Link className="btn-primary flex-1" to="/app/opportunity">{ar ? 'تقدّم الآن' : 'Apply Now'}</Link>
+            <button type="button" className="btn-primary flex-1 text-center py-2.5 rounded-lg bg-[#FF4D2E] hover:bg-[#e03e22] text-white font-semibold cursor-pointer">{ar ? 'التقديم' : 'Apply'}</button>
             <SaveButton id="rec-1" saved={saved} ar={ar} onToggle={toggleSave} />
         </div>
     </div>
 </div>
 
 {/* Card 2 */}
-<div className="ev-fade-up ev-stagger-2 ev-card spotlight bg-surface-container-lowest dark:bg-slate-900/80 border border-outline-variant/30 dark:border-white/10 rounded-xl overflow-hidden shadow-sm group border-l-4 border-l-primary">
+<div className="ev-fade-up ev-stagger-2 ev-card spotlight bg-surface-container-lowest dark:bg-slate-900/80 border border-outline-variant/30 dark:border-white/10 rounded-xl overflow-hidden shadow-sm group border-l-4 border-l-primary cursor-pointer" onClick={() => openOpportunity({
+    id: 'smart-climate-hackathon',
+    title: ar ? 'سباق علم البيانات والذكاء الاصطناعي' : 'Data Science Sprint',
+    type: ar ? 'سباق بيانات' : 'DATA SPRINT',
+    sub: 'By AI Research Lab · Remote',
+    cat: 'competition',
+    participationType: 'both',
+    match: 98,
+    img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBcUXLF60F3KbDnIVZepTTte_yzkhe3rkuMtXTXTMQzA1gyVuzXN1NQ0DXC7XHQBDIHEA2TXLK8EoSvioCS5PoWNoZKnVI7YeLCAxqcRtKE-cfSsrD6X3yBiiGI_J0DdnCu4vgHVOf7tn5UW93gDceqUiZ4hVu5ZCvSuDbEd3Dm8uTINHyELfvrJM4AvcW6lRAm2zAmGTlp9N7rNMUMizYToAN1_rTfY1KtEjsmeIx--zlkOzEz07DRgirbjC8bnSBfxNFTTtVBYuqf',
+})}>
     <div className="h-48 home-card-media relative overflow-hidden">
-        <img className="ev-card-img w-full h-full object-cover" alt="Deep Learning workshop" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBcUXLF60F3KbDnIVZepTTte_yzkhe3rkuMtXTXTMQzA1gyVuzXN1NQ0DXC7XHQBDIHEA2TXLK8EoSvioCS5PoWNoZKnVI7YeLCAxqcRtKE-cfSsrD6X3yBiiGI_J0DdnCu4vgHVOf7tn5UW93gDceqUiZ4hVu5ZCvSuDbEd3Dm8uTINHyELfvrJM4AvcW6lRAm2zAmGTlp9N7rNMUMizYToAN1_rTfY1KtEjsmeIx--zlkOzEz07DRgirbjC8bnSBfxNFTTtVBYuqf"/>
+        <img className="ev-card-img w-full h-full object-cover" alt="Data Science Sprint" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBcUXLF60F3KbDnIVZepTTte_yzkhe3rkuMtXTXTMQzA1gyVuzXN1NQ0DXC7XHQBDIHEA2TXLK8EoSvioCS5PoWNoZKnVI7YeLCAxqcRtKE-cfSsrD6X3yBiiGI_J0DdnCu4vgHVOf7tn5UW93gDceqUiZ4hVu5ZCvSuDbEd3Dm8uTINHyELfvrJM4AvcW6lRAm2zAmGTlp9N7rNMUMizYToAN1_rTfY1KtEjsmeIx--zlkOzEz07DRgirbjC8bnSBfxNFTTtVBYuqf"/>
         <div className="absolute top-3 right-3 px-3 py-1 bg-secondary text-white rounded-lg font-label-sm flex items-center gap-1 shadow-lg" data-count>
-            <span className="material-symbols-outlined text-[14px]">bolt</span> 95%
+            <span className="material-symbols-outlined text-[14px]">bolt</span> 98% Match
         </div>
     </div>
     <div className="p-6 space-y-4 home-card-body">
         <div>
-            <span className="font-label-sm text-label-sm uppercase text-primary">{ar ? 'ورشة عمل' : 'WORKSHOP'}</span>
-            <Link className="block" to="/app/opportunity">
-                <h3 className="font-title-md text-title-md text-on-background dark:text-white line-clamp-1 mt-1 hover:text-primary transition-colors">
-                    {ar ? 'إتقان التعلم العميق' : 'Deep Learning Mastery'}
-                </h3>
-            </Link>
-            <p className="font-body-sm text-body-sm text-on-surface-variant dark:text-gray-300">{ar ? 'جامعة التكنولوجيا' : 'University of Technology'}</p>
+            <div className="flex items-center justify-between">
+                <span className="font-label-sm text-label-sm uppercase text-primary">{ar ? 'سباق بيانات' : 'DATA SPRINT'}</span>
+                <span className="text-[11px] font-bold px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 border border-emerald-500/30 flex items-center gap-1">
+                    <span className="material-symbols-outlined text-[12px]">join_inner</span>
+                    {ar ? 'متاح للإثنين' : 'Solo & Team'}
+                </span>
+            </div>
+            <h3 className="font-title-md text-title-md text-on-background dark:text-white line-clamp-1 mt-1 hover:text-primary transition-colors">
+                {ar ? 'سباق علم البيانات والذكاء الاصطناعي' : 'Data Science Sprint'}
+            </h3>
+            <p className="font-body-sm text-body-sm text-on-surface-variant dark:text-gray-300">By AI Research Lab</p>
             <div className="flex flex-wrap gap-1.5 pt-2">
-                <span className="px-2 py-0.5 rounded-full bg-surface-container dark:bg-slate-800 font-label-sm text-label-sm text-on-surface-variant dark:text-gray-300">{ar ? 'من سيرتك: TensorFlow' : 'From your CV: TensorFlow'}</span>
-                <span className="px-2 py-0.5 rounded-full bg-surface-container dark:bg-slate-800 font-label-sm text-label-sm text-on-surface-variant dark:text-gray-300">{ar ? 'التعلم العميق' : 'Deep Learning'}</span>
+                <span className="px-2 py-0.5 rounded-full bg-surface-container dark:bg-slate-800 font-label-sm text-label-sm text-on-surface-variant dark:text-gray-300">{ar ? `من مهاراتك: ${skill1}` : `From your skills: ${skill1}`}</span>
+                <span className="px-2 py-0.5 rounded-full bg-surface-container dark:bg-slate-800 font-label-sm text-label-sm text-on-surface-variant dark:text-gray-300">{ar ? 'علم البيانات' : 'Data Science'}</span>
             </div>
         </div>
         <div className="flex items-center gap-4 text-outline dark:text-gray-400 font-label-sm">
             <div className="flex items-center gap-1"><span className="material-symbols-outlined text-[18px]">calendar_month</span> Nov 12</div>
-            <div className="flex items-center gap-1"><span className="material-symbols-outlined text-[18px]">location_on</span> {ar ? 'هجين' : 'Hybrid'}</div>
+            <div className="flex items-center gap-1"><span className="material-symbols-outlined text-[18px]">location_on</span> {ar ? 'عن بُعد' : 'Remote'}</div>
         </div>
         <div className="flex gap-2 pt-2 home-card-actions">
-            <Link className="btn-primary flex-1" to="/app/opportunity">{ar ? 'سجّل الآن' : 'Register'}</Link>
+            <button type="button" className="btn-primary flex-1 text-center py-2.5 rounded-lg bg-[#FF4D2E] hover:bg-[#e03e22] text-white font-semibold cursor-pointer">{ar ? 'التقديم' : 'Apply'}</button>
             <SaveButton id="rec-2" saved={saved} ar={ar} onToggle={toggleSave} />
         </div>
     </div>
 </div>
 
 {/* Card 3 */}
-<div className="ev-card spotlight bg-surface-container-lowest dark:bg-slate-900/80 border border-outline-variant/30 dark:border-white/10 rounded-xl overflow-hidden shadow-sm group border-l-4 border-l-secondary">
+<div className="ev-card spotlight bg-surface-container-lowest dark:bg-slate-900/80 border border-outline-variant/30 dark:border-white/10 rounded-xl overflow-hidden shadow-sm group border-l-4 border-l-secondary cursor-pointer" onClick={() => openOpportunity({
+    id: 'frontend-wizards-2024',
+    title: ar ? 'معالجو الواجهة الأمامية 2026' : 'Frontend Wizards 2026',
+    type: ar ? 'مسابقة برمجية' : 'CODE CHALLENGE',
+    sub: 'DevCommunity Hub · London, UK',
+    cat: 'competition',
+    participationType: 'team',
+    match: 92,
+    img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuAoXFluzheWmZ490MELdToAMEYpR_txVKV30osgae_hCJtZOTitQ7q-hlRINJEb6yu8WczfucSzRFeg7_ASopSg4PYi40bcSgLBAzpyDWcgZltV0lVaadKj9Hxg_0-MIvEynOlpWfO6oad4LDePXnQqUogQYAUOomnsxNQRm0sYppi6tcEF-XVtGAmZwLlJ7Zzvf2ojEvEnU0EwWkAE_qpAYRfUYUWLDeKx1nnQtM-6DxX8uCm13GfTKpd5tCt-XHKS5s04qO3jTwFA',
+})}>
     <div className="h-48 home-card-media relative overflow-hidden">
         <img className="ev-card-img w-full h-full object-cover" alt="Frontend competition" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAoXFluzheWmZ490MELdToAMEYpR_txVKV30osgae_hCJtZOTitQ7q-hlRINJEb6yu8WczfucSzRFeg7_ASopSg4PYi40bcSgLBAzpyDWcgZltV0lVaadKj9Hxg_0-MIvEynOlpWfO6oad4LDePXnQqUogQYAUOomnsxNQRm0sYppi6tcEF-XVtGAmZwLlJ7Zzvf2ojEvEnU0EwWkAE_qpAYRfUYUWLDeKx1nnQtM-6DxX8uCm13GfTKpd5tCt-XHKS5s04qO3jTwFA"/>
         <div className="absolute top-3 right-3 px-3 py-1 bg-secondary text-white rounded-lg font-label-sm flex items-center gap-1 shadow-lg" data-count>
@@ -245,15 +366,19 @@ export default function AppHome() {
     </div>
     <div className="p-6 space-y-4 home-card-body">
         <div>
-            <span className="font-label-sm text-label-sm uppercase text-secondary">{ar ? 'مسابقة' : 'COMPETITION'}</span>
-            <Link className="block" to="/app/opportunity">
-                <h3 className="font-title-md text-title-md text-on-background dark:text-white line-clamp-1 mt-1 hover:text-primary transition-colors">
-                    {ar ? 'معالجو الواجهة الأمامية 2024' : 'Frontend Wizards 2024'}
-                </h3>
-            </Link>
+            <div className="flex items-center justify-between">
+                <span className="font-label-sm text-label-sm uppercase text-secondary">{ar ? 'مسابقة' : 'COMPETITION'}</span>
+                <span className="text-[11px] font-bold px-2 py-0.5 rounded-full bg-[#FF4D2E]/10 text-[#FF4D2E] border border-[#FF4D2E]/30 flex items-center gap-1">
+                    <span className="material-symbols-outlined text-[12px]">groups</span>
+                    {ar ? 'جماعي فقط' : 'Team Only'}
+                </span>
+            </div>
+            <h3 className="font-title-md text-title-md text-on-background dark:text-white line-clamp-1 mt-1 hover:text-primary transition-colors">
+                {ar ? 'معالجو الواجهة الأمامية 2026' : 'Frontend Wizards 2026'}
+            </h3>
             <p className="font-body-sm text-body-sm text-on-surface-variant dark:text-gray-300">DevCommunity Hub</p>
             <div className="flex flex-wrap gap-1.5 pt-2">
-                <span className="px-2 py-0.5 rounded-full bg-surface-container dark:bg-slate-800 font-label-sm text-label-sm text-on-surface-variant dark:text-gray-300">{ar ? 'من سيرتك: React' : 'From your CV: React'}</span>
+                <span className="px-2 py-0.5 rounded-full bg-surface-container dark:bg-slate-800 font-label-sm text-label-sm text-on-surface-variant dark:text-gray-300">{ar ? `من سيرتك: ${skill3}` : `From your CV: ${skill3}`}</span>
                 <span className="px-2 py-0.5 rounded-full bg-surface-container dark:bg-slate-800 font-label-sm text-label-sm text-on-surface-variant dark:text-gray-300">JavaScript</span>
             </div>
         </div>
@@ -262,7 +387,7 @@ export default function AppHome() {
             <div className="flex items-center gap-1"><span className="material-symbols-outlined text-[18px]">location_on</span> London, UK</div>
         </div>
         <div className="flex gap-2 pt-2 home-card-actions">
-            <Link className="btn-primary flex-1" to="/app/opportunity">{ar ? 'انضم الآن' : 'Join Now'}</Link>
+            <button type="button" className="btn-primary flex-1 py-2.5 rounded-lg bg-[#FF4D2E] hover:bg-[#e03e22] text-white font-semibold cursor-pointer">{ar ? 'انضم الآن' : 'Join Now'}</button>
             <SaveButton id="rec-3" saved={saved} ar={ar} onToggle={toggleSave} />
         </div>
     </div>
@@ -281,16 +406,16 @@ export default function AppHome() {
 </div>
 <div className="grid grid-cols-1 md:grid-cols-4 gap-gutter">
 {[
-    { img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBv-V-8GjFWlxuhqQq9nPPBCQKNIYRDy0-x7U8GZDqCxf3lpcSiGNgXTpm9Dp9vtBNtYRJM9-o_XfAV_yWpqjCDBHhA3Xin8gTKbYsCIpYqce02UMEzafn25IYfHI6hd-IasfwMRqIx3qADrfqnj7m-D_PHpWiW6GRyb70Zw9C6yT7Xu6xsRz80sxxnJdXORtOzWdcpjojOlvDh2cdJULC_KUcENGeijXkCPjAA02-axN9qR_MrffMvhq-xjwZhj4cy_sT0Lsf7llBS', type: ar ? 'CTF' : 'CTF', title: ar ? 'سايبر سنتينل CTF' : 'Cyber Sentinel CTF', icon: 'groups', meta: ar ? 'فرق من 2-4' : 'Teams of 2-4', timing: ar ? 'ينتهي خلال 5 أيام' : 'Ends in 5 days', level: ar ? 'متقدم' : 'ADVANCED', prize: '$10k Prize' },
-    { img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuAXn10C98Y8WUzcNLWBVvJ22710pYfWPZ0AdwJnkvIzzrkRa7SjmiUkilVPYW1oiK4Ay94CQTAE0NXfvrvQ1ES-3iyitDyREyHfC70KWD_7_pt6i4p6iLUmLapJfW3QyXTfYv66FWPz2QXVOtb_-1E6Xq2ZxWaVcVWTZuTF9J3PPl1-05OI8e-Te2CMLQPBS91gPoxcPfvlOHji7ZgCnKJinWFcW43YJAc9F9-8zF3LC5xxItr7Sgurkz4D6WhyaY2YYeCNgPQOH1ve', type: ar ? 'دراسة حالة' : 'Case Study', title: ar ? 'دراسة حالة بيزفانتاج' : 'BizVantage Case Study', icon: 'school', meta: ar ? 'للجامعيين فقط' : 'University Only', timing: ar ? 'التسجيل مفتوح' : 'Registration Open', level: ar ? 'متوسط' : 'INTERMEDIATE', prize: ar ? 'منحة' : 'Scholarship' },
-    { img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuC3eL49qDKde8nJat8bbMD-e7iLAX5jUmYWEgqWWO3G4gKStDqZVQcvk-s0RAU_pzaZfmmGzBNiqJ0B90CztUFJsVgCQpiCiOIrzyZSob_6KdzfhMj191B5cm02XzBYKFUHVnYwHkgLcxET11ZEq7eZ3UN9W4lbYliTucyjKFvVY8yMqG-4JV5p3mAA1oYqsYiICSzmgCacyFAQ6SXYl7Fmm2s9yLl19UR4LVmrIGVCmPfepE7pwtjpwcBOapQEnDac5lnwZZ00ht5g', type: ar ? 'سباق تصميم' : 'Design Sprint', title: ar ? 'سباق التصميم 2024' : 'DesignSprint 2024', icon: 'brush', meta: ar ? 'مصممو UI/UX' : 'UI/UX Designers', timing: ar ? 'يبدأ غداً' : 'Starts Tomorrow', level: ar ? 'مفتوح' : 'OPEN', prize: ar ? 'إرشاد' : 'Mentorship' },
-    { img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCXjuV5CQGqc-ZmamRm8rBUtKL8uClHTygX0WXc3pOz_URa_gxCcG8AwYwcTdoFJJMwYHK-8yGqGa_we6rtmdJ-o-dlrTDebv3EOaalvLTX0AbshUPKUwZyYLGMzXshnisKSXxiIb3z5i5gXzLOxFzkZDGyp2eiai4-zFbHE6L5JTyXWjUxjY4-Gr7FYQmzegkgSeyQxjeA9O5cBo5ah87T3qI-xYuJRoP8DJnofGUr37XLhF-OcBMLzFhDfV99BeirnKTIQgJ4rqvS', type: ar ? 'روبوتات' : 'Robotics', title: ar ? 'تحدي روبوكويست' : 'RoboQuest Tech', icon: 'precision_manufacturing', meta: ar ? 'مطوّرو الأجهزة' : 'Hardware Devs', timing: ar ? 'ينتهي خلال يومين' : 'Ends in 2 days', level: ar ? 'متقدم' : 'ADVANCED', prize: '$25k Grant' },
+    { id: 'cyber-sentinel-ctf', img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBv-V-8GjFWlxuhqQq9nPPBCQKNIYRDy0-x7U8GZDqCxf3lpcSiGNgXTpm9Dp9vtBNtYRJM9-o_XfAV_yWpqjCDBHhA3Xin8gTKbYsCIpYqce02UMEzafn25IYfHI6hd-IasfwMRqIx3qADrfqnj7m-D_PHpWiW6GRyb70Zw9C6yT7Xu6xsRz80sxxnJdXORtOzWdcpjojOlvDh2cdJULC_KUcENGeijXkCPjAA02-axN9qR_MrffMvhq-xjwZhj4cy_sT0Lsf7llBS', type: ar ? 'تحدي أمني' : 'CTF', title: ar ? 'مسابقة Cyber Sentinel CTF الفردية' : 'Cyber Sentinel Solo CTF', icon: 'person', meta: ar ? 'مشاركة فردية فقط' : 'Solo Participation Only', participationType: 'solo', timing: ar ? 'ينتهي خلال 5 أيام' : 'Ends in 5 days', level: ar ? 'متقدم' : 'ADVANCED', prize: '$10k Prize' },
+    { id: 'smart-climate-hackathon', img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuAXn10C98Y8WUzcNLWBVvJ22710pYfWPZ0AdwJnkvIzzrkRa7SjmiUkilVPYW1oiK4Ay94CQTAE0NXfvrvQ1ES-3iyitDyREyHfC70KWD_7_pt6i4p6iLUmLapJfW3QyXTfYv66FWPz2QXVOtb_-1E6Xq2ZxWaVcVWTZuTF9J3PPl1-05OI8e-Te2CMLQPBS91gPoxcPfvlOHji7ZgCnKJinWFcW43YJAc9F9-8zF3LC5xxItr7Sgurkz4D6WhyaY2YYeCNgPQOH1ve', type: ar ? 'دراسة حالة' : 'Case Study', title: ar ? 'دراسة حالة بيزفانتاج' : 'BizVantage Case Study', icon: 'join_inner', meta: ar ? 'متاح فردي أو فرق' : 'Solo or Teams', participationType: 'both', timing: ar ? 'التسجيل مفتوح' : 'Registration Open', level: ar ? 'متوسط' : 'INTERMEDIATE', prize: ar ? 'منحة' : 'Scholarship' },
+    { id: 'design-sprint-2024', img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuC3eL49qDKde8nJat8bbMD-e7iLAX5jUmYWEgqWWO3G4gKStDqZVQcvk-s0RAU_pzaZfmmGzBNiqJ0B90CztUFJsVgCQpiCiOIrzyZSob_6KdzfhMj191B5cm02XzBYKFUHVnYwHkgLcxET11ZEq7eZ3UN9W4lbYliTucyjKFvVY8yMqG-4JV5p3mAA1oYqsYiICSzmgCacyFAQ6SXYl7Fmm2s9yLl19UR4LVmrIGVCmPfepE7pwtjpwcBOapQEnDac5lnwZZ00ht5g', type: ar ? 'سباق تصميم' : 'Design Sprint', title: ar ? 'سباق التصميم 2026' : 'DesignSprint 2026', icon: 'groups', meta: ar ? 'فرق من 2-4' : 'Teams of 2-4', participationType: 'team', timing: ar ? 'يبدأ غداً' : 'Starts Tomorrow', level: ar ? 'مفتوح' : 'OPEN', prize: ar ? 'إرشاد' : 'Mentorship' },
+    { id: 'roboquest-tech', img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCXjuV5CQGqc-ZmamRm8rBUtKL8uClHTygX0WXc3pOz_URa_gxCcG8AwYwcTdoFJJMwYHK-8yGqGa_we6rtmdJ-o-dlrTDebv3EOaalvLTX0AbshUPKUwZyYLGMzXshnisKSXxiIb3z5i5gXzLOxFzkZDGyp2eiai4-zFbHE6L5JTyXWjUxjY4-Gr7FYQmzegkgSeyQxjeA9O5cBo5ah87T3qI-xYuJRoP8DJnofGUr37XLhF-OcBMLzFhDfV99BeirnKTIQgJ4rqvS', type: ar ? 'روبوتات' : 'Robotics', title: ar ? 'تحدي روبوكويست' : 'RoboQuest Tech', icon: 'groups', meta: ar ? 'فرق من 2-4' : 'Teams of 2-4', participationType: 'team', timing: ar ? 'ينتهي خلال يومين' : 'Ends in 2 days', level: ar ? 'متقدم' : 'ADVANCED', prize: '$25k Grant' },
 ].map((c, i) => (
     <div 
         key={i} 
         className="bg-surface-container-lowest dark:bg-slate-900/80 border border-outline-variant/30 dark:border-white/10 rounded-xl p-4 space-y-4 premium-card cursor-pointer group row-animated transition-all duration-300 hover:-translate-y-1 hover:shadow-lg" 
         style={{ '--stagger-idx': i }}
-        onClick={openOpportunity}
+        onClick={() => openOpportunity(c)}
     >
         <div className="aspect-video rounded-lg overflow-hidden mb-4">
             <img className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" alt={c.title} src={c.img} />
@@ -338,9 +463,17 @@ export default function AppHome() {
         ))}
     </div>
 </div>
-<div key={eventFilter} className="grid grid-cols-1 md:grid-cols-12 gap-gutter">
+<div key={eventFilter} className="grid grid-cols-1 md:grid-cols-12 gap-gutter fade-in">
 {(eventFilter === 'all' || eventFilter === 'event') && (
-    <div className="md:col-span-8 bg-surface-container-lowest dark:bg-slate-900/60 border border-outline-variant/30 dark:border-white/10 rounded-xl overflow-hidden shadow-sm flex flex-col md:flex-row md:min-h-[22rem] ev-card spotlight cursor-pointer row-animated transition-all duration-300 hover:-translate-y-1 hover:shadow-lg" style={{ '--stagger-idx': 0 }} onClick={openOpportunity}>
+    <div className="md:col-span-8 bg-surface-container-lowest dark:bg-slate-900/60 border border-outline-variant/30 dark:border-white/10 rounded-xl overflow-hidden shadow-sm flex flex-col md:flex-row md:min-h-[22rem] ev-card spotlight cursor-pointer row-animated transition-all duration-300 hover:-translate-y-1 hover:shadow-lg" style={{ '--stagger-idx': 0 }} onClick={() => openOpportunity({
+        id: 'global-ai-summit-2024',
+        title: ar ? 'قمة الذكاء الاصطناعي العالمية 2024' : 'Global AI Summit 2024',
+        type: ar ? 'فعالية · مباشر' : 'EVENT · LIVE',
+        sub: ar ? 'مستقبل الوكلاء الذكيين' : 'The Future of Agents',
+        cat: 'event',
+        participationType: 'both',
+        img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuB4XGVVgdXcQZS5VeH1XemHRZule_sQgpM4yB8dp3TMxmIjOTnb7x77AU3_AQqluVNnUoBk5iOwilGg_Cj8LHOtQPsJVDcaa2kfvpwYLdBwATyhzxwNtAS856W4G73Ol2mDobe-pFocsYIgmXPkxxqQyS3aZpjC91TuFLwh-po8QIPiLvPOm1yFqZmmNUYFn-URTuNl5djEq9B_ex_XDVvWZZOaO1ql7f1IdMFa91gP9zwnDLnSsn8-06q6CYeqKkjDxqTjq8-BsmeU',
+    })}>
         <div className="md:w-1/2 overflow-hidden">
             <img className="w-full h-full object-cover" alt="Global AI Summit 2024" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB4XGVVgdXcQZS5VeH1XemHRZule_sQgpM4yB8dp3TMxmIjOTnb7x77AU3_AQqluVNnUoBk5iOwilGg_Cj8LHOtQPsJVDcaa2kfvpwYLdBwATyhzxwNtAS856W4G73Ol2mDobe-pFocsYIgmXPkxxqQyS3aZpjC91TuFLwh-po8QIPiLvPOm1yFqZmmNUYFn-URTuNl5djEq9B_ex_XDVvWZZOaO1ql7f1IdMFa91gP9zwnDLnSsn8-06q6CYeqKkjDxqTjq8-BsmeU"/>
         </div>
@@ -365,7 +498,7 @@ export default function AppHome() {
                     <div className="w-8 h-8 rounded-full border-2 border-white dark:border-slate-900 overflow-hidden bg-primary-fixed"></div>
                     <div className="w-8 h-8 rounded-full border-2 border-white dark:border-slate-900 overflow-hidden bg-secondary-fixed"></div>
                 </div>
-                <button className="px-6 py-2 rounded-lg font-label-md transition-opacity hover:opacity-90" style={{ backgroundColor: '#FF4D2E', color: '#fff' }}>
+                <button type="button" className="px-6 py-2 rounded-lg font-label-md transition-opacity hover:opacity-90 cursor-pointer" style={{ backgroundColor: '#FF4D2E', color: '#fff' }}>
                     {ar ? 'انضم للجلسة' : 'Join Session'}
                 </button>
             </div>
@@ -374,7 +507,14 @@ export default function AppHome() {
 )}
 <div className={`space-y-gutter ${(eventFilter === 'all' || eventFilter === 'event') ? 'md:col-span-4' : 'md:col-span-12'}`}>
     {(eventFilter === 'all' || eventFilter === 'course') && (
-        <div className="bg-surface-container-lowest dark:bg-slate-900/60 border border-outline-variant/30 dark:border-white/10 rounded-xl p-6 flex gap-4 items-center cursor-pointer hover:border-primary/50 transition-colors" onClick={openOpportunity}>
+        <div className="bg-surface-container-lowest dark:bg-slate-900/60 border border-outline-variant/30 dark:border-white/10 rounded-xl p-6 flex gap-4 items-center cursor-pointer hover:border-primary/50 transition-colors" onClick={() => openOpportunity({
+            id: 'product-strategy-course',
+            title: ar ? 'دورة استراتيجية المنتج' : 'Product Strategy Course',
+            type: ar ? 'دورة' : 'COURSE',
+            sub: ar ? 'برنامج شهادة 6 أسابيع' : '6-Week Certificate Program',
+            cat: 'course',
+            participationType: 'solo',
+        })}>
             <div className="w-16 h-16 rounded-xl bg-primary-container/20 flex flex-col items-center justify-center text-primary flex-shrink-0">
                 <span className="font-bold text-headline-lg-mobile">28</span>
                 <span className="font-label-sm text-label-sm uppercase">OCT</span>
@@ -387,7 +527,14 @@ export default function AppHome() {
         </div>
     )}
     {(eventFilter === 'all' || eventFilter === 'workshop') && (
-        <div className="bg-surface-container-lowest dark:bg-slate-900/60 border border-outline-variant/30 dark:border-white/10 rounded-xl p-6 flex gap-4 items-center cursor-pointer hover:border-primary/50 transition-colors" onClick={openOpportunity}>
+        <div className="bg-surface-container-lowest dark:bg-slate-900/60 border border-outline-variant/30 dark:border-white/10 rounded-xl p-6 flex gap-4 items-center cursor-pointer hover:border-primary/50 transition-colors" onClick={() => openOpportunity({
+            id: 'rust-for-web-devs',
+            title: ar ? 'Rust لمطوري الويب' : 'Rust for Web Devs',
+            type: ar ? 'ورشة عمل' : 'WORKSHOP',
+            sub: ar ? 'ورشة تفاعلية' : 'Interactive Workshop',
+            cat: 'workshop',
+            participationType: 'both',
+        })}>
             <div className="w-16 h-16 rounded-xl bg-secondary-container/20 dark:bg-white/10 flex flex-col items-center justify-center text-secondary dark:text-white flex-shrink-0">
                 <span className="font-bold text-headline-lg-mobile">02</span>
                 <span className="font-label-sm text-label-sm uppercase">NOV</span>
@@ -400,7 +547,14 @@ export default function AppHome() {
         </div>
     )}
     {(eventFilter === 'all' || eventFilter === 'workshop') && (
-        <div className="bg-surface-container-lowest dark:bg-slate-900/60 border border-outline-variant/30 dark:border-white/10 rounded-xl p-6 flex gap-4 items-center cursor-pointer hover:border-primary/50 transition-colors" onClick={openOpportunity}>
+        <div className="bg-surface-container-lowest dark:bg-slate-900/60 border border-outline-variant/30 dark:border-white/10 rounded-xl p-6 flex gap-4 items-center cursor-pointer hover:border-primary/50 transition-colors" onClick={() => openOpportunity({
+            id: 'devops-masterclass',
+            title: ar ? 'ماستركلاس DevOps' : 'DevOps Masterclass',
+            type: ar ? 'ورشة عمل' : 'WORKSHOP',
+            sub: ar ? 'معمل سحابي عملي' : 'Hands-on Cloud Lab',
+            cat: 'workshop',
+            participationType: 'both',
+        })}>
             <div className="w-16 h-16 rounded-xl bg-tertiary-container/20 dark:bg-white/10 flex flex-col items-center justify-center text-tertiary dark:text-gray-200 flex-shrink-0">
                 <span className="font-bold text-headline-lg-mobile">15</span>
                 <span className="font-label-sm text-label-sm uppercase">NOV</span>
@@ -413,7 +567,14 @@ export default function AppHome() {
         </div>
     )}
     {(eventFilter === 'all' || eventFilter === 'competition') && (
-        <div className="bg-surface-container-lowest dark:bg-slate-900/60 border border-outline-variant/30 dark:border-white/10 rounded-xl p-6 flex gap-4 items-center cursor-pointer hover:border-primary/50 transition-colors" onClick={openOpportunity}>
+        <div className="bg-surface-container-lowest dark:bg-slate-900/60 border border-outline-variant/30 dark:border-white/10 rounded-xl p-6 flex gap-4 items-center cursor-pointer hover:border-primary/50 transition-colors" onClick={() => openOpportunity({
+            id: 'codesprint-hackathon',
+            title: ar ? 'هاكاثون كود سبرينت' : 'CodeSprint Hackathon',
+            type: ar ? 'مسابقة' : 'Competition',
+            sub: ar ? 'تحدي الفريق 48 ساعة' : '48-Hour Team Challenge',
+            cat: 'competition',
+            participationType: 'team',
+        })}>
             <div className="w-16 h-16 rounded-xl bg-tertiary-container/20 dark:bg-white/10 flex flex-col items-center justify-center text-tertiary dark:text-gray-200 flex-shrink-0">
                 <span className="font-bold text-headline-lg-mobile">21</span>
                 <span className="font-label-sm text-label-sm uppercase">NOV</span>

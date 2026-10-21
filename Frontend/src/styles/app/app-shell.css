@@ -68,27 +68,51 @@ a:focus-visible {
 }
 
 .ev-fade-up {
-  animation: ev-fade-up var(--spring) both;
+  animation: ev-fade-up 240ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  will-change: opacity, transform;
 }
 
-.ev-stagger-1 {
-  animation-delay: 0ms;
+.ev-stagger-1 { animation-delay: 0ms; }
+.ev-stagger-2 { animation-delay: 30ms; }
+.ev-stagger-3 { animation-delay: 60ms; }
+.ev-stagger-4 { animation-delay: 90ms; }
+.ev-stagger-5 { animation-delay: 120ms; }
+
+/* Dynamic Fade Utilities */
+.fade-in {
+  animation: dynamicFadeIn 220ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  will-change: opacity, transform;
 }
 
-.ev-stagger-2 {
-  animation-delay: 60ms;
+.fade-out {
+  animation: dynamicFadeOut 150ms cubic-bezier(0.4, 0, 1, 1) forwards;
+  will-change: opacity, transform;
 }
 
-.ev-stagger-3 {
-  animation-delay: 120ms;
+.fade-in-up {
+  animation: dynamicFadeInUp 240ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  will-change: opacity, transform;
 }
 
-.ev-stagger-4 {
-  animation-delay: 180ms;
+@keyframes dynamicFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 
-.ev-stagger-5 {
-  animation-delay: 240ms;
+@keyframes dynamicFadeOut {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+
+@keyframes dynamicFadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* 6. Reduced motion */
@@ -428,5 +452,6 @@ html.dark .loading-skeleton::after {
 @media(max-width:768px) {
   .footer {
     padding-top: 64px;
+    padding-bottom: 88px;
   }
 }

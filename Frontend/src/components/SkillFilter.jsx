@@ -82,9 +82,9 @@ export default function SkillFilter({
                                   boxShadow: '0 2px 8px rgba(255, 77, 46, 0.25)',
                               }
                             : {
-                                  backgroundColor: '#ffffff',
-                                  borderColor: '#e5e7eb',
-                                  color: '#1f2937',
+                                  backgroundColor: 'var(--color-surface-container-lowest)',
+                                  borderColor: 'var(--color-outline-variant)',
+                                  color: 'var(--color-on-surface)',
                               }
                     }
                 >
@@ -100,7 +100,7 @@ export default function SkillFilter({
                 {/* حقل البحث البسيط ونتائجه */}
                 {isOpen && (
                     <div
-                        className={`absolute top-full mt-2 w-64 bg-white rounded-2xl shadow-xl border border-gray-100 p-2 z-[9999] ${
+                        className={`absolute top-full mt-2 w-64 bg-surface-container-lowest rounded-2xl shadow-xl border border-outline-variant p-2 z-[9999] ${
                             ar ? 'right-0 text-right' : 'left-0 text-left'
                         }`}
                         style={{ boxShadow: '0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.05)' }}
@@ -113,7 +113,7 @@ export default function SkillFilter({
                                 value={searchQuery}
                                 onChange={(e) => setSearchQuery(e.target.value)}
                                 placeholder={ar ? 'اكتب اسم المهارة...' : 'Type a skill...'}
-                                className={`w-full px-3 py-2 text-sm bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:border-[#FF4D2E] focus:bg-white transition-all ${
+                                className={`w-full px-3 py-2 text-sm bg-surface-container-low border border-outline-variant rounded-xl focus:outline-none focus:border-[#FF4D2E] focus:bg-surface-container-lowest transition-all ${
                                     ar ? 'text-right' : 'text-left'
                                 }`}
                             />
@@ -137,8 +137,8 @@ export default function SkillFilter({
                                                 ar ? 'flex-row-reverse text-right' : 'text-left'
                                             } ${
                                                 isSelected
-                                                    ? 'bg-orange-50 text-[#FF4D2E] font-bold'
-                                                    : 'text-gray-700 hover:bg-gray-100'
+                                                    ? 'bg-primary/10 text-[#FF4D2E] font-bold'
+                                                    : 'text-on-surface hover:bg-surface-container'
                                             }`}
                                         >
                                             <span>{skill}</span>
@@ -147,7 +147,7 @@ export default function SkillFilter({
                                     )
                                 })
                             ) : (
-                                <div className="py-3 text-center text-xs text-gray-400">
+                                <div className="py-3 text-center text-xs text-on-surface-variant">
                                     {ar ? 'لا توجد مهارة بهذا الاسم' : 'No skills found'}
                                 </div>
                             )}
@@ -174,9 +174,9 @@ export default function SkillFilter({
                                       boxShadow: '0 2px 8px rgba(255, 77, 46, 0.25)',
                                   }
                                 : {
-                                      backgroundColor: '#ffffff',
-                                      borderColor: '#e5e7eb',
-                                      color: '#1f2937',
+                                      backgroundColor: 'var(--color-surface-container-lowest)',
+                                      borderColor: 'var(--color-outline-variant)',
+                                      color: 'var(--color-on-surface)',
                                   }
                         }
                     >
@@ -189,13 +189,13 @@ export default function SkillFilter({
             {selectedSkills.map((skill) => (
                 <span
                     key={skill}
-                    className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-orange-50 text-[#FF4D2E] border border-orange-200"
+                    className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-primary/10 text-[#FF4D2E] border border-primary/30"
                 >
                     <span>{skill}</span>
                     <button
                         type="button"
                         onClick={() => removeSkill(skill)}
-                        className="w-3.5 h-3.5 rounded-full hover:bg-orange-200 flex items-center justify-center transition-colors cursor-pointer"
+                        className="w-3.5 h-3.5 rounded-full hover:bg-primary/20 flex items-center justify-center transition-colors cursor-pointer"
                     >
                         ✕
                     </button>

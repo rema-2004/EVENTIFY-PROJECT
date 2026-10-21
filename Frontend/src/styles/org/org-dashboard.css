@@ -172,29 +172,29 @@
 /* Stagger entrance for stats */
 @media (prefers-reduced-motion: no-preference) {
     .stat-card {
-        animation: org-card-enter 0.4s cubic-bezier(0.22, 1, 0.36, 1) both;
+        animation: org-card-enter 0.24s cubic-bezier(0.16, 1, 0.3, 1) both;
     }
 
     .stat-grid .stat-card:nth-child(1) {
-        animation-delay: 0.04s;
+        animation-delay: 0.02s;
     }
 
     .stat-grid .stat-card:nth-child(2) {
-        animation-delay: 0.08s;
+        animation-delay: 0.04s;
     }
 
     .stat-grid .stat-card:nth-child(3) {
-        animation-delay: 0.12s;
+        animation-delay: 0.06s;
     }
 
     .stat-grid .stat-card:nth-child(4) {
-        animation-delay: 0.16s;
+        animation-delay: 0.08s;
     }
 
     @keyframes org-card-enter {
         from {
             opacity: 0;
-            transform: translateY(10px);
+            transform: translateY(6px);
         }
 
         to {

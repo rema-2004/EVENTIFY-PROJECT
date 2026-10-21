@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import AppPageHead from '../../components/app/AppPageHead'
 import { useAdminPageControls } from './useAdminPageControls.js'
+import AdminSidebar, { AdminMobileHeader } from '../../components/admin/AdminSidebar'
 import LangToggleBtn from '../../components/org/LangToggleBtn'
 import { useLanguage } from '../../hooks/useLanguage'
 import { toast } from '../../utils/toast'
@@ -87,7 +88,7 @@ export default function AdminEvents() {
         setEvents((prev) =>
             prev.map((e) => {
                 if (e.id === eventId) {
-                    return { ...e, status: 'rejected' }
+                    return { ...e, status: 'rejected', rejectionReason: reason }
                 }
                 return e
             }),
@@ -114,106 +115,9 @@ export default function AdminEvents() {
     return (
         <>
             <AppPageHead title="Review Events | EVENTIFY" />
-            <header className="lg:hidden glass-header w-full sticky top-0 z-50 flex justify-between items-center px-4 h-16 shadow-sm">
-                <Link className="flex items-center gap-2" to="/">
-                    <span
-                        className="material-symbols-outlined text-primary"
-                        style={{ fontVariationSettings: '"FILL" 1' }}
-                    >
-                        hub
-                    </span>
-                    <h1 className="font-bold text-headline-lg-mobile text-primary">
-                        EVENTIFY
-                    </h1>
-                </Link>
-                <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                    <LangToggleBtn small />
-                    <span className="admin-badge">Admin</span>
-                    <button
-                        className="mobile-hamburger"
-                        id="admin-hamburger"
-                        aria-label="Open navigation"
-                        aria-expanded="false"
-                    >
-                        <span className="material-symbols-outlined" style={{ fontSize: 22 }}>
-                            menu
-                        </span>
-                    </button>
-                </div>
-            </header>
+            <AdminMobileHeader />
             <div className="flex min-h-screen">
-                <aside className="admin-accent-sidebar hidden lg:flex flex-col w-[280px] h-screen sticky top-0 glass-sidebar z-50 p-6">
-                    <Link className="flex items-center gap-3 mb-2" to="/">
-                        <span
-                            className="material-symbols-outlined text-primary text-3xl"
-                            style={{ fontVariationSettings: '"FILL" 1' }}
-                        >
-                            hub
-                        </span>
-                        <h1 className="font-bold text-headline-md text-primary">EVENTIFY</h1>
-                    </Link>
-                    <span className="admin-badge mb-8 w-fit">Admin console</span>
-                    <nav className="flex flex-1 flex-col gap-1" aria-label="Admin sections">
-                        <div className="nav-group">
-                            <Link className="nav-link" to="/admin/dashboard">
-                                <span className="material-symbols-outlined" aria-hidden="true">
-                                    dashboard
-                                </span>
-                                Overview
-                            </Link>
-                            <Link className="nav-link" to="/admin/events" aria-current="page">
-                                <span className="material-symbols-outlined" aria-hidden="true">
-                                    trophy
-                                </span>
-                                Competitions &amp; Events
-                            </Link>
-                            <Link className="nav-link" to="/admin/users">
-                                <span className="material-symbols-outlined" aria-hidden="true">
-                                    group
-                                </span>
-                                Participants
-                            </Link>
-                            <Link className="nav-link" to="/admin/verify-organizations">
-                                <span className="material-symbols-outlined" aria-hidden="true">
-                                    verified
-                                </span>
-                                Organizations
-                            </Link>
-                            <Link className="nav-link" to="/admin/categories">
-                                <span className="material-symbols-outlined" aria-hidden="true">
-                                    category
-                                </span>
-                                Categories
-                            </Link>
-                            <Link className="nav-link" to="/admin/reports">
-                                <span className="material-symbols-outlined" aria-hidden="true">
-                                    flag
-                                </span>
-                                Reports
-                            </Link>
-                            <Link className="nav-link" to="/admin/audit-log">
-                                <span className="material-symbols-outlined" aria-hidden="true">
-                                    history
-                                </span>
-                                Audit log
-                            </Link>
-                        </div>
-                    </nav>
-                    <div className="mt-auto rounded-2xl bg-surface-container p-4">
-                        <p className="mb-2 text-label-sm font-label-sm text-on-surface-variant">
-                            SIGNED IN AS
-                        </p>
-                        <p className="mb-1 font-label-md text-label-md text-on-surface">
-                            Platform Admin
-                        </p>
-                        <p
-                            className="text-label-sm font-label-sm"
-                            style={{ color: "var(--accent)", fontWeight: 600 }}
-                        >
-                            Full access
-                        </p>
-                    </div>
-                </aside>
+                <AdminSidebar />
                 <main className="flex-1 w-full px-4 md:px-10 pt-6 pb-24 lg:pb-8">
                     {/* Global Top Header: page title (left) + global controls (right) */}
                     <div className="admin-topbar">
@@ -333,7 +237,7 @@ export default function AdminEvents() {
                                 title="Switch theme"
                                 aria-label="Switch theme"
                             >
-                                <span className="material-symbols-outlined">dark_mode</span>
+                                <span className="material-symbols-outlined icon-dark">dark_mode</span><span className="material-symbols-outlined icon-light">light_mode</span>
                             </button>
                             <div className="org-dropdown">
                                 <button
@@ -518,7 +422,7 @@ export default function AdminEvents() {
                                 </div>
                             </div>
                         ))}
-                        <div className="empty-state" id="events-empty" hidden="">
+                        <div className="empty-state fade-in" id="events-empty" hidden="">
                             <span className="empty-state__icon">
                                 <span className="material-symbols-outlined" aria-hidden="true">
                                     event_busy
@@ -540,29 +444,29 @@ export default function AdminEvents() {
                             onClick={handleCloseRejectModal}
                         >
                             <div
-                                className="w-full max-w-lg bg-white rounded-3xl shadow-2xl border border-gray-100 p-6 md:p-8 space-y-6 animate-in zoom-in-95 duration-200"
+                                className="w-full max-w-lg bg-white rounded-3xl shadow-2xl border border-gray-100 dark:border-white/10 p-6 md:p-8 space-y-6 animate-in zoom-in-95 duration-200"
                                 onClick={(e) => e.stopPropagation()}
                             >
                                 {/* Modal Header */}
                                 <div className="flex items-start justify-between gap-4">
                                     <div className="flex items-center gap-3">
-                                        <div className="w-12 h-12 rounded-2xl bg-red-50 text-red-600 flex items-center justify-center flex-shrink-0 border border-red-100">
+                                        <div className="w-12 h-12 rounded-2xl bg-red-50 text-red-600 dark:bg-red-500/10 dark:text-red-400 flex items-center justify-center flex-shrink-0 border border-red-100 dark:border-red-500/20">
                                             <span className="material-symbols-outlined text-2xl">report_problem</span>
                                         </div>
                                         <div>
-                                            <h3 id="reject-event-modal-title" className="text-lg md:text-xl font-bold text-gray-900">
+                                            <h3 id="reject-event-modal-title" className="text-lg md:text-xl font-bold text-gray-900 dark:text-white">
                                                 {ar ? 'سبب الرفض' : 'Rejection Reason'}
                                             </h3>
-                                            <p className="text-sm text-gray-500 mt-0.5">
+                                            <p className="text-sm text-gray-500 dark:text-gray-400 mt-0.5">
                                                 {ar ? 'الفعالية: ' : 'Event: '}
-                                                <strong className="text-gray-800 font-semibold">{selectedEvent?.title}</strong>
+                                                <strong className="text-gray-800 dark:text-gray-200 font-semibold">{selectedEvent?.title}</strong>
                                             </p>
                                         </div>
                                     </div>
                                     <button
                                         type="button"
                                         onClick={handleCloseRejectModal}
-                                        className="text-gray-400 hover:text-gray-600 p-1.5 rounded-xl hover:bg-gray-100 transition-colors cursor-pointer"
+                                        className="text-gray-400 hover:text-gray-600 dark:hover:text-white p-1.5 rounded-xl hover:bg-gray-100 dark:hover:bg-[#23262c] transition-colors cursor-pointer"
                                         aria-label="Close modal"
                                     >
                                         <span className="material-symbols-outlined text-xl">close</span>
@@ -571,7 +475,7 @@ export default function AdminEvents() {
 
                                 {/* Modal Body: Required Textarea */}
                                 <div className="space-y-2">
-                                    <label htmlFor="event-rejection-reason" className="block text-sm font-semibold text-gray-700">
+                                    <label htmlFor="event-rejection-reason" className="block text-sm font-semibold text-gray-700 dark:text-gray-300">
                                         {ar ? 'يرجى كتابة سبب رفض الفعالية' : 'Please provide a rejection reason'} <span className="text-red-500">*</span>
                                     </label>
                                     <textarea
@@ -585,7 +489,7 @@ export default function AdminEvents() {
                                                 ? 'اكتب سبب الرفض بالتفصيل هنا (مثال: محتوى الفعالية غير مكتمل، الموعد يتعارض، الشروط غير مستوفاة)...'
                                                 : 'Provide the reason for rejecting this event (e.g. incomplete agenda, missing prerequisites, policy non-compliance)...'
                                         }
-                                        className="w-full p-3.5 text-sm bg-gray-50 border border-gray-200 rounded-2xl focus:outline-none focus:border-red-500 focus:bg-white focus:ring-4 focus:ring-red-500/10 transition-all resize-none text-gray-800"
+                                        className="w-full p-3.5 text-sm bg-gray-50 border border-gray-200 dark:border-white/15 rounded-2xl focus:outline-none focus:border-red-500 focus:bg-white focus:ring-4 focus:ring-red-500/10 transition-all resize-none text-gray-800 dark:text-white"
                                         autoFocus
                                     />
                                     <div className="flex justify-between items-center text-xs text-gray-400 px-1">
@@ -595,11 +499,11 @@ export default function AdminEvents() {
                                 </div>
 
                                 {/* Modal Footer / Actions */}
-                                <div className="flex items-center justify-end gap-3 pt-3 border-t border-gray-100">
+                                <div className="flex items-center justify-end gap-3 pt-3 border-t border-gray-100 dark:border-white/10">
                                     <button
                                         type="button"
                                         onClick={handleCloseRejectModal}
-                                        className="px-5 py-2.5 rounded-2xl text-sm font-medium text-gray-700 bg-gray-100 hover:bg-gray-200 transition-colors cursor-pointer"
+                                        className="px-5 py-2.5 rounded-2xl text-sm font-medium text-gray-700 bg-gray-100 hover:bg-gray-200 dark:text-white dark:bg-[#23262c] dark:hover:bg-[#2b2f36] transition-colors cursor-pointer"
                                     >
                                         {ar ? 'إلغاء' : 'Cancel'}
                                     </button>
@@ -610,7 +514,7 @@ export default function AdminEvents() {
                                         disabled={!rejectionReason.trim()}
                                         className={`flex items-center gap-2 px-6 py-2.5 rounded-2xl text-sm font-semibold transition-all cursor-pointer ${
                                             !rejectionReason.trim()
-                                                ? 'bg-red-200 text-white cursor-not-allowed opacity-60'
+                                                ? 'bg-red-200 dark:bg-red-500/30 text-white cursor-not-allowed opacity-60'
                                                 : 'bg-red-600 hover:bg-red-700 text-white shadow-lg shadow-red-600/25 active:scale-95'
                                         }`}
                                     >
@@ -623,97 +527,6 @@ export default function AdminEvents() {
                     )}
                 </main>
             </div>
-            <div className="mobile-nav-overlay" id="admin-mobile-overlay" />
-            <nav
-                className="mobile-nav-drawer"
-                id="admin-mobile-drawer"
-                aria-label="Admin navigation"
-            >
-                <button
-                    className="mobile-nav-close"
-                    id="admin-nav-close"
-                    aria-label="Close navigation"
-                >
-                    <span className="material-symbols-outlined" style={{ fontSize: 20 }}>
-                        close
-                    </span>
-                </button>
-                <Link
-                    to="/"
-                    style={{
-                        display: "flex",
-                        alignItems: "center",
-                        gap: 12,
-                        marginBottom: 4
-                    }}
-                >
-                    <span
-                        className="material-symbols-outlined"
-                        style={{
-                            fontSize: 28,
-                            fontVariationSettings: '"FILL" 1',
-                            color: "var(--accent)"
-                        }}
-                    >
-                        hub
-                    </span>
-                    <span
-                        style={{
-                            fontFamily: "var(--font-display)",
-                            fontWeight: 700,
-                            fontSize: 20,
-                            color: "var(--accent)"
-                        }}
-                    >
-                        EVENTIFY
-                    </span>
-                </Link>
-                <span className="admin-badge">Admin console</span>
-                <div className="nav-group" style={{ marginTop: 16 }}>
-                    <Link className="nav-link" to="/admin/dashboard">
-                        <span className="material-symbols-outlined" aria-hidden="true">
-                            dashboard
-                        </span>
-                        Overview
-                    </Link>
-                    <Link className="nav-link" to="/admin/events">
-                        <span className="material-symbols-outlined" aria-hidden="true">
-                            trophy
-                        </span>
-                        Competitions &amp; Events
-                    </Link>
-                    <Link className="nav-link" to="/admin/users">
-                        <span className="material-symbols-outlined" aria-hidden="true">
-                            group
-                        </span>
-                        Participants
-                    </Link>
-                    <Link className="nav-link" to="/admin/verify-organizations">
-                        <span className="material-symbols-outlined" aria-hidden="true">
-                            verified
-                        </span>
-                        Organizations
-                    </Link>
-                    <Link className="nav-link" to="/admin/categories">
-                        <span className="material-symbols-outlined" aria-hidden="true">
-                            category
-                        </span>
-                        Categories
-                    </Link>
-                    <Link className="nav-link" to="/admin/reports">
-                        <span className="material-symbols-outlined" aria-hidden="true">
-                            flag
-                        </span>
-                        Reports
-                    </Link>
-                    <Link className="nav-link" to="/admin/audit-log">
-                        <span className="material-symbols-outlined" aria-hidden="true">
-                            history
-                        </span>
-                        Audit log
-                    </Link>
-                </div>
-            </nav>
         </>
     )
 }

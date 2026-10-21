@@ -18,18 +18,29 @@ class EventRegistration extends Model
     public const STATUS_REJECTED  = 'rejected';
     public const STATUS_CANCELLED = 'cancelled';
 
+    /**
+     * How many rejections a student can get for the same event.
+     * After this many, they cannot apply to it again.
+     */
+    public const MAX_REJECTIONS = 2;
+
     protected $fillable = [
         'event_id',
         'user_id',
         'team_id',
         'status',
         'registered_at',
+        'rejection_reason',
+        'rejection_count',
+        'reviewed_at',
     ];
 
     protected function casts(): array
     {
         return [
-            'registered_at' => 'datetime',
+            'registered_at'   => 'datetime',
+            'reviewed_at'     => 'datetime',
+            'rejection_count' => 'integer',
         ];
     }
 
@@ -94,6 +105,16 @@ class EventRegistration extends Model
             self::STATUS_PENDING,
             self::STATUS_CONFIRMED,
         ], true);
+    }
+
+    /**
+     * Whether the student is permanently blocked from applying to this
+     * event again (rejected the maximum number of times).
+     */
+    public function isPermanentlyRejected(): bool
+    {
+        return $this->isRejected()
+            && $this->rejection_count >= self::MAX_REJECTIONS;
     }
 
     // ── Scopes ────────────────────────────────────────────────

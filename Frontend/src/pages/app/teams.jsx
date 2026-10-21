@@ -91,8 +91,13 @@ export default function Teams() {
     const { language } = useLanguage()
     const ar = language === 'ar'
     const navigate = useNavigate()
-    const requestToJoin = (team) =>
-        navigate('/app/registration-success', { state: { type: 'join', team: team.name } })
+    const requestToJoin = (team) => {
+        let comp = null
+        try {
+            comp = JSON.parse(sessionStorage.getItem('eventify_selected_competition') || '{}')
+        } catch {}
+        navigate('/app/registration-success', { state: { type: 'join', team: team.name, competition: comp } })
+    }
 
     const [selectedSkills, setSelectedSkills] = useState([])
     const [searchQuery, setSearchQuery] = useState('')
@@ -181,7 +186,7 @@ export default function Teams() {
                     </div>
 
                     {/* Teams Grid */}
-                    <div key={selectedSkills.join('-') + '-' + search} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div key={selectedSkills.join('-') + '-' + searchQuery} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 fade-in">
                         {visible.map((team, idx) =>
                             team.featured ? (
                                 /* Featured wide card */

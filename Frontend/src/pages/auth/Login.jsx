@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import AuthLayout from '../../layouts/AuthLayout'
+import { useOnboarding } from '../../context/OnboardingContext'
 
 const isEmail = (v) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)
 const isPhone = (v) => /^[+]?([0-9][\s-()]*){7,15}$/.test(v)
@@ -43,6 +44,7 @@ const ROLES = [
 export default function Login() {
     const { t } = useTranslation()
     const navigate = useNavigate()
+    const { setIsProfileComplete } = useOnboarding()
 
     const [role, setRole] = useState('participant')
     const [identifier, setIdentifier] = useState('')
@@ -97,6 +99,30 @@ export default function Login() {
             ? '/admin/dashboard'
             : roleConfig.dest
 
+        if (destination === '/app') {
+            localStorage.setItem('eventify_current_participant', idValue)
+            try {
+                const completedUsers = JSON.parse(localStorage.getItem('eventify_completed_participants') || '[]')
+                const isReturning = completedUsers.includes(idValue)
+                const hasUnlocked = localStorage.getItem('eventify_has_unlocked_profile') === 'true'
+                const savedProfile = JSON.parse(localStorage.getItem('eventify_userProfile') || '{}')
+                const hasCV = Boolean(savedProfile?.resumeFileName || savedProfile?.setupMethod)
+
+                if (isReturning || hasUnlocked || hasCV) {
+                    setIsProfileComplete(true)
+                    localStorage.setItem('eventify_has_unlocked_profile', 'true')
+                    localStorage.setItem('eventify_isProfileComplete', 'true')
+                } else {
+                    // First time for this participant: show lock screen
+                    setIsProfileComplete(false)
+                    localStorage.setItem('eventify_has_unlocked_profile', 'false')
+                    localStorage.setItem('eventify_isProfileComplete', 'false')
+                }
+            } catch {
+                setIsProfileComplete(false)
+            }
+        }
+
         setSubmitting(true)
         window.setTimeout(() => {
             setSubmitting(false)
@@ -136,7 +162,7 @@ export default function Login() {
                 </div>
 
                 <form className="space-y-5" onSubmit={handleSubmit} noValidate>
-                    <div className="flex flex-col gap-2">
+                    <div key={role} className="flex flex-col gap-2 fade-in">
                         <label className="font-label-md text-label-md" htmlFor="identifier">{t(`auth.login.identifierLabel${role.charAt(0).toUpperCase()}${role.slice(1)}`)}</label>
                         <div className="relative">
                             <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-[20px]">{roleConfig.field.icon}</span>
@@ -151,7 +177,7 @@ export default function Login() {
                                 onBlur={(e) => setIdentifierError(validateIdentifier(e.target.value))}
                             />
                         </div>
-                        {identifierError && <p className="text-sm text-error" role="alert">{identifierError}</p>}
+                        {identifierError && <p className="text-sm text-error fade-in" role="alert">{identifierError}</p>}
                     </div>
 
                     <div className="flex flex-col gap-2">
@@ -177,8 +203,8 @@ export default function Login() {
                                 <span className="material-symbols-outlined text-[20px]">{showPassword ? 'visibility' : 'visibility_off'}</span>
                             </button>
                         </div>
-                        {passwordError && <p className="text-sm text-error" role="alert">{passwordError}</p>}
-                        {authError && <p className="text-sm text-error" role="alert">{authError}</p>}
+                        {passwordError && <p className="text-sm text-error fade-in" role="alert">{passwordError}</p>}
+                        {authError && <p className="text-sm text-error fade-in" role="alert">{authError}</p>}
                     </div>
 
                     <div className="flex items-center justify-between gap-4">
@@ -202,7 +228,7 @@ export default function Login() {
                 </form>
 
                 {role === 'participant' && (
-                    <>
+                    <div className="fade-in">
                         <div className="flex items-center gap-4 my-8">
                             <div className="flex-1 h-px bg-outline-variant"></div>
                             <span className="font-label-sm text-on-surface-variant">{t('auth.common.or')}</span>
@@ -212,7 +238,7 @@ export default function Login() {
                         <button className="w-full h-12 border border-outline-variant rounded-full font-label-md text-label-md flex items-center justify-center gap-2 hover:bg-surface-container-low transition-all bg-white/80 hover:-translate-y-[1px] hover:shadow-sm active:translate-y-0 active:scale-[0.985]" type="button">
                             <span className="material-symbols-outlined text-[20px]">mail</span> {t('auth.common.continueGoogle')}
                         </button>
-                    </>
+                    </div>
                 )}
 
                 <p className="text-center font-body-sm text-body-sm text-on-surface-variant mt-8">

@@ -5,10 +5,12 @@ namespace App\Http\Controllers\Api\V1\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\RejectOrganizationRequest;
 use App\Http\Resources\OrganizationResource;
+use App\Models\AuditLog;
 use App\Models\Organization;
 use App\Traits\ApiResponse;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
@@ -63,6 +65,15 @@ class OrganizationManagementController extends Controller
             'admin_notes' => null,
         ]);
 
+        AuditLog::record(
+            type: AuditLog::TYPE_APPROVE,
+            action: 'Approved Organization',
+            location: AuditLog::LOCATION_ORGANIZATIONS,
+            actor: Auth::user(),
+            target: $organization,
+            details: 'Organization application was reviewed and approved.',
+        );
+
         return $this->success(
             new OrganizationResource($organization),
             'Organization approved successfully'
@@ -83,6 +94,15 @@ class OrganizationManagementController extends Controller
             'admin_notes' => $request->validated('admin_notes'),
             'verified_at' => null,
         ]);
+
+        AuditLog::record(
+            type: AuditLog::TYPE_REJECT,
+            action: 'Rejected Organization',
+            location: AuditLog::LOCATION_ORGANIZATIONS,
+            actor: Auth::user(),
+            target: $organization,
+            details: $request->validated('admin_notes'),
+        );
 
         return $this->success(
             new OrganizationResource($organization),
@@ -106,6 +126,17 @@ class OrganizationManagementController extends Controller
         if (! Storage::disk('local')->exists($organization->license_document)) {
             return $this->error('License document file not found on server.', 404);
         }
+
+        // Sensitive: a private document leaves the server.
+        AuditLog::record(
+            type: AuditLog::TYPE_EXPORT,
+            action: 'Downloaded Organization License',
+            location: AuditLog::LOCATION_ORGANIZATIONS,
+            actor: Auth::user(),
+            target: $organization,
+            sensitive: true,
+            details: 'Organization license document was downloaded.',
+        );
 
         return Storage::disk('local')->download(
             $organization->license_document,

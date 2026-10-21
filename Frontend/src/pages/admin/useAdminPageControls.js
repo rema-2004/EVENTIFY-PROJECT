@@ -99,6 +99,9 @@ export function useAdminPageControls({ mobileNavigation = true } = {}) {
                 if (index >= startIndex && index < endIndex) {
                     row.removeAttribute('hidden')
                     row.style.setProperty('display', 'grid', 'important')
+                    row.classList.add('fade-in')
+                } else {
+                    row.classList.remove('fade-in')
                 }
             })
 

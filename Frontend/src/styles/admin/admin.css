@@ -4,7 +4,7 @@
 @keyframes adm-fade-up {
     from {
         opacity: 0;
-        transform: translateY(12px);
+        transform: translateY(6px);
     }
 
     to {
@@ -28,65 +28,65 @@
     /* Main page content area */
     main>.mb-8:first-child,
     main>div:first-child {
-        animation: adm-fade-up 0.35s cubic-bezier(0.22, 1, 0.36, 1) both;
+        animation: adm-fade-up 0.24s cubic-bezier(0.16, 1, 0.3, 1) both;
     }
 
     /* Every section card (used on events, users, categories etc.) */
     .section-card {
-        animation: adm-fade-up 0.4s cubic-bezier(0.22, 1, 0.36, 1) both;
-        animation-delay: 0.08s;
+        animation: adm-fade-up 0.24s cubic-bezier(0.16, 1, 0.3, 1) both;
+        animation-delay: 0.03s;
     }
 
     /* Stat cards grid on reports and categories pages */
     .stat-card {
-        animation: adm-fade-up 0.38s cubic-bezier(0.22, 1, 0.36, 1) both;
+        animation: adm-fade-up 0.24s cubic-bezier(0.16, 1, 0.3, 1) both;
     }
 
     .stat-grid .stat-card:nth-child(1) {
-        animation-delay: 0.04s;
+        animation-delay: 0.02s;
     }
 
     .stat-grid .stat-card:nth-child(2) {
-        animation-delay: 0.09s;
+        animation-delay: 0.04s;
     }
 
     .stat-grid .stat-card:nth-child(3) {
-        animation-delay: 0.14s;
+        animation-delay: 0.06s;
     }
 
     .stat-grid .stat-card:nth-child(4) {
-        animation-delay: 0.19s;
+        animation-delay: 0.08s;
     }
 
     /* Table panels */
     .panel {
-        animation: adm-fade-up 0.44s cubic-bezier(0.22, 1, 0.36, 1) both;
-        animation-delay: 0.12s;
+        animation: adm-fade-up 0.24s cubic-bezier(0.16, 1, 0.3, 1) both;
+        animation-delay: 0.04s;
     }
 
     /* Quick report cards */
     .quick-report-card {
-        animation: adm-fade-up 0.38s cubic-bezier(0.22, 1, 0.36, 1) both;
+        animation: adm-fade-up 0.24s cubic-bezier(0.16, 1, 0.3, 1) both;
     }
 
     section .quick-report-card:nth-child(1) {
-        animation-delay: 0.06s;
+        animation-delay: 0.02s;
     }
 
     section .quick-report-card:nth-child(2) {
-        animation-delay: 0.11s;
+        animation-delay: 0.04s;
     }
 
     section .quick-report-card:nth-child(3) {
-        animation-delay: 0.16s;
+        animation-delay: 0.06s;
     }
 
     section .quick-report-card:nth-child(4) {
-        animation-delay: 0.21s;
+        animation-delay: 0.08s;
     }
 
     section .quick-report-card:nth-child(5) {
-        animation-delay: 0.26s;
+        animation-delay: 0.10s;
     }
 }
 
@@ -886,13 +886,12 @@ html.dark .btn-danger-outline {
     display: inline-flex;
     align-items: center;
     gap: 6px;
-    animation: confirmPop 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    animation: confirmPop 0.22s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 @keyframes confirmPop {
-    0% { transform: scale(0.92); }
-    50% { transform: scale(1.06); }
-    100% { transform: scale(1); }
+    0% { transform: scale(0.96); opacity: 0.8; }
+    100% { transform: scale(1); opacity: 1; }
 }
 
 /* Card highlight states */
@@ -928,7 +927,7 @@ html.dark .section-card--rejected {
     font-size: 13px;
     font-weight: 600;
     margin-top: 14px;
-    animation: fadeInSlide 0.3s ease;
+    animation: fadeInSlide 0.22s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 @keyframes fadeInSlide {
@@ -1766,6 +1765,10 @@ aside.h-screen::-webkit-scrollbar-thumb {
     z-index: 50;
 }
 
+dialog[open].confirm-dialog {
+    animation: adm-dialog-in 0.22s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
 .confirm-dialog::backdrop {
     position: fixed;
     inset: 0;
@@ -1774,6 +1777,21 @@ aside.h-screen::-webkit-scrollbar-thumb {
     background: rgba(14, 17, 22, 0.45);
     backdrop-filter: blur(4px);
     -webkit-backdrop-filter: blur(4px);
+}
+
+dialog[open].confirm-dialog::backdrop {
+    animation: adm-fade-in 0.2s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes adm-dialog-in {
+    from {
+        opacity: 0;
+        transform: scale(0.96) translateY(6px);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
 }
 
 .confirm-dialog h3 {

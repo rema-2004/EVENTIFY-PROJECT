@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import AuthLayout from '../../layouts/AuthLayout'
+import { useOnboarding } from '../../context/OnboardingContext'
 
 const isEmail = (v) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)
 const isPhone = (v) => /^[+]?([0-9][\s-()]*){7,15}$/.test(v)
@@ -80,6 +81,7 @@ const emptyErrors = { fullName: '', phone: '', email: '', password: '', confirmP
 export default function Signup() {
     const { t } = useTranslation()
     const navigate = useNavigate()
+    const { setIsProfileComplete } = useOnboarding()
 
     const [accountType, setAccountType] = useState('personal')
     const [fullName, setFullName] = useState('')
@@ -131,6 +133,17 @@ export default function Signup() {
         if (Object.values(next).some(Boolean) || !terms) return
 
         setSubmitting(true)
+        if (!isOrg) {
+            const idValue = email.trim().toLowerCase()
+            localStorage.setItem('eventify_current_participant', idValue)
+            setIsProfileComplete(false)
+            localStorage.setItem('eventify_has_unlocked_profile', 'false')
+            localStorage.setItem('eventify_isProfileComplete', 'false')
+            try {
+                const existing = JSON.parse(localStorage.getItem('eventify_userProfile') || '{}')
+                localStorage.setItem('eventify_userProfile', JSON.stringify({ ...existing, fullName: fullName.trim() }))
+            } catch {}
+        }
         window.setTimeout(() => {
             setSubmitting(false)
             navigate(isOrg ? '/auth/organization-verification' : '/app')
@@ -193,11 +206,11 @@ export default function Signup() {
                             onChange={(e) => setFullName(e.target.value)}
                             onBlur={(e) => handleBlur('fullName', e.target.value)}
                         />
-                        {errors.fullName && <p className="text-sm text-error" role="alert">{errors.fullName}</p>}
+                        {errors.fullName && <p className="text-sm text-error fade-in" role="alert">{errors.fullName}</p>}
                     </div>
 
                     {!isOrg && (
-                        <div className="flex flex-col gap-2">
+                        <div className="flex flex-col gap-2 fade-in">
                             <label className="font-label-md text-label-md" htmlFor="phone">{t('auth.signup.phoneLabel')}</label>
                             <input
                                 className="ev-input h-12 px-4 bg-surface-container-lowest border border-outline-variant rounded-md transition-all"
@@ -208,12 +221,12 @@ export default function Signup() {
                                 onChange={(e) => setPhone(e.target.value)}
                                 onBlur={(e) => handleBlur('phone', e.target.value)}
                             />
-                            {errors.phone && <p className="text-sm text-error" role="alert">{errors.phone}</p>}
+                            {errors.phone && <p className="text-sm text-error fade-in" role="alert">{errors.phone}</p>}
                         </div>
                     )}
 
                     {isOrg && (
-                        <div className="flex flex-col gap-2">
+                        <div className="flex flex-col gap-2 fade-in">
                             <label className="font-label-md text-label-md" htmlFor="org-website">
                                 {t('auth.signup.websiteLabel')} <span className="text-on-surface-variant font-normal">({t('auth.signup.optional')})</span>
                             </label>
@@ -243,7 +256,7 @@ export default function Signup() {
                             onChange={(e) => setEmail(e.target.value)}
                             onBlur={(e) => handleBlur('email', e.target.value)}
                         />
-                        {errors.email && <p className="text-sm text-error" role="alert">{errors.email}</p>}
+                        {errors.email && <p className="text-sm text-error fade-in" role="alert">{errors.email}</p>}
                     </div>
 
                     <div className="flex flex-col gap-2">
@@ -268,9 +281,9 @@ export default function Signup() {
                                 <span className="material-symbols-outlined text-[20px]">{showPassword ? 'visibility' : 'visibility_off'}</span>
                             </button>
                         </div>
-                        {errors.password && <p className="text-sm text-error" role="alert">{errors.password}</p>}
+                        {errors.password && <p className="text-sm text-error fade-in" role="alert">{errors.password}</p>}
                         {password && (
-                            <p className="text-sm text-on-surface-variant">
+                            <p className="text-sm text-on-surface-variant fade-in">
                                 {t('auth.signup.strengthLabel')}{' '}
                                 <span className={`font-semibold ${strength === 'weak' ? 'text-error' : strength === 'medium' ? 'text-amber-600' : 'text-emerald-600'}`}>
                                     {t(`auth.signup.strength.${strength}`)}

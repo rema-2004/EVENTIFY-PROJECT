@@ -8,6 +8,7 @@ import { useOrgPageControls } from './useOrgPageControls.js'
 import { useMotion } from '../../hooks/useMotion'
 import LangToggleBtn from '../../components/org/LangToggleBtn'
 import '../../styles/org/sidebar.css'
+import OrgSidebar, { OrgMobileHeader } from '../../components/org/OrgSidebar'
 import '../../styles/admin/admin.css'
 import '../../styles/org/org-dashboard.css'
 import '../../styles/org/org-reports.css'
@@ -278,47 +279,9 @@ export default function OrgReportCenter() {
     return (
         <>
             <AppPageHead title="Reports | EVENTIFY" />
-            <header className="lg:hidden w-full sticky top-0 z-40 flex justify-between items-center px-4 h-16 bg-surface border-b border-border shadow-sm">
-                <Link className="flex items-center gap-2" to="/">
-                    <span className="material-symbols-outlined text-primary" style={{ fontVariationSettings: '"FILL" 1' }}>hub</span>
-                    <span className="font-bold text-headline-lg-mobile text-primary" style={{ fontFamily: "var(--font-display)" }}>EVENTIFY</span>
-                </Link>
-                <div className="flex items-center gap-2">
-                    <LangToggleBtn small />
-                    <button className="theme-toggle icon-btn" type="button" title="Switch theme" aria-label="Switch theme" style={{ width: 36, height: 36 }}>
-                        <span className="material-symbols-outlined" style={{ fontSize: 18 }}>dark_mode</span>
-                    </button>
-                    <span className="admin-badge">Organizer</span>
-                    <button className="mobile-hamburger" id="org-hamburger" aria-label="Open navigation" aria-expanded="false">
-                        <span className="material-symbols-outlined" style={{ fontSize: 22 }}>menu</span>
-                    </button>
-                </div>
-            </header>
+            <OrgMobileHeader />
             <div className="flex min-h-screen">
-                <aside className="admin-accent-sidebar hidden lg:flex flex-col w-[280px] h-screen sticky top-0 bg-surface border-r border-border z-50 p-6">
-                    <Link className="flex items-center gap-3 mb-2" to="/">
-                        <span className="material-symbols-outlined text-primary text-3xl" style={{ fontVariationSettings: '"FILL" 1' }}>hub</span>
-                        <span className="font-bold text-headline-md text-primary" style={{ fontFamily: "var(--font-display)" }}>EVENTIFY</span>
-                    </Link>
-                    <span className="admin-badge mb-8 w-fit">Organizer console</span>
-                    <nav className="flex flex-1 flex-col gap-1" aria-label="Organizer sections">
-                        <div className="nav-group">
-                            <Link className="nav-link" to="/org/dashboard"><span className="material-symbols-outlined" aria-hidden="true">dashboard</span>Dashboard</Link>
-                            <Link className="nav-link" to="/org/posts"><span className="material-symbols-outlined" aria-hidden="true">campaign</span>Posts</Link>
-                            <Link className="nav-link" to="/org/profile"><span className="material-symbols-outlined" aria-hidden="true">apartment</span>Organization Profile</Link>
-                            <Link className="nav-link" to="/org/opportunities"><span className="material-symbols-outlined" aria-hidden="true">event_note</span>My Opportunities</Link>
-                            <Link className="nav-link" to="/org/create-event"><span className="material-symbols-outlined" aria-hidden="true">add_circle</span>Create Event</Link>
-                            <Link className="nav-link" to="/org/applicants"><span className="material-symbols-outlined" aria-hidden="true">group</span>Applicants</Link>
-                            <Link className="nav-link" to="/org/report-center" aria-current="page"><span className="material-symbols-outlined" aria-hidden="true">bar_chart</span>Reports</Link>
-                            <Link className="nav-link" to="/org/settings"><span className="material-symbols-outlined" aria-hidden="true">settings</span>Settings</Link>
-                        </div>
-                    </nav>
-                    <div className="mt-auto rounded-2xl bg-surface-container p-4">
-                        <p className="mb-2 text-label-sm font-label-sm text-on-surface-variant">ORGANIZATION</p>
-                        <p className="mb-1 font-label-md text-label-md text-on-surface font-semibold">TechGenius Labs</p>
-                        <p className="text-label-sm font-label-sm text-success">Verified organizer since 2024</p>
-                    </div>
-                </aside>
+                <OrgSidebar />
                 <main className="flex-1 w-full px-4 sm:px-6 lg:px-8 py-6 pb-24 lg:pb-8">
                     <div className="org-topbar">
                         <h1 className="org-topbar__title">Reports</h1>
@@ -369,7 +332,7 @@ export default function OrgReportCenter() {
                             </div>
                             <LangToggleBtn />
                             <button className="theme-toggle icon-btn" type="button" title="Switch theme" aria-label="Switch theme">
-                                <span className="material-symbols-outlined">dark_mode</span>
+                                <span className="material-symbols-outlined icon-dark">dark_mode</span><span className="material-symbols-outlined icon-light">light_mode</span>
                             </button>
                             <div className="org-dropdown">
                                 <button className="dash-profile" id="org-profile-toggle" type="button" aria-label="Organization menu" aria-expanded="false">
@@ -522,7 +485,7 @@ export default function OrgReportCenter() {
                                                 <th style={{ textAlign: 'right' }}>Actions</th>
                                             </tr>
                                         </thead>
-                                        <tbody>
+                                        <tbody key={currentPage + '-' + filterType + '-' + filterEvent + '-' + filterStatus} className="fade-in">
                                             {pageItems.map(r => (
                                                 <tr key={r.id}>
                                                     <td className="font-medium text-on-surface">{r.name}</td>
@@ -571,38 +534,11 @@ export default function OrgReportCenter() {
             </div>
 
             {/* Mobile Navigation Drawer */}
-            <div className="mobile-nav-overlay" id="org-mobile-overlay" />
-            <nav className="mobile-nav-drawer" id="org-mobile-drawer" aria-label="Organizer navigation">
-                <button className="mobile-nav-close" id="org-nav-close" aria-label="Close navigation">
-                    <span className="material-symbols-outlined" style={{ fontSize: 20 }}>close</span>
-                </button>
-                <Link className="flex items-center gap-3 mb-2" to="/">
-                    <span className="material-symbols-outlined text-primary text-3xl" style={{ fontVariationSettings: '"FILL" 1' }}>hub</span>
-                    <span className="font-bold text-headline-md text-primary" style={{ fontFamily: "var(--font-display)" }}>EVENTIFY</span>
-                </Link>
-                <span className="admin-badge mb-6 w-fit">Organizer console</span>
-                <div className="nav-group flex flex-1 flex-col gap-1">
-                    <Link className="nav-link" to="/org/dashboard"><span className="material-symbols-outlined" aria-hidden="true">dashboard</span>Dashboard</Link>
-                    <Link className="nav-link" to="/org/posts"><span className="material-symbols-outlined" aria-hidden="true">campaign</span>Posts</Link>
-                    <Link className="nav-link" to="/org/profile"><span className="material-symbols-outlined" aria-hidden="true">apartment</span>Organization Profile</Link>
-                    <Link className="nav-link" to="/org/opportunities"><span className="material-symbols-outlined" aria-hidden="true">event_note</span>My Opportunities</Link>
-                    <Link className="nav-link" to="/org/create-event"><span className="material-symbols-outlined" aria-hidden="true">add_circle</span>Create Event</Link>
-                    <Link className="nav-link" to="/org/applicants"><span className="material-symbols-outlined" aria-hidden="true">group</span>Applicants</Link>
-                    <Link className="nav-link" to="/org/report-center" aria-current="page"><span className="material-symbols-outlined" aria-hidden="true">bar_chart</span>Reports</Link>
-                    <Link className="nav-link" to="/org/settings"><span className="material-symbols-outlined" aria-hidden="true">settings</span>Settings</Link>
-                </div>
-                <div className="mt-auto rounded-2xl bg-surface-container p-4">
-                    <p className="mb-2 text-label-sm font-label-sm text-on-surface-variant">ORGANIZATION</p>
-                    <p className="mb-1 font-label-md text-label-md text-on-surface font-semibold">TechGenius Labs</p>
-                    <p className="text-label-sm font-label-sm text-success">Verified organizer since 2024</p>
-                </div>
-            </nav>
-
             {/* Create Report Modal */}
             {createModal.open && (
-                <div className="fixed inset-0 z-[60] flex items-center justify-center p-4 org-report-backdrop"
+                <div className="fixed inset-0 z-[60] flex items-center justify-center p-4 org-report-backdrop fade-in"
                     onClick={e => { if (e.target === e.currentTarget) setCreateModal({ open: false }) }}>
-                    <div className="confirm-dialog confirm-dialog--wide" style={{ position: 'static', margin: 0 }}>
+                    <div className="confirm-dialog confirm-dialog--wide fade-in-up" style={{ position: 'static', margin: 0 }}>
                         <h3>Create Report</h3>
                         <form onSubmit={handleCreate}>
                             <div style={{ marginBottom: 14 }}>
@@ -699,9 +635,9 @@ export default function OrgReportCenter() {
 
             {/* Delete Confirm Modal */}
             {deleteModal.open && (
-                <div className="fixed inset-0 z-[60] flex items-center justify-center p-4 org-report-backdrop"
+                <div className="fixed inset-0 z-[60] flex items-center justify-center p-4 org-report-backdrop fade-in"
                     onClick={e => { if (e.target === e.currentTarget) setDeleteModal({ open: false, id: null, name: '' }) }}>
-                    <div className="confirm-dialog" style={{ position: 'static', margin: 0 }}>
+                    <div className="confirm-dialog fade-in-up" style={{ position: 'static', margin: 0 }}>
                         <h3>Are you sure you want to delete this report?</h3>
                         <p>{deleteModal.name}</p>
                         <div className="confirm-dialog__actions">
@@ -714,9 +650,9 @@ export default function OrgReportCenter() {
 
             {/* Preview Modal */}
             {previewModal.open && previewModal.report && previewContent && (
-                <div className="fixed inset-0 z-[60] flex items-center justify-center p-4 org-report-backdrop"
+                <div className="fixed inset-0 z-[60] flex items-center justify-center p-4 org-report-backdrop fade-in"
                     onClick={e => { if (e.target === e.currentTarget) setPreviewModal({ open: false, report: null }) }}>
-                    <div className="confirm-dialog confirm-dialog--wide" style={{ position: 'static', margin: 0, maxHeight: '90vh', overflowY: 'auto' }}>
+                    <div className="confirm-dialog confirm-dialog--wide fade-in-up" style={{ position: 'static', margin: 0, maxHeight: '90vh', overflowY: 'auto' }}>
                         <div className="flex items-start justify-between gap-4">
                             <div>
                                 <p style={{ fontSize: 12, fontWeight: 700, color: 'var(--accent)', textTransform: 'uppercase' }}>TechGenius Labs</p>

@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Models\Competition;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\Storage;
@@ -33,6 +34,15 @@ class EventResource extends JsonResource
             // Only present for type = 'competition'; null otherwise.
             'team_size' => $this->whenLoaded('competition', fn () => $this->competition?->team_size),
             'prize' => $this->whenLoaded('competition', fn () => $this->competition?->prize),
+            // Participation rules. Older competitions have no stored
+            // participation_type; it means "both", so we return 'both'
+            // and the frontend never has to handle null.
+            'participation_type' => $this->whenLoaded('competition', fn () => $this->competition
+                ? ($this->competition->participation_type ?? Competition::PARTICIPATION_BOTH)
+                : null),
+            'min_team_size' => $this->whenLoaded('competition', fn () => $this->competition?->min_team_size),
+            'max_team_size' => $this->whenLoaded('competition', fn () => $this->competition?->max_team_size),
+            'allows_solo' => $this->whenLoaded('competition', fn () => $this->competition?->allowsSolo()),
 
             'organization' => $this->whenLoaded('organization', fn () => new OrganizationResource($this->organization)),
 

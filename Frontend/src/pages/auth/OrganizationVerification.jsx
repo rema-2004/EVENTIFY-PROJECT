@@ -20,7 +20,7 @@ export default function OrganizationVerification() {
 
     const clearError = (name) => setErrors((prev) => (prev[name] ? { ...prev, [name]: '' } : prev))
     const fieldError = (name) =>
-        errors[name] && <p id={`${name}-error`} className="text-sm text-error mt-2" role="alert">{errors[name]}</p>
+        errors[name] && <p id={`${name}-error`} className="text-sm text-error mt-2 fade-in" role="alert">{errors[name]}</p>
     const fieldProps = (name) => ({
         name,
         'aria-required': true,
@@ -163,7 +163,7 @@ export default function OrganizationVerification() {
                                     <input type="checkbox" className="mt-1 rounded border-outline-variant text-primary focus:ring-primary/20" checked={confirmReview} onChange={(e) => { setConfirmReview(e.target.checked); setConfirmError('') }} />
                                     <span className="font-body-sm text-body-sm text-on-surface leading-relaxed">{t('auth.orgVerification.confirmReview')}</span>
                                 </label>
-                                {confirmError && <p className="text-sm text-error" role="alert">{confirmError}</p>}
+                                {confirmError && <p className="text-sm text-error mt-2 fade-in" role="alert">{confirmError}</p>}
                             </div>
 
                             <div className="mt-12 flex flex-wrap justify-between items-center gap-3">

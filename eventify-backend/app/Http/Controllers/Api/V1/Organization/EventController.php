@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Organization\StoreEventRequest;
 use App\Http\Requests\Organization\UpdateEventRequest;
 use App\Http\Resources\EventResource;
+use App\Models\AuditLog;
+use App\Models\Competition;
 use App\Models\Event;
 use App\Models\Organization;
 use App\Traits\ApiResponse;
@@ -96,14 +98,32 @@ class EventController extends Controller
             }
 
             if ($event->type === Event::TYPE_COMPETITION) {
+                $participationType = $validated['participation_type'] ?? null;
+                $isSolo = $participationType === Competition::PARTICIPATION_SOLO;
+
                 $event->competition()->create([
                     'team_size' => $validated['team_size'] ?? null,
                     'prize' => $validated['prize'] ?? null,
+                    'participation_type' => $participationType,
+                    // A solo-only competition never carries a team size.
+                    'min_team_size' => $isSolo ? null : ($validated['min_team_size'] ?? null),
+                    'max_team_size' => $isSolo ? null : ($validated['max_team_size'] ?? null),
                 ]);
             }
 
             return $event;
         });
+
+        AuditLog::record(
+            type: AuditLog::TYPE_CREATE,
+            action: 'Created Event',
+            location: AuditLog::LOCATION_EVENTS,
+            actor: $organization,
+            target: $event,
+            details: $event->isPendingReview()
+                ? 'A new event was created and submitted for review.'
+                : 'A new event was saved as a draft.',
+        );
 
         $event->load(['organization', 'competition']);
 
@@ -122,9 +142,13 @@ class EventController extends Controller
             return $this->error('Forbidden. This event does not belong to your organization.', 403);
         }
 
-        if ($event->status !== Event::STATUS_DRAFT) {
-            return $this->error('Only draft events can be edited.', 422);
+        // Drafts can be edited freely. A rejected event can be edited too,
+        // so the organization can fix it and resubmit for a new review.
+        if (! in_array($event->status, [Event::STATUS_DRAFT, Event::STATUS_REJECTED], true)) {
+            return $this->error('Only draft or rejected events can be edited.', 422);
         }
+
+        $wasRejected = $event->status === Event::STATUS_REJECTED;
 
         $validated = $request->validated();
 
@@ -137,8 +161,22 @@ class EventController extends Controller
                 $validated['status'] = $validated['action'] === 'submit'
                     ? Event::STATUS_PENDING_REVIEW
                     : Event::STATUS_DRAFT;
+
+                // A resubmitted event starts a fresh review — drop the old
+                // rejection reason so it can never reach the public API
+                // after the event is approved.
+                if ($validated['action'] === 'submit') {
+                    $validated['admin_notes'] = null;
+                }
             }
-            unset($validated['action'], $validated['team_size'], $validated['prize']);
+            unset(
+                $validated['action'],
+                $validated['team_size'],
+                $validated['prize'],
+                $validated['participation_type'],
+                $validated['min_team_size'],
+                $validated['max_team_size'],
+            );
 
             if ($request->hasFile('cover_image')) {
                 if ($event->cover_image && Storage::disk('public')->exists($event->cover_image)) {
@@ -152,24 +190,53 @@ class EventController extends Controller
             $type = $request->input('type', $event->type);
 
             if ($type === Event::TYPE_COMPETITION) {
-                // team_size/prize are only overwritten when actually sent
+                $stored = $event->competition;
+
+                // Competition fields are only overwritten when actually sent
                 // in this request — otherwise a partial update (e.g. just
                 // the title) would silently wipe the existing values.
+                $participationType = $request->has('participation_type')
+                    ? $request->input('participation_type')
+                    : $stored?->participation_type;
+
+                $isSolo = $participationType === Competition::PARTICIPATION_SOLO;
+
                 $event->competition()->updateOrCreate(
                     [],
                     [
                         'team_size' => $request->has('team_size')
                             ? $request->input('team_size')
-                            : $event->competition?->team_size,
+                            : $stored?->team_size,
                         'prize' => $request->has('prize')
                             ? $request->input('prize')
-                            : $event->competition?->prize,
+                            : $stored?->prize,
+                        'participation_type' => $participationType,
+                        // A solo-only competition never carries a team size.
+                        'min_team_size' => $isSolo ? null : ($request->has('min_team_size')
+                            ? $request->input('min_team_size')
+                            : $stored?->min_team_size),
+                        'max_team_size' => $isSolo ? null : ($request->has('max_team_size')
+                            ? $request->input('max_team_size')
+                            : $stored?->max_team_size),
                     ]
                 );
             } else {
                 $event->competition()->delete();
             }
         });
+
+        AuditLog::record(
+            type: AuditLog::TYPE_UPDATE,
+            action: 'Updated Event',
+            location: AuditLog::LOCATION_EVENTS,
+            actor: $organization,
+            target: $event,
+            details: match (true) {
+                $event->isPendingReview() && $wasRejected => 'The rejected event was edited and resubmitted for review.',
+                $event->isPendingReview() => 'The event was edited and submitted for review.',
+                default => 'Event details were edited by the organization.',
+            },
+        );
 
         $event->load(['organization', 'competition']);
 
@@ -193,6 +260,17 @@ class EventController extends Controller
         }
 
         $event->delete();
+
+        // Logged after the delete: the title is still on the model and is
+        // copied into the row, so it stays readable.
+        AuditLog::record(
+            type: AuditLog::TYPE_DELETE,
+            action: 'Deleted Event',
+            location: AuditLog::LOCATION_EVENTS,
+            actor: $organization,
+            target: $event,
+            details: 'A draft event was deleted by the organization.',
+        );
 
         return $this->success(null, 'Draft deleted successfully');
     }
