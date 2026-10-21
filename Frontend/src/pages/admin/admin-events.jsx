@@ -8,6 +8,12 @@ import { useLanguage } from '../../hooks/useLanguage'
 import { toast } from '../../utils/toast'
 import '../../styles/admin/admin.css'
 
+const STATUS_TABS = [
+    { status: 'pending', en: 'Pending', ar: 'قيد المراجعة' },
+    { status: 'approved', en: 'Approved', ar: 'مقبول' },
+    { status: 'rejected', en: 'Rejected', ar: 'مرفوض' },
+]
+
 const INITIAL_EVENTS = [
     {
         id: 'evt-1',
@@ -61,6 +67,7 @@ export default function AdminEvents() {
     const ar = language === 'ar'
 
     const [events, setEvents] = useState(INITIAL_EVENTS)
+    const [activeFilter, setActiveFilter] = useState('pending')
     const [rejectModalOpen, setRejectModalOpen] = useState(false)
     const [selectedEvent, setSelectedEvent] = useState(null)
     const [rejectionReason, setRejectionReason] = useState('')
@@ -95,7 +102,6 @@ export default function AdminEvents() {
         )
         const eventItem = events.find((e) => e.id === eventId)
         toast(ar ? `تم رفض فعالية "${eventItem?.title}"` : `Event "${eventItem?.title}" rejected`, 'error')
-        setTimeout(() => window.refreshEventsFilter?.(), 50)
     }
 
     const handleApprove = (eventId) => {
@@ -109,8 +115,12 @@ export default function AdminEvents() {
         )
         const eventItem = events.find((e) => e.id === eventId)
         toast(ar ? `تمت الموافقة على فعالية "${eventItem?.title}"` : `Event "${eventItem?.title}" approved`, 'success')
-        setTimeout(() => window.refreshEventsFilter?.(), 50)
     }
+
+    // Tabs, counts and the visible list are all derived from state, so they
+    // update by themselves after an approve/reject.
+    const countFor = (status) => events.filter((e) => e.status === status).length
+    const visibleEvents = events.filter((e) => e.status === activeFilter)
 
     return (
         <>
@@ -130,57 +140,35 @@ export default function AdminEvents() {
                     </div>
                     <div
                         className="flex flex-wrap gap-2 mb-6"
-                        id="events-tab-group"
                         role="tablist"
                         aria-label="Filter events by status"
                     >
-                        <button
-                            type="button"
-                            className="px-5 py-2 rounded-full bg-primary text-on-primary font-label-md text-label-md"
-                            data-filter="pending"
-                            aria-pressed="true"
-                        >
-                            Pending <span data-filter-count="">(3)</span>
-                        </button>
-                        <button
-                            type="button"
-                            className="px-5 py-2 rounded-full bg-surface-container text-on-surface-variant hover:bg-surface-container-high transition-colors font-label-md text-label-md"
-                            data-filter="approved"
-                            aria-pressed="false"
-                        >
-                            Approved <span data-filter-count="">(0)</span>
-                        </button>
-                        <button
-                            type="button"
-                            className="px-5 py-2 rounded-full bg-surface-container text-on-surface-variant hover:bg-surface-container-high transition-colors font-label-md text-label-md"
-                            data-filter="rejected"
-                            aria-pressed="false"
-                        >
-                            Rejected <span data-filter-count="">(0)</span>
-                        </button>
+                        {STATUS_TABS.map((tab) => {
+                            const active = tab.status === activeFilter
+                            return (
+                                <button
+                                    key={tab.status}
+                                    type="button"
+                                    className={`px-5 py-2 rounded-full font-label-md text-label-md ${
+                                        active
+                                            ? 'bg-primary text-on-primary'
+                                            : 'bg-surface-container text-on-surface-variant hover:bg-surface-container-high transition-colors'
+                                    }`}
+                                    aria-pressed={active}
+                                    onClick={() => setActiveFilter(tab.status)}
+                                >
+                                    {ar ? tab.ar : tab.en} <span>({countFor(tab.status)})</span>
+                                </button>
+                            )
+                        })}
                     </div>
-                    <div className="section-card mb-4" id="events-category-banner" hidden="">
-                        <div className="flex flex-wrap items-center justify-between gap-2">
-                            <p className="text-on-surface-variant">
-                                Showing events in category:{" "}
-                                <strong
-                                    className="text-on-surface"
-                                    id="events-category-banner-name"
-                                />
-                            </p>
-                            <Link className="btn-secondary" to="/admin/events">
-                                Clear filter
-                            </Link>
-                        </div>
-                    </div>
+                    {/* id is a styling hook only (staggered entrance in admin.css) */}
                     <div className="space-y-4" id="events-list">
-                        {events.map((event, idx) => (
+                        {visibleEvents.map((event, idx) => (
                             <div
                                 key={event.id}
                                 className="section-card row-animated transition-all duration-200"
                                 style={{ '--stagger-idx': idx }}
-                                data-status={event.status}
-                                data-category={event.category}
                             >
                                 <div className="flex flex-col md:flex-row md:items-start justify-between gap-4">
                                     <div className="event-content-body flex-1">
@@ -261,15 +249,17 @@ export default function AdminEvents() {
                                 </div>
                             </div>
                         ))}
-                        <div className="empty-state fade-in" id="events-empty" hidden="">
-                            <span className="empty-state__icon">
-                                <span className="material-symbols-outlined" aria-hidden="true">
-                                    event_busy
+                        {visibleEvents.length === 0 && (
+                            <div className="empty-state fade-in">
+                                <span className="empty-state__icon">
+                                    <span className="material-symbols-outlined" aria-hidden="true">
+                                        event_busy
+                                    </span>
                                 </span>
-                            </span>
-                            <h3>{ar ? 'لا توجد فعاليات في هذه الحالة' : 'No events in this status'}</h3>
-                            <p>{ar ? 'لا توجد أي فعاليات مطابقة لهذا الفلتر حالياً.' : 'No events match this filter right now.'}</p>
-                        </div>
+                                <h3>{ar ? 'لا توجد فعاليات في هذه الحالة' : 'No events in this status'}</h3>
+                                <p>{ar ? 'لا توجد أي فعاليات مطابقة لهذا الفلتر حالياً.' : 'No events match this filter right now.'}</p>
+                            </div>
+                        )}
                     </div>
 
                     {/* Rejection Reason Modal (Tailwind CSS) */}

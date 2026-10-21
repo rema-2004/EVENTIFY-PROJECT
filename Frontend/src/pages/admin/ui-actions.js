@@ -72,8 +72,6 @@
             if (!window.confirm('Delete this record? This cannot be undone.')) return;
             row.remove();
             toast('Record deleted', 'error');
-            if (typeof window.refreshUsersFilter === 'function') window.refreshUsersFilter();
-            if (typeof window.refreshEventsFilter === 'function') window.refreshEventsFilter();
             return;
         }
 
@@ -147,16 +145,9 @@
             adjustStat('Rejected requests', 1);
         }
 
-        // 6. Update data-status and tab counters without hiding the card from view immediately
+        // 6. Update data-status without hiding the card from view immediately
         if (row.dataset.status !== undefined) {
             row.dataset.status = outcome.status;
-
-            document.querySelectorAll('#events-tab-group [data-filter]').forEach(tabBtn => {
-                const count = [...document.querySelectorAll('#events-list [data-status]')]
-                    .filter(r => r.dataset.status === tabBtn.dataset.filter).length;
-                const countEl = tabBtn.querySelector('[data-filter-count]');
-                if (countEl) countEl.textContent = `(${count})`;
-            });
         }
 
         // 7. Show toast feedback: green for accept/approve, red for reject/suspend
