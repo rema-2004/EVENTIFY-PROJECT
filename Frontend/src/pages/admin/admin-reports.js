@@ -1,5 +1,6 @@
 /* Admin Reports page — rendering, filtering, sorting, pagination, CRUD (mock only). */
-import Chart from 'chart.js/auto'
+// Chart with the app's language plugin registered (loaded only by chart pages)
+import Chart from '../../i18n/chartLocalization'
 import { downloadReport } from '../../utils/reportDownload'
 
 export function initAdminReports() {

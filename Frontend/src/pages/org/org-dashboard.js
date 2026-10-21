@@ -1,4 +1,5 @@
-import Chart from 'chart.js/auto'
+// Chart with the app's language plugin registered (loaded only by chart pages)
+import Chart from '../../i18n/chartLocalization'
 import { translateDisplayLabel } from '../../i18n/labelTranslator'
 import './org-dashboard-data.js'
 

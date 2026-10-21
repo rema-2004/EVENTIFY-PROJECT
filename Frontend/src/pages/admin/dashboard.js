@@ -2,7 +2,8 @@
    Data comes only from window.EventifyAdminAPI, so swapping the mock layer for
    real endpoints changes nothing in this file. */
 
-import Chart from 'chart.js/auto'
+// Chart with the app's language plugin registered (loaded only by chart pages)
+import Chart from '../../i18n/chartLocalization'
 import { translateDisplayLabel } from '../../i18n/labelTranslator'
 import './dashboard-data.js'
 

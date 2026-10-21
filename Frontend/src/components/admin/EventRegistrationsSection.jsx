@@ -1,10 +1,10 @@
 import { useEffect, useRef, useState } from 'react'
 import { useLanguage } from '../../hooks/useLanguage'
+import { apiFetch } from '../../services/api'
 
 // Read-only list of the students registered in one event, for admin
 // oversight (complaints, abuse checks, reports). Approve/reject stays
 // with the organization, so this section has no action buttons.
-const API_BASE = 'http://127.0.0.1:8000/api/v1'
 
 // Shown while GET /admin/events/{id}/registrations doesn't exist yet (404)
 // or the backend isn't running. Never shown on 401/403.
@@ -57,16 +57,10 @@ export default function EventRegistrationsSection({ eventId }) {
 
     useEffect(() => {
         let cancelled = false
-        const token = localStorage.getItem('eventify_token') || localStorage.getItem('token')
 
         setLoading(true)
         setError(null)
-        fetch(`${API_BASE}/admin/events/${eventId}/registrations`, {
-            headers: {
-                Accept: 'application/json',
-                ...(token ? { Authorization: `Bearer ${token}` } : {}),
-            },
-        })
+        apiFetch(`/admin/events/${eventId}/registrations`)
             .then(async (res) => {
                 if (cancelled) return
                 if (res.ok) {
