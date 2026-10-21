@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import AppPageHead from '../../components/app/AppPageHead'
 import AdminSidebar, { AdminMobileHeader } from '../../components/admin/AdminSidebar'
 import AdminTopbar from '../../components/admin/AdminTopbar'
+import { useLanguage } from '../../hooks/useLanguage'
 import '../../styles/admin/admin.css'
 
 const INITIAL_CATEGORIES = [
@@ -25,6 +26,9 @@ function useModal(open) {
 }
 
 export default function AdminCategories() {
+    const { language } = useLanguage()
+    const ar = language === 'ar'
+    const t = (en, arText) => (ar ? arText : en)
 
     const [categories, setCategories] = useState(INITIAL_CATEGORIES)
     // null = closed, { id: null } = adding, { id } = editing that category.
@@ -53,7 +57,7 @@ export default function AdminCategories() {
             (c) => c.id !== editing.id && c.name.toLowerCase() === value.toLowerCase(),
         )
         if (duplicate) {
-            nameInput.current.setCustomValidity('This category already exists')
+            nameInput.current.setCustomValidity(t('This category already exists', 'هذا التصنيف موجود مسبقاً'))
             nameInput.current.reportValidity()
             nameInput.current.setCustomValidity('')
             return
@@ -71,6 +75,8 @@ export default function AdminCategories() {
         setDeleting(null)
     }
 
+    const isEditing = Boolean(editing?.id)
+
     return (
         <>
             <AppPageHead title="Categories Management | EVENTIFY" />
@@ -78,21 +84,23 @@ export default function AdminCategories() {
             <div className="flex min-h-screen">
                 <AdminSidebar />
                 <main className="w-full flex-1 px-4 pt-6 pb-24 md:px-10 lg:pb-8">
-                    <AdminTopbar title="Categories Management" />
+                    <AdminTopbar title={t('Categories Management', 'إدارة التصنيفات')} />
                     <div className="mb-8 flex flex-col justify-between gap-4 md:flex-row md:items-end">
                         <div>
                             <p className="mt-1 text-on-surface-variant">
-                                Maintain opportunity types and skill tags used by search and AI
-                                matching.
+                                {t(
+                                    'Maintain opportunity types and skill tags used by search and AI matching.',
+                                    'أدِر أنواع الفرص ووسوم المهارات المستخدمة في البحث والمطابقة بالذكاء الاصطناعي.',
+                                )}
                             </p>
                         </div>
                         <button type="button" className="btn-primary" onClick={openAdd}>
-                            Add category
+                            {t('Add category', 'إضافة تصنيف')}
                         </button>
                     </div>
                     <section className="section-card mx-auto max-w-2xl">
                         <h2 className="mb-4 text-title-lg font-semibold">
-                            Opportunity Categories
+                            {t('Opportunity Categories', 'تصنيفات الفرص')}
                         </h2>
                         {/* id / data-act are styling hooks only (entrance, row hover, button hover colors in admin.css) */}
                         <div className="flex flex-col gap-3" id="category-list">
@@ -117,13 +125,13 @@ export default function AdminCategories() {
                                             className="text-on-surface-variant hover:text-primary hover:underline"
                                             to="/admin/events"
                                         >
-                                            {category.active} active
+                                            {t(`${category.active} active`, `${category.active} نشطة`)}
                                         </Link>
                                         <div className="row-actions">
                                             <button
                                                 type="button"
                                                 data-act="edit"
-                                                aria-label={`Edit ${category.name}`}
+                                                aria-label={t(`Edit ${category.name}`, `تعديل ${category.name}`)}
                                                 onClick={() => openEdit(category)}
                                             >
                                                 <span className="material-symbols-outlined" aria-hidden="true">
@@ -133,7 +141,7 @@ export default function AdminCategories() {
                                             <button
                                                 type="button"
                                                 data-act="delete"
-                                                aria-label={`Delete ${category.name}`}
+                                                aria-label={t(`Delete ${category.name}`, `حذف ${category.name}`)}
                                                 onClick={() => setDeleting(category)}
                                             >
                                                 <span className="material-symbols-outlined" aria-hidden="true">
@@ -154,13 +162,15 @@ export default function AdminCategories() {
                     style={{ position: "fixed", inset: 0, margin: "auto" }}
                 >
                     <form onSubmit={saveCategory}>
-                        <h3>{editing?.id ? 'Edit category' : 'Add category'}</h3>
+                        <h3>{isEditing ? t('Edit category', 'تعديل التصنيف') : t('Add category', 'إضافة تصنيف')}</h3>
                         <p>
-                            Give it a clear, unique name — it will appear in the category filters
-                            right away.
+                            {t(
+                                'Give it a clear, unique name — it will appear in the category filters right away.',
+                                'اختر اسماً واضحاً وغير مكرر — سيظهر في فلاتر التصنيفات مباشرة.',
+                            )}
                         </p>
                         <label className="sr-only" htmlFor="new-category-name">
-                            Category name
+                            {t('Category name', 'اسم التصنيف')}
                         </label>
                         <input
                             ref={nameInput}
@@ -168,7 +178,7 @@ export default function AdminCategories() {
                             type="text"
                             id="new-category-name"
                             name="name"
-                            placeholder="e.g. Internship"
+                            placeholder={t('e.g. Internship', 'مثال: تدريب')}
                             maxLength={40}
                             required
                             value={name}
@@ -177,10 +187,10 @@ export default function AdminCategories() {
                         />
                         <div className="confirm-dialog__actions">
                             <button type="button" className="btn-secondary" onClick={() => setEditing(null)}>
-                                Cancel
+                                {t('Cancel', 'إلغاء')}
                             </button>
                             <button type="submit" className="btn-primary">
-                                {editing?.id ? 'Save changes' : 'Add category'}
+                                {isEditing ? t('Save changes', 'حفظ التغييرات') : t('Add category', 'إضافة تصنيف')}
                             </button>
                         </div>
                     </form>
@@ -192,11 +202,11 @@ export default function AdminCategories() {
                     style={{ position: "fixed", inset: 0, margin: "auto" }}
                     aria-labelledby="delete-cat-title"
                 >
-                    <h3 id="delete-cat-title">Delete category?</h3>
-                    <p>{deleting ? `Delete ${deleting.name}?` : ''}</p>
+                    <h3 id="delete-cat-title">{t('Delete category?', 'حذف التصنيف؟')}</h3>
+                    <p>{deleting ? t(`Delete ${deleting.name}?`, `هل تريد حذف ${deleting.name}؟`) : ''}</p>
                     <div className="confirm-dialog__actions">
                         <button type="button" className="btn-secondary" onClick={() => setDeleting(null)}>
-                            Cancel
+                            {t('Cancel', 'إلغاء')}
                         </button>
                         <button
                             type="button"
@@ -204,7 +214,7 @@ export default function AdminCategories() {
                             onClick={confirmDelete}
                             style={{ background: "var(--error,#B3261E)" }}
                         >
-                            Delete
+                            {t('Delete', 'حذف')}
                         </button>
                     </div>
                 </dialog>

@@ -127,7 +127,7 @@ export default function EventRegistrationsSection({ eventId }) {
                     </p>
                 </div>
                 <select
-                    className="rounded-xl border-outline-variant bg-white px-3 py-2 text-label-md"
+                    className="rounded-xl border border-outline-variant bg-surface-container-lowest text-on-surface px-3 py-2 text-label-md"
                     value={selectedFilter}
                     onChange={(e) => changeFilter(e.target.value)}
                     aria-label={t('Filter by status', 'تصفية حسب الحالة')}

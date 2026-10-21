@@ -2,18 +2,27 @@ import { useState } from 'react'
 import AppPageHead from '../../components/app/AppPageHead'
 import AdminSidebar, { AdminMobileHeader } from '../../components/admin/AdminSidebar'
 import AdminTopbar from '../../components/admin/AdminTopbar'
+import { useLanguage } from '../../hooks/useLanguage'
 import { toast } from '../../utils/toast'
 import '../../styles/admin/admin.css'
 
 const PAGE_SIZE = 5
 
 const ROLE_TABS = [
-    { role: 'all', label: 'All' },
-    { role: 'organizer', label: 'Organizers' },
-    { role: 'participant', label: 'Participants' },
+    { role: 'all', en: 'All', ar: 'الكل' },
+    { role: 'organizer', en: 'Organizers', ar: 'المنظمون' },
+    { role: 'participant', en: 'Participants', ar: 'المشاركون' },
 ]
 
-const ROLE_LABELS = { organizer: 'Organizer', participant: 'Participant' }
+const ROLE_LABELS = {
+    organizer: { en: 'Organizer', ar: 'منظم' },
+    participant: { en: 'Participant', ar: 'مشارك' },
+}
+
+const STATUS_LABELS = {
+    active: { en: 'active', ar: 'نشط' },
+    suspended: { en: 'suspended', ar: 'معلّق' },
+}
 
 const INITIAL_USERS = [
     { id: 1, name: 'Sarah Chen', email: 'sarah.chen@eventify.io', role: 'participant', status: 'active' },
@@ -34,6 +43,10 @@ const INITIAL_USERS = [
 ]
 
 export default function AdminUsers() {
+    const { language } = useLanguage()
+    const ar = language === 'ar'
+    const t = (en, arText) => (ar ? arText : en)
+    const label = (map, key) => map[key]?.[ar ? 'ar' : 'en'] ?? key
 
     const [users, setUsers] = useState(INITIAL_USERS)
     const [roleFilter, setRoleFilter] = useState('all')
@@ -64,15 +77,22 @@ export default function AdminUsers() {
 
     const setStatus = (user, status) => {
         setUsers((prev) => prev.map((u) => (u.id === user.id ? { ...u, status } : u)))
-        if (status === 'suspended') toast(`${user.name} suspended`, 'error')
-        else toast(`${user.name} reinstated`, 'success')
+        if (status === 'suspended') toast(t(`${user.name} suspended`, `تم تعليق حساب ${user.name}`), 'error')
+        else toast(t(`${user.name} reinstated`, `تمت إعادة تفعيل حساب ${user.name}`), 'success')
     }
 
     const deleteUser = (user) => {
-        if (!window.confirm('Delete this record? This cannot be undone.')) return
+        if (!window.confirm(t('Delete this record? This cannot be undone.', 'حذف هذا السجل؟ لا يمكن التراجع عن ذلك.'))) return
         setUsers((prev) => prev.filter((u) => u.id !== user.id))
-        toast(`${user.name} deleted`, 'error')
+        toast(t(`${user.name} deleted`, `تم حذف ${user.name}`), 'error')
     }
+
+    const countLabel = matching.length === 0
+        ? t('0 users', '0 مستخدم')
+        : t(
+            `Showing ${start + 1}–${start + pageUsers.length} of ${matching.length} users`,
+            `عرض ${start + 1}–${start + pageUsers.length} من ${matching.length} مستخدم`,
+        )
 
     return (
         <>
@@ -81,33 +101,32 @@ export default function AdminUsers() {
             <div className="flex">
                 <AdminSidebar />
                 <main className="flex-1 w-full px-4 md:px-10 pt-6 pb-24 lg:pb-8">
-                    <AdminTopbar title="Manage Users" />
+                    <AdminTopbar title={t('Manage Users', 'إدارة المستخدمين')} />
                     <div className="mb-8 flex flex-col justify-between gap-4 md:flex-row md:items-end">
                         <div>
                             <p className="text-on-surface-variant font-body-md mt-1">
-                                Search, filter, and moderate participant and organizer accounts.{" "}
-                                <span className="font-semibold text-on-surface">
-                                    {matching.length === 0
-                                        ? '0 users'
-                                        : `Showing ${start + 1}–${start + pageUsers.length} of ${matching.length} users`}
-                                </span>
+                                {t(
+                                    'Search, filter, and moderate participant and organizer accounts.',
+                                    'ابحث في حسابات المشاركين والمنظمين وصنّفها وأدِرها.',
+                                )}{" "}
+                                <span className="font-semibold text-on-surface">{countLabel}</span>
                             </p>
                         </div>
                     </div>
                     <div className="flex flex-col md:flex-row gap-4 mb-6">
                         <div className="flex-1 relative">
-                            <span className="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-outline">
+                            <span className="material-symbols-outlined absolute start-4 top-1/2 -translate-y-1/2 text-outline">
                                 search
                             </span>
                             <input
-                                className="w-full pl-12 pr-4 py-3 rounded-2xl border border-outline-variant bg-surface-container-lowest focus:ring-2 focus:ring-primary focus:border-transparent transition-all outline-none text-body-md"
-                                placeholder="Search by name or email..."
+                                className="w-full ps-12 pe-4 py-3 rounded-2xl border border-outline-variant bg-surface-container-lowest focus:ring-2 focus:ring-primary focus:border-transparent transition-all outline-none text-body-md"
+                                placeholder={t('Search by name or email...', 'ابحث بالاسم أو البريد الإلكتروني...')}
                                 type="text"
                                 value={search}
                                 onChange={(e) => changeSearch(e.target.value)}
                             />
                         </div>
-                        <div className="flex flex-wrap gap-2" role="tablist" aria-label="Filter users by role">
+                        <div className="flex flex-wrap gap-2" role="tablist" aria-label={t('Filter users by role', 'تصفية المستخدمين حسب الدور')}>
                             {ROLE_TABS.map((tab) => {
                                 const active = tab.role === roleFilter
                                 return (
@@ -122,7 +141,7 @@ export default function AdminUsers() {
                                         aria-pressed={active}
                                         onClick={() => changeRole(tab.role)}
                                     >
-                                        {tab.label}
+                                        {ar ? tab.ar : tab.en}
                                     </button>
                                 )
                             })}
@@ -130,10 +149,10 @@ export default function AdminUsers() {
                     </div>
                     <div className="section-card" style={{ padding: 0, overflow: "hidden" }}>
                         <div className="grid grid-cols-12 gap-4 px-6 py-3 bg-surface-container-low text-on-surface-variant font-label-sm text-label-sm uppercase tracking-wide hidden md:grid">
-                            <span className="col-span-4">User</span>
-                            <span className="col-span-3">Role</span>
-                            <span className="col-span-2">Status</span>
-                            <span className="col-span-3 text-right">Actions</span>
+                            <span className="col-span-4">{t('User', 'المستخدم')}</span>
+                            <span className="col-span-3">{t('Role', 'الدور')}</span>
+                            <span className="col-span-2">{t('Status', 'الحالة')}</span>
+                            <span className="col-span-3 text-end">{t('Actions', 'الإجراءات')}</span>
                         </div>
                         {/* id is a styling hook only (staggered entrance + row hover in admin.css) */}
                         <div className="divide-y divide-outline-variant/30" id="users-list">
@@ -156,11 +175,11 @@ export default function AdminUsers() {
                                         </div>
                                     </div>
                                     <div className="md:col-span-3 font-label-md text-label-md text-on-surface-variant">
-                                        {ROLE_LABELS[user.role]}
+                                        {label(ROLE_LABELS, user.role)}
                                     </div>
                                     <div className="md:col-span-2">
                                         <span className={`badge ${user.status === 'active' ? 'badge--approved' : 'badge--rejected'}`}>
-                                            {user.status}
+                                            {label(STATUS_LABELS, user.status)}
                                         </span>
                                     </div>
                                     <div className="md:col-span-3 flex justify-end gap-2">
@@ -170,7 +189,7 @@ export default function AdminUsers() {
                                                 className="btn-danger-outline"
                                                 onClick={() => setStatus(user, 'suspended')}
                                             >
-                                                Suspend
+                                                {t('Suspend', 'تعليق')}
                                             </button>
                                         ) : (
                                             <button
@@ -178,7 +197,7 @@ export default function AdminUsers() {
                                                 className="btn-success"
                                                 onClick={() => setStatus(user, 'active')}
                                             >
-                                                Reinstate
+                                                {t('Reinstate', 'إعادة تفعيل')}
                                             </button>
                                         )}
                                         <button
@@ -186,7 +205,7 @@ export default function AdminUsers() {
                                             className="btn-danger-outline"
                                             onClick={() => deleteUser(user)}
                                         >
-                                            Delete
+                                            {t('Delete', 'حذف')}
                                         </button>
                                     </div>
                                 </div>
@@ -199,8 +218,8 @@ export default function AdminUsers() {
                                         person_search
                                     </span>
                                 </span>
-                                <h3>No users found</h3>
-                                <p>No users match your search or filters.</p>
+                                <h3>{t('No users found', 'لا يوجد مستخدمون')}</h3>
+                                <p>{t('No users match your search or filters.', 'لا يوجد مستخدمون مطابقون للبحث أو الفلتر.')}</p>
                             </div>
                         )}
                         {matching.length > 0 && (
@@ -210,7 +229,7 @@ export default function AdminUsers() {
                                     disabled={currentPage === 1}
                                     onClick={() => setPage(currentPage - 1)}
                                 >
-                                    Prev
+                                    {t('Prev', 'السابق')}
                                 </button>
                                 {Array.from({ length: totalPages }, (_, i) => i + 1).map((p) => (
                                     <button
@@ -227,7 +246,7 @@ export default function AdminUsers() {
                                     disabled={currentPage === totalPages}
                                     onClick={() => setPage(currentPage + 1)}
                                 >
-                                    Next
+                                    {t('Next', 'التالي')}
                                 </button>
                             </div>
                         )}

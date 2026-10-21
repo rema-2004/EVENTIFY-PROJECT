@@ -9,6 +9,19 @@ export function getToken() {
     return localStorage.getItem('eventify_token') || localStorage.getItem('token')
 }
 
+// Saves the Sanctum token returned by /login or /org/login, plus who it
+// belongs to ('user' covers students and admins, 'organization' is separate).
+export function saveSession({ token, accountType, role }) {
+    localStorage.setItem('eventify_token', token)
+    localStorage.setItem('eventify_account', JSON.stringify({ accountType, role }))
+}
+
+export function clearSession() {
+    localStorage.removeItem('eventify_token')
+    localStorage.removeItem('token')
+    localStorage.removeItem('eventify_account')
+}
+
 // fetch() wrapper: prefixes the base URL and adds the JSON Accept header and
 // the Bearer token (when logged in). Returns the raw Response so each caller
 // keeps handling status codes / JSON / blobs the way it needs.
