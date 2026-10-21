@@ -1,7 +1,6 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import AppPageHead from '../../components/app/AppPageHead'
-import { useAdminPageControls } from './useAdminPageControls.js'
 import AdminSidebar, { AdminMobileHeader } from '../../components/admin/AdminSidebar'
 import AdminTopbar from '../../components/admin/AdminTopbar'
 import { useLanguage } from '../../hooks/useLanguage'
@@ -62,7 +61,6 @@ const INITIAL_EVENTS = [
 ]
 
 export default function AdminEvents() {
-    useAdminPageControls()
     const { language } = useLanguage()
     const ar = language === 'ar'
 

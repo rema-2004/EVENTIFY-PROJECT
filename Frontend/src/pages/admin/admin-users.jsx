@@ -1,6 +1,5 @@
 import { useState } from 'react'
 import AppPageHead from '../../components/app/AppPageHead'
-import { useAdminPageControls } from './useAdminPageControls.js'
 import AdminSidebar, { AdminMobileHeader } from '../../components/admin/AdminSidebar'
 import AdminTopbar from '../../components/admin/AdminTopbar'
 import { toast } from '../../utils/toast'
@@ -35,7 +34,6 @@ const INITIAL_USERS = [
 ]
 
 export default function AdminUsers() {
-    useAdminPageControls()
 
     const [users, setUsers] = useState(INITIAL_USERS)
     const [roleFilter, setRoleFilter] = useState('all')

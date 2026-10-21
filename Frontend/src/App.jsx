@@ -77,12 +77,10 @@ function useNavigationMenus() {
         const menus = [
             { toggleId: 'org-notif-toggle', panelId: 'org-notif-panel' },
             { toggleId: 'org-profile-toggle', panelId: 'org-profile-panel' },
-            { toggleId: 'admin-notif-toggle', panelId: 'admin-notif-panel' },
-            { toggleId: 'admin-profile-toggle', panelId: 'admin-profile-panel' },
         ]
+        // Admin menus and drawer are React state now (AdminTopbar / AdminSidebar).
         const drawers = [
             { toggleId: 'org-hamburger', drawerId: 'org-mobile-drawer', overlayId: 'org-mobile-overlay', closeId: 'org-nav-close' },
-            { toggleId: 'admin-hamburger', drawerId: 'admin-mobile-drawer', overlayId: 'admin-mobile-overlay', closeId: 'admin-nav-close' },
         ]
 
         function closeMenus() {
@@ -103,7 +101,7 @@ function useNavigationMenus() {
         }
 
         function handleClick(event) {
-            const toggle = event.target.closest('#org-notif-toggle, #org-profile-toggle, #admin-notif-toggle, #admin-profile-toggle')
+            const toggle = event.target.closest('#org-notif-toggle, #org-profile-toggle')
             if (toggle) {
                 const panelId = toggle.id.replace('-toggle', '-panel')
                 const panel = document.getElementById(panelId)

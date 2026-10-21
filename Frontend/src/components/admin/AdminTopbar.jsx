@@ -1,3 +1,4 @@
+import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import LangToggleBtn from '../org/LangToggleBtn'
 
@@ -9,29 +10,57 @@ const NOTIFICATIONS = [
 ]
 
 // Global admin header: page title (left) + notifications, language, theme
-// and profile menu (right). The dropdowns are wired up by
-// useAdminPageControls through the admin-notif-* / admin-profile-* ids.
+// and profile menu (right).
 export default function AdminTopbar({ title }) {
+    // Which dropdown is open: 'notif', 'profile' or null.
+    const [openMenu, setOpenMenu] = useState(null)
+    const rightRef = useRef(null)
+
+    // Close on a click outside the controls or on Escape, only while one is open.
+    useEffect(() => {
+        if (!openMenu) return
+        const onClick = (e) => {
+            if (!rightRef.current?.contains(e.target)) setOpenMenu(null)
+        }
+        const onKey = (e) => {
+            if (e.key === 'Escape') setOpenMenu(null)
+        }
+        document.addEventListener('click', onClick)
+        document.addEventListener('keydown', onKey)
+        return () => {
+            document.removeEventListener('click', onClick)
+            document.removeEventListener('keydown', onKey)
+        }
+    }, [openMenu])
+
+    // Clicking a link inside a dropdown closes it.
+    const closeOnLink = (e) => {
+        if (e.target.closest('a')) setOpenMenu(null)
+    }
+    const toggle = (menu) => setOpenMenu((current) => (current === menu ? null : menu))
+    const notifOpen = openMenu === 'notif'
+    const profileOpen = openMenu === 'profile'
+
     return (
         <div className="admin-topbar">
             <h1 className="admin-topbar__title">{title}</h1>
-            <div className="admin-topbar__right">
+            <div className="admin-topbar__right" ref={rightRef}>
                 <div className="org-dropdown">
                     <button
                         className="icon-btn"
-                        id="admin-notif-toggle"
                         type="button"
                         aria-label={`Notifications (${NOTIFICATIONS.length} unread)`}
-                        aria-expanded="false"
+                        aria-expanded={notifOpen}
+                        onClick={() => toggle('notif')}
                     >
                         <span className="material-symbols-outlined">notifications</span>
                         <span className="icon-btn__dot" />
                     </button>
                     <div
-                        className="org-dropdown__panel org-dropdown__panel--notif"
-                        id="admin-notif-panel"
-                        hidden
+                        className={`org-dropdown__panel org-dropdown__panel--notif ${notifOpen ? 'is-open' : ''}`}
+                        hidden={!notifOpen}
                         role="menu"
+                        onClick={closeOnLink}
                         aria-label="Notifications"
                     >
                         <div className="flex items-center justify-between px-3 py-2 border-b border-outline-variant/40 mb-1">
@@ -90,10 +119,10 @@ export default function AdminTopbar({ title }) {
                 <div className="org-dropdown">
                     <button
                         className="dash-profile"
-                        id="admin-profile-toggle"
                         type="button"
                         aria-label="Admin menu"
-                        aria-expanded="false"
+                        aria-expanded={profileOpen}
+                        onClick={() => toggle('profile')}
                         style={{ cursor: "pointer" }}
                     >
                         <span className="dash-profile__avatar">PA</span>
@@ -108,10 +137,10 @@ export default function AdminTopbar({ title }) {
                         </span>
                     </button>
                     <div
-                        className="org-dropdown__panel org-dropdown__panel--profile"
-                        id="admin-profile-panel"
-                        hidden
+                        className={`org-dropdown__panel org-dropdown__panel--profile ${profileOpen ? 'is-open' : ''}`}
+                        hidden={!profileOpen}
                         role="menu"
+                        onClick={closeOnLink}
                         aria-label="Admin menu"
                     >
                         <div className="px-3 py-2 border-b border-outline-variant/40 mb-1">

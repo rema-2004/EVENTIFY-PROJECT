@@ -1,12 +1,40 @@
+import { useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import AppPageHead from '../../components/app/AppPageHead'
-import { useAdminPageControls } from './useAdminPageControls.js'
 import AdminSidebar, { AdminMobileHeader } from '../../components/admin/AdminSidebar'
 import AdminTopbar from '../../components/admin/AdminTopbar'
+import { toast } from '../../utils/toast'
 import '../../styles/admin/admin.css'
 
+const DECISION_BADGES = {
+    pending: { className: 'badge--pending', label: 'Pending approval' },
+    approved: { className: 'badge--approved', icon: 'check_circle', label: 'Approved' },
+    rejected: { className: 'badge--rejected', icon: 'cancel', label: 'Rejected' },
+}
+
 export default function AdminEventReviewDetails() {
-    useAdminPageControls()
+    // 'pending' until the admin approves or rejects; a decision is final.
+    const [decision, setDecision] = useState('pending')
+    const [reason, setReason] = useState('')
+    const reasonInput = useRef(null)
+    const badge = DECISION_BADGES[decision]
+
+    const approve = () => {
+        setDecision('approved')
+        toast('DevOps Masterclass approved', 'success')
+    }
+
+    // Both "Reject with reason" and "Send rejection" need a written reason first.
+    const reject = () => {
+        if (!reason.trim()) {
+            reasonInput.current?.focus()
+            toast('Write a rejection reason first', 'error')
+            return
+        }
+        setDecision('rejected')
+        toast('DevOps Masterclass rejected', 'error')
+    }
+
     return (
         <>
             <AppPageHead title="Event Review Details | EVENTIFY" />
@@ -32,19 +60,33 @@ export default function AdminEventReviewDetails() {
                                 readiness.
                             </p>
                         </div>
-                        <div className="flex gap-3" data-review-container="">
-                            <button type="button" className="btn-danger-outline" data-ui-action="reject">
-                                Reject with reason
-                            </button>
-                            <button type="button" className="btn-success" data-ui-action="approve">
-                                Approve publish
-                            </button>
+                        <div className="flex gap-3">
+                            {decision === 'pending' ? (
+                                <>
+                                    <button type="button" className="btn-danger-outline" onClick={reject}>
+                                        Reject with reason
+                                    </button>
+                                    <button type="button" className="btn-success" onClick={approve}>
+                                        Approve publish
+                                    </button>
+                                </>
+                            ) : (
+                                <span className={`badge ${badge.className}`}>
+                                    <span
+                                        className="material-symbols-outlined"
+                                        style={{ fontSize: 14, verticalAlign: 'middle', marginInlineEnd: 4 }}
+                                    >
+                                        {badge.icon}
+                                    </span>
+                                    {badge.label}
+                                </span>
+                            )}
                         </div>
                     </div>
                     <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
                         <section className="section-card lg:col-span-2">
                             <div className="mb-6 flex flex-wrap items-center gap-2">
-                                <span className="badge badge--pending">Pending approval</span>
+                                <span className={`badge ${badge.className}`}>{badge.label}</span>
                                 <span className="rounded-full bg-primary/10 px-3 py-1 text-label-sm font-semibold text-primary">
                                     Course
                                 </span>
@@ -121,14 +163,19 @@ export default function AdminEventReviewDetails() {
                                     Rejection Reason
                                 </h3>
                                 <textarea
+                                    ref={reasonInput}
                                     className="h-36 w-full resize-none rounded-xl border-outline-variant bg-white p-4"
                                     placeholder="Write a clear reason if rejecting..."
-                                    defaultValue={""}
+                                    value={reason}
+                                    onChange={(e) => setReason(e.target.value)}
+                                    disabled={decision !== 'pending'}
                                 />
                                 <button
                                     type="button"
                                     className="btn-danger-outline"
                                     style={{ width: "100%", marginTop: 12 }}
+                                    onClick={reject}
+                                    disabled={decision !== 'pending'}
                                 >
                                     Send rejection
                                 </button>

@@ -1,6 +1,5 @@
 import { Link, useLocation, useParams } from 'react-router-dom'
 import AppPageHead from '../../components/app/AppPageHead'
-import { useAdminPageControls } from './useAdminPageControls.js'
 import AdminSidebar, { AdminMobileHeader } from '../../components/admin/AdminSidebar'
 import AdminTopbar from '../../components/admin/AdminTopbar'
 import EventRegistrationsSection from '../../components/admin/EventRegistrationsSection'
@@ -10,7 +9,6 @@ import '../../styles/admin/admin.css'
 // Registrations only exist once an event is approved and published, so this
 // page is opened from approved events only (not from the review page).
 export default function AdminEventRegistrations() {
-    useAdminPageControls()
     const { eventId } = useParams()
     const { state } = useLocation()
     const { language } = useLanguage()

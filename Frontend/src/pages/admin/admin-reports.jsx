@@ -2,14 +2,12 @@ import { useEffect } from 'react'
 import AppPageHead from '../../components/app/AppPageHead'
 import './admin-reports-data.js'
 import { initAdminReports } from './admin-reports.js'
-import { useAdminPageControls } from './useAdminPageControls.js'
 import AdminSidebar, { AdminMobileHeader } from '../../components/admin/AdminSidebar'
 import AdminTopbar from '../../components/admin/AdminTopbar'
 import '../../styles/admin/admin.css'
 import '../../styles/admin/admin-reports.css'
 
 export default function AdminReports() {
-    useAdminPageControls()
     useEffect(() => initAdminReports(), [])
 
     return (

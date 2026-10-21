@@ -2,6 +2,7 @@
 // Chart with the app's language plugin registered (loaded only by chart pages)
 import Chart from '../../i18n/chartLocalization'
 import { downloadReport } from '../../utils/reportDownload'
+import { toast } from '../../utils/toast'
 
 export function initAdminReports() {
     const eventController = new AbortController();
@@ -25,7 +26,7 @@ export function initAdminReports() {
 
     /* --- utilities --------------------------------------------------------- */
     function showToast(message, tone) {
-        if (window.EventifyUI) window.EventifyUI.toast(message, tone || 'success');
+        toast(message, tone || 'success');
     }
 
     function isDark() { return document.documentElement.classList.contains('dark'); }

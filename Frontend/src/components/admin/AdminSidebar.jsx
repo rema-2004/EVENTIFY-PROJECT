@@ -1,6 +1,28 @@
+import { useEffect, useSyncExternalStore } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { useLanguage } from '../../hooks/useLanguage'
 import LangToggleBtn from '../org/LangToggleBtn'
+
+// Mobile drawer open/closed state, shared by the hamburger (AdminMobileHeader)
+// and the drawer (AdminSidebar). Pages render the two as siblings, so a tiny
+// module-level store is simpler than wrapping every page in a provider.
+let drawerOpen = false
+const drawerListeners = new Set()
+
+function setDrawerOpen(open) {
+    drawerOpen = open
+    drawerListeners.forEach((listener) => listener())
+}
+
+function useDrawerOpen() {
+    return useSyncExternalStore(
+        (listener) => {
+            drawerListeners.add(listener)
+            return () => drawerListeners.delete(listener)
+        },
+        () => drawerOpen,
+    )
+}
 
 export const ADMIN_NAV_ITEMS = [
     {
@@ -54,6 +76,7 @@ export const ADMIN_NAV_ITEMS = [
 export function AdminMobileHeader() {
     const { language } = useLanguage()
     const ar = language === 'ar'
+    const open = useDrawerOpen()
 
     return (
         <header className="lg:hidden glass-header w-full sticky top-0 z-40 flex justify-between items-center px-4 h-16 shadow-sm">
@@ -75,10 +98,11 @@ export function AdminMobileHeader() {
                 <LangToggleBtn small />
                 <span className="admin-badge">{ar ? 'المشرف' : 'Admin'}</span>
                 <button
+                    type="button"
                     className="mobile-hamburger"
-                    id="admin-hamburger"
                     aria-label="Open navigation"
-                    aria-expanded="false"
+                    aria-expanded={open}
+                    onClick={() => setDrawerOpen(true)}
                 >
                     <span className="material-symbols-outlined" style={{ fontSize: 22 }}>
                         menu
@@ -97,6 +121,24 @@ export default function AdminSidebar() {
     const { pathname } = useLocation()
     const { language } = useLanguage()
     const ar = language === 'ar'
+    const open = useDrawerOpen()
+
+    // Close the drawer after navigating, and when the page unmounts.
+    useEffect(() => () => setDrawerOpen(false), [pathname])
+
+    // While open: lock page scroll and let Escape close it.
+    useEffect(() => {
+        if (!open) return
+        document.body.style.overflow = 'hidden'
+        const onKey = (e) => {
+            if (e.key === 'Escape') setDrawerOpen(false)
+        }
+        document.addEventListener('keydown', onKey)
+        return () => {
+            document.body.style.overflow = ''
+            document.removeEventListener('keydown', onKey)
+        }
+    }, [open])
 
     const isCurrentActive = (item) => {
         if (item.matchPaths) {
@@ -171,15 +213,15 @@ export default function AdminSidebar() {
 
             {/* Mobile Navigation Drawer */}
             <nav
-                className="mobile-nav-drawer"
-                id="admin-mobile-drawer"
+                className={`mobile-nav-drawer ${open ? 'open' : ''}`}
                 aria-label="Mobile admin navigation"
-                aria-hidden="true"
+                aria-hidden={!open}
             >
                 <button
+                    type="button"
                     className="mobile-nav-close"
-                    id="admin-nav-close"
                     aria-label="Close navigation"
+                    onClick={() => setDrawerOpen(false)}
                 >
                     <span className="material-symbols-outlined">close</span>
                 </button>
@@ -226,9 +268,9 @@ export default function AdminSidebar() {
 
             {/* Mobile Overlay */}
             <div
-                className="mobile-nav-overlay"
-                id="admin-mobile-overlay"
+                className={`mobile-nav-overlay ${open ? 'open' : ''}`}
                 aria-hidden="true"
+                onClick={() => setDrawerOpen(false)}
             />
         </>
     )

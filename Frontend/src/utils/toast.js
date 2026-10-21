@@ -10,7 +10,14 @@ export function toast(message, tone = 'success') {
 
     const el = document.createElement('div')
     el.className = `toast toast-${tone}`
-    el.textContent = message
+    const icon = document.createElement('span')
+    icon.className = 'material-symbols-outlined'
+    icon.setAttribute('aria-hidden', 'true')
+    icon.style.cssText = 'font-size:18px;display:inline-flex;align-items:center;'
+    icon.textContent = tone === 'error' ? 'cancel' : 'check_circle'
+    const text = document.createElement('span')
+    text.textContent = message
+    el.append(icon, text)
     stack.appendChild(el)
 
     requestAnimationFrame(() => el.classList.add('is-visible'))
@@ -19,3 +26,7 @@ export function toast(message, tone = 'success') {
         setTimeout(() => el.remove(), 300)
     }, 2600)
 }
+
+// Older plain-JS page scripts call window.EventifyUI.toast(...); point them here.
+window.EventifyUI = window.EventifyUI || {}
+window.EventifyUI.toast = toast

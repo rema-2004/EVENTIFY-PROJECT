@@ -6,6 +6,7 @@
 import Chart from '../../i18n/chartLocalization'
 import { translateDisplayLabel } from '../../i18n/labelTranslator'
 import './dashboard-data.js'
+import { toast as showToast } from '../../utils/toast'
 
 (function () {
     const getApi = () => window.EventifyAdminAPI;
@@ -21,7 +22,7 @@ import './dashboard-data.js'
     const num = n => n.toLocaleString('en-US');
     const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
     const icon = name => `<span class="material-symbols-outlined" aria-hidden="true">${name}</span>`;
-    const toast = (msg, tone) => (window.EventifyUI ? window.EventifyUI.toast(msg, tone) : null);
+    const toast = (msg, tone) => showToast(msg, tone);
 
     function relativeTime(iso) {
         const diff = (Date.now() - new Date(iso)) / 1000;

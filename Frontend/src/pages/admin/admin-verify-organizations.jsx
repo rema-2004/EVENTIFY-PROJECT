@@ -1,6 +1,5 @@
 import { useState } from 'react'
 import AppPageHead from '../../components/app/AppPageHead'
-import { useAdminPageControls } from './useAdminPageControls.js'
 import { useLanguage } from '../../hooks/useLanguage'
 import { toast } from '../../utils/toast'
 import { apiFetch } from '../../services/api'
@@ -117,7 +116,6 @@ const INITIAL_ORGANIZATIONS = [
 ]
 
 export default function AdminVerifyOrganizations() {
-    useAdminPageControls()
     const { language } = useLanguage()
     const ar = language === 'ar'
 

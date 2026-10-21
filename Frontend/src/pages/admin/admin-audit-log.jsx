@@ -2,14 +2,12 @@ import { useEffect } from 'react'
 import AppPageHead from '../../components/app/AppPageHead'
 import './admin-audit-log-data.js'
 import { initAdminAuditLog } from './admin-audit-log.js'
-import { useAdminPageControls } from './useAdminPageControls.js'
 import AdminSidebar, { AdminMobileHeader } from '../../components/admin/AdminSidebar'
 import AdminTopbar from '../../components/admin/AdminTopbar'
 import '../../styles/admin/admin.css'
 import '../../styles/admin/admin-audit-log.css'
 
 export default function AdminAuditLog() {
-    useAdminPageControls()
     useEffect(() => initAdminAuditLog(), [])
 
     return (

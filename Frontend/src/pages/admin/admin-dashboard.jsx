@@ -2,13 +2,11 @@ import { useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import AppPageHead from '../../components/app/AppPageHead'
 import './dashboard.js'
-import { useAdminPageControls } from './useAdminPageControls.js'
 import AdminSidebar, { AdminMobileHeader } from '../../components/admin/AdminSidebar'
 import AdminTopbar from '../../components/admin/AdminTopbar'
 import '../../styles/admin/admin.css'
 
 export default function AdminDashboard() {
-    useAdminPageControls({ mobileNavigation: false })
     useEffect(() => window.initAdminDashboard(), [])
 
     return (
