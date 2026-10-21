@@ -6,10 +6,12 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\EventRegistrationResource;
 use App\Models\Event;
 use App\Models\EventRegistration;
+use App\Models\TeamMember;
 use App\Traits\ApiResponse;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class EventRegistrationController extends Controller
 {
@@ -87,7 +89,33 @@ class EventRegistrationController extends Controller
             return $this->error('You have no active registration for this event.', 422);
         }
 
-        $registration->update(['status' => EventRegistration::STATUS_CANCELLED]);
+        // Team registrations: keep the roster in sync with the registration.
+        $membership = null;
+
+        if ($registration->team_id) {
+            $membership = TeamMember::where('team_id', $registration->team_id)
+                ->where('user_id', $user->id)
+                ->whereIn('status', [TeamMember::STATUS_PENDING, TeamMember::STATUS_APPROVED])
+                ->first();
+
+            // A leader can't just walk away — the team would be orphaned.
+            // (Dissolving / transferring leadership comes with team management.)
+            if ($membership && $membership->isLeader()) {
+                return $this->error(
+                    'You are the leader of your team and cannot cancel your registration.',
+                    422
+                );
+            }
+        }
+
+        DB::transaction(function () use ($registration, $membership) {
+            $registration->update(['status' => EventRegistration::STATUS_CANCELLED]);
+
+            $membership?->update([
+                'status' => TeamMember::STATUS_LEFT,
+                'responded_at' => now(),
+            ]);
+        });
 
         return $this->success(null, 'Registration cancelled successfully');
     }

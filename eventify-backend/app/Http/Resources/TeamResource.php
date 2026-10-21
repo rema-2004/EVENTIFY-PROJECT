@@ -22,6 +22,12 @@ class TeamResource extends JsonResource
                 'name' => $this->leader->name,
             ]),
             'skills' => $this->whenLoaded('skills', fn () => $this->skills->pluck('name')),
+            // Approved members only. Requires eager-loading 'approvedMembers.user'.
+            'members' => $this->whenLoaded('approvedMembers', fn () => $this->approvedMembers->map(fn ($member) => [
+                'user_id' => $member->user->id,
+                'name' => $member->user->name,
+                'role' => $member->role,
+            ])),
             'created_at' => $this->created_at?->toIso8601String(),
         ];
     }

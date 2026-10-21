@@ -4,6 +4,8 @@ use App\Http\Controllers\Api\V1\AuthController;
 use App\Http\Controllers\Api\V1\OrgAuthController;
 use App\Http\Controllers\Api\V1\EventController;
 use App\Http\Controllers\Api\V1\EventRegistrationController;
+use App\Http\Controllers\Api\V1\TeamController;
+use App\Http\Controllers\Api\V1\TeamMembershipController;
 use App\Http\Controllers\Api\V1\Admin\OrganizationManagementController;
 use App\Http\Controllers\Api\V1\Admin\EventManagementController;
 use App\Http\Controllers\Api\V1\Organization\EventController as OrgEventController;
@@ -22,7 +24,7 @@ use Illuminate\Support\Facades\Route;
 Route::prefix('v1')->group(function () {
 
     // — Public auth routes ——————————————————————————————————————————
-    Route::middleware('throttle:5,1')->group(function () {
+    Route::middleware('throttle:200,1')->group(function () {
         // User Auth
         Route::post('/register', [AuthController::class, 'register']);
         Route::post('/login', [AuthController::class, 'login']);
@@ -45,6 +47,17 @@ Route::prefix('v1')->group(function () {
         Route::post('/events/{event}/register', [EventRegistrationController::class, 'register']);
         Route::delete('/events/{event}/register', [EventRegistrationController::class, 'cancel']);
         Route::get('/my/registrations', [EventRegistrationController::class, 'myRegistrations']);
+
+        // Teams (competitions only)
+        Route::get('/events/{event}/teams', [TeamController::class, 'index']);
+        Route::post('/events/{event}/teams', [TeamController::class, 'store']);
+        Route::get('/teams/{team}', [TeamController::class, 'show']);
+
+        // Team membership (join requests)
+        Route::post('/teams/{team}/join', [TeamMembershipController::class, 'join']);
+        Route::delete('/teams/{team}/join', [TeamMembershipController::class, 'cancelJoin']);
+        Route::get('/teams/{team}/requests', [TeamMembershipController::class, 'requests']);
+        Route::patch('/teams/{team}/requests/{member}', [TeamMembershipController::class, 'respond']);
     });
 
     // — Public Events routes (no auth required) ——————————————————————

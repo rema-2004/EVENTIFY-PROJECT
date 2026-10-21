@@ -11,10 +11,10 @@ use App\Http\Resources\OrganizationResource;
 use App\Models\Organization;
 use App\Traits\ApiResponse;
 use App\Traits\HandlesPasswordReset;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
+use Illuminate\Http\JsonResponse;
 use Laravel\Sanctum\PersonalAccessToken;
 
 class OrgAuthController extends Controller
@@ -33,11 +33,15 @@ class OrgAuthController extends Controller
             'slug' => $this->generateUniqueSlug($validated['name']),
             'email' => $validated['email'],
             'phone' => $validated['phone'] ?? null,
-            'password' => $validated['password'],
-            // status defaults to 'pending' at the DB level.
+            'password' => Hash::make($validated['password']),
+            // Set explicitly (not only as a DB default) so the model — and the
+            // API response built from it — carries the value right after create().
             // Organization CANNOT publish events until an admin approves it.
+            'status' => Organization::STATUS_PENDING,
         ]);
 
+        // Tokens are issued on the "organization" Sanctum guard automatically,
+        // because Organization uses HasApiTokens just like User does.
         $token = $organization->createToken('eventify-org-token')->plainTextToken;
 
         return $this->success([
@@ -154,7 +158,7 @@ class OrgAuthController extends Controller
             return $this->error('This password reset link is invalid or has expired.', 400);
         }
 
-        $organization->update(['password' => $validated['password']]);
+        $organization->update(['password' => Hash::make($validated['password'])]);
 
         $this->deleteResetToken('organization_password_reset_tokens', $validated['email']);
 
@@ -165,7 +169,7 @@ class OrgAuthController extends Controller
 
     /**
      * Generates a unique URL-friendly slug from the organization name.
-     * Appends a numeric suffix (-1, -2, ...) if the base slug is taken.
+     * Appends a random suffix if the base slug is already taken.
      */
     private function generateUniqueSlug(string $name): string
     {
