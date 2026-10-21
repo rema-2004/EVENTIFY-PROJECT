@@ -65,6 +65,7 @@ const OrgSettings = lazy(() => import('./pages/org/org-settings.jsx'))
 const AdminDashboard = lazy(() => import('./pages/admin/admin-dashboard.jsx'))
 const AdminEvents = lazy(() => import('./pages/admin/admin-events.jsx'))
 const AdminEventReviewDetails = lazy(() => import('./pages/admin/admin-event-review-details.jsx'))
+const AdminEventRegistrations = lazy(() => import('./pages/admin/admin-event-registrations.jsx'))
 const AdminUsers = lazy(() => import('./pages/admin/admin-users.jsx'))
 const AdminVerifyOrganizations = lazy(() => import('./pages/admin/admin-verify-organizations.jsx'))
 const AdminCategories = lazy(() => import('./pages/admin/admin-categories.jsx'))
@@ -216,6 +217,8 @@ export default function App() {
                 <Route path="/admin/dashboard" element={<AdminDashboard />} />
                 <Route path="/admin/events" element={<AdminEvents />} />
                 <Route path="/admin/event-review-details" element={<AdminEventReviewDetails />} />
+                <Route path="/admin/events/:eventId" element={<AdminEventReviewDetails />} />
+                <Route path="/admin/events/:eventId/registrations" element={<AdminEventRegistrations />} />
                 <Route path="/admin/users" element={<AdminUsers />} />
                 <Route path="/admin/verify-organizations" element={<AdminVerifyOrganizations />} />
                 <Route path="/admin/categories" element={<AdminCategories />} />

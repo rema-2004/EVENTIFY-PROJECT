@@ -389,7 +389,7 @@ export default function AdminEvents() {
                                     </div>
                                     <div className="flex flex-wrap items-center gap-2 flex-shrink-0">
                                         <Link
-                                            to="/admin/event-review-details"
+                                            to={`/admin/events/${event.id}`}
                                             className="btn-secondary"
                                         >
                                             {ar ? 'عرض التفاصيل' : 'View Details'}
@@ -413,6 +413,15 @@ export default function AdminEvents() {
                                                     <span>{ar ? 'رفض' : 'Reject'}</span>
                                                 </button>
                                             </>
+                                        ) : event.status === 'approved' ? (
+                                            <Link
+                                                to={`/admin/events/${event.id}/registrations`}
+                                                state={{ title: event.title }}
+                                                className="btn-secondary"
+                                            >
+                                                <span className="material-symbols-outlined" style={{ fontSize: 18 }}>group</span>
+                                                <span>{ar ? 'عرض المسجّلين' : 'View Registrations'}</span>
+                                            </Link>
                                         ) : (
                                             <span className="text-xs text-on-surface-variant self-center font-medium px-3 py-1.5 rounded-lg bg-surface-container-low">
                                                 {ar ? 'تم اتخاذ القرار' : 'Decision recorded'}
