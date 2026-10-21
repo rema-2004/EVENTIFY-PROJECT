@@ -7,15 +7,15 @@ use App\Http\Requests\Student\ChangePasswordRequest;
 use App\Http\Requests\Student\UpdateProfileRequest;
 use App\Http\Resources\UserResource;
 use App\Models\AuditLog;
-use App\Models\User;
 use App\Traits\ApiResponse;
+use App\Traits\ResolvesStudent;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\Auth;
 use Laravel\Sanctum\PersonalAccessToken;
 
 class ProfileController extends Controller
 {
     use ApiResponse;
+    use ResolvesStudent;
 
     /**
      * PATCH /api/v1/profile
@@ -95,17 +95,6 @@ class ProfileController extends Controller
         );
 
         return $this->success(null, 'Password changed successfully');
-    }
-
-    /**
-     * auth:sanctum accepts any token type, so an organization token can
-     * reach this controller — only real student accounts are allowed.
-     */
-    private function student(): ?User
-    {
-        $user = Auth::user();
-
-        return $user instanceof User ? $user : null;
     }
 
     private function notStudent(): JsonResponse

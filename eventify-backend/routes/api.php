@@ -33,7 +33,7 @@ use Illuminate\Support\Facades\Route;
 Route::prefix('v1')->group(function () {
 
     // — Public auth routes ——————————————————————————————————————————
-    Route::middleware('throttle:200,1')->group(function () {
+    Route::middleware('throttle:auth')->group(function () {
         // User Auth
         Route::post('/register', [AuthController::class, 'register']);
         Route::post('/login', [AuthController::class, 'login']);
@@ -52,9 +52,11 @@ Route::prefix('v1')->group(function () {
         Route::post('/logout', [AuthController::class, 'logout']);
         Route::get('/me', [AuthController::class, 'me']);
 
-        // Student's own profile and password
-        Route::patch('/profile', [ProfileController::class, 'update']);
-        Route::patch('/password', [ProfileController::class, 'changePassword']);
+        // Student's own profile and password (rate limited: password guessing)
+        Route::middleware('throttle:auth')->group(function () {
+            Route::patch('/profile', [ProfileController::class, 'update']);
+            Route::patch('/password', [ProfileController::class, 'changePassword']);
+        });
 
         // Event registration
         Route::post('/events/{event}/register', [EventRegistrationController::class, 'register']);
@@ -71,6 +73,7 @@ Route::prefix('v1')->group(function () {
         Route::delete('/teams/{team}/join', [TeamMembershipController::class, 'cancelJoin']);
         Route::get('/teams/{team}/requests', [TeamMembershipController::class, 'requests']);
         Route::patch('/teams/{team}/requests/{member}', [TeamMembershipController::class, 'respond']);
+
         // Student's own courses
         Route::get('/my/courses', [CourseController::class, 'index']);
         Route::post('/my/courses', [CourseController::class, 'store']);
@@ -102,8 +105,10 @@ Route::prefix('v1')->group(function () {
         Route::get('/org/dashboard', [DashboardController::class, 'index']);
 
         // Organization's own profile and password
-        Route::patch('/org/profile', [OrgProfileController::class, 'update']);
-        Route::patch('/org/password', [OrgProfileController::class, 'changePassword']);
+        Route::middleware('throttle:auth')->group(function () {
+            Route::patch('/org/profile', [OrgProfileController::class, 'update']);
+            Route::patch('/org/password', [OrgProfileController::class, 'changePassword']);
+        });
 
         // Organization's own events
         Route::get('/org/events', [OrgEventController::class, 'index']);

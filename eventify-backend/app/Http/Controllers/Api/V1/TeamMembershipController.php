@@ -35,6 +35,10 @@ class TeamMembershipController extends Controller
             return $this->error('Team not found.', 404);
         }
 
+        if ($event->competition && ! $event->competition->allowsTeams()) {
+            return $this->error('This competition is for individual participants only.', 422);
+        }
+
         if (! $event->isRegistrationOpen()) {
             return $this->error('Registration is closed for this event.', 422);
         }

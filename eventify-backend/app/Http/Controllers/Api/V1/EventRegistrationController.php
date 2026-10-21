@@ -8,16 +8,16 @@ use App\Models\AuditLog;
 use App\Models\Event;
 use App\Models\EventRegistration;
 use App\Models\TeamMember;
-use App\Models\User;
 use App\Traits\ApiResponse;
+use App\Traits\ResolvesStudent;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class EventRegistrationController extends Controller
 {
     use ApiResponse;
+    use ResolvesStudent;
 
     /**
      * POST /api/v1/events/{event}/register
@@ -195,17 +195,6 @@ class EventRegistrationController extends Controller
         $registrations->through(fn (EventRegistration $r) => new EventRegistrationResource($r));
 
         return $this->successWithPagination($registrations, 'Your registrations retrieved');
-    }
-
-    /**
-     * auth:sanctum accepts any token type, so an organization token can
-     * reach this controller — only real student accounts are allowed.
-     */
-    private function student(): ?User
-    {
-        $user = Auth::user();
-
-        return $user instanceof User ? $user : null;
     }
 
     private function notStudent(): JsonResponse

@@ -93,6 +93,15 @@ class TeamController extends Controller
             );
         }
 
+        // The team capacity must respect the limits the organization set.
+        $competition = $event->competition;
+
+        if ($competition && ! $competition->allowsTeamSize((int) $validated['max_members'])) {
+            return $this->validationError(
+                ['max_members' => [$this->teamSizeMessage($competition)]]
+            );
+        }
+
         // Explicit check instead of letting the unique(event_id, name)
         // constraint throw a raw QueryException (500) at the user.
         $nameTaken = Team::where('event_id', $event->id)
@@ -181,7 +190,23 @@ class TeamController extends Controller
             return $this->error('Teams are only available for competitions.', 422);
         }
 
+        if ($event->competition && ! $event->competition->allowsTeams()) {
+            return $this->error('This competition is for individual participants only.', 422);
+        }
+
         return null;
+    }
+
+    private function teamSizeMessage(\App\Models\Competition $competition): string
+    {
+        $min = $competition->min_team_size;
+        $max = $competition->max_team_size;
+
+        return match (true) {
+            $min !== null && $max !== null => "Team size must be between {$min} and {$max} members.",
+            $min !== null => "Team size must be at least {$min} members.",
+            default => "Team size must be at most {$max} members.",
+        };
     }
 
     /**

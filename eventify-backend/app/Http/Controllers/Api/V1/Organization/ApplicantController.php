@@ -158,6 +158,13 @@ class ApplicantController extends Controller
             return $this->error('Registration not found for this event.', 404);
         }
 
+        // A team registration belongs to the team: its leader approves or
+        // rejects the member, and that decision confirms the registration.
+        // The organization must not change it behind the leader's back.
+        if ($registration->team_id !== null) {
+            return $this->error('Team registrations are managed by the team leader.', 422);
+        }
+
         return null;
     }
 
