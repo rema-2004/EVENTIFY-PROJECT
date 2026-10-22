@@ -1,13 +1,11 @@
 import { useEffect, useRef, useState } from 'react'
 import { useLanguage } from '../../hooks/useLanguage'
-import { apiFetch } from '../../services/api'
 
 // Read-only list of the students registered in one event, for admin
 // oversight (complaints, abuse checks, reports). Approve/reject stays
 // with the organization, so this section has no action buttons.
 
-// Shown while GET /admin/events/{id}/registrations doesn't exist yet (404)
-// or the backend isn't running. Never shown on 401/403.
+// Sample registrations shown in the table (the frontend runs without a backend).
 const MOCK_REGISTRATIONS = [
     { id: 1, status: 'confirmed', registered_at: '2026-10-02T10:15:00Z', user: { name: 'Ahmad Khalil', email: 'ahmad.k@example.com' } },
     { id: 2, status: 'pending', registered_at: '2026-10-05T14:40:00Z', user: { name: 'Sara Haddad', email: 'sara.h@example.com' } },
@@ -37,62 +35,23 @@ const STATUS_BADGE = {
     cancelled: 'badge--cancelled',
 }
 
-export default function EventRegistrationsSection({ eventId }) {
+export default function EventRegistrationsSection() {
     const { language } = useLanguage()
     const ar = language === 'ar'
     const t = (en, arText) => (ar ? arText : en)
     const statusLabel = (status) => STATUS_LABELS[status]?.[ar ? 'ar' : 'en'] ?? status
 
-    const [registrations, setRegistrations] = useState([])
-    const [total, setTotal] = useState(0)
+    // Frontend-only: the table shows the sample registrations (no backend call).
+    const registrations = MOCK_REGISTRATIONS
+    const total = registrations.length
     // selectedFilter updates the <select> right away; filter (what the table
     // shows) switches only after the old rows have faded out.
     const [selectedFilter, setSelectedFilter] = useState('all')
     const [filter, setFilter] = useState('all')
     const [fadingOut, setFadingOut] = useState(false)
     const fadeTimer = useRef(null)
-    const [loading, setLoading] = useState(true)
-    // 'forbidden' (401/403) or 'failed' (other server errors, e.g. 500) — no mock data.
-    const [error, setError] = useState(null)
-
-    useEffect(() => {
-        let cancelled = false
-
-        setLoading(true)
-        setError(null)
-        apiFetch(`/admin/events/${eventId}/registrations`)
-            .then(async (res) => {
-                if (cancelled) return
-                if (res.ok) {
-                    const json = await res.json()
-                    const items = json.data ?? []
-                    setRegistrations(items)
-                    setTotal(json.meta?.total ?? items.length)
-                } else if (res.status === 404) {
-                    // Endpoint not built on the backend yet.
-                    setRegistrations(MOCK_REGISTRATIONS)
-                    setTotal(MOCK_REGISTRATIONS.length)
-                } else {
-                    setRegistrations([])
-                    setTotal(0)
-                    setError(res.status === 401 || res.status === 403 ? 'forbidden' : 'failed')
-                }
-            })
-            .catch(() => {
-                // Backend not running (network error) — show sample data so the
-                // page can still be developed and demoed from the frontend alone.
-                if (cancelled) return
-                setRegistrations(MOCK_REGISTRATIONS)
-                setTotal(MOCK_REGISTRATIONS.length)
-            })
-            .finally(() => {
-                if (!cancelled) setLoading(false)
-            })
-
-        return () => {
-            cancelled = true
-        }
-    }, [eventId])
+    const loading = false
+    const error = null
 
     useEffect(() => () => clearTimeout(fadeTimer.current), [])
 

@@ -3,13 +3,11 @@ import { Link, useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import AuthLayout from '../../layouts/AuthLayout'
 import { useOnboarding } from '../../context/OnboardingContext'
-import { apiFetch, saveSession } from '../../services/api'
 
 const isEmail = (v) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)
 const isPhone = (v) => /^[+]?([0-9][\s-()]*){7,15}$/.test(v)
-// Demo-only login used when the backend can't be reached (see handleSubmit).
-const DEMO_ADMIN_EMAIL = 'admin@eventify.com'
-const DEMO_ADMIN_PASSWORD = 'admin123'
+const ADMIN_EMAIL = 'admin@eventify.com'
+const ADMIN_PASSWORD = 'admin123'
 
 function Visual({ t }) {
     return (
@@ -81,54 +79,7 @@ export default function Login() {
         setAuthError('')
     }
 
-    // Asks the backend to log in. Returns the page to open, null when the
-    // credentials were refused (error already shown), or throws when the
-    // server can't be reached.
-    async function loginWithApi(idValue) {
-        const isOrg = role === 'organization'
-        const res = await apiFetch(isOrg ? '/org/login' : '/login', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(
-                isOrg ? { email: idValue, password } : { login: idValue, password },
-            ),
-        })
-        const json = await res.json().catch(() => ({}))
-
-        if (!res.ok) {
-            // 403 = suspended / rejected account, 429 = too many attempts:
-            // the backend's message explains it. Anything else is bad credentials.
-            setAuthError(
-                (res.status === 403 || res.status === 429) && json.message
-                    ? json.message
-                    : t('auth.login.invalidCredentials'),
-            )
-            return null
-        }
-
-        if (isOrg) {
-            saveSession({ token: json.data.token, accountType: 'organization', role: 'organization' })
-            return '/org/dashboard'
-        }
-        const userRole = json.data.user?.role
-        saveSession({ token: json.data.token, accountType: 'user', role: userRole })
-        return userRole === 'admin' ? '/admin/dashboard' : '/app'
-    }
-
-    // Old front-end-only behaviour, kept so the app can still be demoed
-    // without the backend running.
-    function demoDestination(idValue) {
-        const pwValue = password.trim().toLowerCase()
-        if (idValue === 'error@example.com' || pwValue === 'invalidpass') {
-            setAuthError(t('auth.login.invalidCredentials'))
-            return null
-        }
-        return idValue === DEMO_ADMIN_EMAIL && pwValue === DEMO_ADMIN_PASSWORD
-            ? '/admin/dashboard'
-            : roleConfig.dest
-    }
-
-    async function handleSubmit(e) {
+    function handleSubmit(e) {
         e.preventDefault()
         const idErr = validateIdentifier(identifier)
         const pwErr = validatePassword(password)
@@ -138,19 +89,15 @@ export default function Login() {
         if (idErr || pwErr) return
 
         const idValue = identifier.trim().toLowerCase()
-        setSubmitting(true)
-
-        let destination
-        try {
-            destination = await loginWithApi(idValue)
-        } catch {
-            // Network error: backend not running.
-            destination = demoDestination(idValue)
-        }
-        if (!destination) {
-            setSubmitting(false)
+        const pwValue = password.trim().toLowerCase()
+        if (idValue === 'error@example.com' || pwValue === 'invalidpass') {
+            setAuthError(t('auth.login.invalidCredentials'))
             return
         }
+
+        const destination = idValue === ADMIN_EMAIL && pwValue === ADMIN_PASSWORD
+            ? '/admin/dashboard'
+            : roleConfig.dest
 
         if (destination === '/app') {
             localStorage.setItem('eventify_current_participant', idValue)
@@ -176,8 +123,11 @@ export default function Login() {
             }
         }
 
-        setSubmitting(false)
-        navigate(destination)
+        setSubmitting(true)
+        window.setTimeout(() => {
+            setSubmitting(false)
+            navigate(destination)
+        }, 800)
     }
 
     const canSubmit = identifier.trim() && password.trim()

@@ -2,7 +2,6 @@ import { useState } from 'react'
 import AppPageHead from '../../components/app/AppPageHead'
 import { useLanguage } from '../../hooks/useLanguage'
 import { toast } from '../../utils/toast'
-import { apiFetch } from '../../services/api'
 import AnimatedCounter from '../../components/shared/AnimatedCounter'
 import AdminSidebar, { AdminMobileHeader } from '../../components/admin/AdminSidebar'
 import AdminTopbar from '../../components/admin/AdminTopbar'
@@ -155,39 +154,19 @@ export default function AdminVerifyOrganizations() {
         setDownloadingLicense(true)
         toast(ar ? `جاري تحميل رخصة ${org.name}...` : `Fetching license for ${org.name}...`, 'info')
 
-        // The license is a file download, so don't ask for JSON.
-        apiFetch(`/admin/organizations/${org.id}/license`, { headers: { Accept: '*/*' } })
-            .then((res) => {
-                if (res.ok) return res.blob()
-                throw new Error('Fallback to local generated document preview')
-            })
-            .then((blob) => {
-                const url = window.URL.createObjectURL(blob)
-                const a = document.createElement('a')
-                a.href = url
-                a.download = org.licenseDoc?.fileName || `license-${org.slug || org.id}.pdf`
-                document.body.appendChild(a)
-                a.click()
-                a.remove()
-                window.URL.revokeObjectURL(url)
-                toast(ar ? 'تم تحميل ملف الرخصة بنجاح' : 'License downloaded successfully', 'success')
-            })
-            .catch(() => {
-                const content = `EVENTIFY OFFICIAL VERIFICATION CERTIFICATE\n=============================================\nOrganization: ${org.name}\nDocument Title: ${org.licenseDoc?.title}\nLicense/Registration No: ${org.licenseDoc?.number}\nIssuing Authority: ${org.licenseDoc?.issuingAuthority}\nAuthorized Representative: ${org.licenseDoc?.representative}\nStatus: VERIFIED & AUTHENTICATED\nBackend Route: /api/v1/admin/organizations/${org.id}/license\nIssued: ${org.licenseDoc?.issuedDate}\nVerification Hash: ${org.licenseDoc?.hash || 'SHA256: 8F4B99A1'}`
-                const blob = new Blob([content], { type: 'text/plain;charset=utf-8' })
-                const url = window.URL.createObjectURL(blob)
-                const a = document.createElement('a')
-                a.href = url
-                a.download = org.licenseDoc?.fileName?.replace('.pdf', '.txt') || `license-${org.slug || org.id}.txt`
-                document.body.appendChild(a)
-                a.click()
-                a.remove()
-                window.URL.revokeObjectURL(url)
-                toast(ar ? 'تم تحميل نسخة الوثيقة الرسمية' : 'Official license copy downloaded', 'success')
-            })
-            .finally(() => {
-                setDownloadingLicense(false)
-            })
+        // Frontend-only: build the license copy locally instead of fetching it.
+        const content = `EVENTIFY OFFICIAL VERIFICATION CERTIFICATE\n=============================================\nOrganization: ${org.name}\nDocument Title: ${org.licenseDoc?.title}\nLicense/Registration No: ${org.licenseDoc?.number}\nIssuing Authority: ${org.licenseDoc?.issuingAuthority}\nAuthorized Representative: ${org.licenseDoc?.representative}\nStatus: VERIFIED & AUTHENTICATED\nIssued: ${org.licenseDoc?.issuedDate}\nVerification Hash: ${org.licenseDoc?.hash || 'SHA256: 8F4B99A1'}`
+        const blob = new Blob([content], { type: 'text/plain;charset=utf-8' })
+        const url = window.URL.createObjectURL(blob)
+        const a = document.createElement('a')
+        a.href = url
+        a.download = org.licenseDoc?.fileName?.replace('.pdf', '.txt') || `license-${org.slug || org.id}.txt`
+        document.body.appendChild(a)
+        a.click()
+        a.remove()
+        window.URL.revokeObjectURL(url)
+        toast(ar ? 'تم تحميل نسخة الوثيقة الرسمية' : 'Official license copy downloaded', 'success')
+        setDownloadingLicense(false)
     }
 
     const pendingCount = organizations.filter((o) => o.status === 'pending').length

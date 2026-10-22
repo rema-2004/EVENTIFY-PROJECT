@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import LangToggleBtn from '../org/LangToggleBtn'
-import { apiFetch, clearSession, getToken } from '../../services/api'
 
 // Notifications shown in the bell dropdown (static until there's a notifications API).
 const NOTIFICATIONS = [
@@ -33,12 +32,6 @@ export default function AdminTopbar({ title }) {
             document.removeEventListener('keydown', onKey)
         }
     }, [openMenu])
-
-    // Revoke the token on the server (best effort) and forget it locally.
-    const signOut = () => {
-        if (getToken()) apiFetch('/logout', { method: 'POST' }).catch(() => {})
-        clearSession()
-    }
 
     // Clicking a link inside a dropdown closes it.
     const closeOnLink = (e) => {
@@ -161,7 +154,6 @@ export default function AdminTopbar({ title }) {
                         <Link
                             className="org-dropdown__item text-error hover:bg-error/10"
                             to="/auth/login"
-                            onClick={signOut}
                         >
                             <span
                                 className="material-symbols-outlined text-[18px] text-error"
