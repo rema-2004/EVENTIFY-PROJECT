@@ -1814,9 +1814,9 @@
             "thankYou": "Thank you for registering your organization with",
             "created": "Your organization account has been created successfully. It is currently under review by our administration team.",
             "emailNotice": "Once your account is approved, we'll send an email to your registered address so you can activate your account and start publishing events.",
-            "redirecting": "Redirecting to the home page in",
+            "redirecting": "Redirecting to your dashboard in",
             "secondsSuffix": "seconds...",
-            "goHome": "Go to home"
+            "goHome": "Go to dashboard"
         }
     },
     "legal": {

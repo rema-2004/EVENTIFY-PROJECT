@@ -18,7 +18,7 @@ import './styles/org/org-reports.css'
 import './styles/admin/admin-reports.css'
 import './styles/admin/admin-audit-log.css'
 import { lazy, Suspense, useEffect } from 'react'
-import { Route, Routes } from 'react-router-dom'
+import { Navigate, Route, Routes } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import VisitorLayout from './layouts/VisitorLayout'
 import OrgLayout from './layouts/OrgLayout'
@@ -221,6 +221,7 @@ export default function App() {
                         </ProtectedRoute>
                     }
                 >
+                    <Route index element={<Navigate to="dashboard" replace />} />
                     <Route path="dashboard" element={<OrgDashboard />} />
                     <Route path="posts" element={<OrgPosts />} />
                     <Route path="profile" element={<OrgProfile />} />
@@ -240,6 +241,7 @@ export default function App() {
                         </ProtectedRoute>
                     }
                 >
+                    <Route index element={<Navigate to="dashboard" replace />} />
                     <Route path="dashboard" element={<AdminDashboard />} />
                     <Route path="events" element={<AdminEvents />} />
                     <Route path="event-review-details" element={<AdminEventReviewDetails />} />
