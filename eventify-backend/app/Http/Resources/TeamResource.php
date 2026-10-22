@@ -17,6 +17,11 @@ class TeamResource extends JsonResource
             'approved_members_count' => $this->whenCounted('approvedMembers'),
             'is_recruiting' => $this->is_recruiting,
             'status' => $this->status,
+            'submission_status' => $this->submission_status,
+            'submitted_at' => $this->submitted_at?->toIso8601String(),
+            'reviewed_at' => $this->reviewed_at?->toIso8601String(),
+            // Shown so the leader knows what to fix before resubmitting.
+            'rejection_reason' => $this->rejection_reason,
             'leader' => $this->whenLoaded('leader', fn () => [
                 'id' => $this->leader->id,
                 'name' => $this->leader->name,

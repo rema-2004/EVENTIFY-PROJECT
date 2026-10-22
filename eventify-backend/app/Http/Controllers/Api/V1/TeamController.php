@@ -4,12 +4,15 @@ namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Team\StoreTeamRequest;
+use App\Http\Requests\Team\TransferLeadershipRequest;
 use App\Http\Resources\TeamResource;
 use App\Models\Event;
 use App\Models\EventRegistration;
 use App\Models\Skill;
 use App\Models\Team;
 use App\Models\TeamMember;
+use App\Models\User;
+use App\Notifications\PlatformNotification;
 use App\Traits\ApiResponse;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -123,6 +126,7 @@ class TeamController extends Controller
                 'max_members' => $validated['max_members'],
                 'is_recruiting' => $validated['is_recruiting'] ?? true,
                 'status' => Team::STATUS_OPEN,
+                'submission_status' => Team::SUBMISSION_DRAFT,
             ]);
 
             // The leader is approved from the start — they don't need to
@@ -142,7 +146,8 @@ class TeamController extends Controller
                 ['event_id' => $event->id, 'user_id' => $user->id],
                 [
                     'team_id' => $team->id,
-                    'status' => EventRegistration::STATUS_CONFIRMED,
+                    // Pending until the organization approves the whole team.
+                    'status' => EventRegistration::STATUS_PENDING,
                     'registered_at' => now(),
                 ]
             );
@@ -158,6 +163,135 @@ class TeamController extends Controller
         $team->load(['leader', 'skills', 'approvedMembers.user']);
 
         return $this->success(new TeamResource($team), 'Team created successfully', 201);
+    }
+
+    /**
+     * POST /api/v1/teams/{team}/submit   (leader only)
+     *
+     * Sends the finished team to the organization for review. After this
+     * the roster is locked until the organization answers.
+     */
+    public function submit(Team $team): JsonResponse
+    {
+        if (! $team->isLedBy(Auth::id())) {
+            return $this->error('Only the team leader can submit the team.', 403);
+        }
+
+        $event = $team->event;
+
+        if (! $event || ! $event->isPublished() || ! $event->isCompetition()) {
+            return $this->error('Team not found.', 404);
+        }
+
+        if (! $event->isRegistrationOpen()) {
+            return $this->error('Registration is closed for this event.', 422);
+        }
+
+        if (! $team->isEditable()) {
+            return $this->error(
+                $team->isApproved()
+                    ? 'This team is already approved.'
+                    : 'This team was already submitted and is waiting for the organization.',
+                422
+            );
+        }
+
+        if ($team->pendingRequests()->exists()) {
+            return $this->error('Respond to all pending join requests before submitting the team.', 422);
+        }
+
+        $minimum = $event->competition?->min_team_size ?? 1;
+
+        if ($team->approvedMembersCount() < $minimum) {
+            return $this->error("Your team needs at least {$minimum} approved members before it can be submitted.", 422);
+        }
+
+        DB::transaction(function () use ($team) {
+            $locked = Team::whereKey($team->id)->lockForUpdate()->first();
+
+            if (! $locked->isEditable()) {
+                abort(response()->json([
+                    'success' => false,
+                    'message' => 'This team was already submitted.',
+                ], 422));
+            }
+
+            $locked->update([
+                'submission_status' => Team::SUBMISSION_SUBMITTED,
+                'submitted_at' => now(),
+                'reviewed_at' => null,
+                'rejection_reason' => null,
+                'is_recruiting' => false,
+            ]);
+        });
+
+        PlatformNotification::send(
+            $event->organization,
+            'team_submitted',
+            "The team \"{$team->name}\" was submitted for \"{$event->title}\" and is waiting for your review.",
+            ['event_id' => $event->id, 'event_slug' => $event->slug, 'team_id' => $team->id],
+        );
+
+        $team->refresh()->loadCount('approvedMembers');
+        $team->load(['leader', 'skills', 'approvedMembers.user']);
+
+        return $this->success(new TeamResource($team), 'Team submitted to the organization.');
+    }
+
+    /**
+     * PATCH /api/v1/teams/{team}/leader   (leader only)
+     * Body: { "user_id": 12 }
+     *
+     * Hands the leadership to another approved member of the team.
+     */
+    public function transferLeadership(TransferLeadershipRequest $request, Team $team): JsonResponse
+    {
+        if (! $team->isLedBy(Auth::id())) {
+            return $this->error('Only the team leader can transfer the leadership.', 403);
+        }
+
+        $newLeaderId = (int) $request->validated()['user_id'];
+
+        if ($newLeaderId === Auth::id()) {
+            return $this->error('You are already the leader of this team.', 422);
+        }
+
+        DB::transaction(function () use ($team, $newLeaderId) {
+            $locked = Team::whereKey($team->id)->lockForUpdate()->first();
+
+            $target = TeamMember::where('team_id', $locked->id)
+                ->where('user_id', $newLeaderId)
+                ->where('status', TeamMember::STATUS_APPROVED)
+                ->lockForUpdate()
+                ->first();
+
+            if (! $target) {
+                abort(response()->json([
+                    'success' => false,
+                    'message' => 'The new leader must be an approved member of this team.',
+                ], 422));
+            }
+
+            TeamMember::where('team_id', $locked->id)
+                ->where('user_id', $locked->created_by)
+                ->update(['role' => TeamMember::ROLE_MEMBER]);
+
+            $target->update(['role' => TeamMember::ROLE_LEADER]);
+
+            $locked->update(['created_by' => $newLeaderId]);
+        });
+
+        PlatformNotification::send(
+            User::find($newLeaderId),
+            'team_leader_changed',
+            "You are now the leader of the team \"{$team->name}\".",
+            ['team_id' => $team->id, 'event_id' => $team->event_id],
+        );
+
+        $team->refresh()->loadCount('approvedMembers');
+        $team->load(['leader', 'skills', 'approvedMembers.user']);
+
+        return $this->success(new TeamResource($team), 'Leadership transferred.');
     }
 
     /**

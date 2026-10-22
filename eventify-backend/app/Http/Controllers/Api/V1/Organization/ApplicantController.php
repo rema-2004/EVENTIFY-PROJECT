@@ -8,6 +8,7 @@ use App\Http\Resources\EventRegistrationResource;
 use App\Models\AuditLog;
 use App\Models\Event;
 use App\Models\EventRegistration;
+use App\Notifications\PlatformNotification;
 use App\Traits\ApiResponse;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -81,6 +82,13 @@ class ApplicantController extends Controller
 
         $reviewed->load('user');
 
+        PlatformNotification::send(
+            $reviewed->user,
+            'registration_approved',
+            "You are registered and accepted for \"{$event->title}\".",
+            ['event_id' => $event->id, 'event_slug' => $event->slug],
+        );
+
         return $this->success(new EventRegistrationResource($reviewed), 'Applicant approved successfully');
     }
 
@@ -119,6 +127,13 @@ class ApplicantController extends Controller
         );
 
         $reviewed->load('user');
+
+        PlatformNotification::send(
+            $reviewed->user,
+            'registration_rejected',
+            "Your registration for \"{$event->title}\" was not accepted. Reason: {$reason}",
+            ['event_id' => $event->id, 'event_slug' => $event->slug, 'reason' => $reason],
+        );
 
         return $this->success(new EventRegistrationResource($reviewed), 'Applicant rejected successfully');
     }

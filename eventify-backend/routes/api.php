@@ -16,6 +16,8 @@ use App\Http\Controllers\Api\V1\Admin\AuditLogController;
 use App\Http\Controllers\Api\V1\Admin\UserManagementController;
 use App\Http\Controllers\Api\V1\Organization\EventController as OrgEventController;
 use App\Http\Controllers\Api\V1\Organization\ApplicantController;
+use App\Http\Controllers\Api\V1\Organization\TeamReviewController;
+use App\Http\Controllers\Api\V1\NotificationController;
 use App\Http\Controllers\Api\V1\Organization\DashboardController;
 use App\Http\Controllers\Api\V1\Organization\ProfileController as OrgProfileController;
 use Illuminate\Support\Facades\Route;
@@ -67,12 +69,19 @@ Route::prefix('v1')->group(function () {
         Route::get('/events/{event}/teams', [TeamController::class, 'index']);
         Route::post('/events/{event}/teams', [TeamController::class, 'store']);
         Route::get('/teams/{team}', [TeamController::class, 'show']);
+        Route::post('/teams/{team}/submit', [TeamController::class, 'submit']);
+        Route::patch('/teams/{team}/leader', [TeamController::class, 'transferLeadership']);
 
         // Team membership (join requests)
         Route::post('/teams/{team}/join', [TeamMembershipController::class, 'join']);
         Route::delete('/teams/{team}/join', [TeamMembershipController::class, 'cancelJoin']);
         Route::get('/teams/{team}/requests', [TeamMembershipController::class, 'requests']);
         Route::patch('/teams/{team}/requests/{member}', [TeamMembershipController::class, 'respond']);
+
+        // Student's notifications
+        Route::get('/notifications', [NotificationController::class, 'index']);
+        Route::patch('/notifications/read-all', [NotificationController::class, 'markAllAsRead']);
+        Route::patch('/notifications/{id}/read', [NotificationController::class, 'markAsRead']);
 
         // Student's own courses
         Route::get('/my/courses', [CourseController::class, 'index']);
@@ -121,6 +130,16 @@ Route::prefix('v1')->group(function () {
         Route::get('/org/events/{event}/registrations', [ApplicantController::class, 'index']);
         Route::patch('/org/events/{event}/registrations/{registration}/approve', [ApplicantController::class, 'approve']);
         Route::patch('/org/events/{event}/registrations/{registration}/reject', [ApplicantController::class, 'reject']);
+
+        // Teams of the organization's competitions (review whole teams)
+        Route::get('/org/events/{event}/teams', [TeamReviewController::class, 'index']);
+        Route::patch('/org/events/{event}/teams/{team}/approve', [TeamReviewController::class, 'approve']);
+        Route::patch('/org/events/{event}/teams/{team}/reject', [TeamReviewController::class, 'reject']);
+
+        // Organization's notifications
+        Route::get('/org/notifications', [NotificationController::class, 'index']);
+        Route::patch('/org/notifications/read-all', [NotificationController::class, 'markAllAsRead']);
+        Route::patch('/org/notifications/{id}/read', [NotificationController::class, 'markAsRead']);
     });
 
     // — Protected Admin routes (require Bearer token + role=admin) ————————

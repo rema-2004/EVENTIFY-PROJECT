@@ -7,6 +7,7 @@ use App\Http\Resources\EventRegistrationResource;
 use App\Models\AuditLog;
 use App\Models\Event;
 use App\Models\EventRegistration;
+use App\Models\Team;
 use App\Models\TeamMember;
 use App\Traits\ApiResponse;
 use App\Traits\ResolvesStudent;
@@ -143,7 +144,15 @@ class EventRegistrationController extends Controller
             // (Dissolving / transferring leadership comes with team management.)
             if ($membership && $membership->isLeader()) {
                 return $this->error(
-                    'You are the leader of your team and cannot cancel your registration.',
+                    'You are the leader of your team and cannot cancel your registration. Transfer the leadership first.',
+                    422
+                );
+            }
+
+            // While the organization reviews the team, the roster is frozen.
+            if ($membership && Team::whereKey($registration->team_id)->first()?->isSubmitted()) {
+                return $this->error(
+                    'Your team is under review. You cannot leave until the organization responds.',
                     422
                 );
             }

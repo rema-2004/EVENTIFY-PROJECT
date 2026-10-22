@@ -18,6 +18,13 @@ class Team extends Model
     public const STATUS_CLOSED = 'closed';
     public const STATUS_DISQUALIFIED = 'disqualified';
 
+    // Team submission flow: the leader builds the team, submits it to the
+    // organization, and the organization approves or rejects the whole team.
+    public const SUBMISSION_DRAFT = 'draft';
+    public const SUBMISSION_SUBMITTED = 'submitted';
+    public const SUBMISSION_APPROVED = 'approved';
+    public const SUBMISSION_REJECTED = 'rejected';
+
     // Note: role constants (leader/member) live ONLY in TeamMember,
     // since "role" is a column on team_members, not on this table.
     // Always reference TeamMember::ROLE_LEADER, never duplicate it here.
@@ -30,12 +37,18 @@ class Team extends Model
         'max_members',
         'is_recruiting',
         'status',
+        'submission_status',
+        'submitted_at',
+        'reviewed_at',
+        'rejection_reason',
     ];
 
     protected function casts(): array
     {
         return [
             'is_recruiting' => 'boolean',
+            'submitted_at' => 'datetime',
+            'reviewed_at' => 'datetime',
         ];
     }
 
@@ -103,7 +116,32 @@ class Team extends Model
 
     public function canAcceptNewMember(): bool
     {
-        return $this->isOpen() && $this->is_recruiting && ! $this->isFull();
+        return $this->isOpen()
+            && $this->isEditable()
+            && $this->is_recruiting
+            && ! $this->isFull();
+    }
+
+    /**
+     * The roster can change only before the team is submitted, or after
+     * the organization rejected it (so the leader can fix it and resubmit).
+     */
+    public function isEditable(): bool
+    {
+        return in_array($this->submission_status, [
+            self::SUBMISSION_DRAFT,
+            self::SUBMISSION_REJECTED,
+        ], true);
+    }
+
+    public function isSubmitted(): bool
+    {
+        return $this->submission_status === self::SUBMISSION_SUBMITTED;
+    }
+
+    public function isApproved(): bool
+    {
+        return $this->submission_status === self::SUBMISSION_APPROVED;
     }
 
     /**
@@ -134,7 +172,13 @@ class Team extends Model
     // ── Scopes ────────────────────────────────────────────────
     public function scopeRecruiting(Builder $query): Builder
     {
-        return $query->where('status', self::STATUS_OPEN)->where('is_recruiting', true);
+        return $query->where('status', self::STATUS_OPEN)
+            ->where('is_recruiting', true)
+            // Teams under review or already approved never show up here.
+            ->whereIn('submission_status', [
+                self::SUBMISSION_DRAFT,
+                self::SUBMISSION_REJECTED,
+            ]);
     }
 
     public function scopeOpen(Builder $query): Builder

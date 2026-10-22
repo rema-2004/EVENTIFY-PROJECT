@@ -187,14 +187,8 @@ class TeamMembershipController extends Controller
                     'responded_at' => now(),
                 ]);
 
-                EventRegistration::updateOrCreate(
-                    ['event_id' => $lockedTeam->event_id, 'user_id' => $lockedMember->user_id],
-                    [
-                        'team_id' => $lockedTeam->id,
-                        'status' => EventRegistration::STATUS_CONFIRMED,
-                        'registered_at' => now(),
-                    ]
-                );
+                // The member's event registration stays pending: it is
+                // confirmed only when the organization approves the team.
 
                 // Team just filled up → stop showing it in "Available Teams".
                 if ($lockedTeam->isFull()) {
