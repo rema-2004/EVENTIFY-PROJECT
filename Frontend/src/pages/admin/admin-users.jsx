@@ -1,12 +1,99 @@
-import { Link } from 'react-router-dom'
+import { useState } from 'react'
 import AppPageHead from '../../components/app/AppPageHead'
-import { useAdminPageControls } from './useAdminPageControls.js'
 import AdminSidebar, { AdminMobileHeader } from '../../components/admin/AdminSidebar'
-import LangToggleBtn from '../../components/org/LangToggleBtn'
+import AdminTopbar from '../../components/admin/AdminTopbar'
+import { useLanguage } from '../../hooks/useLanguage'
+import { toast } from '../../utils/toast'
 import '../../styles/admin/admin.css'
 
+const PAGE_SIZE = 5
+
+const ROLE_TABS = [
+    { role: 'all', en: 'All', ar: 'الكل' },
+    { role: 'organizer', en: 'Organizers', ar: 'المنظمون' },
+    { role: 'participant', en: 'Participants', ar: 'المشاركون' },
+]
+
+const ROLE_LABELS = {
+    organizer: { en: 'Organizer', ar: 'منظم' },
+    participant: { en: 'Participant', ar: 'مشارك' },
+}
+
+const STATUS_LABELS = {
+    active: { en: 'active', ar: 'نشط' },
+    suspended: { en: 'suspended', ar: 'معلّق' },
+}
+
+const INITIAL_USERS = [
+    { id: 1, name: 'Sarah Chen', email: 'sarah.chen@eventify.io', role: 'participant', status: 'active' },
+    { id: 2, name: 'TechGenius Labs', email: 'contact@techgenius.io', role: 'organizer', status: 'active' },
+    { id: 3, name: 'Marcus Thorne', email: 'marcus.t@eventify.io', role: 'participant', status: 'active' },
+    { id: 4, name: 'Kevin Park', email: 'kevin.park@eventify.io', role: 'participant', status: 'suspended' },
+    { id: 5, name: 'DesignHub Amman', email: 'hello@designhub.jo', role: 'organizer', status: 'active' },
+    { id: 6, name: 'Layla Mahmoud', email: 'layla.m@eventify.io', role: 'participant', status: 'active' },
+    { id: 7, name: 'CodeCraft Academy', email: 'info@codecraft.org', role: 'organizer', status: 'active' },
+    { id: 8, name: 'Omar Farooq', email: 'omar.f@eventify.io', role: 'participant', status: 'active' },
+    { id: 9, name: 'NextGen Robotics', email: 'contact@nextgenrobotics.io', role: 'organizer', status: 'active' },
+    { id: 10, name: 'Dana Al-Hassan', email: 'dana.h@eventify.io', role: 'participant', status: 'suspended' },
+    { id: 11, name: 'Tariq Mansour', email: 'tariq.m@eventify.io', role: 'participant', status: 'active' },
+    { id: 12, name: 'CloudScale Solutions', email: 'support@cloudscale.net', role: 'organizer', status: 'active' },
+    { id: 13, name: 'Rania Qasim', email: 'rania.q@eventify.io', role: 'participant', status: 'active' },
+    { id: 14, name: 'CyberShield Jordan', email: 'hello@cybershield.jo', role: 'organizer', status: 'active' },
+    { id: 15, name: 'Zaid Al-Najjar', email: 'zaid.n@eventify.io', role: 'participant', status: 'active' },
+]
+
 export default function AdminUsers() {
-    useAdminPageControls()
+    const { language } = useLanguage()
+    const ar = language === 'ar'
+    const t = (en, arText) => (ar ? arText : en)
+    const label = (map, key) => map[key]?.[ar ? 'ar' : 'en'] ?? key
+
+    const [users, setUsers] = useState(INITIAL_USERS)
+    const [roleFilter, setRoleFilter] = useState('all')
+    const [search, setSearch] = useState('')
+    const [page, setPage] = useState(1)
+
+    // Filtering and paging are derived from state on every render.
+    const query = search.trim().toLowerCase()
+    const matching = users.filter(
+        (u) =>
+            (roleFilter === 'all' || u.role === roleFilter) &&
+            (!query || `${u.name} ${u.email}`.toLowerCase().includes(query)),
+    )
+    const totalPages = Math.max(1, Math.ceil(matching.length / PAGE_SIZE))
+    const currentPage = Math.min(page, totalPages)
+    const start = (currentPage - 1) * PAGE_SIZE
+    const pageUsers = matching.slice(start, start + PAGE_SIZE)
+
+    const changeRole = (role) => {
+        setRoleFilter(role)
+        setPage(1)
+    }
+
+    const changeSearch = (value) => {
+        setSearch(value)
+        setPage(1)
+    }
+
+    const setStatus = (user, status) => {
+        setUsers((prev) => prev.map((u) => (u.id === user.id ? { ...u, status } : u)))
+        if (status === 'suspended') toast(t(`${user.name} suspended`, `تم تعليق حساب ${user.name}`), 'error')
+        else toast(t(`${user.name} reinstated`, `تمت إعادة تفعيل حساب ${user.name}`), 'success')
+    }
+
+    const deleteUser = (user) => {
+        if (!window.confirm(t('Delete this record? This cannot be undone.', 'حذف هذا السجل؟ لا يمكن التراجع عن ذلك.'))) return
+        setUsers((prev) => prev.filter((u) => u.id !== user.id))
+        toast(t(`${user.name} deleted`, `تم حذف ${user.name}`), 'error')
+    }
+
+    const countLabel = matching.length === 0
+        ? t('0 users', '0 مستخدم')
+        : t(
+            `Showing ${start + 1}–${start + pageUsers.length} of ${matching.length} users`,
+            `عرض ${start + 1}–${start + pageUsers.length} من ${matching.length} مستخدم`,
+        )
+
     return (
         <>
             <AppPageHead title="Manage Users | EVENTIFY" />
@@ -14,871 +101,158 @@ export default function AdminUsers() {
             <div className="flex">
                 <AdminSidebar />
                 <main className="flex-1 w-full px-4 md:px-10 pt-6 pb-24 lg:pb-8">
-                    {/* Global Top Header: page title (left) + global controls (right) */}
-                    <div className="admin-topbar">
-                        <h1 className="admin-topbar__title">Manage Users</h1>
-                        <div className="admin-topbar__right">
-                            <div className="org-dropdown">
-                                <button
-                                    className="icon-btn"
-                                    id="admin-notif-toggle"
-                                    type="button"
-                                    aria-label="Notifications (3 unread)"
-                                    aria-expanded="false"
-                                >
-                                    <span className="material-symbols-outlined">notifications</span>
-                                    <span className="icon-btn__dot" />
-                                </button>
-                                <div
-                                    className="org-dropdown__panel org-dropdown__panel--notif"
-                                    id="admin-notif-panel"
-                                    hidden=""
-                                    role="menu"
-                                    aria-label="Notifications"
-                                >
-                                    <div className="flex items-center justify-between px-3 py-2 border-b border-outline-variant/40 mb-1">
-                                        <span className="font-semibold text-xs text-on-surface">
-                                            Notifications
-                                        </span>
-                                        <span className="text-[11px] font-semibold text-primary bg-primary/10 px-2 py-0.5 rounded-full">
-                                            3 unread
-                                        </span>
-                                    </div>
-                                    <div className="space-y-1">
-                                        <Link
-                                            className="org-dropdown__item"
-                                            to="/admin/verify-organizations"
-                                        >
-                                            <span
-                                                className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0"
-                                                style={{
-                                                    background: "var(--surface-2)",
-                                                    color: "var(--accent)"
-                                                }}
-                                            >
-                                                <span
-                                                    className="material-symbols-outlined text-[18px]"
-                                                    aria-hidden="true"
-                                                >
-                                                    verified
-                                                </span>
-                                            </span>
-                                            <span className="flex-1 min-w-0">
-                                                <span className="block font-medium text-xs leading-snug">
-                                                    DesignHub Amman is awaiting verification
-                                                </span>
-                                                <span className="org-dropdown__meta">1 hour ago</span>
-                                            </span>
-                                        </Link>
-                                        <Link className="org-dropdown__item" to="/admin/reports">
-                                            <span
-                                                className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0"
-                                                style={{
-                                                    background: "var(--surface-2)",
-                                                    color: "var(--accent)"
-                                                }}
-                                            >
-                                                <span
-                                                    className="material-symbols-outlined text-[18px]"
-                                                    aria-hidden="true"
-                                                >
-                                                    flag
-                                                </span>
-                                            </span>
-                                            <span className="flex-1 min-w-0">
-                                                <span className="block font-medium text-xs leading-snug">
-                                                    New report filed on "Cloud Native Bootcamp"
-                                                </span>
-                                                <span className="org-dropdown__meta">3 hours ago</span>
-                                            </span>
-                                        </Link>
-                                        <Link className="org-dropdown__item" to="/admin/audit-log">
-                                            <span
-                                                className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0"
-                                                style={{
-                                                    background: "var(--surface-2)",
-                                                    color: "var(--accent)"
-                                                }}
-                                            >
-                                                <span
-                                                    className="material-symbols-outlined text-[18px]"
-                                                    aria-hidden="true"
-                                                >
-                                                    gpp_maybe
-                                                </span>
-                                            </span>
-                                            <span className="flex-1 min-w-0">
-                                                <span className="block font-medium text-xs leading-snug">
-                                                    Sensitive operation: account suspended by Sara Al-Khatib
-                                                </span>
-                                                <span className="org-dropdown__meta">Yesterday</span>
-                                            </span>
-                                        </Link>
-                                    </div>
-                                    <div className="pt-2 mt-1 border-t border-outline-variant/40">
-                                        <Link
-                                            to="/admin/audit-log"
-                                            className="block text-center text-xs font-semibold text-primary hover:underline py-1"
-                                        >
-                                            View all activity →
-                                        </Link>
-                                    </div>
-                                </div>
-                            </div>
-                            <LangToggleBtn />
-                            <button
-                                className="theme-toggle icon-btn"
-                                type="button"
-                                title="Switch theme"
-                                aria-label="Switch theme"
-                            >
-                                <span className="material-symbols-outlined icon-dark">dark_mode</span><span className="material-symbols-outlined icon-light">light_mode</span>
-                            </button>
-                            <div className="org-dropdown">
-                                <button
-                                    className="dash-profile"
-                                    id="admin-profile-toggle"
-                                    type="button"
-                                    aria-label="Admin menu"
-                                    aria-expanded="false"
-                                    style={{ cursor: "pointer" }}
-                                >
-                                    <span className="dash-profile__avatar">PA</span>
-                                    <span style={{ fontSize: 13, fontWeight: 600 }}>
-                                        Platform Admin
-                                    </span>
-                                    <span
-                                        className="material-symbols-outlined"
-                                        style={{ fontSize: 18, color: "var(--text-muted)" }}
-                                    >
-                                        expand_more
-                                    </span>
-                                </button>
-                                <div
-                                    className="org-dropdown__panel org-dropdown__panel--profile"
-                                    id="admin-profile-panel"
-                                    hidden=""
-                                    role="menu"
-                                    aria-label="Admin menu"
-                                >
-                                    <div className="px-3 py-2 border-b border-outline-variant/40 mb-1">
-                                        <p className="font-semibold text-xs text-on-surface">
-                                            Platform Admin
-                                        </p>
-                                        <p className="text-[11px] text-on-surface-variant truncate">
-                                            Full access
-                                        </p>
-                                    </div>
-                                    <Link
-                                        className="org-dropdown__item text-error hover:bg-error/10"
-                                        to="/auth/login"
-                                    >
-                                        <span
-                                            className="material-symbols-outlined text-[18px] text-error"
-                                            aria-hidden="true"
-                                        >
-                                            logout
-                                        </span>
-                                        <span className="text-error font-medium">Sign out</span>
-                                    </Link>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    <AdminTopbar title={t('Manage Users', 'إدارة المستخدمين')} />
                     <div className="mb-8 flex flex-col justify-between gap-4 md:flex-row md:items-end">
                         <div>
                             <p className="text-on-surface-variant font-body-md mt-1">
-                                Search, filter, and moderate participant and organizer accounts.{" "}
-                                <span
-                                    id="users-count-label"
-                                    className="font-semibold text-on-surface"
-                                />
+                                {t(
+                                    'Search, filter, and moderate participant and organizer accounts.',
+                                    'ابحث في حسابات المشاركين والمنظمين وصنّفها وأدِرها.',
+                                )}{" "}
+                                <span className="font-semibold text-on-surface">{countLabel}</span>
                             </p>
                         </div>
                     </div>
                     <div className="flex flex-col md:flex-row gap-4 mb-6">
                         <div className="flex-1 relative">
-                            <span className="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-outline">
+                            <span className="material-symbols-outlined absolute start-4 top-1/2 -translate-y-1/2 text-outline">
                                 search
                             </span>
                             <input
-                                className="w-full pl-12 pr-4 py-3 rounded-2xl border border-outline-variant bg-surface-container-lowest focus:ring-2 focus:ring-primary focus:border-transparent transition-all outline-none text-body-md"
-                                placeholder="Search by name or email..."
+                                className="w-full ps-12 pe-4 py-3 rounded-2xl border border-outline-variant bg-surface-container-lowest focus:ring-2 focus:ring-primary focus:border-transparent transition-all outline-none text-body-md"
+                                placeholder={t('Search by name or email...', 'ابحث بالاسم أو البريد الإلكتروني...')}
                                 type="text"
-                                id="users-search"
+                                value={search}
+                                onChange={(e) => changeSearch(e.target.value)}
                             />
                         </div>
-                        <div
-                            className="flex flex-wrap gap-2"
-                            id="users-tab-group"
-                            role="tablist"
-                            aria-label="Filter users by role"
-                        >
-                            <button
-                                type="button"
-                                className="px-5 py-2 rounded-full bg-primary text-on-primary font-label-md text-label-md whitespace-nowrap"
-                                data-filter="all"
-                                aria-pressed="true"
-                            >
-                                All
-                            </button>
-                            <button
-                                type="button"
-                                className="px-5 py-2 rounded-full bg-surface-container text-on-surface-variant hover:bg-surface-container-high transition-colors font-label-md text-label-md whitespace-nowrap"
-                                data-filter="organizer"
-                                aria-pressed="false"
-                            >
-                                Organizers
-                            </button>
-                            <button
-                                type="button"
-                                className="px-5 py-2 rounded-full bg-surface-container text-on-surface-variant hover:bg-surface-container-high transition-colors font-label-md text-label-md whitespace-nowrap"
-                                data-filter="participant"
-                                aria-pressed="false"
-                            >
-                                Participants
-                            </button>
+                        <div className="flex flex-wrap gap-2" role="tablist" aria-label={t('Filter users by role', 'تصفية المستخدمين حسب الدور')}>
+                            {ROLE_TABS.map((tab) => {
+                                const active = tab.role === roleFilter
+                                return (
+                                    <button
+                                        key={tab.role}
+                                        type="button"
+                                        className={`px-5 py-2 rounded-full font-label-md text-label-md whitespace-nowrap ${
+                                            active
+                                                ? 'bg-primary text-on-primary'
+                                                : 'bg-surface-container text-on-surface-variant hover:bg-surface-container-high transition-colors'
+                                        }`}
+                                        aria-pressed={active}
+                                        onClick={() => changeRole(tab.role)}
+                                    >
+                                        {ar ? tab.ar : tab.en}
+                                    </button>
+                                )
+                            })}
                         </div>
                     </div>
                     <div className="section-card" style={{ padding: 0, overflow: "hidden" }}>
                         <div className="grid grid-cols-12 gap-4 px-6 py-3 bg-surface-container-low text-on-surface-variant font-label-sm text-label-sm uppercase tracking-wide hidden md:grid">
-                            <span className="col-span-4">User</span>
-                            <span className="col-span-3">Role</span>
-                            <span className="col-span-2">Status</span>
-                            <span className="col-span-3 text-right">Actions</span>
+                            <span className="col-span-4">{t('User', 'المستخدم')}</span>
+                            <span className="col-span-3">{t('Role', 'الدور')}</span>
+                            <span className="col-span-2">{t('Status', 'الحالة')}</span>
+                            <span className="col-span-3 text-end">{t('Actions', 'الإجراءات')}</span>
                         </div>
+                        {/* id is a styling hook only (staggered entrance + row hover in admin.css) */}
                         <div className="divide-y divide-outline-variant/30" id="users-list">
-                            <div
-                                className="grid grid-cols-1 md:grid-cols-12 gap-3 md:gap-4 px-6 py-4 items-center"
-                                data-role="participant"
-                                data-name="sarah chen sarah.chen@eventify.io"
-                            >
-                                <div className="md:col-span-4 flex items-center gap-3">
-                                    <div className="w-10 h-10 rounded-full bg-primary-fixed flex items-center justify-center font-label-md text-primary">
-                                        S
+                            {pageUsers.map((user) => (
+                                <div
+                                    key={user.id}
+                                    className="grid grid-cols-1 md:grid-cols-12 gap-3 md:gap-4 px-6 py-4 items-center fade-in"
+                                >
+                                    <div className="md:col-span-4 flex items-center gap-3">
+                                        <div className="w-10 h-10 rounded-full bg-primary-fixed flex items-center justify-center font-label-md text-primary">
+                                            {user.name.charAt(0)}
+                                        </div>
+                                        <div>
+                                            <p className="font-label-md text-label-md text-on-surface">
+                                                {user.name}
+                                            </p>
+                                            <p className="text-label-sm font-label-sm text-on-surface-variant">
+                                                {user.email}
+                                            </p>
+                                        </div>
                                     </div>
-                                    <div>
-                                        <p className="font-label-md text-label-md text-on-surface">
-                                            Sarah Chen
-                                        </p>
-                                        <p className="text-label-sm font-label-sm text-on-surface-variant">
-                                            sarah.chen@eventify.io
-                                        </p>
+                                    <div className="md:col-span-3 font-label-md text-label-md text-on-surface-variant">
+                                        {label(ROLE_LABELS, user.role)}
                                     </div>
-                                </div>
-                                <div className="md:col-span-3 font-label-md text-label-md text-on-surface-variant">
-                                    Participant
-                                </div>
-                                <div className="md:col-span-2">
-                                    <span className="badge badge--approved">active</span>
-                                </div>
-                                <div className="md:col-span-3 flex justify-end gap-2">
-                                    <button
-                                        type="button"
-                                        className="btn-danger-outline"
-                                        data-ui-action="suspend"
-                                    >
-                                        Suspend
-                                    </button>
-                                    <button
-                                        type="button"
-                                        className="btn-danger-outline"
-                                        data-ui-action="delete"
-                                    >
-                                        Delete
-                                    </button>
-                                </div>
-                            </div>
-                            <div
-                                className="grid grid-cols-1 md:grid-cols-12 gap-3 md:gap-4 px-6 py-4 items-center"
-                                data-role="organizer"
-                                data-name="techgenius labs contact@techgenius.io"
-                            >
-                                <div className="md:col-span-4 flex items-center gap-3">
-                                    <div className="w-10 h-10 rounded-full bg-primary-fixed flex items-center justify-center font-label-md text-primary">
-                                        T
+                                    <div className="md:col-span-2">
+                                        <span className={`badge ${user.status === 'active' ? 'badge--approved' : 'badge--rejected'}`}>
+                                            {label(STATUS_LABELS, user.status)}
+                                        </span>
                                     </div>
-                                    <div>
-                                        <p className="font-label-md text-label-md text-on-surface">
-                                            TechGenius Labs
-                                        </p>
-                                        <p className="text-label-sm font-label-sm text-on-surface-variant">
-                                            contact@techgenius.io
-                                        </p>
+                                    <div className="md:col-span-3 flex justify-end gap-2">
+                                        {user.status === 'active' ? (
+                                            <button
+                                                type="button"
+                                                className="btn-danger-outline"
+                                                onClick={() => setStatus(user, 'suspended')}
+                                            >
+                                                {t('Suspend', 'تعليق')}
+                                            </button>
+                                        ) : (
+                                            <button
+                                                type="button"
+                                                className="btn-success"
+                                                onClick={() => setStatus(user, 'active')}
+                                            >
+                                                {t('Reinstate', 'إعادة تفعيل')}
+                                            </button>
+                                        )}
+                                        <button
+                                            type="button"
+                                            className="btn-danger-outline"
+                                            onClick={() => deleteUser(user)}
+                                        >
+                                            {t('Delete', 'حذف')}
+                                        </button>
                                     </div>
                                 </div>
-                                <div className="md:col-span-3 font-label-md text-label-md text-on-surface-variant">
-                                    Organizer
-                                </div>
-                                <div className="md:col-span-2">
-                                    <span className="badge badge--approved">active</span>
-                                </div>
-                                <div className="md:col-span-3 flex justify-end gap-2">
-                                    <button
-                                        type="button"
-                                        className="btn-danger-outline"
-                                        data-ui-action="suspend"
-                                    >
-                                        Suspend
-                                    </button>
-                                    <button
-                                        type="button"
-                                        className="btn-danger-outline"
-                                        data-ui-action="delete"
-                                    >
-                                        Delete
-                                    </button>
-                                </div>
-                            </div>
-                            <div
-                                className="grid grid-cols-1 md:grid-cols-12 gap-3 md:gap-4 px-6 py-4 items-center"
-                                data-role="participant"
-                                data-name="marcus thorne marcus.t@eventify.io"
-                            >
-                                <div className="md:col-span-4 flex items-center gap-3">
-                                    <div className="w-10 h-10 rounded-full bg-primary-fixed flex items-center justify-center font-label-md text-primary">
-                                        M
-                                    </div>
-                                    <div>
-                                        <p className="font-label-md text-label-md text-on-surface">
-                                            Marcus Thorne
-                                        </p>
-                                        <p className="text-label-sm font-label-sm text-on-surface-variant">
-                                            marcus.t@eventify.io
-                                        </p>
-                                    </div>
-                                </div>
-                                <div className="md:col-span-3 font-label-md text-label-md text-on-surface-variant">
-                                    Participant
-                                </div>
-                                <div className="md:col-span-2">
-                                    <span className="badge badge--approved">active</span>
-                                </div>
-                                <div className="md:col-span-3 flex justify-end gap-2">
-                                    <button
-                                        type="button"
-                                        className="btn-danger-outline"
-                                        data-ui-action="suspend"
-                                    >
-                                        Suspend
-                                    </button>
-                                    <button
-                                        type="button"
-                                        className="btn-danger-outline"
-                                        data-ui-action="delete"
-                                    >
-                                        Delete
-                                    </button>
-                                </div>
-                            </div>
-                            <div
-                                className="grid grid-cols-1 md:grid-cols-12 gap-3 md:gap-4 px-6 py-4 items-center"
-                                data-role="participant"
-                                data-name="kevin park kevin.park@eventify.io"
-                            >
-                                <div className="md:col-span-4 flex items-center gap-3">
-                                    <div className="w-10 h-10 rounded-full bg-primary-fixed flex items-center justify-center font-label-md text-primary">
-                                        K
-                                    </div>
-                                    <div>
-                                        <p className="font-label-md text-label-md text-on-surface">
-                                            Kevin Park
-                                        </p>
-                                        <p className="text-label-sm font-label-sm text-on-surface-variant">
-                                            kevin.park@eventify.io
-                                        </p>
-                                    </div>
-                                </div>
-                                <div className="md:col-span-3 font-label-md text-label-md text-on-surface-variant">
-                                    Participant
-                                </div>
-                                <div className="md:col-span-2">
-                                    <span className="badge badge--rejected">suspended</span>
-                                </div>
-                                <div className="md:col-span-3 flex justify-end gap-2">
-                                    <button
-                                        type="button"
-                                        className="btn-success"
-                                        data-ui-action="reinstate"
-                                    >
-                                        Reinstate
-                                    </button>
-                                    <button
-                                        type="button"
-                                        className="btn-danger-outline"
-                                        data-ui-action="delete"
-                                    >
-                                        Delete
-                                    </button>
-                                </div>
-                            </div>
-                            <div
-                                className="grid grid-cols-1 md:grid-cols-12 gap-3 md:gap-4 px-6 py-4 items-center"
-                                data-role="organizer"
-                                data-name="designhub amman hello@designhub.jo"
-                            >
-                                <div className="md:col-span-4 flex items-center gap-3">
-                                    <div className="w-10 h-10 rounded-full bg-primary-fixed flex items-center justify-center font-label-md text-primary">
-                                        D
-                                    </div>
-                                    <div>
-                                        <p className="font-label-md text-label-md text-on-surface">
-                                            DesignHub Amman
-                                        </p>
-                                        <p className="text-label-sm font-label-sm text-on-surface-variant">
-                                            hello@designhub.jo
-                                        </p>
-                                    </div>
-                                </div>
-                                <div className="md:col-span-3 font-label-md text-label-md text-on-surface-variant">
-                                    Organizer
-                                </div>
-                                <div className="md:col-span-2">
-                                    <span className="badge badge--approved">active</span>
-                                </div>
-                                <div className="md:col-span-3 flex justify-end gap-2">
-                                    <button
-                                        type="button"
-                                        className="btn-danger-outline"
-                                        data-ui-action="suspend"
-                                    >
-                                        Suspend
-                                    </button>
-                                    <button
-                                        type="button"
-                                        className="btn-danger-outline"
-                                        data-ui-action="delete"
-                                    >
-                                        Delete
-                                    </button>
-                                </div>
-                            </div>
-                        
-                            <div
-                                className="grid grid-cols-1 md:grid-cols-12 gap-3 md:gap-4 px-6 py-4 items-center"
-                                data-role="participant"
-                                data-name="layla mahmoud layla.m@eventify.io"
-                            >
-                                <div className="md:col-span-4 flex items-center gap-3">
-                                    <div className="w-10 h-10 rounded-full bg-primary-fixed flex items-center justify-center font-label-md text-primary">
-                                        L
-                                    </div>
-                                    <div>
-                                        <p className="font-label-md text-label-md text-on-surface">
-                                            Layla Mahmoud
-                                        </p>
-                                        <p className="text-label-sm font-label-sm text-on-surface-variant">
-                                            layla.m@eventify.io
-                                        </p>
-                                    </div>
-                                </div>
-                                <div className="md:col-span-3 font-label-md text-label-md text-on-surface-variant">
-                                    Participant
-                                </div>
-                                <div className="md:col-span-2">
-                                    <span className="badge badge--approved">active</span>
-                                </div>
-                                <div className="md:col-span-3 flex justify-end gap-2">
-                                    <button
-                                        type="button"
-                                        className="btn-danger-outline"
-                                        data-ui-action="suspend"
-                                    >
-                                        Suspend
-                                    </button>
-                                    <button
-                                        type="button"
-                                        className="btn-danger-outline"
-                                        data-ui-action="delete"
-                                    >
-                                        Delete
-                                    </button>
-                                </div>
-                            </div>
-                            <div
-                                className="grid grid-cols-1 md:grid-cols-12 gap-3 md:gap-4 px-6 py-4 items-center"
-                                data-role="organizer"
-                                data-name="codecraft academy info@codecraft.org"
-                            >
-                                <div className="md:col-span-4 flex items-center gap-3">
-                                    <div className="w-10 h-10 rounded-full bg-primary-fixed flex items-center justify-center font-label-md text-primary">
-                                        C
-                                    </div>
-                                    <div>
-                                        <p className="font-label-md text-label-md text-on-surface">
-                                            CodeCraft Academy
-                                        </p>
-                                        <p className="text-label-sm font-label-sm text-on-surface-variant">
-                                            info@codecraft.org
-                                        </p>
-                                    </div>
-                                </div>
-                                <div className="md:col-span-3 font-label-md text-label-md text-on-surface-variant">
-                                    Organizer
-                                </div>
-                                <div className="md:col-span-2">
-                                    <span className="badge badge--approved">active</span>
-                                </div>
-                                <div className="md:col-span-3 flex justify-end gap-2">
-                                    <button
-                                        type="button"
-                                        className="btn-danger-outline"
-                                        data-ui-action="suspend"
-                                    >
-                                        Suspend
-                                    </button>
-                                    <button
-                                        type="button"
-                                        className="btn-danger-outline"
-                                        data-ui-action="delete"
-                                    >
-                                        Delete
-                                    </button>
-                                </div>
-                            </div>
-                            <div
-                                className="grid grid-cols-1 md:grid-cols-12 gap-3 md:gap-4 px-6 py-4 items-center"
-                                data-role="participant"
-                                data-name="omar farooq omar.f@eventify.io"
-                            >
-                                <div className="md:col-span-4 flex items-center gap-3">
-                                    <div className="w-10 h-10 rounded-full bg-primary-fixed flex items-center justify-center font-label-md text-primary">
-                                        O
-                                    </div>
-                                    <div>
-                                        <p className="font-label-md text-label-md text-on-surface">
-                                            Omar Farooq
-                                        </p>
-                                        <p className="text-label-sm font-label-sm text-on-surface-variant">
-                                            omar.f@eventify.io
-                                        </p>
-                                    </div>
-                                </div>
-                                <div className="md:col-span-3 font-label-md text-label-md text-on-surface-variant">
-                                    Participant
-                                </div>
-                                <div className="md:col-span-2">
-                                    <span className="badge badge--approved">active</span>
-                                </div>
-                                <div className="md:col-span-3 flex justify-end gap-2">
-                                    <button
-                                        type="button"
-                                        className="btn-danger-outline"
-                                        data-ui-action="suspend"
-                                    >
-                                        Suspend
-                                    </button>
-                                    <button
-                                        type="button"
-                                        className="btn-danger-outline"
-                                        data-ui-action="delete"
-                                    >
-                                        Delete
-                                    </button>
-                                </div>
-                            </div>
-                            <div
-                                className="grid grid-cols-1 md:grid-cols-12 gap-3 md:gap-4 px-6 py-4 items-center"
-                                data-role="organizer"
-                                data-name="nextgen robotics contact@nextgenrobotics.io"
-                            >
-                                <div className="md:col-span-4 flex items-center gap-3">
-                                    <div className="w-10 h-10 rounded-full bg-primary-fixed flex items-center justify-center font-label-md text-primary">
-                                        N
-                                    </div>
-                                    <div>
-                                        <p className="font-label-md text-label-md text-on-surface">
-                                            NextGen Robotics
-                                        </p>
-                                        <p className="text-label-sm font-label-sm text-on-surface-variant">
-                                            contact@nextgenrobotics.io
-                                        </p>
-                                    </div>
-                                </div>
-                                <div className="md:col-span-3 font-label-md text-label-md text-on-surface-variant">
-                                    Organizer
-                                </div>
-                                <div className="md:col-span-2">
-                                    <span className="badge badge--approved">active</span>
-                                </div>
-                                <div className="md:col-span-3 flex justify-end gap-2">
-                                    <button
-                                        type="button"
-                                        className="btn-danger-outline"
-                                        data-ui-action="suspend"
-                                    >
-                                        Suspend
-                                    </button>
-                                    <button
-                                        type="button"
-                                        className="btn-danger-outline"
-                                        data-ui-action="delete"
-                                    >
-                                        Delete
-                                    </button>
-                                </div>
-                            </div>
-                            <div
-                                className="grid grid-cols-1 md:grid-cols-12 gap-3 md:gap-4 px-6 py-4 items-center"
-                                data-role="participant"
-                                data-name="dana al-hassan dana.h@eventify.io"
-                            >
-                                <div className="md:col-span-4 flex items-center gap-3">
-                                    <div className="w-10 h-10 rounded-full bg-primary-fixed flex items-center justify-center font-label-md text-primary">
-                                        D
-                                    </div>
-                                    <div>
-                                        <p className="font-label-md text-label-md text-on-surface">
-                                            Dana Al-Hassan
-                                        </p>
-                                        <p className="text-label-sm font-label-sm text-on-surface-variant">
-                                            dana.h@eventify.io
-                                        </p>
-                                    </div>
-                                </div>
-                                <div className="md:col-span-3 font-label-md text-label-md text-on-surface-variant">
-                                    Participant
-                                </div>
-                                <div className="md:col-span-2">
-                                    <span className="badge badge--rejected">suspended</span>
-                                </div>
-                                <div className="md:col-span-3 flex justify-end gap-2">
-                                    <button
-                                        type="button"
-                                        className="btn-success"
-                                        data-ui-action="reinstate"
-                                    >
-                                        Reinstate
-                                    </button>
-                                    <button
-                                        type="button"
-                                        className="btn-danger-outline"
-                                        data-ui-action="delete"
-                                    >
-                                        Delete
-                                    </button>
-                                </div>
-                            </div>
-                            <div
-                                className="grid grid-cols-1 md:grid-cols-12 gap-3 md:gap-4 px-6 py-4 items-center"
-                                data-role="participant"
-                                data-name="tariq mansour tariq.m@eventify.io"
-                            >
-                                <div className="md:col-span-4 flex items-center gap-3">
-                                    <div className="w-10 h-10 rounded-full bg-primary-fixed flex items-center justify-center font-label-md text-primary">
-                                        T
-                                    </div>
-                                    <div>
-                                        <p className="font-label-md text-label-md text-on-surface">
-                                            Tariq Mansour
-                                        </p>
-                                        <p className="text-label-sm font-label-sm text-on-surface-variant">
-                                            tariq.m@eventify.io
-                                        </p>
-                                    </div>
-                                </div>
-                                <div className="md:col-span-3 font-label-md text-label-md text-on-surface-variant">
-                                    Participant
-                                </div>
-                                <div className="md:col-span-2">
-                                    <span className="badge badge--approved">active</span>
-                                </div>
-                                <div className="md:col-span-3 flex justify-end gap-2">
-                                    <button
-                                        type="button"
-                                        className="btn-danger-outline"
-                                        data-ui-action="suspend"
-                                    >
-                                        Suspend
-                                    </button>
-                                    <button
-                                        type="button"
-                                        className="btn-danger-outline"
-                                        data-ui-action="delete"
-                                    >
-                                        Delete
-                                    </button>
-                                </div>
-                            </div>
-                            <div
-                                className="grid grid-cols-1 md:grid-cols-12 gap-3 md:gap-4 px-6 py-4 items-center"
-                                data-role="organizer"
-                                data-name="cloudscale solutions support@cloudscale.net"
-                            >
-                                <div className="md:col-span-4 flex items-center gap-3">
-                                    <div className="w-10 h-10 rounded-full bg-primary-fixed flex items-center justify-center font-label-md text-primary">
-                                        C
-                                    </div>
-                                    <div>
-                                        <p className="font-label-md text-label-md text-on-surface">
-                                            CloudScale Solutions
-                                        </p>
-                                        <p className="text-label-sm font-label-sm text-on-surface-variant">
-                                            support@cloudscale.net
-                                        </p>
-                                    </div>
-                                </div>
-                                <div className="md:col-span-3 font-label-md text-label-md text-on-surface-variant">
-                                    Organizer
-                                </div>
-                                <div className="md:col-span-2">
-                                    <span className="badge badge--approved">active</span>
-                                </div>
-                                <div className="md:col-span-3 flex justify-end gap-2">
-                                    <button
-                                        type="button"
-                                        className="btn-danger-outline"
-                                        data-ui-action="suspend"
-                                    >
-                                        Suspend
-                                    </button>
-                                    <button
-                                        type="button"
-                                        className="btn-danger-outline"
-                                        data-ui-action="delete"
-                                    >
-                                        Delete
-                                    </button>
-                                </div>
-                            </div>
-                            <div
-                                className="grid grid-cols-1 md:grid-cols-12 gap-3 md:gap-4 px-6 py-4 items-center"
-                                data-role="participant"
-                                data-name="rania qasim rania.q@eventify.io"
-                            >
-                                <div className="md:col-span-4 flex items-center gap-3">
-                                    <div className="w-10 h-10 rounded-full bg-primary-fixed flex items-center justify-center font-label-md text-primary">
-                                        R
-                                    </div>
-                                    <div>
-                                        <p className="font-label-md text-label-md text-on-surface">
-                                            Rania Qasim
-                                        </p>
-                                        <p className="text-label-sm font-label-sm text-on-surface-variant">
-                                            rania.q@eventify.io
-                                        </p>
-                                    </div>
-                                </div>
-                                <div className="md:col-span-3 font-label-md text-label-md text-on-surface-variant">
-                                    Participant
-                                </div>
-                                <div className="md:col-span-2">
-                                    <span className="badge badge--approved">active</span>
-                                </div>
-                                <div className="md:col-span-3 flex justify-end gap-2">
-                                    <button
-                                        type="button"
-                                        className="btn-danger-outline"
-                                        data-ui-action="suspend"
-                                    >
-                                        Suspend
-                                    </button>
-                                    <button
-                                        type="button"
-                                        className="btn-danger-outline"
-                                        data-ui-action="delete"
-                                    >
-                                        Delete
-                                    </button>
-                                </div>
-                            </div>
-                            <div
-                                className="grid grid-cols-1 md:grid-cols-12 gap-3 md:gap-4 px-6 py-4 items-center"
-                                data-role="organizer"
-                                data-name="cybershield jordan hello@cybershield.jo"
-                            >
-                                <div className="md:col-span-4 flex items-center gap-3">
-                                    <div className="w-10 h-10 rounded-full bg-primary-fixed flex items-center justify-center font-label-md text-primary">
-                                        C
-                                    </div>
-                                    <div>
-                                        <p className="font-label-md text-label-md text-on-surface">
-                                            CyberShield Jordan
-                                        </p>
-                                        <p className="text-label-sm font-label-sm text-on-surface-variant">
-                                            hello@cybershield.jo
-                                        </p>
-                                    </div>
-                                </div>
-                                <div className="md:col-span-3 font-label-md text-label-md text-on-surface-variant">
-                                    Organizer
-                                </div>
-                                <div className="md:col-span-2">
-                                    <span className="badge badge--approved">active</span>
-                                </div>
-                                <div className="md:col-span-3 flex justify-end gap-2">
-                                    <button
-                                        type="button"
-                                        className="btn-danger-outline"
-                                        data-ui-action="suspend"
-                                    >
-                                        Suspend
-                                    </button>
-                                    <button
-                                        type="button"
-                                        className="btn-danger-outline"
-                                        data-ui-action="delete"
-                                    >
-                                        Delete
-                                    </button>
-                                </div>
-                            </div>
-                            <div
-                                className="grid grid-cols-1 md:grid-cols-12 gap-3 md:gap-4 px-6 py-4 items-center"
-                                data-role="participant"
-                                data-name="zaid al-najjar zaid.n@eventify.io"
-                            >
-                                <div className="md:col-span-4 flex items-center gap-3">
-                                    <div className="w-10 h-10 rounded-full bg-primary-fixed flex items-center justify-center font-label-md text-primary">
-                                        Z
-                                    </div>
-                                    <div>
-                                        <p className="font-label-md text-label-md text-on-surface">
-                                            Zaid Al-Najjar
-                                        </p>
-                                        <p className="text-label-sm font-label-sm text-on-surface-variant">
-                                            zaid.n@eventify.io
-                                        </p>
-                                    </div>
-                                </div>
-                                <div className="md:col-span-3 font-label-md text-label-md text-on-surface-variant">
-                                    Participant
-                                </div>
-                                <div className="md:col-span-2">
-                                    <span className="badge badge--approved">active</span>
-                                </div>
-                                <div className="md:col-span-3 flex justify-end gap-2">
-                                    <button
-                                        type="button"
-                                        className="btn-danger-outline"
-                                        data-ui-action="suspend"
-                                    >
-                                        Suspend
-                                    </button>
-                                    <button
-                                        type="button"
-                                        className="btn-danger-outline"
-                                        data-ui-action="delete"
-                                    >
-                                        Delete
-                                    </button>
-                                </div>
-                            </div>
+                            ))}
                         </div>
-                        <div className="empty-state fade-in" id="users-empty" hidden="">
-                            <span className="empty-state__icon">
-                                <span className="material-symbols-outlined" aria-hidden="true">
-                                    person_search
+                        {matching.length === 0 && (
+                            <div className="empty-state fade-in">
+                                <span className="empty-state__icon">
+                                    <span className="material-symbols-outlined" aria-hidden="true">
+                                        person_search
+                                    </span>
                                 </span>
-                            </span>
-                            <h3>No users found</h3>
-                            <p>No users match your search or filters.</p>
-                        </div>
-                        <div className="pagination" id="users-pagination" />
+                                <h3>{t('No users found', 'لا يوجد مستخدمون')}</h3>
+                                <p>{t('No users match your search or filters.', 'لا يوجد مستخدمون مطابقون للبحث أو الفلتر.')}</p>
+                            </div>
+                        )}
+                        {matching.length > 0 && (
+                            <div className="pagination">
+                                <button
+                                    type="button"
+                                    disabled={currentPage === 1}
+                                    onClick={() => setPage(currentPage - 1)}
+                                >
+                                    {t('Prev', 'السابق')}
+                                </button>
+                                {Array.from({ length: totalPages }, (_, i) => i + 1).map((p) => (
+                                    <button
+                                        key={p}
+                                        type="button"
+                                        aria-current={p === currentPage}
+                                        onClick={() => setPage(p)}
+                                    >
+                                        {p}
+                                    </button>
+                                ))}
+                                <button
+                                    type="button"
+                                    disabled={currentPage === totalPages}
+                                    onClick={() => setPage(currentPage + 1)}
+                                >
+                                    {t('Next', 'التالي')}
+                                </button>
+                            </div>
+                        )}
                     </div>
                 </main>
             </div>
-            
         </>
     )
 }

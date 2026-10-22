@@ -1,4 +1,5 @@
 /* Admin Audit Log page — rendering, filtering, sorting, pagination, export (mock only). */
+import { toast } from '../../utils/toast'
 export function initAdminAuditLog() {
     const eventController = new AbortController();
     const listen = (target, type, handler) => target?.addEventListener(type, handler, { signal: eventController.signal });
@@ -27,7 +28,7 @@ export function initAdminAuditLog() {
 
     /* --- utilities --------------------------------------------------------- */
     function showToast(message, tone) {
-        if (window.EventifyUI) window.EventifyUI.toast(message, tone || 'success');
+        toast(message, tone || 'success');
     }
 
     function triggerDownload(filename, content, mimeType) {

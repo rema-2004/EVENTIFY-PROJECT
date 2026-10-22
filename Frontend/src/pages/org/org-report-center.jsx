@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react'
-import Chart from 'chart.js/auto'
+// Chart with the app's language plugin registered (loaded only by chart pages)
+import Chart from '../../i18n/chartLocalization'
 import { Link } from 'react-router-dom'
 import AppPageHead from '../../components/app/AppPageHead'
 import { toast } from '../../utils/toast.js'

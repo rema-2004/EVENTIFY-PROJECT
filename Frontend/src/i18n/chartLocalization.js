@@ -37,3 +37,7 @@ Chart.register(eventifyChartLocalization)
 i18n.on('languageChanged', () => {
     Object.values(Chart.instances).forEach((chart) => chart.update())
 })
+
+// Chart pages import Chart from here (not from chart.js directly), so chart.js
+// and this plugin load only with those pages instead of in the main bundle.
+export default Chart

@@ -1,6 +1,6 @@
 import AppFooter from '../../components/app/AppFooter'
 import AppPageHead from '../../components/app/AppPageHead'
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useLanguage } from '../../hooks/useLanguage'
 import AnimatedCounter from '../../components/shared/AnimatedCounter'
@@ -84,70 +84,6 @@ export default function MyApplications() {
     const [activeFilter, setActiveFilter] = useState('all')
     const [confirmModal, setConfirmModal] = useState({ open: false, app: null, loading: false })
 
-    // Optional sync with backend registrations if logged in
-    useEffect(() => {
-        const token = localStorage.getItem('eventify_token') || localStorage.getItem('token')
-        if (!token) return
-
-        let isMounted = true
-        fetch('http://127.0.0.1:8000/api/v1/my/registrations', {
-            headers: {
-                'Authorization': `Bearer ${token}`,
-                'Accept': 'application/json',
-            },
-        })
-            .then(res => res.ok ? res.json() : null)
-            .then(data => {
-                if (!isMounted || !data?.data || !Array.isArray(data.data) || data.data.length === 0) return
-                // Map backend registrations to application card format
-                const backendApps = data.data.map(reg => {
-                    const ev = reg.event || {}
-                    const isConfirmed = reg.status === 'confirmed'
-                    const isCancelled = reg.status === 'cancelled'
-                    return {
-                        id: reg.id,
-                        eventId: ev.id,
-                        status: isCancelled ? 'cancelled' : isConfirmed ? 'accepted' : 'pending',
-                        icon: isCancelled ? 'event_busy' : isConfirmed ? 'check_circle' : 'emoji_events',
-                        iconBg: isCancelled ? 'bg-outline-variant/20' : isConfirmed ? 'bg-success/10' : 'bg-primary/10',
-                        iconColor: isCancelled ? 'text-outline' : isConfirmed ? 'text-success' : 'text-primary',
-                        title: {
-                            en: ev.title || 'Event Registration',
-                            ar: ev.title || 'تسجيل فعالية',
-                        },
-                        sub: {
-                            en: `${ev.organization?.name || 'Organization'} • Registered ${reg.registered_at ? new Date(reg.registered_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : 'recently'}`,
-                            ar: `${ev.organization?.name || 'المنظمة'} • سُجل في ${reg.registered_at ? new Date(reg.registered_at).toLocaleDateString('ar-EG', { month: 'short', day: 'numeric', year: 'numeric' }) : 'مؤخراً'}`,
-                        },
-                        badge: isCancelled
-                            ? { en: 'Cancelled', ar: 'تم الإلغاء' }
-                            : isConfirmed
-                            ? { en: 'Confirmed', ar: 'مؤكد' }
-                            : { en: 'Pending', ar: 'قيد الانتظار' },
-                        badgeCls: isCancelled
-                            ? 'bg-outline-variant/30 text-outline'
-                            : isConfirmed
-                            ? 'bg-success/10 text-success'
-                            : 'bg-tertiary/10 text-tertiary',
-                        dim: isCancelled,
-                    }
-                })
-
-                setApplications(prev => {
-                    // Merge backend apps avoiding duplicates
-                    const existingIds = new Set(backendApps.map(b => b.eventId))
-                    const merged = [...backendApps, ...prev.filter(p => !existingIds.has(p.eventId))]
-                    try {
-                        localStorage.setItem(STORAGE_KEY, JSON.stringify(merged))
-                    } catch { /* ignore */ }
-                    return merged
-                })
-            })
-            .catch(() => { /* backend unavailable — keep local data */ })
-
-        return () => { isMounted = false }
-    }, [])
-
     const counts = {
         all: applications.length,
         pending: applications.filter(a => a.status === 'pending').length,
@@ -162,22 +98,6 @@ export default function MyApplications() {
         if (!confirmModal.app) return
         setConfirmModal(prev => ({ ...prev, loading: true }))
         const app = confirmModal.app
-        const eventId = app.eventId || app.id
-
-        try {
-            const token = localStorage.getItem('eventify_token') || localStorage.getItem('token')
-            if (token) {
-                await fetch(`http://127.0.0.1:8000/api/v1/events/${eventId}/register`, {
-                    method: 'DELETE',
-                    headers: {
-                        'Authorization': `Bearer ${token}`,
-                        'Accept': 'application/json',
-                    },
-                })
-            }
-        } catch (err) {
-            console.warn('Backend cancellation API call notice:', err)
-        }
 
         setApplications(prev => {
             const updated = prev.map(a => a.id === app.id ? {

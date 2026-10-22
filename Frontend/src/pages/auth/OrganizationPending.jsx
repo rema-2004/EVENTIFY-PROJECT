@@ -14,7 +14,7 @@ export default function OrganizationPending() {
 
     useEffect(() => {
         if (seconds <= 0) {
-            navigate('/')
+            navigate('/org/dashboard')
             return
         }
         const timer = window.setTimeout(() => setSeconds((s) => s - 1), 1000)
@@ -52,7 +52,7 @@ export default function OrganizationPending() {
                     </div>
 
                     <button
-                        onClick={() => navigate('/')}
+                        onClick={() => navigate('/org/dashboard')}
                         className="inline-flex items-center justify-center h-14 px-10 rounded-full bg-primary text-on-primary font-label-lg text-label-lg btn-primary transition-all mt-10 w-full sm:w-auto"
                     >
                         {t('auth.orgPending.goHome')}

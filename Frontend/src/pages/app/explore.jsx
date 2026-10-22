@@ -1,9 +1,24 @@
-import AppFooter from '../../components/app/AppFooter'
-import { useState } from 'react'
+import { useState, useCallback, useMemo, memo } from 'react'
 import { useNavigate } from 'react-router-dom'
 import AppPageHead from '../../components/app/AppPageHead'
+import AppFooter from '../../components/app/AppFooter'
 import { useLanguage } from '../../hooks/useLanguage'
 import AnimatedCounter from '../../components/shared/AnimatedCounter'
+
+const SaveBtn = memo(function SaveBtn({ id, isSaved, ar, onToggle }) {
+    return (
+        <button
+            className={`save-btn absolute top-3 ${ar ? 'right-3' : 'left-3'} w-9 h-9 rounded-full bg-white/90 dark:bg-slate-900/90 backdrop-blur flex items-center justify-center shadow-lg transition-colors z-10 ${isSaved ? 'text-primary' : 'text-on-surface-variant hover:text-primary'}`}
+            aria-label={ar ? 'احفظ لاحقاً' : 'Save for later'}
+            onClick={(e) => onToggle(id, e)}
+        >
+            <span
+                className="material-symbols-outlined text-[20px]"
+                style={{ fontVariationSettings: isSaved ? '"FILL" 1' : '"FILL" 0' }}
+            >{isSaved ? 'bookmark_added' : 'bookmark'}</span>
+        </button>
+    )
+})
 
 export default function Explore() {
     const navigate = useNavigate()
@@ -30,7 +45,7 @@ export default function Explore() {
         setTimeout(() => setToast(null), 2800)
     }
 
-    const toggleSave = (id, e) => {
+    const toggleSave = useCallback((id, e) => {
         e.stopPropagation()
         setSaved((prev) => {
             const next = new Set(prev)
@@ -43,20 +58,7 @@ export default function Explore() {
             }
             return next
         })
-    }
-
-    const SaveBtn = ({ id }) => (
-        <button
-            className={`save-btn absolute top-3 ${ar ? 'right-3' : 'left-3'} w-9 h-9 rounded-full bg-white/90 dark:bg-slate-900/90 backdrop-blur flex items-center justify-center shadow-lg transition-colors z-10 ${saved.has(id) ? 'text-primary' : 'text-on-surface-variant hover:text-primary'}`}
-            aria-label={ar ? 'احفظ لاحقاً' : 'Save for later'}
-            onClick={(e) => toggleSave(id, e)}
-        >
-            <span
-                className="material-symbols-outlined text-[20px]"
-                style={{ fontVariationSettings: saved.has(id) ? '"FILL" 1' : '"FILL" 0' }}
-            >{saved.has(id) ? 'bookmark_added' : 'bookmark'}</span>
-        </button>
-    )
+    }, [ar])
 
     const categoryButtonClass = (value) =>
         `px-5 py-2.5 rounded-full font-label-md text-label-md whitespace-nowrap transition-all duration-200 cursor-pointer ${category === value
@@ -412,7 +414,7 @@ export default function Explore() {
                                         <span className="material-symbols-outlined text-[14px]">bolt</span>
                                         <AnimatedCounter value={card.match} suffix="%" duration={600} />
                                     </div>
-                                    <SaveBtn id={card.id} />
+                                    <SaveBtn id={card.id} isSaved={saved.has(card.id)} ar={ar} onToggle={toggleSave} />
                                 </div>
 
                                 <div className="p-5 space-y-2">

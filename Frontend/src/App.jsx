@@ -18,9 +18,12 @@ import './styles/org/org-reports.css'
 import './styles/admin/admin-reports.css'
 import './styles/admin/admin-audit-log.css'
 import { lazy, Suspense, useEffect } from 'react'
-import { Route, Routes } from 'react-router-dom'
+import { Navigate, Route, Routes } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import VisitorLayout from './layouts/VisitorLayout'
+import OrgLayout from './layouts/OrgLayout'
+import AdminLayout from './layouts/AdminLayout'
+import ProtectedRoute from './components/shared/ProtectedRoute'
 import WorkspaceLocalization from './i18n/WorkspaceLocalization'
 const Landing = lazy(() => import('./pages/visitor/Landing'))
 const About = lazy(() => import('./pages/visitor/About'))
@@ -65,6 +68,7 @@ const OrgSettings = lazy(() => import('./pages/org/org-settings.jsx'))
 const AdminDashboard = lazy(() => import('./pages/admin/admin-dashboard.jsx'))
 const AdminEvents = lazy(() => import('./pages/admin/admin-events.jsx'))
 const AdminEventReviewDetails = lazy(() => import('./pages/admin/admin-event-review-details.jsx'))
+const AdminEventRegistrations = lazy(() => import('./pages/admin/admin-event-registrations.jsx'))
 const AdminUsers = lazy(() => import('./pages/admin/admin-users.jsx'))
 const AdminVerifyOrganizations = lazy(() => import('./pages/admin/admin-verify-organizations.jsx'))
 const AdminCategories = lazy(() => import('./pages/admin/admin-categories.jsx'))
@@ -76,12 +80,10 @@ function useNavigationMenus() {
         const menus = [
             { toggleId: 'org-notif-toggle', panelId: 'org-notif-panel' },
             { toggleId: 'org-profile-toggle', panelId: 'org-profile-panel' },
-            { toggleId: 'admin-notif-toggle', panelId: 'admin-notif-panel' },
-            { toggleId: 'admin-profile-toggle', panelId: 'admin-profile-panel' },
         ]
+        // Admin menus and drawer are React state now (AdminTopbar / AdminSidebar).
         const drawers = [
             { toggleId: 'org-hamburger', drawerId: 'org-mobile-drawer', overlayId: 'org-mobile-overlay', closeId: 'org-nav-close' },
-            { toggleId: 'admin-hamburger', drawerId: 'admin-mobile-drawer', overlayId: 'admin-mobile-overlay', closeId: 'admin-nav-close' },
         ]
 
         function closeMenus() {
@@ -102,7 +104,7 @@ function useNavigationMenus() {
         }
 
         function handleClick(event) {
-            const toggle = event.target.closest('#org-notif-toggle, #org-profile-toggle, #admin-notif-toggle, #admin-profile-toggle')
+            const toggle = event.target.closest('#org-notif-toggle, #org-profile-toggle')
             if (toggle) {
                 const panelId = toggle.id.replace('-toggle', '-panel')
                 const panel = document.getElementById(panelId)
@@ -182,7 +184,14 @@ export default function App() {
                 <Route path="/upload-cv" element={<UploadCV />} />
                 <Route path="/wizard-form" element={<WizardForm />} />
 
-                <Route path="/app" element={<AppLayout />}>
+                <Route
+                    path="/app"
+                    element={
+                        <ProtectedRoute allowedRoles={['participant']}>
+                            <AppLayout />
+                        </ProtectedRoute>
+                    }
+                >
                     <Route index element={<AppHome />} />
                     <Route path="upload-cv" element={<UploadCV />} />
                     <Route path="wizard-form" element={<WizardForm />} />
@@ -204,24 +213,47 @@ export default function App() {
                     <Route path="*" element={<ComingSoon title={t('comingSoon.app')} />} />
                 </Route>
 
-                <Route path="/org/dashboard" element={<OrgDashboard />} />
-                <Route path="/org/posts" element={<OrgPosts />} />
-                <Route path="/org/profile" element={<OrgProfile />} />
-                <Route path="/org/opportunities" element={<OrgOpportunities />} />
-                <Route path="/org/create-event" element={<OrgCreateEvent />} />
-                <Route path="/org/applicants" element={<OrgApplicants />} />
-                <Route path="/org/report-center" element={<OrgReportCenter />} />
-                <Route path="/org/settings" element={<OrgSettings />} />
-                <Route path="/org/*" element={<ComingSoon title={t('comingSoon.org')} />} />
-                <Route path="/admin/dashboard" element={<AdminDashboard />} />
-                <Route path="/admin/events" element={<AdminEvents />} />
-                <Route path="/admin/event-review-details" element={<AdminEventReviewDetails />} />
-                <Route path="/admin/users" element={<AdminUsers />} />
-                <Route path="/admin/verify-organizations" element={<AdminVerifyOrganizations />} />
-                <Route path="/admin/categories" element={<AdminCategories />} />
-                <Route path="/admin/reports" element={<AdminReports />} />
-                <Route path="/admin/audit-log" element={<AdminAuditLog />} />
-                <Route path="/admin/*" element={<ComingSoon title={t('comingSoon.admin')} />} />
+                <Route
+                    path="/org"
+                    element={
+                        <ProtectedRoute allowedRoles={['organization']}>
+                            <OrgLayout />
+                        </ProtectedRoute>
+                    }
+                >
+                    <Route index element={<Navigate to="dashboard" replace />} />
+                    <Route path="dashboard" element={<OrgDashboard />} />
+                    <Route path="posts" element={<OrgPosts />} />
+                    <Route path="profile" element={<OrgProfile />} />
+                    <Route path="opportunities" element={<OrgOpportunities />} />
+                    <Route path="create-event" element={<OrgCreateEvent />} />
+                    <Route path="applicants" element={<OrgApplicants />} />
+                    <Route path="report-center" element={<OrgReportCenter />} />
+                    <Route path="settings" element={<OrgSettings />} />
+                    <Route path="*" element={<ComingSoon title={t('comingSoon.org')} />} />
+                </Route>
+
+                <Route
+                    path="/admin"
+                    element={
+                        <ProtectedRoute allowedRoles={['admin']}>
+                            <AdminLayout />
+                        </ProtectedRoute>
+                    }
+                >
+                    <Route index element={<Navigate to="dashboard" replace />} />
+                    <Route path="dashboard" element={<AdminDashboard />} />
+                    <Route path="events" element={<AdminEvents />} />
+                    <Route path="event-review-details" element={<AdminEventReviewDetails />} />
+                    <Route path="events/:eventId" element={<AdminEventReviewDetails />} />
+                    <Route path="events/:eventId/registrations" element={<AdminEventRegistrations />} />
+                    <Route path="users" element={<AdminUsers />} />
+                    <Route path="verify-organizations" element={<AdminVerifyOrganizations />} />
+                    <Route path="categories" element={<AdminCategories />} />
+                    <Route path="reports" element={<AdminReports />} />
+                    <Route path="audit-log" element={<AdminAuditLog />} />
+                    <Route path="*" element={<ComingSoon title={t('comingSoon.admin')} />} />
+                </Route>
 
                 <Route element={<VisitorLayout />}>
                     <Route path="*" element={<NotFound />} />

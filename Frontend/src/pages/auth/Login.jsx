@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import AuthLayout from '../../layouts/AuthLayout'
 import { useOnboarding } from '../../context/OnboardingContext'
+import { saveSession } from '../../services/api'
 
 const isEmail = (v) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)
 const isPhone = (v) => /^[+]?([0-9][\s-()]*){7,15}$/.test(v)
@@ -99,7 +100,12 @@ export default function Login() {
             ? '/admin/dashboard'
             : roleConfig.dest
 
-        if (destination === '/app') {
+        if (destination === '/admin/dashboard') {
+            saveSession({ token: 'mock-admin-token-' + Date.now(), accountType: 'user', role: 'admin' })
+        } else if (roleConfig.id === 'organization' || destination.startsWith('/org')) {
+            saveSession({ token: 'mock-org-token-' + Date.now(), accountType: 'organization', role: 'organization' })
+        } else {
+            saveSession({ token: 'mock-participant-token-' + Date.now(), accountType: 'user', role: 'participant' })
             localStorage.setItem('eventify_current_participant', idValue)
             try {
                 const completedUsers = JSON.parse(localStorage.getItem('eventify_completed_participants') || '[]')

@@ -1,7 +1,7 @@
 import AppLangToggle from '../../components/app/AppLangToggle'
 import AppFooter from '../../components/app/AppFooter'
 import AppPageHead from '../../components/app/AppPageHead'
-import SkillFilter from '../../components/SkillFilter'
+import SkillFilter from '../../components/shared/SkillFilter'
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useLanguage } from '../../hooks/useLanguage'
