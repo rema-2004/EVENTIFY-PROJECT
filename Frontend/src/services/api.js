@@ -16,6 +16,15 @@ export function saveSession({ token, accountType, role }) {
     localStorage.setItem('eventify_account', JSON.stringify({ accountType, role }))
 }
 
+export function getSession() {
+    try {
+        const raw = localStorage.getItem('eventify_account')
+        return raw ? JSON.parse(raw) : null
+    } catch {
+        return null
+    }
+}
+
 export function clearSession() {
     localStorage.removeItem('eventify_token')
     localStorage.removeItem('token')

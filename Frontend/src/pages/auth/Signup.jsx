@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import AuthLayout from '../../layouts/AuthLayout'
 import { useOnboarding } from '../../context/OnboardingContext'
+import { saveSession } from '../../services/api'
 
 const isEmail = (v) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)
 const isPhone = (v) => /^[+]?([0-9][\s-()]*){7,15}$/.test(v)
@@ -133,8 +134,11 @@ export default function Signup() {
         if (Object.values(next).some(Boolean) || !terms) return
 
         setSubmitting(true)
-        if (!isOrg) {
+        if (isOrg) {
+            saveSession({ token: 'mock-org-token-' + Date.now(), accountType: 'organization', role: 'organization' })
+        } else {
             const idValue = email.trim().toLowerCase()
+            saveSession({ token: 'mock-participant-token-' + Date.now(), accountType: 'user', role: 'participant' })
             localStorage.setItem('eventify_current_participant', idValue)
             setIsProfileComplete(false)
             localStorage.setItem('eventify_has_unlocked_profile', 'false')
