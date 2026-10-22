@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom'
 import { useLanguage } from '../../hooks/useLanguage'
 import AnimatedCounter from '../../components/shared/AnimatedCounter'
 import { toast } from '../../utils/toast.js'
+import { apiFetch, getToken } from '../../services/api'
 
 const STORAGE_KEY = 'eventify_my_applications'
 
@@ -86,16 +87,10 @@ export default function MyApplications() {
 
     // Optional sync with backend registrations if logged in
     useEffect(() => {
-        const token = localStorage.getItem('eventify_token') || localStorage.getItem('token')
-        if (!token) return
+        if (!getToken()) return
 
         let isMounted = true
-        fetch('http://127.0.0.1:8000/api/v1/my/registrations', {
-            headers: {
-                'Authorization': `Bearer ${token}`,
-                'Accept': 'application/json',
-            },
-        })
+        apiFetch('/my/registrations')
             .then(res => res.ok ? res.json() : null)
             .then(data => {
                 if (!isMounted || !data?.data || !Array.isArray(data.data) || data.data.length === 0) return
@@ -165,15 +160,8 @@ export default function MyApplications() {
         const eventId = app.eventId || app.id
 
         try {
-            const token = localStorage.getItem('eventify_token') || localStorage.getItem('token')
-            if (token) {
-                await fetch(`http://127.0.0.1:8000/api/v1/events/${eventId}/register`, {
-                    method: 'DELETE',
-                    headers: {
-                        'Authorization': `Bearer ${token}`,
-                        'Accept': 'application/json',
-                    },
-                })
+            if (getToken()) {
+                await apiFetch(`/events/${eventId}/register`, { method: 'DELETE' })
             }
         } catch (err) {
             console.warn('Backend cancellation API call notice:', err)

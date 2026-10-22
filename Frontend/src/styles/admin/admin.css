@@ -23,6 +23,28 @@
     }
 }
 
+/* Fade out a list before swapping its content (e.g. a filter change),
+   then fade the new rows in one after another. */
+.adm-fade-swap {
+    transition: opacity 0.2s ease;
+}
+
+.adm-fade-swap.is-fading-out {
+    opacity: 0;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+    .adm-row-in {
+        animation: adm-fade-up 0.28s cubic-bezier(0.16, 1, 0.3, 1) both;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .adm-fade-swap {
+        transition: none;
+    }
+}
+
 @media (prefers-reduced-motion: no-preference) {
 
     /* Main page content area */

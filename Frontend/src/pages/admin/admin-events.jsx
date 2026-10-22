@@ -1,12 +1,17 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import AppPageHead from '../../components/app/AppPageHead'
-import { useAdminPageControls } from './useAdminPageControls.js'
 import AdminSidebar, { AdminMobileHeader } from '../../components/admin/AdminSidebar'
-import LangToggleBtn from '../../components/org/LangToggleBtn'
+import AdminTopbar from '../../components/admin/AdminTopbar'
 import { useLanguage } from '../../hooks/useLanguage'
 import { toast } from '../../utils/toast'
 import '../../styles/admin/admin.css'
+
+const STATUS_TABS = [
+    { status: 'pending', en: 'Pending', ar: 'قيد المراجعة' },
+    { status: 'approved', en: 'Approved', ar: 'مقبول' },
+    { status: 'rejected', en: 'Rejected', ar: 'مرفوض' },
+]
 
 const INITIAL_EVENTS = [
     {
@@ -56,11 +61,11 @@ const INITIAL_EVENTS = [
 ]
 
 export default function AdminEvents() {
-    useAdminPageControls()
     const { language } = useLanguage()
     const ar = language === 'ar'
 
     const [events, setEvents] = useState(INITIAL_EVENTS)
+    const [activeFilter, setActiveFilter] = useState('pending')
     const [rejectModalOpen, setRejectModalOpen] = useState(false)
     const [selectedEvent, setSelectedEvent] = useState(null)
     const [rejectionReason, setRejectionReason] = useState('')
@@ -95,7 +100,6 @@ export default function AdminEvents() {
         )
         const eventItem = events.find((e) => e.id === eventId)
         toast(ar ? `تم رفض فعالية "${eventItem?.title}"` : `Event "${eventItem?.title}" rejected`, 'error')
-        setTimeout(() => window.refreshEventsFilter?.(), 50)
     }
 
     const handleApprove = (eventId) => {
@@ -109,8 +113,12 @@ export default function AdminEvents() {
         )
         const eventItem = events.find((e) => e.id === eventId)
         toast(ar ? `تمت الموافقة على فعالية "${eventItem?.title}"` : `Event "${eventItem?.title}" approved`, 'success')
-        setTimeout(() => window.refreshEventsFilter?.(), 50)
     }
+
+    // Tabs, counts and the visible list are all derived from state, so they
+    // update by themselves after an approve/reject.
+    const countFor = (status) => events.filter((e) => e.status === status).length
+    const visibleEvents = events.filter((e) => e.status === activeFilter)
 
     return (
         <>
@@ -119,177 +127,7 @@ export default function AdminEvents() {
             <div className="flex min-h-screen">
                 <AdminSidebar />
                 <main className="flex-1 w-full px-4 md:px-10 pt-6 pb-24 lg:pb-8">
-                    {/* Global Top Header: page title (left) + global controls (right) */}
-                    <div className="admin-topbar">
-                        <h1 className="admin-topbar__title">Review Events</h1>
-                        <div className="admin-topbar__right">
-                            <div className="org-dropdown">
-                                <button
-                                    className="icon-btn"
-                                    id="admin-notif-toggle"
-                                    type="button"
-                                    aria-label="Notifications (3 unread)"
-                                    aria-expanded="false"
-                                >
-                                    <span className="material-symbols-outlined">notifications</span>
-                                    <span className="icon-btn__dot" />
-                                </button>
-                                <div
-                                    className="org-dropdown__panel org-dropdown__panel--notif"
-                                    id="admin-notif-panel"
-                                    hidden=""
-                                    role="menu"
-                                    aria-label="Notifications"
-                                >
-                                    <div className="flex items-center justify-between px-3 py-2 border-b border-outline-variant/40 mb-1">
-                                        <span className="font-semibold text-xs text-on-surface">
-                                            Notifications
-                                        </span>
-                                        <span className="text-[11px] font-semibold text-primary bg-primary/10 px-2 py-0.5 rounded-full">
-                                            3 unread
-                                        </span>
-                                    </div>
-                                    <div className="space-y-1">
-                                        <Link
-                                            className="org-dropdown__item"
-                                            to="/admin/verify-organizations"
-                                        >
-                                            <span
-                                                className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0"
-                                                style={{
-                                                    background: "var(--surface-2)",
-                                                    color: "var(--accent)"
-                                                }}
-                                            >
-                                                <span
-                                                    className="material-symbols-outlined text-[18px]"
-                                                    aria-hidden="true"
-                                                >
-                                                    verified
-                                                </span>
-                                            </span>
-                                            <span className="flex-1 min-w-0">
-                                                <span className="block font-medium text-xs leading-snug">
-                                                    DesignHub Amman is awaiting verification
-                                                </span>
-                                                <span className="org-dropdown__meta">1 hour ago</span>
-                                            </span>
-                                        </Link>
-                                        <Link className="org-dropdown__item" to="/admin/reports">
-                                            <span
-                                                className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0"
-                                                style={{
-                                                    background: "var(--surface-2)",
-                                                    color: "var(--accent)"
-                                                }}
-                                            >
-                                                <span
-                                                    className="material-symbols-outlined text-[18px]"
-                                                    aria-hidden="true"
-                                                >
-                                                    flag
-                                                </span>
-                                            </span>
-                                            <span className="flex-1 min-w-0">
-                                                <span className="block font-medium text-xs leading-snug">
-                                                    New report filed on "Cloud Native Bootcamp"
-                                                </span>
-                                                <span className="org-dropdown__meta">3 hours ago</span>
-                                            </span>
-                                        </Link>
-                                        <Link className="org-dropdown__item" to="/admin/audit-log">
-                                            <span
-                                                className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0"
-                                                style={{
-                                                    background: "var(--surface-2)",
-                                                    color: "var(--accent)"
-                                                }}
-                                            >
-                                                <span
-                                                    className="material-symbols-outlined text-[18px]"
-                                                    aria-hidden="true"
-                                                >
-                                                    gpp_maybe
-                                                </span>
-                                            </span>
-                                            <span className="flex-1 min-w-0">
-                                                <span className="block font-medium text-xs leading-snug">
-                                                    Sensitive operation: account suspended by Sara Al-Khatib
-                                                </span>
-                                                <span className="org-dropdown__meta">Yesterday</span>
-                                            </span>
-                                        </Link>
-                                    </div>
-                                    <div className="pt-2 mt-1 border-t border-outline-variant/40">
-                                        <Link
-                                            to="/admin/audit-log"
-                                            className="block text-center text-xs font-semibold text-primary hover:underline py-1"
-                                        >
-                                            View all activity →
-                                        </Link>
-                                    </div>
-                                </div>
-                            </div>
-                            <LangToggleBtn />
-                            <button
-                                className="theme-toggle icon-btn"
-                                type="button"
-                                title="Switch theme"
-                                aria-label="Switch theme"
-                            >
-                                <span className="material-symbols-outlined icon-dark">dark_mode</span><span className="material-symbols-outlined icon-light">light_mode</span>
-                            </button>
-                            <div className="org-dropdown">
-                                <button
-                                    className="dash-profile"
-                                    id="admin-profile-toggle"
-                                    type="button"
-                                    aria-label="Admin menu"
-                                    aria-expanded="false"
-                                    style={{ cursor: "pointer" }}
-                                >
-                                    <span className="dash-profile__avatar">PA</span>
-                                    <span style={{ fontSize: 13, fontWeight: 600 }}>
-                                        Platform Admin
-                                    </span>
-                                    <span
-                                        className="material-symbols-outlined"
-                                        style={{ fontSize: 18, color: "var(--text-muted)" }}
-                                    >
-                                        expand_more
-                                    </span>
-                                </button>
-                                <div
-                                    className="org-dropdown__panel org-dropdown__panel--profile"
-                                    id="admin-profile-panel"
-                                    hidden=""
-                                    role="menu"
-                                    aria-label="Admin menu"
-                                >
-                                    <div className="px-3 py-2 border-b border-outline-variant/40 mb-1">
-                                        <p className="font-semibold text-xs text-on-surface">
-                                            Platform Admin
-                                        </p>
-                                        <p className="text-[11px] text-on-surface-variant truncate">
-                                            Full access
-                                        </p>
-                                    </div>
-                                    <Link
-                                        className="org-dropdown__item text-error hover:bg-error/10"
-                                        to="/auth/login"
-                                    >
-                                        <span
-                                            className="material-symbols-outlined text-[18px] text-error"
-                                            aria-hidden="true"
-                                        >
-                                            logout
-                                        </span>
-                                        <span className="text-error font-medium">Sign out</span>
-                                    </Link>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    <AdminTopbar title="Review Events" />
                     <div className="mb-8 flex flex-col justify-between gap-4 md:flex-row md:items-end">
                         <div>
                             <p className="text-on-surface-variant font-body-md mt-1">
@@ -300,57 +138,35 @@ export default function AdminEvents() {
                     </div>
                     <div
                         className="flex flex-wrap gap-2 mb-6"
-                        id="events-tab-group"
                         role="tablist"
                         aria-label="Filter events by status"
                     >
-                        <button
-                            type="button"
-                            className="px-5 py-2 rounded-full bg-primary text-on-primary font-label-md text-label-md"
-                            data-filter="pending"
-                            aria-pressed="true"
-                        >
-                            Pending <span data-filter-count="">(3)</span>
-                        </button>
-                        <button
-                            type="button"
-                            className="px-5 py-2 rounded-full bg-surface-container text-on-surface-variant hover:bg-surface-container-high transition-colors font-label-md text-label-md"
-                            data-filter="approved"
-                            aria-pressed="false"
-                        >
-                            Approved <span data-filter-count="">(0)</span>
-                        </button>
-                        <button
-                            type="button"
-                            className="px-5 py-2 rounded-full bg-surface-container text-on-surface-variant hover:bg-surface-container-high transition-colors font-label-md text-label-md"
-                            data-filter="rejected"
-                            aria-pressed="false"
-                        >
-                            Rejected <span data-filter-count="">(0)</span>
-                        </button>
+                        {STATUS_TABS.map((tab) => {
+                            const active = tab.status === activeFilter
+                            return (
+                                <button
+                                    key={tab.status}
+                                    type="button"
+                                    className={`px-5 py-2 rounded-full font-label-md text-label-md ${
+                                        active
+                                            ? 'bg-primary text-on-primary'
+                                            : 'bg-surface-container text-on-surface-variant hover:bg-surface-container-high transition-colors'
+                                    }`}
+                                    aria-pressed={active}
+                                    onClick={() => setActiveFilter(tab.status)}
+                                >
+                                    {ar ? tab.ar : tab.en} <span>({countFor(tab.status)})</span>
+                                </button>
+                            )
+                        })}
                     </div>
-                    <div className="section-card mb-4" id="events-category-banner" hidden="">
-                        <div className="flex flex-wrap items-center justify-between gap-2">
-                            <p className="text-on-surface-variant">
-                                Showing events in category:{" "}
-                                <strong
-                                    className="text-on-surface"
-                                    id="events-category-banner-name"
-                                />
-                            </p>
-                            <Link className="btn-secondary" to="/admin/events">
-                                Clear filter
-                            </Link>
-                        </div>
-                    </div>
+                    {/* id is a styling hook only (staggered entrance in admin.css) */}
                     <div className="space-y-4" id="events-list">
-                        {events.map((event, idx) => (
+                        {visibleEvents.map((event, idx) => (
                             <div
                                 key={event.id}
                                 className="section-card row-animated transition-all duration-200"
                                 style={{ '--stagger-idx': idx }}
-                                data-status={event.status}
-                                data-category={event.category}
                             >
                                 <div className="flex flex-col md:flex-row md:items-start justify-between gap-4">
                                     <div className="event-content-body flex-1">
@@ -389,7 +205,7 @@ export default function AdminEvents() {
                                     </div>
                                     <div className="flex flex-wrap items-center gap-2 flex-shrink-0">
                                         <Link
-                                            to="/admin/event-review-details"
+                                            to={`/admin/events/${event.id}`}
                                             className="btn-secondary"
                                         >
                                             {ar ? 'عرض التفاصيل' : 'View Details'}
@@ -413,6 +229,15 @@ export default function AdminEvents() {
                                                     <span>{ar ? 'رفض' : 'Reject'}</span>
                                                 </button>
                                             </>
+                                        ) : event.status === 'approved' ? (
+                                            <Link
+                                                to={`/admin/events/${event.id}/registrations`}
+                                                state={{ title: event.title }}
+                                                className="btn-secondary"
+                                            >
+                                                <span className="material-symbols-outlined" style={{ fontSize: 18 }}>group</span>
+                                                <span>{ar ? 'عرض المسجّلين' : 'View Registrations'}</span>
+                                            </Link>
                                         ) : (
                                             <span className="text-xs text-on-surface-variant self-center font-medium px-3 py-1.5 rounded-lg bg-surface-container-low">
                                                 {ar ? 'تم اتخاذ القرار' : 'Decision recorded'}
@@ -422,15 +247,17 @@ export default function AdminEvents() {
                                 </div>
                             </div>
                         ))}
-                        <div className="empty-state fade-in" id="events-empty" hidden="">
-                            <span className="empty-state__icon">
-                                <span className="material-symbols-outlined" aria-hidden="true">
-                                    event_busy
+                        {visibleEvents.length === 0 && (
+                            <div className="empty-state fade-in">
+                                <span className="empty-state__icon">
+                                    <span className="material-symbols-outlined" aria-hidden="true">
+                                        event_busy
+                                    </span>
                                 </span>
-                            </span>
-                            <h3>{ar ? 'لا توجد فعاليات في هذه الحالة' : 'No events in this status'}</h3>
-                            <p>{ar ? 'لا توجد أي فعاليات مطابقة لهذا الفلتر حالياً.' : 'No events match this filter right now.'}</p>
-                        </div>
+                                <h3>{ar ? 'لا توجد فعاليات في هذه الحالة' : 'No events in this status'}</h3>
+                                <p>{ar ? 'لا توجد أي فعاليات مطابقة لهذا الفلتر حالياً.' : 'No events match this filter right now.'}</p>
+                            </div>
+                        )}
                     </div>
 
                     {/* Rejection Reason Modal (Tailwind CSS) */}

@@ -2,14 +2,16 @@ import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { BrowserRouter } from 'react-router-dom'
 import './index.css'
-import './i18n'
-import './i18n/chartLocalization'
+import { i18nReady } from './i18n'
+import './utils/toast' // also exposes window.EventifyUI.toast for plain-JS page scripts
 import App from './App.jsx'
 import { ThemeProvider } from './context/ThemeContext'
 import { LanguageProvider } from './context/LanguageContext'
 import { OnboardingProvider } from './context/OnboardingContext'
 
-createRoot(document.getElementById('root')).render(
+// Render once the starting language file has loaded (see i18n/index.js).
+// Render anyway if it fails, so a translation error never leaves a blank page.
+const render = () => createRoot(document.getElementById('root')).render(
   <StrictMode>
     <BrowserRouter>
       <ThemeProvider>
@@ -22,3 +24,5 @@ createRoot(document.getElementById('root')).render(
     </BrowserRouter>
   </StrictMode>,
 )
+
+i18nReady.then(render, render)

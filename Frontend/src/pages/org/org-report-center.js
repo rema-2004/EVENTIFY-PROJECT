@@ -2,7 +2,8 @@
    Create / search / filter / sort / paginate / preview / delete reports for
    this organization's own events. Mirrors admin/admin-reports.js's pattern,
    rescoped to org-only report types via window.OrgReportsData. */
-import Chart from 'chart.js/auto'
+// Chart with the app's language plugin registered (loaded only by chart pages)
+import Chart from '../../i18n/chartLocalization'
 
 export function initOrgReportCenter() {
     const $ = (sel, root) => (root || document).querySelector(sel);

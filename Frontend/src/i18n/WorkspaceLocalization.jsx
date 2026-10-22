@@ -1,7 +1,6 @@
 import { useEffect } from 'react'
 import { useLocation } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
-import ar from './locales/ar.json'
 import i18nInstance from './index'
 import { registerLabelTranslator } from './labelTranslator'
 
@@ -1175,9 +1174,6 @@ const LABEL_KEYS = {
     'Upload verification document': 'xo_342',
 }
 
-const ARABIC_LABEL_KEYS = Object.fromEntries(
-    Object.entries(LABEL_KEYS).map(([, key]) => [ar.workspace[key], key]),
-)
 function normalizeLabel(value) {
     return value
         .normalize('NFKC')
@@ -1188,14 +1184,34 @@ function normalizeLabel(value) {
         .toLocaleLowerCase()
 }
 
-const NORMALIZED_LABEL_KEYS = Object.fromEntries(
-    Object.entries({ ...LABEL_KEYS, ...ARABIC_LABEL_KEYS }).map(([label, key]) => [normalizeLabel(label), key]),
+// Arabic label -> key lookups, built from the loaded Arabic bundle. ar.json is
+// lazy-loaded (see i18n/index.js), but the DOM can only contain Arabic labels
+// once it has loaded, so building these on first use is enough.
+let ARABIC_LABEL_KEYS = {}
+let NORMALIZED_LABEL_KEYS = Object.fromEntries(
+    Object.entries(LABEL_KEYS).map(([label, key]) => [normalizeLabel(label), key]),
 )
+let arabicLookupsBuilt = false
+
+function ensureArabicLookups() {
+    if (arabicLookupsBuilt) return
+    const workspace = i18nInstance.getResourceBundle('ar', 'translation')?.workspace
+    if (!workspace) return
+    ARABIC_LABEL_KEYS = Object.fromEntries(
+        Object.entries(LABEL_KEYS).map(([, key]) => [workspace[key], key]),
+    )
+    NORMALIZED_LABEL_KEYS = Object.fromEntries(
+        Object.entries({ ...LABEL_KEYS, ...ARABIC_LABEL_KEYS }).map(([label, key]) => [normalizeLabel(label), key]),
+    )
+    arabicLookupsBuilt = true
+}
 const ATTRIBUTE_NAMES = ['aria-label', 'placeholder', 'title', 'alt']
 const ATTRIBUTE_SELECTOR = ATTRIBUTE_NAMES.map((attribute) => `[${attribute}]`).join(',')
 
 function findLabelKey(value) {
-    return LABEL_KEYS[value] || ARABIC_LABEL_KEYS[value] || NORMALIZED_LABEL_KEYS[normalizeLabel(value)]
+    if (LABEL_KEYS[value]) return LABEL_KEYS[value]
+    ensureArabicLookups()
+    return ARABIC_LABEL_KEYS[value] || NORMALIZED_LABEL_KEYS[normalizeLabel(value)]
 }
 
 // ---- Dynamic strings (dates, counts, relative times, "A · B" lists) -----------------------------
