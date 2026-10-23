@@ -13,6 +13,7 @@ class UserResource extends JsonResource
             'id'             => $this->id,
             'name'           => $this->name,
             'email'          => $this->email,
+            'pending_email'  => $this->pending_email,
             'phone'          => $this->phone,
             'avatar'         => $this->avatar ? asset('storage/' . $this->avatar) : null, // أضفها إذا كان للمستخدم صورة شخصية
             'role'           => $this->role,

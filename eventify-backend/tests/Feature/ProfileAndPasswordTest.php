@@ -105,9 +105,12 @@ class ProfileAndPasswordTest extends TestCase
             'current_password' => 'Password123',
         ])
             ->assertOk()
-            ->assertJsonPath('data.email', 'new@example.com');
+            ->assertJsonPath('data.email', 'old@example.com')
+            ->assertJsonPath('data.pending_email', 'new@example.com');
 
-        $this->assertSame('new@example.com', $user->fresh()->email);
+        // The login email only changes after the new address is confirmed.
+        $this->assertSame('old@example.com', $user->fresh()->email);
+        $this->assertSame('new@example.com', $user->fresh()->pending_email);
     }
 
     public function test_sending_the_same_email_does_not_need_a_password(): void
@@ -156,7 +159,7 @@ class ProfileAndPasswordTest extends TestCase
             'current_password' => 'Password123',
         ])->assertOk();
 
-        $this->assertTrue((bool) AuditLog::where('action', 'Updated Profile')->first()->is_sensitive);
+        $this->assertTrue((bool) AuditLog::where('action', 'Requested Email Change')->first()->is_sensitive);
     }
 
     public function test_an_update_that_changes_nothing_writes_no_log(): void
