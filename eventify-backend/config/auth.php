@@ -43,9 +43,19 @@ return [
             'provider' => 'users',
         ],
 
-         'organization' => [
-        'driver' => 'sanctum',
-        'provider' => 'organizations',
+        // ── Eventify: User/Admin token guard ──────────────────
+        // Without a provider, 'sanctum' accepts ANY token (including an
+        // organization's) and returns that model as the "user". Pinning it
+        // to the 'users' provider means only User tokens pass auth:sanctum.
+        'sanctum' => [
+            'driver' => 'sanctum',
+            'provider' => 'users',
+        ],
+
+        // ── Eventify: Organization guard ──────────────────────
+        'organization' => [
+            'driver' => 'sanctum',
+            'provider' => 'organizations',
         ],
     ],
 
