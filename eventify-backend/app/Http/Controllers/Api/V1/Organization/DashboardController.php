@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\V1\Organization;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\EventResource;
+use App\Models\AuditLog;
 use App\Models\Event;
 use App\Models\EventRegistration;
 use App\Traits\ApiResponse;
@@ -27,6 +28,19 @@ class DashboardController extends Controller
     private const MY_EVENTS_LIMIT = 10;
     private const PERFORMANCE_LIMIT = 6;
     private const UPCOMING_LIMIT = 5;
+    private const TOP_EVENTS_LIMIT = 3;
+    private const RECENT_APPLICANTS_LIMIT = 5;
+    private const RECENT_ACTIVITY_LIMIT = 5;
+
+    // Audit log actions shown in "recent activity": action text (exactly
+    // as the other controllers write it) => [type, icon].
+    private const ACTIVITY = [
+        'Registered for Event' => ['applicant', 'person_add'],
+        'Approved Applicant' => ['approval', 'check_circle'],
+        'Rejected Applicant' => ['rejection', 'cancel'],
+        'Approved Event' => ['publish', 'campaign'],
+        'Rejected Event' => ['rejection', 'cancel'],
+    ];
 
     // Ranges the applicants chart accepts (?range=...). Anything else
     // falls back to the default.
@@ -69,6 +83,9 @@ class DashboardController extends Controller
             ->values();
 
         $eventIds = $rows->pluck('event.id')->all();
+        // Every event of the organization (drafts and rejected ones too),
+        // because their audit log rows belong in "recent activity".
+        $allEventIds = Event::where('organization_id', $organization->id)->pluck('id')->all();
         $registrations = $this->registrationCounts($eventIds);
 
         $rangeBuckets = $this->buckets($range);
@@ -96,6 +113,9 @@ class DashboardController extends Controller
             'eventPerformance' => $this->eventPerformance($rows, $registrations),
             'myEvents' => $this->myEvents($rows, $registrations),
             'upcomingEvents' => $this->upcomingEvents($rows, $registrations),
+            'topEvents' => $this->topEvents($rows, $registrations),
+            'recentApplicants' => $this->recentApplicants($rows, $eventIds),
+            'recentActivity' => $this->recentActivity($allEventIds),
         ], 'Dashboard retrieved');
     }
 
@@ -248,6 +268,125 @@ class DashboardController extends Controller
             })
             ->values()
             ->all();
+    }
+
+    /**
+     * The busiest published events (live, upcoming or ended) by number of
+     * applicants. "score" is out of 100: the busiest event gets 100 and
+     * the others a share of it. Events with no applicants are left out.
+     * Rating is null until the ratings feature exists.
+     *
+     * @param  Collection<int, array{event: Event, status: string}>  $rows
+     * @param  array<int, array<string, int>>  $registrations
+     * @return array<int, array<string, mixed>>
+     */
+    private function topEvents(Collection $rows, array $registrations): array
+    {
+        $ranked = $rows
+            ->filter(fn (array $row) => in_array($row['status'], ['live', 'upcoming', 'ended'], true))
+            ->map(fn (array $row) => [
+                'event' => $row['event'],
+                'applicants' => $this->countsFor($row['event']->id, $registrations)['applicants'],
+            ])
+            ->filter(fn (array $item) => $item['applicants'] > 0)
+            ->sortByDesc('applicants')
+            ->take(self::TOP_EVENTS_LIMIT)
+            ->values();
+
+        $max = $ranked->max('applicants');
+
+        return $ranked
+            ->map(fn (array $item, int $index) => [
+                'rank' => $index + 1,
+                'name' => $item['event']->title,
+                'image' => (new EventResource($item['event']))->resolve()['cover_image'],
+                'applicants' => $item['applicants'],
+                'rating' => null,
+                'score' => (int) round($item['applicants'] / $max * 100),
+            ])
+            ->all();
+    }
+
+    /**
+     * The latest applications to the organization's events (cancelled
+     * ones left out), newest first. "applied" is text like "2 hours ago".
+     *
+     * @param  Collection<int, array{event: Event, status: string}>  $rows
+     * @param  array<int, int>  $eventIds
+     * @return array<int, array<string, string>>
+     */
+    private function recentApplicants(Collection $rows, array $eventIds): array
+    {
+        if ($eventIds === []) {
+            return [];
+        }
+
+        $titles = $rows->mapWithKeys(fn (array $row) => [$row['event']->id => $row['event']->title]);
+
+        return EventRegistration::whereIn('event_id', $eventIds)
+            ->where('status', '!=', EventRegistration::STATUS_CANCELLED)
+            ->with('user:id,name')
+            ->orderByDesc('registered_at')
+            ->orderByDesc('id')
+            ->limit(self::RECENT_APPLICANTS_LIMIT)
+            ->get()
+            ->map(fn (EventRegistration $registration) => [
+                'name' => $registration->user?->name ?? self::EM_DASH,
+                'event' => $titles[$registration->event_id] ?? self::EM_DASH,
+                'applied' => $registration->registered_at?->diffForHumans() ?? self::EM_DASH,
+                // The frontend calls a confirmed registration "approved".
+                'status' => $registration->status === EventRegistration::STATUS_CONFIRMED
+                    ? 'approved'
+                    : $registration->status,
+            ])
+            ->all();
+    }
+
+    /**
+     * The latest things that happened around the organization's events,
+     * read from the audit log: students applying, the organization
+     * approving or rejecting applicants, and the admin approving or
+     * rejecting its events. Newest first.
+     *
+     * @param  array<int, int>  $eventIds
+     * @return array<int, array<string, string>>
+     */
+    private function recentActivity(array $eventIds): array
+    {
+        if ($eventIds === []) {
+            return [];
+        }
+
+        return AuditLog::where('target_type', (new Event())->getMorphClass())
+            ->whereIn('target_id', $eventIds)
+            ->whereIn('action', array_keys(self::ACTIVITY))
+            ->where('status', AuditLog::STATUS_SUCCESS)
+            ->orderByDesc('created_at')
+            ->orderByDesc('id')
+            ->limit(self::RECENT_ACTIVITY_LIMIT)
+            ->get()
+            ->map(function (AuditLog $log) {
+                [$type, $icon] = self::ACTIVITY[$log->action];
+
+                return [
+                    'type' => $type,
+                    'icon' => $icon,
+                    'text' => $this->activityText($log->action, $log->actor_name, $log->target_label ?? 'an event'),
+                    'time' => $log->created_at->diffForHumans(),
+                ];
+            })
+            ->all();
+    }
+
+    private function activityText(string $action, ?string $actor, string $event): string
+    {
+        return match ($action) {
+            'Registered for Event' => ($actor ?? 'A student') . ' applied to ' . $event,
+            'Approved Applicant' => 'An application to ' . $event . ' was approved',
+            'Rejected Applicant' => 'An application to ' . $event . ' was rejected',
+            'Approved Event' => $event . ' was approved and published',
+            default => $event . ' was rejected by the admin',
+        };
     }
 
     /**
@@ -428,7 +567,7 @@ class DashboardController extends Controller
         return $buckets;
     }
 
-        /**
+    /**
      * @return array<int, array{start: Carbon, end: Carbon, label: string}>
      */
     private function weeklyBuckets(int $weeks): array
