@@ -124,5 +124,7 @@ return [
     ],
     'frontend_reset_url'     => env('FRONTEND_RESET_URL', 'http://localhost:3000/auth/reset-password'),
 
+    'frontend_confirm_email_url' => env('FRONTEND_CONFIRM_EMAIL_URL', 'http://localhost:3000/auth/confirm-email'),
+
     'frontend_org_reset_url' => env('FRONTEND_ORG_RESET_URL', 'http://localhost:3000/auth/org/reset-password'),
 ];
