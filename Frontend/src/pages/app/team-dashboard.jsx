@@ -317,9 +317,9 @@ export default function TeamDashboard() {
             <main className="max-w-7xl mx-auto px-4 md:px-8 py-8 mb-24" dir={ar ? 'rtl' : 'ltr'}>
 
                 {/* Dashboard Header */}
-                <div className={`flex flex-col md:flex-row md:items-end justify-between gap-4 mb-10 ${ar ? 'md:flex-row-reverse' : ''}`}>
-                    <div className={ar ? 'text-right' : ''}>
-                        <div className={`flex items-center gap-3 mb-2 ${ar ? 'flex-row-reverse' : ''}`}>
+                <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-10">
+                    <div>
+                        <div className="flex items-center gap-3 mb-2">
                             <span className="px-3 py-1 rounded-full bg-secondary-container text-on-secondary-container font-label-sm text-label-sm uppercase tracking-wider">
                                 {ar ? currentComp.tag.ar : currentComp.tag.en}
                             </span>
@@ -330,7 +330,7 @@ export default function TeamDashboard() {
                         <h1 className="font-headline-lg text-headline-lg text-on-surface">
                             {ar ? currentComp.teamName.ar : currentComp.teamName.en}
                         </h1>
-                        <div className={`flex items-center gap-2 mt-2 flex-wrap ${ar ? 'flex-row-reverse' : ''}`}>
+                        <div className="flex items-center gap-2 mt-2 flex-wrap">
                             <span className="w-2.5 h-2.5 rounded-full animate-pulse" style={{ backgroundColor: '#FF4D2E' }} />
                             <span className="font-label-md text-label-md" style={{ color: '#FF4D2E' }}>
                                 {ar ? 'يُجنّد' : 'Recruiting'}
@@ -345,7 +345,7 @@ export default function TeamDashboard() {
                             </span>
                         </div>
                     </div>
-                    <div className={`flex items-center gap-3 ${ar ? 'flex-row-reverse' : ''}`}>
+                    <div className="flex items-center gap-3">
                         {userRole === 'leader' ? (
                             <>
                                 <button
@@ -413,53 +413,11 @@ export default function TeamDashboard() {
                 {/* Centered Main Layout */}
                 <div className="max-w-5xl mx-auto space-y-stack_gap_lg">
 
-                    {/* AI Team Recommendation - Centered & Featured */}
-                    <div className="p-5 sm:p-6 rounded-3xl bg-gradient-to-r from-orange-500/10 via-amber-500/5 to-purple-500/10 dark:from-orange-500/15 dark:via-amber-500/10 dark:to-purple-500/15 border border-orange-500/30 shadow-md relative overflow-hidden backdrop-blur-sm animate-fade-in">
-                        <div className={`flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 mb-3 ${ar ? 'sm:flex-row-reverse' : ''}`}>
-                            <div className={`flex items-center gap-3 ${ar ? 'flex-row-reverse' : ''}`}>
-                                <div className="w-10 h-10 rounded-xl bg-[#FF4D2E]/15 text-[#FF4D2E] flex items-center justify-center shrink-0">
-                                    <span className="material-symbols-outlined text-2xl" style={{ fontVariationSettings: '"FILL" 1' }}>auto_awesome</span>
-                                </div>
-                                <div className={ar ? 'text-right' : ''}>
-                                    <h4 className="font-bold text-sm sm:text-base text-on-surface flex items-center gap-2">
-                                        <span>{ar ? 'توصية الذكاء الاصطناعي للفريق' : 'AI Team Recommendation'}</span>
-                                        <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-secondary/15 text-secondary">
-                                            {ar ? 'مدعوم بـ AI' : 'AI-Powered'}
-                                        </span>
-                                    </h4>
-                                    <p className="text-[11px] text-on-surface-variant">
-                                        {ar ? 'تحليل ذكي للثغرات البرمجية ومطابقة المرشحين لمشروعكم' : 'Smart technical gap analysis & candidate matching'}
-                                    </p>
-                                </div>
-                            </div>
-                            <span className="inline-flex items-center gap-1.5 font-mono font-black text-xs px-3.5 py-1.5 rounded-full bg-[#FF4D2E]/15 text-[#FF4D2E] border border-[#FF4D2E]/30 shadow-sm">
-                                <span className="text-sm">94%</span>
-                                <span className="text-[11px] font-semibold">{ar ? 'تطابق استثنائي' : 'High Match'}</span>
-                            </span>
-                        </div>
-
-                        <p className={`text-xs sm:text-sm text-on-surface-variant leading-relaxed mb-4 ${ar ? 'text-right' : ''}`}>
-                            {ar
-                                ? <>بناءً على مشروعك <strong>"NeuralMesh"</strong>، خبرة <strong>Alex Rivera</strong> في <strong>PyTorch</strong> و<strong>الرؤية الحاسوبية (Computer Vision)</strong> تجعله تطابقاً استثنائياً لسد الثغرات التقنية والبرمجية في فريقك.</>
-                                : <>Based on your project <strong>"NeuralMesh"</strong>, Alex Rivera's experience with <strong>PyTorch</strong> and <strong>Computer Vision</strong> makes them an exceptional 94% match for your team's technical gaps.</>}
-                        </p>
-
-                        <div className="space-y-1.5">
-                            <div className={`flex justify-between items-center text-[11px] font-bold text-on-surface-variant ${ar ? 'flex-row-reverse' : ''}`}>
-                                <span>{ar ? 'مؤشر التوافق التقني مع أهداف الهاكاثون' : 'Technical Match Alignment'}</span>
-                                <span className="text-[#FF4D2E] font-mono font-bold">94%</span>
-                            </div>
-                            <div className="h-2 w-full bg-surface-container-high rounded-full overflow-hidden">
-                                <div className="h-full rounded-full bg-gradient-to-r from-amber-500 to-[#FF4D2E] shadow-sm transition-all duration-1000 ease-out" style={{ width: '94%' }} />
-                            </div>
-                        </div>
-                    </div>
-
-                        {/* Pending Join Requests */}
-                        <section>
-                            <div className={`flex items-center justify-between mb-6 ${ar ? 'flex-row-reverse' : ''}`}>
-                                <h3 className={`font-headline-md text-headline-md text-on-surface flex items-center gap-2 ${ar ? 'flex-row-reverse' : ''}`}>
-                                    {ar ? 'طلبات الانضمام المعلّقة' : 'Pending Join Requests'}
+                    {/* Pending Join Requests */}
+                    <section>
+                            <div className="flex items-center justify-between mb-6">
+                                <h3 className="font-headline-md text-headline-md text-on-surface flex items-center gap-2">
+                                    <span>{ar ? 'طلبات الانضمام المعلّقة' : 'Pending Join Requests'}</span>
                                     {hasPendingRequests && <span className="bg-error-container text-error text-label-sm px-2 py-0.5 rounded-full">1</span>}
                                 </h3>
                             </div>
@@ -473,7 +431,7 @@ export default function TeamDashboard() {
                             ) : requestStatus === null ? (
                                 <div className="bg-surface-container-lowest border border-outline-variant rounded-xl p-6 shadow-sm relative overflow-hidden">
                                     <div className={`absolute top-0 ${ar ? 'right-0' : 'left-0'} w-1 h-full`} style={{ backgroundColor: '#FF4D2E' }} />
-                                    <div className={`flex flex-col md:flex-row gap-6 ${ar ? 'md:flex-row-reverse' : ''}`}>
+                                    <div className="flex flex-col md:flex-row gap-6">
                                         {/* Avatar */}
                                         <div className="flex-shrink-0 flex flex-col items-center">
                                             <div className="w-20 h-20 rounded-2xl overflow-hidden mb-3 border-2 border-surface-container-high shadow-inner">
@@ -483,7 +441,7 @@ export default function TeamDashboard() {
                                                     alt="Alex Rivera"
                                                 />
                                             </div>
-                                            <div className={`flex items-center gap-1 text-on-surface-variant ${ar ? 'flex-row-reverse' : ''}`}>
+                                            <div className="flex items-center gap-1 text-on-surface-variant">
                                                 <span className="material-symbols-outlined text-[16px]">work</span>
                                                 <span className="font-label-sm text-label-sm">{ar ? '3 سنوات خبرة' : '3 Years Exp'}</span>
                                             </div>
@@ -491,9 +449,9 @@ export default function TeamDashboard() {
 
                                         {/* Details */}
                                         <div className="flex-grow">
-                                            <div className={`flex flex-col md:flex-row md:items-center justify-between gap-2 mb-3 ${ar ? 'md:flex-row-reverse' : ''}`}>
+                                            <div className="flex flex-col md:flex-row md:items-center justify-between gap-2 mb-3">
                                                 <div>
-                                                    <div className={`flex items-center gap-2 mb-1 ${ar ? 'flex-row-reverse' : ''}`}>
+                                                    <div className="flex items-center gap-2 mb-1">
                                                         <h4 className="font-title-lg text-title-lg text-on-surface">Alex Rivera</h4>
                                                         <span className="inline-flex items-center gap-1 text-[11px] font-bold text-[#FF4D2E] bg-[#FF4D2E]/10 px-2 py-0.5 rounded-full">
                                                             <span className="material-symbols-outlined text-[13px]">emoji_events</span>
@@ -504,7 +462,7 @@ export default function TeamDashboard() {
                                                         {ar ? 'متقدم لشاغر: مهندس ذكاء اصطناعي ونظم مستقلة' : 'Applying for: AI Engineer & Autonomous Systems'}
                                                     </p>
                                                 </div>
-                                                <div className={`flex gap-4 ${ar ? 'flex-row-reverse' : ''}`}>
+                                                <div className="flex gap-4">
                                                     {['CV', 'GitHub', 'LinkedIn'].map((lbl) => (
                                                         <a key={lbl} className="text-on-surface-variant hover:text-primary flex items-center gap-1 font-label-sm text-label-sm transition-colors" href="#">
                                                             <span className="material-symbols-outlined text-[18px]">
@@ -516,13 +474,13 @@ export default function TeamDashboard() {
                                                 </div>
                                             </div>
 
-                                            <div className={`flex flex-wrap gap-2 mb-4 ${ar ? 'flex-row-reverse' : ''}`}>
+                                            <div className="flex flex-wrap gap-2 mb-4">
                                                 {['Python', 'PyTorch', 'Computer Vision', 'React'].map((s) => (
                                                     <span key={s} className="px-3 py-1 rounded-lg bg-surface-container text-primary font-label-sm text-label-sm">{s}</span>
                                                 ))}
                                             </div>
 
-                                            <p className={`font-body-md text-body-md text-on-surface-variant mb-4 leading-relaxed ${ar ? 'text-right' : ''}`}>
+                                            <p className="font-body-md text-body-md text-on-surface-variant mb-4 leading-relaxed">
                                                 {ar
                                                     ? 'شغوف ببناء حلول ذكاء اصطناعي قابلة للتطوير. عملت مؤخراً على نظام كشف الأجسام الآني للطائرات المسيّرة المستقلة.'
                                                     : 'Passionate about building scalable AI solutions. I recently worked on a real-time object detection system for autonomous drones. Looking to join a team that values clean code and innovative problem-solving.'}
@@ -530,42 +488,41 @@ export default function TeamDashboard() {
 
                                             {/* AI Smart Match Callout inside Join Request */}
                                             <div className="mb-5 p-4 rounded-2xl bg-gradient-to-r from-orange-500/10 via-amber-500/5 to-purple-500/10 dark:from-orange-500/15 dark:via-amber-500/10 dark:to-purple-500/15 border border-orange-500/30 shadow-sm relative overflow-hidden">
-                                                <div className={`flex items-center justify-between mb-2.5 ${ar ? 'flex-row-reverse' : ''}`}>
-                                                    <div className={`flex items-center gap-2 ${ar ? 'flex-row-reverse' : ''}`}>
+                                                <div className="flex items-center justify-between mb-2.5">
+                                                    <div className="flex items-center gap-2">
                                                         <div className="w-7 h-7 rounded-lg bg-[#FF4D2E]/15 text-[#FF4D2E] flex items-center justify-center">
                                                             <span className="material-symbols-outlined text-lg" style={{ fontVariationSettings: '"FILL" 1' }}>auto_awesome</span>
                                                         </div>
                                                         <h5 className="font-label-md text-xs sm:text-sm font-bold text-on-surface">
-                                                            {ar ? 'توصية الذكاء الاصطناعي (AI Insight)' : 'AI Recommendation Insight'}
+                                                            {ar ? 'توصية الذكاء الاصطناعي (مطابقة المهارات)' : 'AI Skill Match Recommendation'}
                                                         </h5>
                                                     </div>
                                                     <span className="inline-flex items-center gap-1 font-mono font-black text-xs px-2.5 py-1 rounded-full bg-[#FF4D2E]/15 text-[#FF4D2E] border border-[#FF4D2E]/25 shadow-sm">
                                                         <span>94%</span>
-                                                        <span className="text-[10px] font-medium">{ar ? 'تطابق استثنائي' : 'Match'}</span>
+                                                        <span className="text-[10px] font-medium">{ar ? 'تطابق مهارات عالي' : 'High Match'}</span>
                                                     </span>
                                                 </div>
-                                                <p className={`text-xs text-on-surface-variant leading-relaxed mb-3 ${ar ? 'text-right' : ''}`}>
+                                                <p className="text-xs text-on-surface-variant leading-relaxed mb-3">
                                                     {ar
-                                                        ? <>بناءً على مشروعك <strong>"NeuralMesh"</strong>، خبرة Alex Rivera في <strong>PyTorch</strong> و<strong>الرؤية الحاسوبية</strong> تسد الثغرات التقنية في فريقك بنسبة تطابق عالية جداً.</>
-                                                        : <>Based on your project <strong>"NeuralMesh"</strong>, Alex Rivera's experience with <strong>PyTorch</strong> and <strong>Computer Vision</strong> fulfills critical technical gaps in your team.</>}
+                                                        ? <>بناءً على <strong>المهارات التقنية المطلوبة للفريق</strong>، خبرة Alex Rivera في <strong>PyTorch</strong> و<strong>الرؤية الحاسوبية (Computer Vision)</strong> تغطي الفجوة المهارية في فريقك بنسبة تطابق عالية جداً.</>
+                                                        : <>Based on your <strong>team's required technical skills</strong>, Alex Rivera's experience with <strong>PyTorch</strong> and <strong>Computer Vision</strong> fulfills critical skill gaps in your team.</>}
                                                 </p>
                                                 <div className="space-y-1">
-                                                    <div className={`flex justify-between items-center text-[10px] font-bold text-on-surface-variant ${ar ? 'flex-row-reverse' : ''}`}>
-                                                        <span>{ar ? 'مؤشر التوافق التقني مع متطلبات المشروع' : 'Technical Match Alignment'}</span>
+                                                    <div className="flex justify-between items-center text-[10px] font-bold text-on-surface-variant">
+                                                        <span>{ar ? 'مؤشر توافق المهارات التقنية مع احتياجات الفريق' : 'Technical Skill Alignment with Team Needs'}</span>
                                                         <span className="text-[#FF4D2E] font-mono">94%</span>
                                                     </div>
                                                     <div className="h-2 w-full bg-surface-container-high rounded-full overflow-hidden">
-                                                        <div className="h-full rounded-full bg-gradient-to-r from-amber-500 to-[#FF4D2E] shadow-sm transition-all duration-1000 ease-out" style={{ width: '94%' }} />
+                                                        <div className={`h-full rounded-full ${ar ? 'bg-gradient-to-l' : 'bg-gradient-to-r'} from-amber-500 to-[#FF4D2E] shadow-sm transition-all duration-1000 ease-out`} style={{ width: '94%' }} />
                                                     </div>
                                                 </div>
                                             </div>
 
-                                            <div className={`flex items-center gap-3 ${ar ? 'flex-row-reverse' : ''}`}>
+                                            <div className="flex items-center gap-3">
                                                 {userRole === 'leader' ? (
                                                     <>
                                                         <button
-                                                            className="flex-1 md:flex-none px-8 py-2.5 rounded-xl font-label-md text-label-md shadow-sm active:scale-95 transition-all"
-                                                            style={{ backgroundColor: '#FF4D2E', color: '#fff' }}
+                                                            className="flex-1 md:flex-none px-8 py-2.5 rounded-xl font-label-md text-label-md shadow-sm active:scale-95 transition-all text-white bg-[#FF4D2E]"
                                                             onClick={() => setRequestStatus('accepted')}
                                                         >
                                                             {ar ? 'قبول الطلب' : 'Accept Request'}
@@ -601,8 +558,8 @@ export default function TeamDashboard() {
                         {/* Pending Outgoing Invitations Sent By Leader */}
                         {pendingInvites.length > 0 && (
                             <section className="animate-fade-in">
-                                <div className={`flex items-center justify-between mb-4 ${ar ? 'flex-row-reverse' : ''}`}>
-                                    <h3 className={`font-headline-md text-headline-md text-on-surface flex items-center gap-2 ${ar ? 'flex-row-reverse' : ''}`}>
+                                <div className="flex items-center justify-between mb-4">
+                                    <h3 className="font-headline-md text-headline-md text-on-surface flex items-center gap-2">
                                         <span className="material-symbols-outlined text-[#FF4D2E] text-2xl">outgoing_mail</span>
                                         <span>{ar ? 'دعوات مرسلة بالانتظار' : 'Pending Outgoing Invitations'}</span>
                                         <span className="bg-[#FF4D2E]/10 text-[#FF4D2E] text-xs font-bold px-2 py-0.5 rounded-full">
@@ -614,9 +571,9 @@ export default function TeamDashboard() {
                                     {pendingInvites.map((inv, idx) => (
                                         <div
                                             key={inv.id || `${inv.name}-${inv.role || ''}-${idx}`}
-                                            className={`flex items-center justify-between p-4 bg-surface-container-lowest border border-dashed border-[#FF4D2E]/40 rounded-2xl shadow-sm ${ar ? 'flex-row-reverse' : ''}`}
+                                            className="flex items-center justify-between p-4 bg-surface-container-lowest border border-dashed border-[#FF4D2E]/40 rounded-2xl shadow-sm"
                                         >
-                                            <div className={`flex items-center gap-3 ${ar ? 'flex-row-reverse text-right' : ''}`}>
+                                            <div className="flex items-center gap-3">
                                                 <div className="w-10 h-10 rounded-full bg-[#FF4D2E]/10 text-[#FF4D2E] flex items-center justify-center font-bold text-sm shrink-0">
                                                     {inv.avatar ? (
                                                         <img src={inv.avatar} alt={inv.name} className="w-full h-full object-cover rounded-full" />
@@ -657,16 +614,16 @@ export default function TeamDashboard() {
 
                         {/* Current Members */}
                         <section>
-                            <h3 className={`font-headline-md text-headline-md text-on-surface mb-6 ${ar ? 'text-right' : ''}`}>
+                            <h3 className="font-headline-md text-headline-md text-on-surface mb-6">
                                 {ar ? 'الأعضاء الحاليون' : 'Current Members'}
                             </h3>
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 {members.map((m, idx) => (
-                                    <div key={m.id} className={`row-animated group flex items-center gap-4 p-4 bg-surface-container-low border border-outline-variant rounded-xl hover:bg-surface-container hover:-translate-y-0.5 transition-all duration-200 ${ar ? 'flex-row-reverse' : ''}`} style={{ '--stagger-idx': idx }}>
+                                    <div key={m.id} className="row-animated group flex items-center gap-4 p-4 bg-surface-container-low border border-outline-variant rounded-xl hover:bg-surface-container hover:-translate-y-0.5 transition-all duration-200" style={{ '--stagger-idx': idx }}>
                                         <div className="w-12 h-12 rounded-full overflow-hidden border border-outline-variant flex-shrink-0 group-hover:scale-105 transition-transform relative">
                                             <img className="w-full h-full object-cover" src={m.img} alt={m.name.en} />
                                         </div>
-                                        <div className={ar ? 'text-right' : ''}>
+                                        <div>
                                             <div className="flex items-center gap-2">
                                                 <h5 className="font-title-md text-title-md text-on-surface group-hover:text-primary transition-colors">{ar ? m.name.ar : m.name.en}</h5>
                                                 {m.isLeader ? (
@@ -698,9 +655,19 @@ export default function TeamDashboard() {
                     maxMembers={maxMembers}
                     currentMemberCount={members.length}
                     pendingInvitesCount={pendingInvites.length}
+                    pendingInvites={pendingInvites}
+                    existingMembers={members}
                     onInviteSent={(inv) => {
                         const invList = Array.isArray(inv) ? inv : [inv]
-                        setPendingInvites((prev) => [...prev, ...invList])
+                        setPendingInvites((prev) => {
+                            const existingKeys = new Set(
+                                prev.map((p) => (p.email || p.name || p.id || '').toString().toLowerCase().trim())
+                            )
+                            const uniqueNew = invList.filter(
+                                (item) => !existingKeys.has((item.email || item.name || item.id || '').toString().toLowerCase().trim())
+                            )
+                            return [...prev, ...uniqueNew]
+                        })
                         triggerNotice(ar ? `تم إرسال ${invList.length > 1 ? `${invList.length} دعوات` : 'الدعوة'} بنجاح` : `Invitation(s) sent successfully`, 4000)
                     }}
                     onVacancyPublished={(vac) => {

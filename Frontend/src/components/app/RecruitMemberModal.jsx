@@ -48,6 +48,8 @@ export default function RecruitMemberModal({
   maxMembers = 6,
   currentMemberCount = 4,
   pendingInvitesCount = 0,
+  pendingInvites = [],
+  existingMembers = [],
   onInviteSent,
   onVacancyPublished,
 }) {
@@ -57,7 +59,8 @@ export default function RecruitMemberModal({
   const defaultRole = ar ? (vacantRoles[0]?.ar || 'تصميم المنتج') : (vacantRoles[0]?.en || 'Product Design');
   
   // Real remaining available slots based on team limit (6) minus members (4) minus pending invites
-  const totalOpenSlots = Math.max(0, maxMembers - currentMemberCount - pendingInvitesCount);
+  const effectiveInvitesCount = Math.max(pendingInvitesCount, pendingInvites.length);
+  const totalOpenSlots = Math.max(0, maxMembers - currentMemberCount - effectiveInvitesCount);
 
   // Mode: 'by-name' | 'public'
   const [method, setMethod] = useState('by-name');
@@ -79,6 +82,47 @@ export default function RecruitMemberModal({
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [warningMessage, setWarningMessage] = useState(null);
 
+  // Helper extraction for robust normalization
+  const getNameEn = (c) => (c?.name?.en || (typeof c?.name === 'string' ? c.name : '')).toLowerCase().trim();
+  const getNameAr = (c) => (c?.name?.ar || (typeof c?.name === 'string' ? c.name : '')).trim();
+  const getEmail = (c) => (c?.email || '').toLowerCase().trim();
+
+  // Check if candidate is already in existing team members
+  const isAlreadyMember = (cand) => {
+    const cEn = getNameEn(cand);
+    const cAr = getNameAr(cand);
+    const cEmail = getEmail(cand);
+
+    return existingMembers.some((m) => {
+      const mEn = getNameEn(m);
+      const mAr = getNameAr(m);
+      const mEmail = getEmail(m);
+      if (cEmail && mEmail && cEmail === mEmail) return true;
+      if (cEn && mEn && cEn === mEn) return true;
+      if (cAr && mAr && cAr === mAr) return true;
+      return false;
+    });
+  };
+
+  // Check if candidate is already in pending invitations
+  const isAlreadyInvited = (cand) => {
+    const cId = cand?.id;
+    const cEn = getNameEn(cand);
+    const cAr = getNameAr(cand);
+    const cEmail = getEmail(cand);
+
+    return pendingInvites.some((inv) => {
+      if (cId && inv?.id && String(cId) === String(inv.id)) return true;
+      const invEn = getNameEn(inv);
+      const invAr = getNameAr(inv);
+      const invEmail = getEmail(inv);
+      if (cEmail && invEmail && cEmail === invEmail) return true;
+      if (cEn && invEn && cEn === invEn) return true;
+      if (cAr && invAr && cAr === invAr) return true;
+      return false;
+    });
+  };
+
   // Filter candidates
   const filteredCandidates = useMemo(() => {
     if (!searchQuery.trim()) return SUGGESTED_CANDIDATES;
@@ -97,6 +141,28 @@ export default function RecruitMemberModal({
 
   // Toggle selection of a suggested candidate
   const toggleCandidate = (cand) => {
+    // 1. Check if already a member of the team
+    if (isAlreadyMember(cand)) {
+      setWarningMessage(
+        ar
+          ? `لا يمكن دعوة ${ar ? cand.name.ar : cand.name.en}: إنه عضو حالي في الفريق بالفعل.`
+          : `Cannot invite ${cand.name.en}: they are already a member of this team.`
+      );
+      setTimeout(() => setWarningMessage(null), 5000);
+      return;
+    }
+
+    // 2. Check if already has a pending invitation
+    if (isAlreadyInvited(cand)) {
+      setWarningMessage(
+        ar
+          ? `لا يمكن دعوة ${ar ? cand.name.ar : cand.name.en} مرتين: توجد دعوة معلقة بالفعل بانتظار رده.`
+          : `Cannot invite ${cand.name.en} twice: an invitation is already pending for them.`
+      );
+      setTimeout(() => setWarningMessage(null), 5000);
+      return;
+    }
+
     const exists = selectedList.some((item) => item.id === cand.id);
     if (exists) {
       setSelectedList((prev) => prev.filter((item) => item.id !== cand.id));
@@ -139,6 +205,59 @@ export default function RecruitMemberModal({
     const name = customNameInput.trim();
     if (!name) return;
 
+    const email = customEmailInput.trim() || `${name.toLowerCase().replace(/\s+/g, '.')}@eventify.com`;
+    const normName = name.toLowerCase();
+
+    // 1. Prevent duplicate in current selected list
+    const inCurrentBatch = selectedList.some(
+      (item) =>
+        item.name.toLowerCase() === normName ||
+        (item.email && item.email.toLowerCase() === email.toLowerCase())
+    );
+    if (inCurrentBatch) {
+      setWarningMessage(
+        ar
+          ? `هذا الشخص ("${name}") مضاف بالفعل في قائمة الدعوات الحالية.`
+          : `"${name}" is already in the current invitation list.`
+      );
+      setTimeout(() => setWarningMessage(null), 5000);
+      return;
+    }
+
+    // 2. Prevent duplicate of existing team members
+    const inTeam = existingMembers.some((m) => {
+      const mEn = getNameEn(m);
+      const mAr = getNameAr(m);
+      const mEmail = getEmail(m);
+      return mEn === normName || mAr === name || (mEmail && mEmail === email.toLowerCase());
+    });
+    if (inTeam) {
+      setWarningMessage(
+        ar
+          ? `لا يمكن دعوة "${name}": إنه عضو حالي في الفريق بالفعل.`
+          : `Cannot invite "${name}": they are already a member of the team.`
+      );
+      setTimeout(() => setWarningMessage(null), 5000);
+      return;
+    }
+
+    // 3. Prevent duplicate of pending invites
+    const inPending = pendingInvites.some((inv) => {
+      const invEn = getNameEn(inv);
+      const invAr = getNameAr(inv);
+      const invEmail = getEmail(inv);
+      return invEn === normName || invAr === name || (invEmail && invEmail === email.toLowerCase());
+    });
+    if (inPending) {
+      setWarningMessage(
+        ar
+          ? `لا يمكن دعوة نفس الشخص مرتين: توجد دعوة معلقة بالفعل لـ "${name}".`
+          : `Cannot invite the same person twice: an invitation is already pending for "${name}".`
+      );
+      setTimeout(() => setWarningMessage(null), 5000);
+      return;
+    }
+
     if (totalOpenSlots === 0) {
       setWarningMessage(
         ar
@@ -163,7 +282,7 @@ export default function RecruitMemberModal({
       id: 'custom-' + Date.now(),
       name,
       role: customRoleInput || defaultRole,
-      email: customEmailInput.trim() || `${name.toLowerCase().replace(/\s+/g, '.')}@eventify.com`,
+      email,
       avatar: null,
     };
 
@@ -267,7 +386,10 @@ export default function RecruitMemberModal({
 
         {/* Warning Notification Banner */}
         {warningMessage && (
-          <div className="p-3.5 bg-amber-500/10 border border-amber-500/30 rounded-2xl text-xs text-amber-700 dark:text-amber-300 flex items-center justify-between animate-fade-in my-3 shadow-sm">
+          <div
+            data-testid="recruit-warning-banner"
+            className="p-3.5 bg-amber-500/10 border border-amber-500/30 rounded-2xl text-xs text-amber-700 dark:text-amber-300 flex items-center justify-between animate-fade-in my-3 shadow-sm"
+          >
             <div className="flex items-center gap-2">
               <span className="material-symbols-outlined text-amber-600 text-base shrink-0">warning</span>
               <span className="font-medium leading-relaxed">{warningMessage}</span>
@@ -379,17 +501,24 @@ export default function RecruitMemberModal({
             </div>
 
             {/* Suggestions Checklist */}
-            <div className="space-y-2 max-h-40 overflow-y-auto pr-1">
+            <div className="space-y-2 max-h-48 overflow-y-auto pr-1">
               {filteredCandidates.map((cand) => {
                 const isSelected = selectedList.some((item) => item.id === cand.id);
+                const isMember = isAlreadyMember(cand);
+                const isInvited = isAlreadyInvited(cand);
+                const isDisabled = isMember || isInvited;
+
                 return (
                   <div
                     key={cand.id}
+                    data-testid={`candidate-card-${cand.id}`}
                     onClick={() => toggleCandidate(cand)}
-                    className={`flex items-center justify-between p-2.5 rounded-xl border cursor-pointer transition-all ${
-                      isSelected
-                        ? 'border-[#FF4D2E] bg-[#FF4D2E]/5 shadow-sm'
-                        : 'border-slate-200/80 dark:border-slate-800 bg-white dark:bg-slate-800/60 hover:border-[#FF4D2E]/50'
+                    className={`flex items-center justify-between p-2.5 rounded-xl border transition-all ${
+                      isDisabled
+                        ? 'opacity-60 bg-slate-100 dark:bg-slate-800/40 border-slate-200 dark:border-slate-800 cursor-not-allowed'
+                        : isSelected
+                        ? 'border-[#FF4D2E] bg-[#FF4D2E]/5 shadow-sm cursor-pointer'
+                        : 'border-slate-200/80 dark:border-slate-800 bg-white dark:bg-slate-800/60 hover:border-[#FF4D2E]/50 cursor-pointer'
                     }`}
                   >
                     <div className="flex items-center gap-2.5 min-w-0">
@@ -399,26 +528,42 @@ export default function RecruitMemberModal({
                         className="w-8 h-8 rounded-full object-cover shrink-0"
                       />
                       <div className="min-w-0">
-                        <div className="flex items-center gap-1.5">
+                        <div className="flex items-center gap-1.5 flex-wrap">
                           <p className="text-xs sm:text-sm font-bold text-slate-900 dark:text-white truncate">
                             {ar ? cand.name.ar : cand.name.en}
                           </p>
-                          <span className="text-[10px] font-bold text-emerald-600 bg-emerald-500/10 px-1.5 py-0.5 rounded-full">
-                            {cand.match}
-                          </span>
+                          {isMember ? (
+                            <span className="text-[10px] font-bold text-sky-600 bg-sky-500/10 px-1.5 py-0.5 rounded-full">
+                              {ar ? 'عضو بالفريق' : 'In Team'}
+                            </span>
+                          ) : isInvited ? (
+                            <span className="text-[10px] font-bold text-amber-600 bg-amber-500/10 px-1.5 py-0.5 rounded-full">
+                              {ar ? 'تمت دعوته مسبقاً' : 'Invite Pending'}
+                            </span>
+                          ) : (
+                            <span className="text-[10px] font-bold text-emerald-600 bg-emerald-500/10 px-1.5 py-0.5 rounded-full">
+                              {cand.match}
+                            </span>
+                          )}
                         </div>
                         <p className="text-[11px] text-slate-500 dark:text-slate-400 truncate">
                           {ar ? cand.role.ar : cand.role.en}
                         </p>
                       </div>
                     </div>
-                    <span
-                      className={`material-symbols-outlined text-lg ${
-                        isSelected ? 'text-[#FF4D2E]' : 'text-slate-300'
-                      }`}
-                    >
-                      {isSelected ? 'check_box' : 'check_box_outline_blank'}
-                    </span>
+                    {isDisabled ? (
+                      <span className="material-symbols-outlined text-lg text-slate-400">
+                        {isMember ? 'verified' : 'history_toggle_off'}
+                      </span>
+                    ) : (
+                      <span
+                        className={`material-symbols-outlined text-lg ${
+                          isSelected ? 'text-[#FF4D2E]' : 'text-slate-300'
+                        }`}
+                      >
+                        {isSelected ? 'check_box' : 'check_box_outline_blank'}
+                      </span>
+                    )}
                   </div>
                 );
               })}
