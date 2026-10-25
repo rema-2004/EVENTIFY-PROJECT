@@ -410,9 +410,50 @@ export default function TeamDashboard() {
                     </div>
                 )}
 
-                <div className="grid grid-cols-1 lg:grid-cols-3 gap-gutter">
-                    {/* Main — Left/Center */}
-                    <div className="lg:col-span-2 space-y-stack_gap_lg">
+                {/* Centered Main Layout */}
+                <div className="max-w-5xl mx-auto space-y-stack_gap_lg">
+
+                    {/* AI Team Recommendation - Centered & Featured */}
+                    <div className="p-5 sm:p-6 rounded-3xl bg-gradient-to-r from-orange-500/10 via-amber-500/5 to-purple-500/10 dark:from-orange-500/15 dark:via-amber-500/10 dark:to-purple-500/15 border border-orange-500/30 shadow-md relative overflow-hidden backdrop-blur-sm animate-fade-in">
+                        <div className={`flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 mb-3 ${ar ? 'sm:flex-row-reverse' : ''}`}>
+                            <div className={`flex items-center gap-3 ${ar ? 'flex-row-reverse' : ''}`}>
+                                <div className="w-10 h-10 rounded-xl bg-[#FF4D2E]/15 text-[#FF4D2E] flex items-center justify-center shrink-0">
+                                    <span className="material-symbols-outlined text-2xl" style={{ fontVariationSettings: '"FILL" 1' }}>auto_awesome</span>
+                                </div>
+                                <div className={ar ? 'text-right' : ''}>
+                                    <h4 className="font-bold text-sm sm:text-base text-on-surface flex items-center gap-2">
+                                        <span>{ar ? 'توصية الذكاء الاصطناعي للفريق' : 'AI Team Recommendation'}</span>
+                                        <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-secondary/15 text-secondary">
+                                            {ar ? 'مدعوم بـ AI' : 'AI-Powered'}
+                                        </span>
+                                    </h4>
+                                    <p className="text-[11px] text-on-surface-variant">
+                                        {ar ? 'تحليل ذكي للثغرات البرمجية ومطابقة المرشحين لمشروعكم' : 'Smart technical gap analysis & candidate matching'}
+                                    </p>
+                                </div>
+                            </div>
+                            <span className="inline-flex items-center gap-1.5 font-mono font-black text-xs px-3.5 py-1.5 rounded-full bg-[#FF4D2E]/15 text-[#FF4D2E] border border-[#FF4D2E]/30 shadow-sm">
+                                <span className="text-sm">94%</span>
+                                <span className="text-[11px] font-semibold">{ar ? 'تطابق استثنائي' : 'High Match'}</span>
+                            </span>
+                        </div>
+
+                        <p className={`text-xs sm:text-sm text-on-surface-variant leading-relaxed mb-4 ${ar ? 'text-right' : ''}`}>
+                            {ar
+                                ? <>بناءً على مشروعك <strong>"NeuralMesh"</strong>، خبرة <strong>Alex Rivera</strong> في <strong>PyTorch</strong> و<strong>الرؤية الحاسوبية (Computer Vision)</strong> تجعله تطابقاً استثنائياً لسد الثغرات التقنية والبرمجية في فريقك.</>
+                                : <>Based on your project <strong>"NeuralMesh"</strong>, Alex Rivera's experience with <strong>PyTorch</strong> and <strong>Computer Vision</strong> makes them an exceptional 94% match for your team's technical gaps.</>}
+                        </p>
+
+                        <div className="space-y-1.5">
+                            <div className={`flex justify-between items-center text-[11px] font-bold text-on-surface-variant ${ar ? 'flex-row-reverse' : ''}`}>
+                                <span>{ar ? 'مؤشر التوافق التقني مع أهداف الهاكاثون' : 'Technical Match Alignment'}</span>
+                                <span className="text-[#FF4D2E] font-mono font-bold">94%</span>
+                            </div>
+                            <div className="h-2 w-full bg-surface-container-high rounded-full overflow-hidden">
+                                <div className="h-full rounded-full bg-gradient-to-r from-amber-500 to-[#FF4D2E] shadow-sm transition-all duration-1000 ease-out" style={{ width: '94%' }} />
+                            </div>
+                        </div>
+                    </div>
 
                         {/* Pending Join Requests */}
                         <section>
@@ -481,11 +522,43 @@ export default function TeamDashboard() {
                                                 ))}
                                             </div>
 
-                                            <p className={`font-body-md text-body-md text-on-surface-variant mb-6 leading-relaxed ${ar ? 'text-right' : ''}`}>
+                                            <p className={`font-body-md text-body-md text-on-surface-variant mb-4 leading-relaxed ${ar ? 'text-right' : ''}`}>
                                                 {ar
                                                     ? 'شغوف ببناء حلول ذكاء اصطناعي قابلة للتطوير. عملت مؤخراً على نظام كشف الأجسام الآني للطائرات المسيّرة المستقلة.'
                                                     : 'Passionate about building scalable AI solutions. I recently worked on a real-time object detection system for autonomous drones. Looking to join a team that values clean code and innovative problem-solving.'}
                                             </p>
+
+                                            {/* AI Smart Match Callout inside Join Request */}
+                                            <div className="mb-5 p-4 rounded-2xl bg-gradient-to-r from-orange-500/10 via-amber-500/5 to-purple-500/10 dark:from-orange-500/15 dark:via-amber-500/10 dark:to-purple-500/15 border border-orange-500/30 shadow-sm relative overflow-hidden">
+                                                <div className={`flex items-center justify-between mb-2.5 ${ar ? 'flex-row-reverse' : ''}`}>
+                                                    <div className={`flex items-center gap-2 ${ar ? 'flex-row-reverse' : ''}`}>
+                                                        <div className="w-7 h-7 rounded-lg bg-[#FF4D2E]/15 text-[#FF4D2E] flex items-center justify-center">
+                                                            <span className="material-symbols-outlined text-lg" style={{ fontVariationSettings: '"FILL" 1' }}>auto_awesome</span>
+                                                        </div>
+                                                        <h5 className="font-label-md text-xs sm:text-sm font-bold text-on-surface">
+                                                            {ar ? 'توصية الذكاء الاصطناعي (AI Insight)' : 'AI Recommendation Insight'}
+                                                        </h5>
+                                                    </div>
+                                                    <span className="inline-flex items-center gap-1 font-mono font-black text-xs px-2.5 py-1 rounded-full bg-[#FF4D2E]/15 text-[#FF4D2E] border border-[#FF4D2E]/25 shadow-sm">
+                                                        <span>94%</span>
+                                                        <span className="text-[10px] font-medium">{ar ? 'تطابق استثنائي' : 'Match'}</span>
+                                                    </span>
+                                                </div>
+                                                <p className={`text-xs text-on-surface-variant leading-relaxed mb-3 ${ar ? 'text-right' : ''}`}>
+                                                    {ar
+                                                        ? <>بناءً على مشروعك <strong>"NeuralMesh"</strong>، خبرة Alex Rivera في <strong>PyTorch</strong> و<strong>الرؤية الحاسوبية</strong> تسد الثغرات التقنية في فريقك بنسبة تطابق عالية جداً.</>
+                                                        : <>Based on your project <strong>"NeuralMesh"</strong>, Alex Rivera's experience with <strong>PyTorch</strong> and <strong>Computer Vision</strong> fulfills critical technical gaps in your team.</>}
+                                                </p>
+                                                <div className="space-y-1">
+                                                    <div className={`flex justify-between items-center text-[10px] font-bold text-on-surface-variant ${ar ? 'flex-row-reverse' : ''}`}>
+                                                        <span>{ar ? 'مؤشر التوافق التقني مع متطلبات المشروع' : 'Technical Match Alignment'}</span>
+                                                        <span className="text-[#FF4D2E] font-mono">94%</span>
+                                                    </div>
+                                                    <div className="h-2 w-full bg-surface-container-high rounded-full overflow-hidden">
+                                                        <div className="h-full rounded-full bg-gradient-to-r from-amber-500 to-[#FF4D2E] shadow-sm transition-all duration-1000 ease-out" style={{ width: '94%' }} />
+                                                    </div>
+                                                </div>
+                                            </div>
 
                                             <div className={`flex items-center gap-3 ${ar ? 'flex-row-reverse' : ''}`}>
                                                 {userRole === 'leader' ? (
@@ -612,30 +685,6 @@ export default function TeamDashboard() {
                                 ))}
                             </div>
                         </section>
-                    </div>
-
-                    {/* Sidebar — Right */}
-                    <div className="space-y-stack_gap_lg">
-                        {/* AI Insights */}
-                        <div className="ai-gradient-border p-6 rounded-2xl shadow-lg">
-                            <div className={`flex items-center gap-2 mb-4 ${ar ? 'flex-row-reverse' : ''}`}>
-                                <span className="material-symbols-outlined text-secondary" style={{ fontVariationSettings: '"FILL" 1' }}>auto_awesome</span>
-                                <h4 className="font-label-md text-label-md text-secondary font-bold uppercase tracking-wide">
-                                    {ar ? 'توصية AI' : 'AI Recommendation'}
-                                </h4>
-                            </div>
-                            <p className={`font-body-md text-body-md text-on-surface mb-4 ${ar ? 'text-right' : ''}`} style={{ textTransform: 'none' }}>
-                                {ar
-                                    ? <>بناءً على مشروعك "NeuralMesh"، خبرة Alex Rivera في <strong>PyTorch</strong> و<strong>Computer Vision</strong> تجعله <span style={{ color: '#FF4D2E', fontWeight: 700 }}>تطابقاً بنسبة 94%</span> للثغرات التقنية في فريقك.</>
-                                    : <>Based on your project "NeuralMesh", Alex Rivera's experience with <strong>PyTorch</strong> and <strong>Computer Vision</strong> makes them a <span style={{ color: '#FF4D2E', fontWeight: 700 }}>94% match</span> for your team's technical gaps.</>}
-                            </p>
-                            <div className="h-2 w-full bg-surface-container-high rounded-full overflow-hidden">
-                                <div className="h-full rounded-full" style={{ width: '94%', backgroundColor: '#FF4D2E' }} />
-                            </div>
-                        </div>
-
-
-                    </div>
                 </div>
             </main>
 
