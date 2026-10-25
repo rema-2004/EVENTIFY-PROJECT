@@ -7,6 +7,7 @@ use App\Http\Requests\Admin\AuditLogIndexRequest;
 use App\Http\Resources\AuditLogResource;
 use App\Models\AuditLog;
 use App\Traits\ApiResponse;
+use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 
 class AuditLogController extends Controller
@@ -38,11 +39,11 @@ class AuditLogController extends Controller
         }
 
         if ($request->filled('from')) {
-            $query->whereDate('created_at', '>=', $request->input('from'));
+            $query->where('created_at', '>=', Carbon::parse($request->input('from'))->startOfDay());
         }
 
         if ($request->filled('to')) {
-            $query->whereDate('created_at', '<=', $request->input('to'));
+            $query->where('created_at', '<=', Carbon::parse($request->input('to'))->endOfDay());
         }
 
         if ($request->filled('search')) {
@@ -77,7 +78,7 @@ class AuditLogController extends Controller
     {
         return $this->success([
             'total' => AuditLog::count(),
-            'today' => AuditLog::whereDate('created_at', today())->count(),
+            'today' => AuditLog::whereBetween('created_at', [today(), today()->endOfDay()])->count(),
             'sensitive' => AuditLog::where('is_sensitive', true)->count(),
             'failed' => AuditLog::where('status', AuditLog::STATUS_FAILED)->count(),
         ], 'Audit log summary retrieved');

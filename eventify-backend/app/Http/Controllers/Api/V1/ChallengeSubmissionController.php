@@ -7,14 +7,14 @@ use App\Http\Requests\Student\StoreChallengeSubmissionRequest;
 use App\Http\Requests\Student\UpdateChallengeSubmissionRequest;
 use App\Http\Resources\ChallengeSubmissionResource;
 use App\Models\ChallengeSubmission;
-use App\Models\User;
 use App\Traits\ApiResponse;
+use App\Traits\ResolvesStudent;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\Auth;
 
 class ChallengeSubmissionController extends Controller
 {
     use ApiResponse;
+    use ResolvesStudent;
 
     /**
      * GET /api/v1/my/challenge-submissions
@@ -92,17 +92,6 @@ class ChallengeSubmissionController extends Controller
         $challengeSubmission->delete();
 
         return $this->success(null, 'Challenge submission deleted successfully');
-    }
-
-    /**
-     * auth:sanctum accepts any token type, so an organization token can
-     * reach this controller — only real student accounts are allowed.
-     */
-    private function student(): ?User
-    {
-        $user = Auth::user();
-
-        return $user instanceof User ? $user : null;
     }
 
     private function notStudent(): JsonResponse

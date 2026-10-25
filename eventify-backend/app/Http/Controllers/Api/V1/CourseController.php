@@ -7,14 +7,14 @@ use App\Http\Requests\Student\StoreCourseRequest;
 use App\Http\Requests\Student\UpdateCourseRequest;
 use App\Http\Resources\CourseResource;
 use App\Models\Course;
-use App\Models\User;
 use App\Traits\ApiResponse;
+use App\Traits\ResolvesStudent;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\Auth;
 
 class CourseController extends Controller
 {
     use ApiResponse;
+    use ResolvesStudent;
 
     /**
      * GET /api/v1/my/courses
@@ -90,17 +90,6 @@ class CourseController extends Controller
         $course->delete();
 
         return $this->success(null, 'Course deleted successfully');
-    }
-
-    /**
-     * auth:sanctum accepts any token type, so an organization token can
-     * reach this controller — only real student accounts are allowed.
-     */
-    private function student(): ?User
-    {
-        $user = Auth::user();
-
-        return $user instanceof User ? $user : null;
     }
 
     private function notStudent(): JsonResponse

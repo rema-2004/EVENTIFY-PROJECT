@@ -12,9 +12,9 @@ use App\Models\AuditLog;
 use App\Models\User;
 use App\Traits\ApiResponse;
 use App\Traits\HandlesPasswordReset;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Http\JsonResponse;
 use Laravel\Sanctum\PersonalAccessToken;
 
 class AuthController extends Controller
@@ -26,14 +26,18 @@ class AuthController extends Controller
      */
     public function register(RegisterRequest $request): JsonResponse
     {
+        // استخدام validated لجلب البيانات الآمنة فقط
         $validated = $request->validated();
 
         $user = User::create([
             'name' => $validated['name'],
             'email' => $validated['email'],
             'phone' => $validated['phone'] ?? null,
-            'password' => $validated['password'],
-            // role/status are NEVER accepted from client input.
+            'password' => Hash::make($validated['password']),
+            // role/status are NEVER accepted from client input — they are set
+            // here explicitly so the response carries them right after create().
+            'role' => User::ROLE_USER,
+            'status' => User::STATUS_ACTIVE,
         ]);
 
         // Reload from the database so the DB defaults (role, status)
@@ -121,7 +125,6 @@ class AuthController extends Controller
     {
         /** @var \App\Models\User $user */
         $user = Auth::user();
-
         $token = $user->currentAccessToken();
 
         // TransientToken (session-based) has no delete() — only real API tokens do.
@@ -184,12 +187,7 @@ class AuthController extends Controller
         }
 
         $user = User::where('email', $validated['email'])->first();
-
-        if (! $user) {
-            return $this->error('This password reset link is invalid or has expired.', 400);
-        }
-
-        $user->update(['password' => $validated['password']]);
+        $user->update(['password' => Hash::make($validated['password'])]);
 
         // One-time use — remove the token so it can't be replayed.
         $this->deleteResetToken('password_reset_tokens', $validated['email']);

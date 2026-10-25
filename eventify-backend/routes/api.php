@@ -4,6 +4,8 @@ use App\Http\Controllers\Api\V1\AuthController;
 use App\Http\Controllers\Api\V1\OrgAuthController;
 use App\Http\Controllers\Api\V1\EventController;
 use App\Http\Controllers\Api\V1\EventRegistrationController;
+use App\Http\Controllers\Api\V1\TeamController;
+use App\Http\Controllers\Api\V1\TeamMembershipController;
 use App\Http\Controllers\Api\V1\CourseController;
 use App\Http\Controllers\Api\V1\ChallengeSubmissionController;
 use App\Http\Controllers\Api\V1\SavedOpportunityController;
@@ -14,6 +16,8 @@ use App\Http\Controllers\Api\V1\Admin\AuditLogController;
 use App\Http\Controllers\Api\V1\Admin\UserManagementController;
 use App\Http\Controllers\Api\V1\Organization\EventController as OrgEventController;
 use App\Http\Controllers\Api\V1\Organization\ApplicantController;
+use App\Http\Controllers\Api\V1\Organization\TeamReviewController;
+use App\Http\Controllers\Api\V1\NotificationController;
 use App\Http\Controllers\Api\V1\Organization\DashboardController;
 use App\Http\Controllers\Api\V1\Organization\ProfileController as OrgProfileController;
 use Illuminate\Support\Facades\Route;
@@ -31,12 +35,13 @@ use Illuminate\Support\Facades\Route;
 Route::prefix('v1')->group(function () {
 
     // — Public auth routes ——————————————————————————————————————————
-    Route::middleware('throttle:5,1')->group(function () {
+    Route::middleware('throttle:auth')->group(function () {
         // User Auth
         Route::post('/register', [AuthController::class, 'register']);
         Route::post('/login', [AuthController::class, 'login']);
         Route::post('/forgot-password', [AuthController::class, 'forgotPassword']);
         Route::post('/reset-password', [AuthController::class, 'resetPassword']);
+        Route::post('/email/confirm', [ProfileController::class, 'confirmEmail']);
 
         // Organization Auth
         Route::post('/org/register', [OrgAuthController::class, 'register']);
@@ -50,14 +55,34 @@ Route::prefix('v1')->group(function () {
         Route::post('/logout', [AuthController::class, 'logout']);
         Route::get('/me', [AuthController::class, 'me']);
 
-        // Student's own profile and password
-        Route::patch('/profile', [ProfileController::class, 'update']);
-        Route::patch('/password', [ProfileController::class, 'changePassword']);
+        // Student's own profile and password (rate limited: password guessing)
+        Route::middleware('throttle:auth')->group(function () {
+            Route::patch('/profile', [ProfileController::class, 'update']);
+            Route::patch('/password', [ProfileController::class, 'changePassword']);
+        });
 
         // Event registration
         Route::post('/events/{event}/register', [EventRegistrationController::class, 'register']);
         Route::delete('/events/{event}/register', [EventRegistrationController::class, 'cancel']);
         Route::get('/my/registrations', [EventRegistrationController::class, 'myRegistrations']);
+
+        // Teams (competitions only)
+        Route::get('/events/{event}/teams', [TeamController::class, 'index']);
+        Route::post('/events/{event}/teams', [TeamController::class, 'store']);
+        Route::get('/teams/{team}', [TeamController::class, 'show']);
+        Route::post('/teams/{team}/submit', [TeamController::class, 'submit']);
+        Route::patch('/teams/{team}/leader', [TeamController::class, 'transferLeadership']);
+
+        // Team membership (join requests)
+        Route::post('/teams/{team}/join', [TeamMembershipController::class, 'join']);
+        Route::delete('/teams/{team}/join', [TeamMembershipController::class, 'cancelJoin']);
+        Route::get('/teams/{team}/requests', [TeamMembershipController::class, 'requests']);
+        Route::patch('/teams/{team}/requests/{member}', [TeamMembershipController::class, 'respond']);
+
+        // Student's notifications
+        Route::get('/notifications', [NotificationController::class, 'index']);
+        Route::patch('/notifications/read-all', [NotificationController::class, 'markAllAsRead']);
+        Route::patch('/notifications/{id}/read', [NotificationController::class, 'markAsRead']);
 
         // Student's own courses
         Route::get('/my/courses', [CourseController::class, 'index']);
@@ -90,8 +115,10 @@ Route::prefix('v1')->group(function () {
         Route::get('/org/dashboard', [DashboardController::class, 'index']);
 
         // Organization's own profile and password
-        Route::patch('/org/profile', [OrgProfileController::class, 'update']);
-        Route::patch('/org/password', [OrgProfileController::class, 'changePassword']);
+        Route::middleware('throttle:auth')->group(function () {
+            Route::patch('/org/profile', [OrgProfileController::class, 'update']);
+            Route::patch('/org/password', [OrgProfileController::class, 'changePassword']);
+        });
 
         // Organization's own events
         Route::get('/org/events', [OrgEventController::class, 'index']);
@@ -104,6 +131,16 @@ Route::prefix('v1')->group(function () {
         Route::get('/org/events/{event}/registrations', [ApplicantController::class, 'index']);
         Route::patch('/org/events/{event}/registrations/{registration}/approve', [ApplicantController::class, 'approve']);
         Route::patch('/org/events/{event}/registrations/{registration}/reject', [ApplicantController::class, 'reject']);
+
+        // Teams of the organization's competitions (review whole teams)
+        Route::get('/org/events/{event}/teams', [TeamReviewController::class, 'index']);
+        Route::patch('/org/events/{event}/teams/{team}/approve', [TeamReviewController::class, 'approve']);
+        Route::patch('/org/events/{event}/teams/{team}/reject', [TeamReviewController::class, 'reject']);
+
+        // Organization's notifications
+        Route::get('/org/notifications', [NotificationController::class, 'index']);
+        Route::patch('/org/notifications/read-all', [NotificationController::class, 'markAllAsRead']);
+        Route::patch('/org/notifications/{id}/read', [NotificationController::class, 'markAsRead']);
     });
 
     // — Protected Admin routes (require Bearer token + role=admin) ————————
