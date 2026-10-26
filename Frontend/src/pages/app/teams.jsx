@@ -135,9 +135,9 @@ export default function Teams() {
                 <main className="w-full max-w-7xl mx-auto px-4 md:px-12 py-8 pb-32 md:pb-8">
 
                     {/* Page header */}
-                    <div className={`flex flex-col md:flex-row md:items-center justify-between gap-6 mb-10 ${ar ? 'md:flex-row-reverse' : ''}`}>
-                        <div className={ar ? 'text-right' : ''}>
-                            <div className={`flex items-center gap-2 mb-2 ${ar ? 'flex-row-reverse' : ''}`}>
+                    <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-10">
+                        <div>
+                            <div className="flex items-center gap-2 mb-2">
                                 <span className="px-3 py-1 bg-tertiary-fixed text-on-tertiary-fixed text-label-sm font-label-sm rounded-full">
                                     {ar ? 'المسابقة جارية' : 'Competition Live'}
                                 </span>
@@ -161,7 +161,7 @@ export default function Teams() {
 
                     {/* Search & Skill Filters */}
                     <div className="flex flex-col gap-6 mb-12 relative z-30">
-                        <div className={`flex flex-col md:flex-row gap-4 relative z-30 ${ar ? 'md:flex-row-reverse' : ''}`}>
+                        <div className="flex flex-col md:flex-row gap-4 relative z-30">
                             {/* Search */}
                             <div className="flex-1 relative">
                                 <span className={`material-symbols-outlined absolute ${ar ? 'right-4' : 'left-4'} top-1/2 -translate-y-1/2 text-outline`}>search</span>
@@ -195,17 +195,17 @@ export default function Teams() {
                                     className="ai-border md:col-span-2 lg:col-span-2 row-animated transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
                                     style={{ '--stagger-idx': idx }}
                                 >
-                                    <div className={`p-8 h-full flex flex-col md:flex-row gap-8 bg-white rounded-2xl ${ar ? 'md:flex-row-reverse' : ''}`}>
+                                    <div className="p-8 h-full flex flex-col md:flex-row gap-8 bg-white rounded-2xl">
                                         <div className="flex-shrink-0">
                                             <div className={`w-32 h-32 rounded-3xl ${team.logoBg} flex items-center justify-center overflow-hidden`}>
                                                 <img className="w-full h-full object-cover" src={team.logo} alt={team.name} />
                                             </div>
                                         </div>
                                         <div className="flex-1">
-                                            <div className={`flex flex-wrap items-center justify-between gap-4 mb-4 ${ar ? 'flex-row-reverse' : ''}`}>
-                                                <div className={ar ? 'text-right' : ''}>
+                                            <div className="flex flex-wrap items-center justify-between gap-4 mb-4">
+                                                <div>
                                                     <h3 className="text-title-lg font-title-lg mb-1">{team.name}</h3>
-                                                    <p className={`text-on-surface-variant flex items-center gap-1 text-label-md font-label-md ${ar ? 'flex-row-reverse' : ''}`}>
+                                                    <p className="text-on-surface-variant flex items-center gap-1 text-label-md font-label-md">
                                                         <span className="material-symbols-outlined text-lg" style={{ color: '#FF4D2E', fontVariationSettings: '"FILL" 1' }}>stars</span>
                                                         {ar ? `القائد: ${team.leader.ar}` : `Leader: ${team.leader.en}`}
                                                     </p>
@@ -217,19 +217,19 @@ export default function Teams() {
                                                     </span>
                                                 )}
                                             </div>
-                                            <p className={`text-body-md text-on-surface-variant mb-6 line-clamp-2 ${ar ? 'text-right' : ''}`}>
+                                            <p className="text-body-md text-on-surface-variant mb-6 line-clamp-2">
                                                 {ar ? team.desc.ar : team.desc.en}
                                             </p>
-                                            <div className={`flex flex-wrap gap-2 mb-8 ${ar ? 'flex-row-reverse' : ''}`}>
+                                            <div className="flex flex-wrap gap-2 mb-8">
                                                 {team.skills.filter(s => s !== 'AI').map((s) => (
                                                     <span key={s} className="bg-surface-container-high px-3 py-1 rounded-lg text-label-sm font-label-sm">{s}</span>
                                                 ))}
                                             </div>
-                                            <div className={`flex flex-wrap items-center justify-between gap-3 mt-auto ${ar ? 'flex-row-reverse' : ''}`}>
-                                                <div className={`flex items-center gap-3 ${ar ? 'flex-row-reverse' : ''}`}>
+                                            <div className="flex flex-wrap items-center justify-between gap-3 mt-auto">
+                                                <div className="flex items-center gap-3">
                                                     <div className={`flex ${ar ? 'space-x-reverse' : ''} -space-x-3`}>
                                                         {team.avatars.map((src, i) => (
-                                                            <img key={i} className="w-10 h-10 rounded-full border-2 border-white object-cover" src={src} alt="" />
+                                                             <img key={i} className="w-10 h-10 rounded-full border-2 border-white object-cover" src={src} alt="" />
                                                         ))}
                                                         <div className="w-10 h-10 rounded-full border-2 border-white bg-surface-container-highest flex items-center justify-center text-label-sm">+1</div>
                                                     </div>
@@ -237,7 +237,7 @@ export default function Teams() {
                                                         {team.members}/{team.max} {ar ? 'أعضاء' : 'Members'}
                                                     </span>
                                                 </div>
-                                                <div className={`flex gap-3 ${ar ? 'flex-row-reverse' : ''}`}>
+                                                <div className="flex gap-3">
                                                     <Link className="px-6 py-2.5 rounded-full border border-outline-variant font-label-md text-label-md hover:bg-surface-container transition-all text-center" to="/app/team-dashboard">
                                                         {ar ? 'عرض التفاصيل' : 'View Details'}
                                                     </Link>
@@ -262,7 +262,7 @@ export default function Teams() {
                                     className="bg-white p-6 rounded-2xl border border-outline-variant flex flex-col h-full hover:-translate-y-1 hover:shadow-lg transition-all duration-200 row-animated"
                                     style={{ '--stagger-idx': idx }}
                                 >
-                                    <div className={`flex items-start justify-between mb-6 ${ar ? 'flex-row-reverse' : ''}`}>
+                                    <div className="flex items-start justify-between mb-6">
                                         <div className={`w-16 h-16 rounded-2xl ${team.logoBg} flex items-center justify-center overflow-hidden`}>
                                             <img className="w-full h-full object-cover" src={team.logo} alt={team.name} />
                                         </div>
@@ -271,14 +271,14 @@ export default function Teams() {
                                             {team.members}/{team.max}
                                         </span>
                                     </div>
-                                    <h3 className={`text-title-md font-title-md mb-1 ${ar ? 'text-right' : ''}`}>{team.name}</h3>
-                                    <p className={`text-on-surface-variant text-label-md font-label-md mb-4 ${ar ? 'text-right' : ''}`}>
+                                    <h3 className="text-title-md font-title-md mb-1">{team.name}</h3>
+                                    <p className="text-on-surface-variant text-label-md font-label-md mb-4">
                                         {ar ? `القائد: ${team.leader.ar}` : `Leader: ${team.leader.en}`}
                                     </p>
-                                    <p className={`text-body-md text-on-surface-variant mb-6 flex-grow ${ar ? 'text-right' : ''}`}>
+                                    <p className="text-body-md text-on-surface-variant mb-6 flex-grow">
                                         {ar ? team.desc.ar : team.desc.en}
                                     </p>
-                                    <div className={`flex flex-wrap gap-2 mb-8 ${ar ? 'flex-row-reverse' : ''}`}>
+                                    <div className="flex flex-wrap gap-2 mb-8">
                                         {team.skills.map((s) => (
                                             <span key={s} className="bg-surface-container px-3 py-1 rounded-lg text-label-sm font-label-sm">{s}</span>
                                         ))}

@@ -1,4 +1,4 @@
-import { useState, useCallback, useMemo, memo } from 'react'
+import { useState, useCallback, memo } from 'react'
 import { useNavigate } from 'react-router-dom'
 import AppPageHead from '../../components/app/AppPageHead'
 import AppFooter from '../../components/app/AppFooter'

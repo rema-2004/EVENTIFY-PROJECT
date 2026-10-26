@@ -16,72 +16,106 @@ const ONE_LEFT_ROLES = [
 
 const NOTIFS = [
     {
-        id: 10, status: 'unread', category: 'team', to: '/app/team-dashboard',
+        id: 10, status: 'unread', category: 'team', to: '/app/team-dashboard?id=1',
         icon: 'group_add', iconColor: 'text-primary', iconBg: 'bg-primary/10', iconBorder: 'border-primary/20',
         accent: '#FF4D2E',
         badge: { en: 'Join Request', ar: 'طلب انضمام' },
         badgeColor: 'text-primary',
         time: { en: '5m ago', ar: 'منذ 5 دقائق' },
         unread: true,
+        competitionId: 1,
         bodyJsx: (ar) => (
             <p className="font-body-md text-body-md text-on-surface">
                 {ar
-                    ? <><span className="font-semibold">Alex Rivera</span> أرسل طلباً للانضمام إلى فريقك <span className="font-semibold text-primary">'AI Pioneers'</span>.</>
-                    : <><span className="font-semibold">Alex Rivera</span> requested to join your team <span className="font-semibold text-primary">'AI Pioneers'</span>.</>}
+                    ? <><span className="font-semibold">Alex Rivera</span> أرسل طلباً للانضمام إلى فريقك <span className="font-semibold text-primary">'AI Pioneers'</span> في <span className="font-semibold">'تحدي الابتكار بالذكاء الاصطناعي'</span>.</>
+                    : <><span className="font-semibold">Alex Rivera</span> requested to join your team <span className="font-semibold text-primary">'AI Pioneers'</span> in <span className="font-semibold">'Global AI Innovation Challenge'</span>.</>}
             </p>
         ),
-        tags: [],
+        tags: [
+            { label: { en: 'AI Innovation Challenge', ar: 'تحدي الابتكار بالذكاء الاصطناعي' }, cls: 'bg-primary/5 text-primary border border-primary/10' },
+        ],
         // Opens the team dashboard where the pending join request is shown
         action: {
             label: { en: 'View request', ar: 'عرض الطلب' },
-            to: '/app/team-dashboard',
-            state: { joinRequest: true },
+            to: '/app/team-dashboard?id=1',
+            state: { joinRequest: true, competitionId: 1 },
         },
     },
     {
-        id: 8, status: 'unread', category: 'team', to: '/app/request-member',
+        id: 8, status: 'unread', category: 'team', to: '/app/team-dashboard?id=1',
         icon: 'person_remove', iconColor: 'text-error', iconBg: 'bg-error/10', iconBorder: 'border-error/20',
         accent: '#FF4D2E',
         badge: { en: 'Team Update', ar: 'تحديث الفريق' },
         badgeColor: 'text-error',
         time: { en: '10m ago', ar: 'منذ 10 دقائق' },
         unread: true,
+        competitionId: 1,
         bodyJsx: (ar) => (
             <p className="font-body-md text-body-md text-on-surface">
                 {ar
-                    ? <><span className="font-semibold">James Wilson</span> و<span className="font-semibold">Marcus Thorne</span> انسحبا من فريقك <span className="font-semibold text-primary">'AI Pioneers'</span>. هل تريد البحث عن عضوين جديدين؟</>
-                    : <><span className="font-semibold">James Wilson</span> and <span className="font-semibold">Marcus Thorne</span> have left your team <span className="font-semibold text-primary">'AI Pioneers'</span>. Would you like to search for two new members?</>}
+                    ? <><span className="font-semibold">James Wilson</span> و<span className="font-semibold">Marcus Thorne</span> انسحبا من فريقك <span className="font-semibold text-primary">'AI Pioneers'</span> (تحدي الابتكار بالذكاء الاصطناعي). هل تريد البحث عن عضوين جديدين؟</>
+                    : <><span className="font-semibold">James Wilson</span> and <span className="font-semibold">Marcus Thorne</span> have left your team <span className="font-semibold text-primary">'AI Pioneers'</span> (Global AI Challenge). Would you like to search for two new members?</>}
             </p>
         ),
-        tags: [],
+        tags: [
+            { label: { en: 'AI Innovation Challenge', ar: 'تحدي الابتكار بالذكاء الاصطناعي' }, cls: 'bg-primary/5 text-primary border border-primary/10' },
+        ],
         // Opens the request form with one box per member who left
         action: {
             label: { en: 'Search for a new member', ar: 'البحث عن عضو جديد' },
-            to: '/app/request-member',
-            state: { vacantRoles: TWO_LEFT_ROLES },
+            to: '/app/team-dashboard?id=1',
+            state: { openRecruitModal: true, vacantRoles: TWO_LEFT_ROLES, competitionId: 1 },
         },
     },
     {
-        id: 9, status: 'unread', category: 'team', to: '/app/request-member',
+        id: 9, status: 'unread', category: 'team', to: '/app/team-dashboard?id=1',
         icon: 'person_remove', iconColor: 'text-error', iconBg: 'bg-error/10', iconBorder: 'border-error/20',
         accent: '#FF4D2E',
         badge: { en: 'Team Update', ar: 'تحديث الفريق' },
         badgeColor: 'text-error',
         time: { en: '25m ago', ar: 'منذ 25 دقيقة' },
         unread: true,
+        competitionId: 1,
         bodyJsx: (ar) => (
             <p className="font-body-md text-body-md text-on-surface">
                 {ar
-                    ? <><span className="font-semibold">Elena Rodriguez</span> انسحبت من فريقك <span className="font-semibold text-primary">'AI Pioneers'</span>. هل تريد البحث عن عضو جديد؟</>
-                    : <><span className="font-semibold">Elena Rodriguez</span> has left your team <span className="font-semibold text-primary">'AI Pioneers'</span>. Would you like to search for a new member?</>}
+                    ? <><span className="font-semibold">Elena Rodriguez</span> انسحبت من فريقك <span className="font-semibold text-primary">'AI Pioneers'</span> (تحدي الابتكار بالذكاء الاصطناعي). هل تريد البحث عن عضو جديد؟</>
+                    : <><span className="font-semibold">Elena Rodriguez</span> has left your team <span className="font-semibold text-primary">'AI Pioneers'</span> (Global AI Challenge). Would you like to search for a new member?</>}
             </p>
         ),
-        tags: [],
+        tags: [
+            { label: { en: 'AI Innovation Challenge', ar: 'تحدي الابتكار بالذكاء الاصطناعي' }, cls: 'bg-primary/5 text-primary border border-primary/10' },
+        ],
         // Opens the request form with one box per member who left
         action: {
             label: { en: 'Search for a new member', ar: 'البحث عن عضو جديد' },
-            to: '/app/request-member',
-            state: { vacantRoles: ONE_LEFT_ROLES },
+            to: '/app/team-dashboard?id=1',
+            state: { openRecruitModal: true, vacantRoles: ONE_LEFT_ROLES, competitionId: 1 },
+        },
+    },
+    {
+        id: 11, status: 'unread', category: 'team', to: '/app/team-dashboard?id=5',
+        icon: 'groups', iconColor: 'text-primary', iconBg: 'bg-primary/10', iconBorder: 'border-primary/20',
+        accent: '#FF4D2E',
+        badge: { en: 'Team Update', ar: 'تحديث الفريق' },
+        badgeColor: 'text-primary',
+        time: { en: '35m ago', ar: 'منذ 35 دقيقة' },
+        unread: true,
+        competitionId: 5,
+        bodyJsx: (ar) => (
+            <p className="font-body-md text-body-md text-on-surface">
+                {ar
+                    ? <><span className="font-semibold">Tariq Al-Mansoor</span> قام بتحديث المهام التصميمية لفريقك <span className="font-semibold text-primary">'CodeCraft Squad'</span> في <span className="font-semibold">'هاكاثون معالجو الواجهة'</span>.</>
+                    : <><span className="font-semibold">Tariq Al-Mansoor</span> updated the design tasks for your team <span className="font-semibold text-primary">'CodeCraft Squad'</span> in <span className="font-semibold">'Frontend Wizards Hackathon'</span>.</>}
+            </p>
+        ),
+        tags: [
+            { label: { en: 'Frontend Wizards 2026', ar: 'معالجو الواجهة الأمامية 2026' }, cls: 'bg-secondary/5 text-secondary border border-secondary/10' },
+        ],
+        action: {
+            label: { en: 'View team dashboard', ar: 'عرض لوحة الفريق' },
+            to: '/app/team-dashboard?id=5',
+            state: { competitionId: 5 },
         },
     },
     {
