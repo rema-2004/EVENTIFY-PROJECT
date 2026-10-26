@@ -212,6 +212,9 @@ class AuthController extends Controller
      */
     public function me(): JsonResponse
     {
-        return $this->success(new UserResource(Auth::user()));
+        $user = Auth::user();
+
+        // The profile page reads its skills and card numbers from /me.
+        return $this->success(new UserResource($user instanceof User ? $user->loadProfile() : $user));
     }
 }

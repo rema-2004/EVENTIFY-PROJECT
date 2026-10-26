@@ -31,7 +31,7 @@ class ApplicantController extends Controller
         }
 
         $query = EventRegistration::where('event_id', $event->id)
-            ->with('user');
+            ->with('user.skills');
 
         // An unknown status value is ignored (same as other list filters).
         $status = $request->query('status');
@@ -48,7 +48,37 @@ class ApplicantController extends Controller
 
         $registrations->through(fn (EventRegistration $r) => new EventRegistrationResource($r));
 
-        return $this->successWithPagination($registrations, 'Applicants retrieved');
+        $payload = $this->successWithPagination($registrations, 'Applicants retrieved')->getData(true);
+
+        // The numbers on the status tabs. They always count the whole
+        // event, whatever status is being shown right now.
+        $payload['meta']['counts'] = $this->statusCounts($event);
+
+        return response()->json($payload);
+    }
+
+    /**
+     * @return array<string, int>
+     */
+    private function statusCounts(Event $event): array
+    {
+        $byStatus = EventRegistration::where('event_id', $event->id)
+            ->selectRaw('status, count(*) as total')
+            ->groupBy('status')
+            ->pluck('total', 'status');
+
+        $counts = [];
+
+        foreach ([
+            EventRegistration::STATUS_PENDING,
+            EventRegistration::STATUS_CONFIRMED,
+            EventRegistration::STATUS_REJECTED,
+            EventRegistration::STATUS_CANCELLED,
+        ] as $status) {
+            $counts[$status] = (int) ($byStatus[$status] ?? 0);
+        }
+
+        return ['all' => array_sum($counts)] + $counts;
     }
 
     /**

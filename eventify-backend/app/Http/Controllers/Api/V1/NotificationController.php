@@ -21,6 +21,9 @@ class NotificationController extends Controller
     /**
      * GET /api/v1/notifications
      * GET /api/v1/notifications?unread=1
+     * GET /api/v1/notifications?kind=team_approved,team_rejected
+     * "kind" takes one kind or several separated by commas, so a tab of
+     * the page (applications, teams, ...) is a single request.
      */
     public function index(Request $request): JsonResponse
     {
@@ -30,6 +33,12 @@ class NotificationController extends Controller
 
         if ($request->boolean('unread')) {
             $query->whereNull('read_at');
+        }
+
+        $kinds = array_values(array_filter(array_map('trim', explode(',', (string) $request->query('kind', '')))));
+
+        if ($kinds !== []) {
+            $query->whereIn('data->kind', $kinds);
         }
 
         $notifications = $query->paginate(15);

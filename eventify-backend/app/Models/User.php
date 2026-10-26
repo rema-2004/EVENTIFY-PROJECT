@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -29,6 +30,12 @@ class User extends Authenticatable
         'name',
         'email',
         'phone',
+        'headline',
+        'location',
+        'about',
+        'open_to_opportunities',
+        'interests',
+        'experience',
         'password',
         'role',
         'status',
@@ -40,6 +47,7 @@ class User extends Authenticatable
         'password',
         'remember_token',
         'email_change_token',
+        'cv_path',
     ];
 
     protected function casts(): array
@@ -47,6 +55,9 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'email_change_expires_at' => 'datetime',
+            'open_to_opportunities' => 'boolean',
+            'interests' => 'array',
+            'experience' => 'array',
             'password' => 'hashed',
         ];
     }
@@ -133,6 +144,63 @@ class User extends Authenticatable
     public function savedOpportunities(): HasMany
     {
         return $this->hasMany(SavedOpportunity::class);
+    }
+
+    public function skills(): BelongsToMany
+    {
+        return $this->belongsToMany(Skill::class, 'user_skills')->withTimestamps();
+    }
+
+    // ── Profile ────────────────────────────────────────────────
+
+    /**
+     * What the profile page needs in one go: the skills and the three
+     * numbers on its cards (competitions joined, saved, teams led).
+     */
+    public function loadProfile(): static
+    {
+        return $this->load('skills')->loadCount([
+            'registrations as competitions_joined_count' => fn ($query) => $query
+                ->where('status', EventRegistration::STATUS_CONFIRMED)
+                ->whereHas('event', fn ($event) => $event->where('type', Event::TYPE_COMPETITION)),
+            'savedOpportunities as saved_count',
+            'ledTeams as teams_led_count',
+        ]);
+    }
+
+    /**
+     * The profile is "complete" (matching can start) once it has a
+     * headline and at least one skill, like the setup wizard asks.
+     */
+    public function isProfileComplete(): bool
+    {
+        return filled($this->headline) && $this->hasSkills();
+    }
+
+    /**
+     * 0-100: how many of the 8 parts of a profile are filled.
+     */
+    public function profileCompletion(): int
+    {
+        $parts = [
+            filled($this->avatar),
+            filled($this->headline),
+            filled($this->location),
+            filled($this->about),
+            $this->hasSkills(),
+            ! empty($this->experience),
+            ! empty($this->interests),
+            filled($this->cv_path),
+        ];
+
+        return (int) round(count(array_filter($parts)) / count($parts) * 100);
+    }
+
+    private function hasSkills(): bool
+    {
+        return $this->relationLoaded('skills')
+            ? $this->skills->isNotEmpty()
+            : $this->skills()->exists();
     }
 
     // ── Query scopes ──────────────────────────────────────────

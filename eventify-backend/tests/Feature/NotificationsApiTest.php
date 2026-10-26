@@ -51,6 +51,48 @@ class NotificationsApiTest extends TestCase
         $this->assertSame(1, $unread->json('meta.unread_count'));
     }
 
+    public function test_notifications_can_be_filtered_by_kind(): void
+    {
+        $me = User::factory()->create();
+        PlatformNotification::send($me, 'registration_approved', 'Application accepted');
+        PlatformNotification::send($me, 'registration_rejected', 'Application rejected');
+        PlatformNotification::send($me, 'team_approved', 'Team accepted');
+
+        Sanctum::actingAs($me);
+
+        $one = $this->getJson('/api/v1/notifications?kind=team_approved')->assertOk();
+        $this->assertCount(1, $one->json('data'));
+        $this->assertSame('team_approved', $one->json('data.0.kind'));
+
+        $several = $this->getJson('/api/v1/notifications?kind=registration_approved,registration_rejected')->assertOk();
+        $this->assertCount(2, $several->json('data'));
+
+        // The unread count stays the account's total, not the tab's.
+        $this->assertSame(3, $several->json('meta.unread_count'));
+
+        $this->getJson('/api/v1/notifications?kind=nothing_like_this')
+            ->assertOk()
+            ->assertJsonCount(0, 'data');
+
+        $this->assertCount(3, $this->getJson('/api/v1/notifications?kind=')->json('data'));
+    }
+
+    public function test_kind_and_unread_filters_work_together(): void
+    {
+        $me = User::factory()->create();
+        PlatformNotification::send($me, 'team_approved', 'First');
+        PlatformNotification::send($me, 'team_approved', 'Second');
+        PlatformNotification::send($me, 'registration_approved', 'Other kind');
+
+        Sanctum::actingAs($me);
+
+        $me->notifications()->where('data->kind', 'team_approved')->first()->markAsRead();
+
+        $response = $this->getJson('/api/v1/notifications?kind=team_approved&unread=1')->assertOk();
+
+        $this->assertCount(1, $response->json('data'));
+    }
+
     public function test_marking_all_as_read(): void
     {
         $me = User::factory()->create();

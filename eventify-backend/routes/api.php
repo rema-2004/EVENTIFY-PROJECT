@@ -10,6 +10,7 @@ use App\Http\Controllers\Api\V1\CourseController;
 use App\Http\Controllers\Api\V1\ChallengeSubmissionController;
 use App\Http\Controllers\Api\V1\SavedOpportunityController;
 use App\Http\Controllers\Api\V1\ProfileController;
+use App\Http\Controllers\Api\V1\ProfileFilesController;
 use App\Http\Controllers\Api\V1\Admin\OrganizationManagementController;
 use App\Http\Controllers\Api\V1\Admin\EventManagementController;
 use App\Http\Controllers\Api\V1\Admin\AuditLogController;
@@ -59,6 +60,17 @@ Route::prefix('v1')->group(function () {
         Route::middleware('throttle:auth')->group(function () {
             Route::patch('/profile', [ProfileController::class, 'update']);
             Route::patch('/password', [ProfileController::class, 'changePassword']);
+        });
+
+        // Profile pictures and CV (uploads, so not in the password-guessing limit above)
+        Route::middleware('throttle:30,1')->group(function () {
+            Route::post('/profile/avatar', [ProfileFilesController::class, 'uploadAvatar']);
+            Route::delete('/profile/avatar', [ProfileFilesController::class, 'deleteAvatar']);
+            Route::post('/profile/cover', [ProfileFilesController::class, 'uploadCover']);
+            Route::delete('/profile/cover', [ProfileFilesController::class, 'deleteCover']);
+            Route::post('/profile/cv', [ProfileFilesController::class, 'uploadCv']);
+            Route::get('/profile/cv', [ProfileFilesController::class, 'downloadCv']);
+            Route::delete('/profile/cv', [ProfileFilesController::class, 'deleteCv']);
         });
 
         // Event registration

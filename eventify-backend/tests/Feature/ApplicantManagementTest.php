@@ -72,6 +72,47 @@ class ApplicantManagementTest extends TestCase
         $this->assertSame('confirmed', $response->json('data.0.status'));
     }
 
+    public function test_the_applicants_list_carries_the_count_of_each_status(): void
+    {
+        $org = $this->makeOrganization();
+        $event = $this->makeEvent($org);
+        $otherEvent = $this->makeEvent($org, ['slug' => 'another-event', 'title' => 'Another event']);
+
+        $this->makeRegistration($event, User::factory()->create());
+        $this->makeRegistration($event, User::factory()->create());
+        $this->makeRegistration($event, User::factory()->create(), EventRegistration::STATUS_CONFIRMED);
+        $this->makeRegistration($event, User::factory()->create(), EventRegistration::STATUS_REJECTED);
+        $this->makeRegistration($event, User::factory()->create(), EventRegistration::STATUS_CANCELLED);
+        // Another event's applicants never count here.
+        $this->makeRegistration($otherEvent, User::factory()->create(), EventRegistration::STATUS_CONFIRMED);
+
+        Sanctum::actingAs($org, ['*'], 'organization');
+
+        $expected = ['all' => 5, 'pending' => 2, 'confirmed' => 1, 'rejected' => 1, 'cancelled' => 1];
+
+        $this->getJson("/api/v1/org/events/{$event->slug}/registrations")
+            ->assertOk()
+            ->assertJsonPath('meta.counts', $expected)
+            ->assertJsonPath('meta.total', 5);
+
+        // Filtering one status shows only its rows, but the tabs keep their numbers.
+        $filtered = $this->getJson("/api/v1/org/events/{$event->slug}/registrations?status=pending")->assertOk();
+        $this->assertCount(2, $filtered->json('data'));
+        $this->assertSame($expected, $filtered->json('meta.counts'));
+    }
+
+    public function test_an_event_without_applicants_has_zero_counts(): void
+    {
+        $org = $this->makeOrganization();
+        $event = $this->makeEvent($org);
+
+        Sanctum::actingAs($org, ['*'], 'organization');
+
+        $this->getJson("/api/v1/org/events/{$event->slug}/registrations")
+            ->assertOk()
+            ->assertJsonPath('meta.counts', ['all' => 0, 'pending' => 0, 'confirmed' => 0, 'rejected' => 0, 'cancelled' => 0]);
+    }
+
     public function test_an_organization_cannot_list_applicants_of_another_organizations_event(): void
     {
         $owner = $this->makeOrganization();

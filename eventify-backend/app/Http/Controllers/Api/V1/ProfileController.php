@@ -9,12 +9,14 @@ use App\Http\Resources\UserResource;
 use App\Mail\EmailChangeConfirmMail;
 use App\Mail\EmailChangeNoticeMail;
 use App\Models\AuditLog;
+use App\Models\Skill;
 use App\Models\User;
 use App\Traits\ApiResponse;
 use App\Traits\ResolvesStudent;
 use Illuminate\Database\UniqueConstraintViolationException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
@@ -49,13 +51,32 @@ class ProfileController extends Controller
         unset($data['email']);
         $emailRequested = $newEmail !== null && $newEmail !== $user->email;
 
+        // Skills live in their own table, so they are saved apart from the
+        // plain columns.
+        $skillNames = null;
+
+        if (array_key_exists('skills', $data)) {
+            $skillNames = $data['skills'] ?? [];
+            unset($data['skills']);
+        }
+
         $user->fill($data);
 
         $changedFields = array_keys($user->getDirty());
 
-        if ($changedFields !== []) {
-            $user->save();
+        // The columns and the skills are saved together: if one fails,
+        // neither is kept.
+        DB::transaction(function () use ($user, $skillNames, &$changedFields) {
+            if ($changedFields !== []) {
+                $user->save();
+            }
 
+            if ($skillNames !== null && $this->syncSkills($user, $skillNames)) {
+                $changedFields[] = 'skills';
+            }
+        });
+
+        if ($changedFields !== []) {
             AuditLog::record(
                 type: AuditLog::TYPE_UPDATE,
                 action: 'Updated Profile',
@@ -76,7 +97,7 @@ class ProfileController extends Controller
             ? 'Profile updated. Open the link we sent to your new email to confirm it.'
             : 'Profile updated successfully';
 
-        return $this->success(new UserResource($user), $message);
+        return $this->success(new UserResource($user->loadProfile()), $message);
     }
 
     /**
@@ -223,6 +244,24 @@ class ProfileController extends Controller
         );
 
         return $this->success(null, 'Password changed successfully');
+    }
+
+    /**
+     * Makes the user's skills exactly this list. True when something changed.
+     *
+     * @param  array<int, string>  $names
+     */
+    private function syncSkills(User $user, array $names): bool
+    {
+        $ids = collect($names)
+            ->map(fn (string $name) => Skill::findOrCreateByName($name)->id)
+            ->unique()
+            ->values()
+            ->all();
+
+        $result = $user->skills()->sync($ids);
+
+        return $result['attached'] !== [] || $result['detached'] !== [];
     }
 
     private function notStudent(): JsonResponse
