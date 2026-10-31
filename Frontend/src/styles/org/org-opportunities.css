@@ -17,12 +17,80 @@
     }
 }
 
+/* ===== Draft Banner ===== */
+.draft-banner {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 14px 18px;
+    margin-bottom: 20px;
+    background: var(--surface);
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-card);
+}
+
+.draft-banner__icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--surface-2);
+    color: var(--accent);
+    flex-shrink: 0;
+}
+
+.draft-banner__body {
+    flex: 1;
+    min-width: 0;
+}
+
+.draft-banner__title {
+    font-weight: 600;
+    font-size: 14px;
+    color: var(--text);
+}
+
+.draft-banner__desc {
+    font-size: 13px;
+    color: var(--text-muted);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.draft-banner__actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-shrink: 0;
+}
+
+@media (max-width: 640px) {
+    .draft-banner {
+        flex-wrap: wrap;
+    }
+
+    .draft-banner__actions {
+        width: 100%;
+        justify-content: flex-end;
+    }
+}
+
 /* ===== Stat Grid ===== */
 .opp-stat-grid {
     display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
+    grid-template-columns: repeat(5, minmax(0, 1fr));
     gap: 16px;
     margin-bottom: 24px;
+}
+
+@media (max-width: 1280px) {
+    .opp-stat-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
 }
 
 @media (max-width: 1024px) {
@@ -374,6 +442,17 @@ html[dir="rtl"] .opp-table .mono {
     color: #ffffff;
 }
 
+.org-row-actions button.org-action--danger {
+    color: var(--error, #B3261E);
+    border-color: var(--error, #B3261E);
+    background: transparent;
+}
+
+.org-row-actions button.org-action--danger:hover {
+    background: var(--error, #B3261E);
+    color: #ffffff;
+}
+
 /* ===== Empty State ===== */
 .opp-empty {
     padding: 48px 24px;
@@ -514,6 +593,10 @@ html.dark .opp-empty__icon {
 
     .opp-stat-grid .stat-card:nth-child(4) {
         animation-delay: 0.08s;
+    }
+
+    .opp-stat-grid .stat-card:nth-child(5) {
+        animation-delay: 0.1s;
     }
 
     .opp-panel {

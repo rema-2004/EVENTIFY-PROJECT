@@ -1,5 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import { useLanguage } from '../../hooks/useLanguage';
+import { readJSON, writeJSON } from '../../utils/storage';
 
 const SUGGESTED_CANDIDATES = [
   {
@@ -49,6 +50,7 @@ export default function RecruitMemberModal({
   currentMemberCount = 4,
   pendingInvitesCount = 0,
   pendingInvites = [],
+  pendingInvitesKey = 'eventify:pending-invites',
   existingMembers = [],
   onInviteSent,
   onVacancyPublished,
@@ -310,13 +312,8 @@ export default function RecruitMemberModal({
         date: new Date().toLocaleDateString(ar ? 'ar-JO' : 'en-US'),
       }));
 
-      try {
-        const current = JSON.parse(localStorage.getItem('eventify:pending-invites') || '[]');
-        const updated = [...current, ...newInvites];
-        localStorage.setItem('eventify:pending-invites', JSON.stringify(updated));
-      } catch (err) {
-        console.error(err);
-      }
+      const current = readJSON(pendingInvitesKey, []);
+      writeJSON(pendingInvitesKey, [...current, ...newInvites]);
 
       if (onInviteSent) onInviteSent(newInvites);
       onClose();

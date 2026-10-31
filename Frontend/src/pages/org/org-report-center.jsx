@@ -1,11 +1,13 @@
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, useMemo } from 'react'
+import { clearSession } from '../../services/api.js'
 // Chart with the app's language plugin registered (loaded only by chart pages)
 import Chart from '../../i18n/chartLocalization'
-import { Link } from 'react-router-dom'
+import { Link, useSearchParams } from 'react-router-dom'
 import AppPageHead from '../../components/app/AppPageHead'
 import { toast } from '../../utils/toast.js'
 import { downloadReport } from '../../utils/reportDownload.js'
 import { useOrgPageControls } from './useOrgPageControls.js'
+import { getDisplayName, loadAllOpportunities } from './org-opportunities-data.js'
 import { useMotion } from '../../hooks/useMotion'
 import LangToggleBtn from '../../components/org/LangToggleBtn'
 import '../../styles/org/sidebar.css'
@@ -15,6 +17,15 @@ import '../../styles/org/org-dashboard.css'
 import '../../styles/org/org-reports.css'
 
 const PAGE_SIZE = 6
+
+const EVENT_FILTER_OPTIONS = ['Global AI Innovation Challenge', 'Frontend Wizards', 'Startup Challenge', 'DevOps Masterclass', 'Cloud Native Bootcamp']
+
+// زر "عرض التقرير" في صفحة الفرص يرسل ?event=<id>؛ نحوّله لاسم الفرصة المستخدم في التقارير
+function eventNameFromId(eventId) {
+    if (!eventId) return null
+    const opp = loadAllOpportunities().find(o => o.id === eventId)
+    return opp ? getDisplayName(opp, false) : null
+}
 
 const SEED_REPORTS = [
     { id: 'ORPT-001', name: 'Global AI Challenge — Performance', type: 'Event Performance', event: 'Global AI Innovation Challenge', period: 'Sep 2026', date: '2026-09-04', format: 'PDF', status: 'Completed' },
@@ -146,7 +157,16 @@ export default function OrgReportCenter() {
     const [reports, setReports] = useState(SEED_REPORTS)
     const [search, setSearch] = useState('')
     const [filterType, setFilterType] = useState('all')
-    const [filterEvent, setFilterEvent] = useState('all')
+    const [searchParams] = useSearchParams()
+    const requestedEventId = searchParams.get('event')
+    const requestedEventName = useMemo(() => eventNameFromId(requestedEventId), [requestedEventId])
+    const [filterEvent, setFilterEvent] = useState(() => requestedEventName || 'all')
+    useEffect(() => {
+        if (requestedEventName) setFilterEvent(requestedEventName)
+    }, [requestedEventName])
+    const eventFilterOptions = requestedEventName && !EVENT_FILTER_OPTIONS.includes(requestedEventName)
+        ? [...EVENT_FILTER_OPTIONS, requestedEventName]
+        : EVENT_FILTER_OPTIONS
     const [filterStatus, setFilterStatus] = useState('all')
     const [sortKey, setSortKey] = useState('date')
     const [sortDir, setSortDir] = useState('desc')
@@ -349,7 +369,7 @@ export default function OrgReportCenter() {
                                     <Link className="org-dropdown__item" to="/org/profile"><span className="material-symbols-outlined text-[18px] text-on-surface-variant" aria-hidden="true">apartment</span><span>Organization Profile</span></Link>
                                     <Link className="org-dropdown__item" to="/org/settings"><span className="material-symbols-outlined text-[18px] text-on-surface-variant" aria-hidden="true">settings</span><span>Settings</span></Link>
                                     <div className="my-1 border-t border-outline-variant/40" />
-                                    <Link className="org-dropdown__item text-error hover:bg-error/10" to="/auth/login">
+                                    <Link className="org-dropdown__item text-error hover:bg-error/10" to="/auth/login" onClick={clearSession}>
                                         <span className="material-symbols-outlined text-[18px] text-error" aria-hidden="true">logout</span>
                                         <span className="text-error font-medium">Sign out</span>
                                     </Link>
@@ -435,11 +455,7 @@ export default function OrgReportCenter() {
                                 </select>
                                 <select className="reports-filter-select" aria-label="Event" value={filterEvent} onChange={e => { setFilterEvent(e.target.value); setPage(1) }}>
                                     <option value="all">All Events</option>
-                                    <option value="Global AI Innovation Challenge">Global AI Innovation Challenge</option>
-                                    <option value="Frontend Wizards">Frontend Wizards</option>
-                                    <option value="Startup Challenge">Startup Challenge</option>
-                                    <option value="DevOps Masterclass">DevOps Masterclass</option>
-                                    <option value="Cloud Native Bootcamp">Cloud Native Bootcamp</option>
+                                    {eventFilterOptions.map(name => <option key={name} value={name}>{name}</option>)}
                                 </select>
                                 <select className="reports-filter-select" aria-label="Status" value={filterStatus} onChange={e => { setFilterStatus(e.target.value); setPage(1) }}>
                                     <option value="all">All — Status</option>

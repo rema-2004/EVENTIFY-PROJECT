@@ -3,6 +3,7 @@ import AppPageHead from '../../components/app/AppPageHead'
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useLanguage } from '../../hooks/useLanguage'
+import { loadSavedIds, persistSavedIds } from './savedItems.js'
 
 const INITIAL_ITEMS = [
     {
@@ -74,7 +75,10 @@ export default function Saved() {
     const { language } = useLanguage()
     const ar = language === 'ar'
 
-    const [items, setItems] = useState(INITIAL_ITEMS)
+    const [items, setItems] = useState(() => {
+        const savedIds = loadSavedIds()
+        return INITIAL_ITEMS.filter((item) => savedIds.has(item.slug))
+    })
     const [toast, setToast] = useState(null)
 
     const openItem = (item) => {
@@ -100,7 +104,15 @@ export default function Saved() {
     }
 
     const removeItem = (id) => {
-        setItems((prev) => prev.filter((item) => item.id !== id))
+        setItems((prev) => {
+            const target = prev.find((item) => item.id === id)
+            if (target) {
+                const savedIds = loadSavedIds()
+                savedIds.delete(target.slug)
+                persistSavedIds(savedIds)
+            }
+            return prev.filter((item) => item.id !== id)
+        })
         showToast(ar ? 'تمت إزالته من المحفوظات' : 'Removed from saved')
     }
 

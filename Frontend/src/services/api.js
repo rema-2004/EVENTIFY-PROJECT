@@ -29,6 +29,7 @@ export function clearSession() {
     localStorage.removeItem('eventify_token')
     localStorage.removeItem('token')
     localStorage.removeItem('eventify_account')
+    localStorage.removeItem('eventify_current_participant')
 }
 
 // fetch() wrapper: prefixes the base URL and adds the JSON Accept header and

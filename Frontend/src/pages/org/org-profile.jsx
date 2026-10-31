@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
 import AppPageHead from '../../components/app/AppPageHead'
 import { useOrgPageControls } from './useOrgPageControls.js'
+import { clearSession } from '../../services/api.js'
 import LangToggleBtn from '../../components/org/LangToggleBtn'
 import AnimatedCounter from '../../components/shared/AnimatedCounter'
 import '../../styles/org/sidebar.css'
@@ -131,7 +132,7 @@ export default function OrgProfile() {
                                     <Link className="org-dropdown__item" to="/org/profile"><span className="material-symbols-outlined text-[18px] text-on-surface-variant" aria-hidden="true">apartment</span><span>Organization Profile</span></Link>
                                     <Link className="org-dropdown__item" to="/org/settings"><span className="material-symbols-outlined text-[18px] text-on-surface-variant" aria-hidden="true">settings</span><span>Settings</span></Link>
                                     <div className="my-1 border-t border-outline-variant/40" />
-                                    <Link className="org-dropdown__item text-error hover:bg-error/10" to="/auth/login">
+                                    <Link className="org-dropdown__item text-error hover:bg-error/10" to="/auth/login" onClick={clearSession}>
                                         <span className="material-symbols-outlined text-[18px] text-error" aria-hidden="true">logout</span>
                                         <span className="text-error font-medium">Sign out</span>
                                     </Link>

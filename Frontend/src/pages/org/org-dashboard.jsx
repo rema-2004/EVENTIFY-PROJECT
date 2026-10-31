@@ -2,6 +2,7 @@
 import { useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import LangToggleBtn from '../../components/org/LangToggleBtn'
+import { clearSession } from '../../services/api.js'
 import '../../styles/org/sidebar.css'
 import OrgSidebar, { OrgMobileHeader } from '../../components/org/OrgSidebar'
 import '../../styles/admin/admin.css'
@@ -142,6 +143,7 @@ export default function OrgDashboard() {
                                     <Link
                                         className="org-dropdown__item text-error hover:bg-error/10"
                                         to="/auth/login"
+                                        onClick={clearSession}
                                     >
                                         <span className="material-symbols-outlined text-[18px] text-error" aria-hidden="true">logout</span>
                                         <span className="text-error font-medium">Sign out</span>

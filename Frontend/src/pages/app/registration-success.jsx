@@ -4,6 +4,7 @@ import AppPageHead from '../../components/app/AppPageHead'
 import { Link, useLocation } from 'react-router-dom'
 import { useEffect } from 'react'
 import { useLanguage } from '../../hooks/useLanguage'
+import { readSessionJSON } from '../../utils/storage'
 
 export default function RegistrationSuccess() {
     const { language } = useLanguage()
@@ -11,17 +12,9 @@ export default function RegistrationSuccess() {
     const { state } = useLocation()
 
     // Retrieve opportunity object from state or sessionStorage
-    const comp = state?.competition || state?.opportunity || (() => {
-        try {
-            return JSON.parse(
-                sessionStorage.getItem('eventify_selected_competition') ||
-                sessionStorage.getItem('eventify_selected_opportunity') ||
-                '{}'
-            )
-        } catch {
-            return null
-        }
-    })()
+    const comp = state?.competition || state?.opportunity
+        || readSessionJSON('eventify_selected_competition', null)
+        || readSessionJSON('eventify_selected_opportunity', {})
 
     const cat = comp?.cat || 'competition'
     const opportunityTitle = comp?.title || (ar ? 'تحدي الابتكار العالمي بالذكاء الاصطناعي' : 'Global AI Innovation Challenge')

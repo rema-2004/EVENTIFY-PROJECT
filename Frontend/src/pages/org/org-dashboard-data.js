@@ -99,7 +99,7 @@
     const upcomingEvents = [
         { name: 'Startup Challenge', image: '../assets/images/event3.jpeg', date: 'Dec 2, 2026', time: '09:00', location: 'Remote', applicants: 84, deadline: 'Nov 25, 2026', status: 'upcoming' },
         { name: 'DevOps Masterclass', image: '../assets/images/event2.jpeg', date: 'Nov 10, 2026', time: '14:00', location: 'Online · Zoom', applicants: 72, deadline: 'Nov 3, 2026', status: 'pending' },
-        { name: 'Global AI Innovation Challenge — Finals', image: '../assets/images/event1.jpeg', date: 'Oct 26, 2026', time: '10:00', location: 'Amman, JO', applicants: 98, deadline: 'Oct 20, 2026', status: 'live' }
+        { name: 'Global AI Innovation Challenge — Finals', image: '../assets/images/event1.jpeg', date: 'Oct 26, 2026', time: '10:00', location: 'Amman, JO', applicants: 98, deadline: 'Nov 15, 2026', status: 'live' }
     ];
 
     const topEvents = [

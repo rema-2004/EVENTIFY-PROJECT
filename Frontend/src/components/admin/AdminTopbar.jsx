@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import LangToggleBtn from '../org/LangToggleBtn'
+import { clearSession } from '../../services/api.js'
 
 // Notifications shown in the bell dropdown (static until there's a notifications API).
 const NOTIFICATIONS = [
@@ -154,6 +155,7 @@ export default function AdminTopbar({ title }) {
                         <Link
                             className="org-dropdown__item text-error hover:bg-error/10"
                             to="/auth/login"
+                            onClick={clearSession}
                         >
                             <span
                                 className="material-symbols-outlined text-[18px] text-error"

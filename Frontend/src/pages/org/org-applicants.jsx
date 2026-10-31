@@ -1,6 +1,7 @@
 import AppPageHead from '../../components/app/AppPageHead'
 import { useState, useEffect, useRef } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useSearchParams } from 'react-router-dom'
+import { clearSession } from '../../services/api.js'
 import LangToggleBtn from '../../components/org/LangToggleBtn'
 import '../../styles/org/sidebar.css'
 import OrgSidebar, { OrgMobileHeader } from '../../components/org/OrgSidebar'
@@ -8,13 +9,16 @@ import '../../styles/admin/admin.css'
 import '../../styles/org/org-dashboard.css'
 import '../../styles/org/org-applicants.css'
 import { useOrgPageControls } from './useOrgPageControls.js'
+import { useLanguage } from '../../hooks/useLanguage'
+import { getDisplayName, loadAllOpportunities } from './org-opportunities-data.js'
 
-const EVENTS = {
-    'evt-1': { name: 'Global AI Innovation Challenge', all: 12, pending: 5, accepted: 6, rejected: 1 },
-    'evt-2': { name: 'Frontend Wizards', all: 150, pending: 0, accepted: 140, rejected: 10 },
-    'evt-3': { name: 'Startup Challenge', all: 84, pending: 23, accepted: 61, rejected: 0 },
-    'evt-4': { name: 'DevOps Masterclass', all: 72, pending: 17, accepted: 55, rejected: 0 },
-    'evt-5': { name: 'Cloud Native Bootcamp', all: 42, pending: 0, accepted: 38, rejected: 4 },
+// الفرص المنشورة فقط (قادم / مباشر / منتهي) لها متقدمون؛ المعلقة والمرفوضة غير ظاهرة للطلاب.
+// استبعاد بدل تعداد صريح، حتى يبقى متوافقاً مع toAdminStatus بـadmin-events.jsx ومع أي حالة معتمدة
+// جديدة (مثل الاسم القديم 'Active') بدون الحاجة لتحديث قائمة ثانية بكل مكان.
+function loadPublishedEvents() {
+    return loadAllOpportunities()
+        .filter(o => o.status !== 'pending' && o.status !== 'rejected')
+        .map(o => ({ id: o.id, opp: o, all: Number(o.applicants) || 0 }))
 }
 
 const APPLICANTS = [
@@ -93,8 +97,33 @@ function DecisionCell({ applicant, status, onDecision }) {
 
 export default function OrgApplicants() {
     useOrgPageControls({ mobileNavigation: true })
+    const { isRtl } = useLanguage()
 
-    const [currentEventId, setCurrentEventId] = useState('evt-1')
+    const [events, setEvents] = useState(loadPublishedEvents)
+    const [searchParams] = useSearchParams()
+    const requestedEventId = searchParams.get('event')
+    const [currentEventId, setCurrentEventId] = useState(() =>
+        events.some(e => e.id === requestedEventId) ? requestedEventId : events[0]?.id
+    )
+
+    // إعادة تحميل الفعاليات المنشورة عند العودة لهذه الصفحة بعد تعديلها من مكان آخر
+    useEffect(() => {
+        const refresh = () => setEvents(loadPublishedEvents())
+        window.addEventListener('focus', refresh)
+        document.addEventListener('visibilitychange', refresh)
+        return () => {
+            window.removeEventListener('focus', refresh)
+            document.removeEventListener('visibilitychange', refresh)
+        }
+    }, [])
+
+    // فتح الفرصة المطلوبة عند الوصول من زر "المتقدمون" أثناء وجودك في الصفحة
+    // (يعتمد فقط على تغيّر معرّف الرابط نفسه، وليس على تحديث قائمة الفعاليات في الخلفية،
+    // حتى لا يلغي اختيار المنظم اليدوي لفرصة أخرى عند عودة التبويب للتركيز)
+    useEffect(() => {
+        if (requestedEventId && events.some(e => e.id === requestedEventId)) setCurrentEventId(requestedEventId)
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [requestedEventId])
     const [activeFilter, setActiveFilter] = useState('all')
     const [statuses, setStatuses] = useState(INITIAL_STATUSES)
     const [eventPanelOpen, setEventPanelOpen] = useState(false)
@@ -139,15 +168,19 @@ export default function OrgApplicants() {
         setStatuses(s => ({ ...s, [id]: decision }))
     }
 
-    const currentEvent = EVENTS[currentEventId]
-    const visibleApplicants = APPLICANTS.filter(a =>
+    const currentEvent = events.find(e => e.id === currentEventId) || { opp: null, all: 0 }
+    // الاسم يُعرض من بيانات الفرص بلغة الواجهة، ليطابق اسمها في صفحة الفرص
+    const eventName = ev => ev.opp ? getDisplayName(ev.opp, isRtl) : (isRtl ? 'لا توجد فرص منشورة' : 'No published opportunities')
+    // بيانات المتقدمين تجريبية ومشتركة بين الفرص؛ الفرصة بلا متقدمين تظهر فارغة
+    const eventApplicants = currentEvent.all > 0 ? APPLICANTS : []
+    const visibleApplicants = eventApplicants.filter(a =>
         activeFilter === 'all' || statuses[a.id] === activeFilter
     )
     const counts = {
-        all:      APPLICANTS.length,
-        pending:  APPLICANTS.filter(a => statuses[a.id] === 'pending').length,
-        accepted: APPLICANTS.filter(a => statuses[a.id] === 'accepted').length,
-        rejected: APPLICANTS.filter(a => statuses[a.id] === 'rejected').length,
+        all:      eventApplicants.length,
+        pending:  eventApplicants.filter(a => statuses[a.id] === 'pending').length,
+        accepted: eventApplicants.filter(a => statuses[a.id] === 'accepted').length,
+        rejected: eventApplicants.filter(a => statuses[a.id] === 'rejected').length,
     }
     const totalPages = Math.max(1, Math.ceil(visibleApplicants.length / ITEMS_PER_PAGE))
     const safePage = Math.min(currentPage, totalPages)
@@ -179,7 +212,7 @@ export default function OrgApplicants() {
                 <main className="flex-1 w-full px-4 md:px-10 pt-6 pb-24 lg:pb-8">
                     {/* Global Top Header */}
                     <div className="org-topbar">
-                        <h1 className="org-topbar__title">Applicants · {currentEvent.name}</h1>
+                        <h1 className="org-topbar__title">Applicants · {eventName(currentEvent)}</h1>
                         <div className="org-topbar__right">
                             <div className="org-dropdown">
                                 <button className="icon-btn" id="org-notif-toggle" type="button" aria-label="Notifications (3 unread)" aria-expanded="false">
@@ -243,7 +276,7 @@ export default function OrgApplicants() {
                                     <Link className="org-dropdown__item" to="/org/profile"><span className="material-symbols-outlined text-[18px] text-on-surface-variant" aria-hidden="true">apartment</span><span>Organization Profile</span></Link>
                                     <Link className="org-dropdown__item" to="/org/settings"><span className="material-symbols-outlined text-[18px] text-on-surface-variant" aria-hidden="true">settings</span><span>Settings</span></Link>
                                     <div className="my-1 border-t border-outline-variant/40" />
-                                    <Link className="org-dropdown__item text-error hover:bg-error/10" to="/auth/login">
+                                    <Link className="org-dropdown__item text-error hover:bg-error/10" to="/auth/login" onClick={clearSession}>
                                         <span className="material-symbols-outlined text-[18px] text-error" aria-hidden="true">logout</span>
                                         <span className="text-error font-medium">Sign out</span>
                                     </Link>
@@ -270,11 +303,11 @@ export default function OrgApplicants() {
                                     onClick={(e) => { e.stopPropagation(); setEventPanelOpen(o => !o) }}
                                 >
                                     <span className="event-icon"><span className="material-symbols-outlined" aria-hidden="true">event_note</span></span>
-                                    <span className="org-event-btn__name">{currentEvent.name}</span>
+                                    <span className="org-event-btn__name">{eventName(currentEvent)}</span>
                                     <span className="material-symbols-outlined chevron-icon" aria-hidden="true">expand_more</span>
                                 </button>
                                 <div className="org-event-panel" id="org-event-panel" hidden={!eventPanelOpen} role="listbox" aria-label="Select opportunity">
-                                    {Object.entries(EVENTS).map(([id, ev]) => (
+                                    {events.map(({ id, ...ev }) => (
                                         <button
                                             key={id}
                                             type="button"
@@ -284,7 +317,7 @@ export default function OrgApplicants() {
                                             aria-selected={id === currentEventId}
                                             onClick={(e) => { e.stopPropagation(); handleEventChange(id) }}
                                         >
-                                            <span className="item-name">{ev.name}</span>
+                                            <span className="item-name">{eventName(ev)}</span>
                                             <span className="item-meta">{ev.all} applicants</span>
                                         </button>
                                     ))}

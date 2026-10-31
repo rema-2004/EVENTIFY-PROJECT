@@ -110,19 +110,14 @@ export default function Login() {
             try {
                 const completedUsers = JSON.parse(localStorage.getItem('eventify_completed_participants') || '[]')
                 const isReturning = completedUsers.includes(idValue)
-                const hasUnlocked = localStorage.getItem('eventify_has_unlocked_profile') === 'true'
                 const savedProfile = JSON.parse(localStorage.getItem('eventify_userProfile') || '{}')
                 const hasCV = Boolean(savedProfile?.resumeFileName || savedProfile?.setupMethod)
 
-                if (isReturning || hasUnlocked || hasCV) {
+                if (isReturning || hasCV) {
                     setIsProfileComplete(true)
-                    localStorage.setItem('eventify_has_unlocked_profile', 'true')
-                    localStorage.setItem('eventify_isProfileComplete', 'true')
                 } else {
                     // First time for this participant: show lock screen
                     setIsProfileComplete(false)
-                    localStorage.setItem('eventify_has_unlocked_profile', 'false')
-                    localStorage.setItem('eventify_isProfileComplete', 'false')
                 }
             } catch {
                 setIsProfileComplete(false)

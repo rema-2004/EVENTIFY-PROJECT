@@ -4,6 +4,7 @@ import AppPageHead from '../../components/app/AppPageHead'
 import AppFooter from '../../components/app/AppFooter'
 import { useLanguage } from '../../hooks/useLanguage'
 import AnimatedCounter from '../../components/shared/AnimatedCounter'
+import { loadSavedIds, persistSavedIds } from './savedItems.js'
 
 const SaveBtn = memo(function SaveBtn({ id, isSaved, ar, onToggle }) {
     return (
@@ -28,7 +29,7 @@ export default function Explore() {
     const [category, setCategory] = useState('all')
     const [participationFilter, setParticipationFilter] = useState('all')
     const [searchQuery, setSearchQuery] = useState('')
-    const [saved, setSaved] = useState(new Set())
+    const [saved, setSaved] = useState(loadSavedIds)
     const [toast, setToast] = useState(null)
 
     const openOpportunity = (card) => {
@@ -56,6 +57,7 @@ export default function Explore() {
                 next.add(id)
                 showToast(ar ? 'تم الحفظ لوقت لاحق' : 'Saved for later')
             }
+            persistSavedIds(next)
             return next
         })
     }, [ar])

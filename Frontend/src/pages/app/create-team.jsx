@@ -5,6 +5,7 @@ import { useState } from 'react'
 import { Link, useNavigate, useLocation } from 'react-router-dom'
 import { useLanguage } from '../../hooks/useLanguage'
 import { teamSizeOptions } from './team-limits'
+import { readSessionJSON } from '../../utils/storage'
 
 const QUICK_SKILL_SUGGESTIONS = ['React', 'Python', 'Tailwind', 'AI / LLMs', 'UI/UX Design', 'Node.js', 'PyTorch']
 
@@ -13,13 +14,7 @@ export default function CreateTeam() {
     const ar = language === 'ar'
     const navigate = useNavigate()
     const { state } = useLocation()
-    const comp = state?.competition || (() => {
-        try {
-            return JSON.parse(sessionStorage.getItem('eventify_selected_competition') || '{}')
-        } catch {
-            return null
-        }
-    })()
+    const comp = state?.competition || readSessionJSON('eventify_selected_competition', {})
 
     // Team formation mode: 'ready' (جاهز ومكتمل) vs 'recruiting' (ناقص العدد ويبحث عن أعضاء)
     const [teamMode, setTeamMode] = useState('ready')

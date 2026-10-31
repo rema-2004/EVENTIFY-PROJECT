@@ -6,6 +6,7 @@ import { useTheme } from '../../hooks/useTheme'
 import { useLanguage } from '../../hooks/useLanguage'
 import { useState, useRef, useEffect } from 'react'
 import AnimatedCounter from '../../components/shared/AnimatedCounter'
+import { clearSession } from '../../services/api.js'
 import { useOnboarding } from '../../context/OnboardingContext'
 import { autoAbout, isAutoAbout } from '../../utils/autoAbout'
 
@@ -829,7 +830,7 @@ export default function Profile() {
                     </div>
 
                     <div className="mt-2 pt-2 border-t border-outline-variant/30 dark:border-white/10">
-                        <Link className={`flex items-center gap-3 w-full p-3 rounded-lg transition-colors text-error hover:bg-error/10 ${ar ? 'flex-row-reverse' : ''}`} to="/auth/login">
+                        <Link className={`flex items-center gap-3 w-full p-3 rounded-lg transition-colors text-error hover:bg-error/10 ${ar ? 'flex-row-reverse' : ''}`} to="/auth/login" onClick={clearSession}>
                             <span className="material-symbols-outlined text-[18px] text-error">logout</span>
                             <span className="font-label-md text-label-md">{ar ? 'تسجيل الخروج' : 'Sign out'}</span>
                         </Link>

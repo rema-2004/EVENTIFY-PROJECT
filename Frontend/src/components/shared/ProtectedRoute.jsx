@@ -12,8 +12,8 @@ export default function ProtectedRoute({ allowedRoles, children }) {
     const session = getSession()
     const token = getToken()
 
-    // Determine current user role
-    const participant = localStorage.getItem('eventify_current_participant')
+    // Determine current user role (only trust the participant flag alongside a real token)
+    const participant = token && localStorage.getItem('eventify_current_participant')
     const currentRole = session?.role || (session?.accountType === 'organization' ? 'organization' : participant ? 'participant' : null)
 
     // If not authenticated at all

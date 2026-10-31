@@ -124,14 +124,25 @@ export default function MyApplications() {
     const ar = language === 'ar'
     const navigate = useNavigate()
 
-    const [applications, setApplications] = useState(INITIAL_APPLICATIONS)
+    const [applications, setApplications] = useState(() => {
+        try {
+            const stored = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]')
+            if (!Array.isArray(stored) || stored.length === 0) return INITIAL_APPLICATIONS
+            const seen = new Set(stored.map(a => a.eventId ?? a.id))
+            return [...stored, ...INITIAL_APPLICATIONS.filter(a => !seen.has(a.eventId ?? a.id))]
+        } catch {
+            return INITIAL_APPLICATIONS
+        }
+    })
 
     // Reset withdrawal flag on fresh page reload
+    // NOTE: 'eventify_withdrawn_competitions' is deliberately NOT cleared here — team-dashboard.jsx
+    // reads it to permanently hide competitions this user withdrew from; wiping it on every mount
+    // of this page made a withdrawn team reappear there as if the user had rejoined it.
     useEffect(() => {
         try {
             localStorage.removeItem('eventify_team_withdrawn')
             localStorage.removeItem('eventify_team_members')
-            localStorage.removeItem('eventify_withdrawn_competitions')
         } catch {}
     }, [])
 

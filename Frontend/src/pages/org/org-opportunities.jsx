@@ -1,94 +1,18 @@
 import { useState, useEffect, useRef } from 'react'
-import { Link } from 'react-router-dom'
+import { createPortal } from 'react-dom'
+import { Link, useLocation } from 'react-router-dom'
 import AppPageHead from '../../components/app/AppPageHead'
+import { clearSession } from '../../services/api.js'
 import { useOrgPageControls } from './useOrgPageControls.js'
 import LangToggleBtn from '../../components/org/LangToggleBtn'
 import { useLanguage } from '../../hooks/useLanguage'
-import { toast } from '../../utils/toast'
+import { STATUS_BADGE, formatDeadline, getDisplayName, getDisplayMeta, loadAllOpportunities, deleteOpportunity, DRAFT_KEY } from './org-opportunities-data.js'
 import '../../styles/org/sidebar.css'
 import OrgSidebar, { OrgMobileHeader } from '../../components/org/OrgSidebar'
+import CreateEventLink from '../../components/org/CreateEventLink'
 import '../../styles/admin/admin.css'
 import '../../styles/org/org-dashboard.css'
 import '../../styles/org/org-opportunities.css'
-
-const INITIAL_OPPORTUNITIES = [
-    { 
-        id: 'evt-1', 
-        name: 'Global AI Innovation Challenge', 
-        nameAr: 'تحدي الابتكار العالمي للذكاء الاصطناعي',
-        meta: 'Hackathon · Remote · Teams of 2-4', 
-        metaAr: 'هاكاثون · عن بعد · فرق من 2-4',
-        status: 'live',     
-        deadline: 'Oct 20, 2026', 
-        applicants: 98,  
-        primaryAction: 'applicants' 
-    },
-    { 
-        id: 'evt-3', 
-        name: 'Startup Challenge',              
-        nameAr: 'تحدي الشركات الناشئة',
-        meta: 'Competition · Entrepreneurship',         
-        metaAr: 'مسابقة · ريادة أعمال',
-        status: 'upcoming', 
-        deadline: 'Nov 25, 2026', 
-        applicants: 84,  
-        primaryAction: 'applicants' 
-    },
-    { 
-        id: 'evt-4', 
-        name: 'DevOps Masterclass',             
-        nameAr: 'دورة ديف أوبس الاحترافية',
-        meta: 'Workshop · Online · Cloud Engineering',  
-        metaAr: 'ورشة عمل · عبر الإنترنت · هندسة السحابة',
-        status: 'pending',  
-        deadline: 'Nov 3, 2026',  
-        applicants: 0,  
-        primaryAction: 'edit' 
-    },
-    { 
-        id: 'evt-2', 
-        name: 'Frontend Wizards',               
-        nameAr: 'معسكر مبرمجي الواجهات الأمامية',
-        meta: 'Hackathon · Web Development',            
-        metaAr: 'هاكاثون · تطوير الويب',
-        status: 'ended',    
-        deadline: 'Closed',       
-        applicants: 150, 
-        primaryAction: 'report' 
-    },
-    { 
-        id: 'evt-5', 
-        name: 'Cloud Native Bootcamp',          
-        nameAr: 'مخيم الحوسبة السحابية الأصلية',
-        meta: 'Course · Infrastructure',                
-        metaAr: 'دورة تدريبية · بنية تحتية',
-        status: 'ended',    
-        deadline: 'Closed',       
-        applicants: 42,  
-        primaryAction: 'report' 
-    },
-    { 
-        id: 'evt-6', 
-        name: 'Cybersecurity Defense Challenge',          
-        nameAr: 'تحدي الدفاع السيبراني المتقدم',
-        meta: 'Competition · In-person · Riyadh',                
-        metaAr: 'مسابقة · حضورية · الرياض',
-        status: 'rejected', 
-        rejectionReason: 'Event agenda is missing the certified cybersecurity accreditation and detailed venue safety plan. Please attach the required approvals.',
-        rejectionReasonAr: 'أجندة الفعالية تفتقر إلى الاعتماد الأكاديمي المطلوب وخطة السلامة للمقر الحضوري. يرجى إرفاق الموافقات اللازمة.',
-        deadline: 'Dec 10, 2026',       
-        applicants: 0,  
-        primaryAction: 'resubmit' 
-    },
-]
-
-const STATUS_BADGE = {
-    live:     { cls: 'badge badge--active',    label: 'Live',             labelAr: 'مباشر' },
-    pending:  { cls: 'badge badge--pending',   label: 'Pending Approval', labelAr: 'معلق' },
-    upcoming: { cls: 'badge badge--upcoming',  label: 'Upcoming',         labelAr: 'قادم' },
-    ended:    { cls: 'badge badge--completed', label: 'Ended',            labelAr: 'منتهي' },
-    rejected: { cls: 'badge badge--rejected',  label: 'Rejected',         labelAr: 'مرفوض' },
-}
 
 const FILTER_TABS = [
     { key: 'all',      label: 'All',      labelAr: 'الكل' },
@@ -96,6 +20,7 @@ const FILTER_TABS = [
     { key: 'upcoming', label: 'Upcoming', labelAr: 'قادم' },
     { key: 'pending',  label: 'Pending',  labelAr: 'معلق' },
     { key: 'ended',    label: 'Ended',    labelAr: 'منتهي' },
+    { key: 'rejected', label: 'Rejected', labelAr: 'مرفوض' },
 ]
 
 const KPI_FILTERS = [
@@ -103,6 +28,7 @@ const KPI_FILTERS = [
     { key: 'upcoming', label: 'Upcoming', labelAr: 'قادم',   icon: 'event_upcoming' },
     { key: 'pending',  label: 'Pending',  labelAr: 'معلق',   icon: 'hourglass_top' },
     { key: 'ended',    label: 'Ended',    labelAr: 'منتهي',  icon: 'task_alt' },
+    { key: 'rejected', label: 'Rejected', labelAr: 'مرفوض',  icon: 'cancel' },
 ]
 
 function AnimatedNumber({ value, duration = 650 }) {
@@ -143,11 +69,39 @@ export default function OrgOpportunities() {
     useOrgPageControls()
     const { isRtl } = useLanguage()
 
-    const [opportunities, setOpportunities] = useState(INITIAL_OPPORTUNITIES)
+    const [opportunities, setOpportunities] = useState(() => loadAllOpportunities())
     const [activeFilter, setActiveFilter] = useState('all')
     const [search, setSearch] = useState('')
-    const [animatingId, setAnimatingId] = useState(null)
-    const [pulseId, setPulseId] = useState(null)
+    const [deleteModal, setDeleteModal] = useState({ open: false, id: null, name: '' })
+
+    function handleDelete() {
+        deleteOpportunity(deleteModal.id)
+        setOpportunities(loadAllOpportunities())
+        setDeleteModal({ open: false, id: null, name: '' })
+    }
+
+    // مسودة إنشاء فعالية غير مكتملة (إنشاء جديد فقط، ما إلها علاقة بالتعديل) — مسودة وحدة بكل وقت
+    const [draft, setDraft] = useState(() => {
+        try {
+            const d = JSON.parse(localStorage.getItem(DRAFT_KEY) || 'null')
+            return d && d.title ? d : null
+        } catch {
+            return null
+        }
+    })
+    function discardDraft() {
+        try { localStorage.removeItem(DRAFT_KEY) } catch { /* ignore */ }
+        setDraft(null)
+    }
+
+    // بعد "حفظ وإعادة الإرسال" من صفحة التعديل نُبرز صف الفرصة المُعاد إرسالها
+    const location = useLocation()
+    const [pulseId, setPulseId] = useState(() => location.state?.resubmittedId || null)
+    useEffect(() => {
+        if (!pulseId) return
+        const timer = setTimeout(() => setPulseId(null), 2000)
+        return () => clearTimeout(timer)
+    }, [pulseId])
 
     const counts = {
         all:      opportunities.length,
@@ -155,52 +109,21 @@ export default function OrgOpportunities() {
         upcoming: opportunities.filter(o => o.status === 'upcoming').length,
         pending:  opportunities.filter(o => o.status === 'pending').length,
         ended:    opportunities.filter(o => o.status === 'ended').length,
+        rejected: opportunities.filter(o => o.status === 'rejected').length,
     }
 
     const visible = opportunities.filter(o => {
-        // Rejected events only appear when activeFilter === 'all'
         if (activeFilter !== 'all' && o.status !== activeFilter) return false
         if (search) {
             const q = search.toLowerCase()
-            const nameEn = o.name.toLowerCase()
-            const nameAr = (o.nameAr || '').toLowerCase()
-            const metaEn = o.meta.toLowerCase()
-            const metaAr = (o.metaAr || '').toLowerCase()
+            const nameEn = getDisplayName(o, false).toLowerCase()
+            const nameAr = getDisplayName(o, true).toLowerCase()
+            const metaEn = getDisplayMeta(o, false).toLowerCase()
+            const metaAr = getDisplayMeta(o, true).toLowerCase()
             return nameEn.includes(q) || nameAr.includes(q) || metaEn.includes(q) || metaAr.includes(q)
         }
         return true
     })
-
-    const handleResubmit = (oppId) => {
-        if (animatingId) return
-        setAnimatingId(oppId)
-
-        setTimeout(() => {
-            setOpportunities(prev => prev.map(opp => {
-                if (opp.id === oppId) {
-                    return {
-                        ...opp,
-                        status: 'pending',
-                        rejectionReason: '',
-                        rejectionReasonAr: '',
-                    }
-                }
-                return opp
-            }))
-
-            setAnimatingId(null)
-            setPulseId(oppId)
-
-            toast(
-                isRtl 
-                    ? 'تم تحديث حالة الفعالية إلى "معلق" وإعادة إرسالها للمراجعة بنجاح' 
-                    : 'Event resubmitted: status updated to "Pending" and submitted for approval',
-                'success'
-            )
-
-            setTimeout(() => setPulseId(null), 2000)
-        }, 320)
-    }
 
     function handleKpiClick(key) {
         setActiveFilter(f => f === key ? 'all' : key)
@@ -208,23 +131,23 @@ export default function OrgOpportunities() {
 
     return (
         <>
-            <AppPageHead title="My Opportunities | EVENTIFY" />
+            <AppPageHead title={isRtl ? 'فرصي وفعالياتي | EVENTIFY' : 'My Opportunities | EVENTIFY'} />
             <OrgMobileHeader />
             <div className="flex min-h-screen">
                 <OrgSidebar />
                 <main className="flex-1 w-full px-4 md:px-10 pt-6 pb-24 lg:pb-8">
                     <div className="org-topbar">
-                        <h1 className="org-topbar__title">My Opportunities</h1>
+                        <h1 className="org-topbar__title">{isRtl ? 'فرصي وفعالياتي' : 'My Opportunities'}</h1>
                         <div className="org-topbar__right">
                             <div className="org-dropdown">
-                                <button className="icon-btn" id="org-notif-toggle" type="button" aria-label="Notifications (3 unread)" aria-expanded="false">
+                                <button className="icon-btn" id="org-notif-toggle" type="button" aria-label={isRtl ? 'الإشعارات (3 غير مقروءة)' : 'Notifications (3 unread)'} aria-expanded="false">
                                     <span className="material-symbols-outlined">notifications</span>
                                     <span className="icon-btn__dot" />
                                 </button>
-                                <div className="org-dropdown__panel org-dropdown__panel--notif" id="org-notif-panel" hidden role="menu" aria-label="Notifications">
+                                <div className="org-dropdown__panel org-dropdown__panel--notif" id="org-notif-panel" hidden role="menu" aria-label={isRtl ? 'الإشعارات' : 'Notifications'}>
                                     <div className="flex items-center justify-between px-3 py-2 border-b border-outline-variant/40 mb-1">
-                                        <span className="font-semibold text-xs text-on-surface">Notifications</span>
-                                        <span className="text-[11px] font-semibold text-primary bg-primary/10 px-2 py-0.5 rounded-full">3 unread</span>
+                                        <span className="font-semibold text-xs text-on-surface">{isRtl ? 'الإشعارات' : 'Notifications'}</span>
+                                        <span className="text-[11px] font-semibold text-primary bg-primary/10 px-2 py-0.5 rounded-full">{isRtl ? '3 جديدة' : '3 unread'}</span>
                                     </div>
                                     <div className="space-y-1">
                                         <Link className="org-dropdown__item" to="/org/applicants">
@@ -232,8 +155,10 @@ export default function OrgOpportunities() {
                                                 <span className="material-symbols-outlined text-[18px]" aria-hidden="true">person_add</span>
                                             </span>
                                             <span className="flex-1 min-w-0">
-                                                <span className="block font-medium text-xs leading-snug">Ahmed Ali applied to Global AI Innovation Challenge</span>
-                                                <span className="org-dropdown__meta">2 hours ago</span>
+                                                <span className="block font-medium text-xs leading-snug">
+                                                    {isRtl ? 'أحمد علي قدّم على تحدي الابتكار العالمي للذكاء الاصطناعي' : 'Ahmed Ali applied to Global AI Innovation Challenge'}
+                                                </span>
+                                                <span className="org-dropdown__meta">{isRtl ? 'منذ ساعتين' : '2 hours ago'}</span>
                                             </span>
                                         </Link>
                                         <Link className="org-dropdown__item" to="/org/opportunities">
@@ -241,8 +166,10 @@ export default function OrgOpportunities() {
                                                 <span className="material-symbols-outlined text-[18px]" aria-hidden="true">hourglass_top</span>
                                             </span>
                                             <span className="flex-1 min-w-0">
-                                                <span className="block font-medium text-xs leading-snug">DevOps Masterclass is awaiting approval</span>
-                                                <span className="org-dropdown__meta">Yesterday</span>
+                                                <span className="block font-medium text-xs leading-snug">
+                                                    {isRtl ? 'دورة ديف أوبس الاحترافية بانتظار الاعتماد' : 'DevOps Masterclass is awaiting approval'}
+                                                </span>
+                                                <span className="org-dropdown__meta">{isRtl ? 'أمس' : 'Yesterday'}</span>
                                             </span>
                                         </Link>
                                         <Link className="org-dropdown__item" to="/org/applicants">
@@ -250,37 +177,47 @@ export default function OrgOpportunities() {
                                                 <span className="material-symbols-outlined text-[18px]" aria-hidden="true">star</span>
                                             </span>
                                             <span className="flex-1 min-w-0">
-                                                <span className="block font-medium text-xs leading-snug">Frontend Wizards received a new 5-star rating</span>
-                                                <span className="org-dropdown__meta">2 days ago</span>
+                                                <span className="block font-medium text-xs leading-snug">
+                                                    {isRtl ? 'معالجو الواجهة الأمامية تلقى تقييم 5 نجوم' : 'Frontend Wizards received a new 5-star rating'}
+                                                </span>
+                                                <span className="org-dropdown__meta">{isRtl ? 'منذ يومين' : '2 days ago'}</span>
                                             </span>
                                         </Link>
                                     </div>
                                     <div className="pt-2 mt-1 border-t border-outline-variant/40">
-                                        <Link to="/org/applicants" className="block text-center text-xs font-semibold text-primary hover:underline py-1">View all activity →</Link>
+                                        <Link to="/org/applicants" className="block text-center text-xs font-semibold text-primary hover:underline py-1">
+                                            {isRtl ? 'عرض كل النشاطات ←' : 'View all activity →'}
+                                        </Link>
                                     </div>
                                 </div>
                             </div>
                             <LangToggleBtn />
-                            <button className="theme-toggle icon-btn" type="button" title="Switch theme" aria-label="Switch theme">
+                            <button className="theme-toggle icon-btn" type="button" title={isRtl ? 'تبديل المظهر' : 'Switch theme'} aria-label={isRtl ? 'تبديل المظهر' : 'Switch theme'}>
                                 <span className="material-symbols-outlined icon-dark">dark_mode</span><span className="material-symbols-outlined icon-light">light_mode</span>
                             </button>
                             <div className="org-dropdown">
-                                <button className="dash-profile" id="org-profile-toggle" type="button" aria-label="Organization menu" aria-expanded="false">
+                                <button className="dash-profile" id="org-profile-toggle" type="button" aria-label={isRtl ? 'قائمة المنظمة' : 'Organization menu'} aria-expanded="false">
                                     <span className="dash-profile__avatar">TG</span>
-                                    <span style={{ fontSize: 13, fontWeight: 600 }}>TechGenius Labs</span>
+                                    <span style={{ fontSize: 13, fontWeight: 600 }}>{isRtl ? 'مختبرات تيك جينيوس' : 'TechGenius Labs'}</span>
                                     <span className="material-symbols-outlined" style={{ fontSize: 18, color: "var(--text-muted)" }}>expand_more</span>
                                 </button>
-                                <div className="org-dropdown__panel org-dropdown__panel--profile" id="org-profile-panel" hidden role="menu" aria-label="Organization menu">
+                                <div className="org-dropdown__panel org-dropdown__panel--profile" id="org-profile-panel" hidden role="menu" aria-label={isRtl ? 'قائمة المنظمة' : 'Organization menu'}>
                                     <div className="px-3 py-2 border-b border-outline-variant/40 mb-1">
-                                        <p className="font-semibold text-xs text-on-surface">TechGenius Labs</p>
-                                        <p className="text-[11px] text-on-surface-variant truncate">Verified organizer since 2024</p>
+                                        <p className="font-semibold text-xs text-on-surface">{isRtl ? 'مختبرات تيك جينيوس' : 'TechGenius Labs'}</p>
+                                        <p className="text-[11px] text-on-surface-variant truncate">{isRtl ? 'منظمة موثقة منذ 2024' : 'Verified organizer since 2024'}</p>
                                     </div>
-                                    <Link className="org-dropdown__item" to="/org/profile"><span className="material-symbols-outlined text-[18px] text-on-surface-variant" aria-hidden="true">apartment</span><span>Organization Profile</span></Link>
-                                    <Link className="org-dropdown__item" to="/org/settings"><span className="material-symbols-outlined text-[18px] text-on-surface-variant" aria-hidden="true">settings</span><span>Settings</span></Link>
+                                    <Link className="org-dropdown__item" to="/org/profile">
+                                        <span className="material-symbols-outlined text-[18px] text-on-surface-variant" aria-hidden="true">apartment</span>
+                                        <span>{isRtl ? 'ملف المنظمة' : 'Organization Profile'}</span>
+                                    </Link>
+                                    <Link className="org-dropdown__item" to="/org/settings">
+                                        <span className="material-symbols-outlined text-[18px] text-on-surface-variant" aria-hidden="true">settings</span>
+                                        <span>{isRtl ? 'الإعدادات' : 'Settings'}</span>
+                                    </Link>
                                     <div className="my-1 border-t border-outline-variant/40" />
-                                    <Link className="org-dropdown__item text-error hover:bg-error/10" to="/auth/login">
+                                    <Link className="org-dropdown__item text-error hover:bg-error/10" to="/auth/login" onClick={clearSession}>
                                         <span className="material-symbols-outlined text-[18px] text-error" aria-hidden="true">logout</span>
-                                        <span className="text-error font-medium">Sign out</span>
+                                        <span className="text-error font-medium">{isRtl ? 'تسجيل الخروج' : 'Sign out'}</span>
                                     </Link>
                                 </div>
                             </div>
@@ -288,19 +225,50 @@ export default function OrgOpportunities() {
                     </div>
 
                     <div className="org-page-header">
-                        <div className="flex items-center gap-2 text-sm mb-2">
-                            <Link className="text-on-surface-variant hover:text-primary transition-colors" to="/org/dashboard">Dashboard</Link>
-                            <span className="text-outline">/</span>
-                            <span className="font-semibold text-on-surface">My Opportunities</span>
-                        </div>
-                        <p className="profile-page-desc">Track every draft, submission, approval, and ended opportunity.</p>
-                        <div className="org-page-header__actions">
-                            <Link className="btn-primary" to="/org/create-event">
-                                <span className="material-symbols-outlined" style={{ fontSize: 18, verticalAlign: "middle" }}>add</span>
-                                Create opportunity
+                        <div className="flex items-center gap-2 text-sm mb-2 flex-wrap">
+                            <Link className="text-on-surface-variant hover:text-primary transition-colors" to="/org/dashboard">
+                                {isRtl ? 'لوحة التحكم' : 'Dashboard'}
                             </Link>
+                            <span className="text-outline">/</span>
+                            <span className="font-semibold text-on-surface">
+                                {isRtl ? 'فرصي وفعالياتي' : 'My Opportunities'}
+                            </span>
+                        </div>
+                        <p className="profile-page-desc">
+                            {isRtl
+                                ? 'تتبع مسوداتك وطلبات الاعتماد والفعاليات المباشرة والمنتهية.'
+                                : 'Track every draft, submission, approval, and ended opportunity.'}
+                        </p>
+                        <div className="org-page-header__actions">
+                            <CreateEventLink className="btn-primary">
+                                <span className="material-symbols-outlined" style={{ fontSize: 18, verticalAlign: "middle" }}>add</span>
+                                {isRtl ? 'إنشاء حدث' : 'Create opportunity'}
+                            </CreateEventLink>
                         </div>
                     </div>
+
+                    {/* Draft Banner: unfinished "create opportunity" draft, saved to this device only */}
+                    {draft && (
+                        <div className="draft-banner" role="status">
+                            <div className="draft-banner__icon">
+                                <span className="material-symbols-outlined" aria-hidden="true">draft</span>
+                            </div>
+                            <div className="draft-banner__body">
+                                <p className="draft-banner__title">
+                                    {isRtl ? 'لديك مسودة فعالية غير مكتملة' : 'You have an unfinished opportunity draft'}
+                                </p>
+                                <p className="draft-banner__desc">{draft.title}</p>
+                            </div>
+                            <div className="draft-banner__actions">
+                                <Link className="btn-primary" to="/org/create-event">
+                                    {isRtl ? 'متابعة' : 'Continue'}
+                                </Link>
+                                <button type="button" className="btn-secondary" onClick={discardDraft}>
+                                    {isRtl ? 'حذف' : 'Discard'}
+                                </button>
+                            </div>
+                        </div>
+                    )}
 
                     {/* KPI Cards */}
                     <div className="opp-stat-grid" aria-label="Opportunities status summary">
@@ -376,9 +344,9 @@ export default function OrgOpportunities() {
                                             const badge = STATUS_BADGE[opp.status]
                                             const isEnded = opp.status === 'ended'
                                             const isRejected = opp.status === 'rejected'
+                                            const isPending = opp.status === 'pending'
                                             const isUnpublished = ['pending', 'draft', 'rejected'].includes(opp.status)
                                             const rejectionText = isRtl && opp.rejectionReasonAr ? opp.rejectionReasonAr : opp.rejectionReason
-                                            const isResubmitting = animatingId === opp.id
                                             const isPulsing = pulseId === opp.id
 
                                             return (
@@ -392,10 +360,10 @@ export default function OrgOpportunities() {
                                                         <div className="opp-entity">
                                                             <div className="flex-1 min-w-0">
                                                                 <p className="opp-entity__name font-semibold text-on-surface">
-                                                                    {isRtl && opp.nameAr ? opp.nameAr : opp.name}
+                                                                    {getDisplayName(opp, isRtl)}
                                                                 </p>
                                                                 <p className="opp-entity__meta text-xs text-on-surface-variant">
-                                                                    {isRtl && opp.metaAr ? opp.metaAr : opp.meta}
+                                                                    {getDisplayMeta(opp, isRtl)}
                                                                 </p>
 
                                                                 {/* Visual Callout for Rejection Reason */}
@@ -420,7 +388,7 @@ export default function OrgOpportunities() {
                                                             {badge ? (isRtl && badge.labelAr ? badge.labelAr : badge.label) : opp.status}
                                                         </span>
                                                     </td>
-                                                    <td className="mono whitespace-nowrap">{opp.deadline}</td>
+                                                    <td className="mono whitespace-nowrap">{formatDeadline(opp.deadline, isRtl)}</td>
                                                     <td className="whitespace-nowrap">
                                                         {isUnpublished ? (
                                                             <span className="mono text-on-surface-variant/70 font-semibold select-none text-base leading-none" title={isRtl ? 'غير منشورة بعد' : 'Not published yet'}>—</span>
@@ -431,39 +399,44 @@ export default function OrgOpportunities() {
                                                     <td>
                                                         <div className="org-row-actions">
                                                             {isRejected ? (
-                                                                <button
-                                                                    type="button"
-                                                                    disabled={isResubmitting}
-                                                                    onClick={() => handleResubmit(opp.id)}
-                                                                    className={`inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-full bg-red-600 hover:bg-red-700 active:bg-red-800 text-white transition-all shadow-sm hover:shadow cursor-pointer ${isResubmitting ? 'opacity-75 scale-95' : ''}`}
-                                                                    title={isRtl ? 'تعديل وإعادة إرسال الفعالية للمراجعة' : 'Edit & Resubmit event for approval'}
-                                                                >
-                                                                    <span className={`material-symbols-outlined text-[15px] ${isResubmitting ? 'icon-spin-fast' : ''}`} aria-hidden="true">
-                                                                        published_with_changes
-                                                                    </span>
-                                                                    <span>{isResubmitting ? (isRtl ? 'جارِ الإرسال...' : 'Submitting...') : (isRtl ? 'تعديل وإعادة إرسال' : 'Edit & Resubmit')}</span>
-                                                                </button>
+                                                                <div className="flex items-center gap-2 flex-wrap">
+                                                                    <Link
+                                                                        to={`/org/edit-opportunity/${opp.id}`}
+                                                                        aria-label={`Edit ${opp.name}`}
+                                                                        className="org-action--primary"
+                                                                    >
+                                                                        {isRtl ? 'تعديل وإرفاق' : 'Edit & Fix'}
+                                                                    </Link>
+                                                                </div>
                                                             ) : isUnpublished ? (
-                                                                /* Pending / Unpublished events: Hide Applicants button completely, show only Edit */
-                                                                <Link to="/org/create-event" aria-label={`Edit ${opp.name}`} className="org-action--primary">
-                                                                    {isRtl ? 'تعديل' : 'Edit'}
-                                                                </Link>
+                                                                /* Pending / Unpublished events: Hide Applicants button completely, show only Edit (+ Delete for pending, no applicants yet) */
+                                                                <div className="flex items-center gap-2 flex-wrap">
+                                                                    <Link to={`/org/edit-opportunity/${opp.id}`} aria-label={`Edit ${opp.name}`} className="org-action--primary">
+                                                                        {isRtl ? 'تعديل' : 'Edit'}
+                                                                    </Link>
+                                                                    {isPending && (
+                                                                        <button
+                                                                            type="button"
+                                                                            className="org-action--danger"
+                                                                            aria-label={`Delete ${opp.name}`}
+                                                                            onClick={() => setDeleteModal({ open: true, id: opp.id, name: getDisplayName(opp, isRtl) })}
+                                                                        >
+                                                                            {isRtl ? 'حذف' : 'Delete'}
+                                                                        </button>
+                                                                    )}
+                                                                </div>
                                                             ) : isEnded ? (
-                                                                <>
-                                                                    <Link to={`/org/applicants?event=${opp.id}`} aria-label={`View applicants for ${opp.name}`}>
-                                                                        {isRtl ? 'المتقدمون' : 'Applicants'}
-                                                                    </Link>
-                                                                    <Link to="/org/report-center" className="org-action--primary" aria-label={`View report for ${opp.name}`}>
-                                                                        {isRtl ? 'عرض التقرير' : 'View report'}
-                                                                    </Link>
-                                                                </>
+                                                                /* الفعالية منتهية رسمياً: الإجراء الأساسي الوحيد هو عرض التقرير النهائي */
+                                                                <Link to={`/org/report-center?event=${opp.id}`} className="org-action--primary" aria-label={`View report for ${opp.name}`}>
+                                                                    {isRtl ? 'عرض التقرير' : 'View report'}
+                                                                </Link>
                                                             ) : (
                                                                 /* Accepted live / upcoming events */
                                                                 <>
                                                                     <Link to={`/org/applicants?event=${opp.id}`} className="org-action--primary" aria-label={`View applicants for ${opp.name}`}>
                                                                         {isRtl ? 'المتقدمون' : 'Applicants'}
                                                                     </Link>
-                                                                    <Link to="/org/create-event" aria-label={`Edit ${opp.name}`}>
+                                                                    <Link to={`/org/edit-opportunity/${opp.id}`} aria-label={`Edit ${opp.name}`}>
                                                                         {isRtl ? 'تعديل' : 'Edit'}
                                                                     </Link>
                                                                 </>
@@ -481,16 +454,53 @@ export default function OrgOpportunities() {
                                 <div className="opp-empty__icon">
                                     <span className="material-symbols-outlined" style={{ fontSize: 26 }} aria-hidden="true">search_off</span>
                                 </div>
-                                <h3 className="opp-empty__title">No opportunities found</h3>
-                                <p className="opp-empty__desc">No opportunities match your current filter or search criteria.</p>
+                                <h3 className="opp-empty__title">{isRtl ? 'لم يتم العثور على أي فعاليات' : 'No opportunities found'}</h3>
+                                <p className="opp-empty__desc">
+                                    {isRtl
+                                        ? 'لا توجد فعاليات تطابق الفلتر أو معايير البحث الحالية.'
+                                        : 'No opportunities match your current filter or search criteria.'}
+                                </p>
                                 <button type="button" className="btn-secondary mt-2" onClick={() => { setActiveFilter('all'); setSearch('') }}>
-                                    Clear filters
+                                    {isRtl ? 'إعادة ضبط الفلاتر' : 'Clear filters'}
                                 </button>
                             </div>
                         )}
                     </section>
                 </main>
             </div>
+
+            {/* Delete Confirm Modal (pending opportunities only — no real applicants to lose) */}
+            {deleteModal.open && createPortal(
+                <div
+                    className="flex items-center justify-center p-4 fade-in"
+                    style={{
+                        position: 'fixed',
+                        top: 0,
+                        left: 0,
+                        right: 0,
+                        bottom: 0,
+                        zIndex: 60,
+                        background: 'rgba(14, 17, 22, 0.45)',
+                        backdropFilter: 'blur(4px)',
+                        WebkitBackdropFilter: 'blur(4px)',
+                    }}
+                    onClick={e => { if (e.target === e.currentTarget) setDeleteModal({ open: false, id: null, name: '' }) }}
+                >
+                    <div className="confirm-dialog fade-in-up" style={{ position: 'static', margin: 0 }}>
+                        <h3>{isRtl ? 'هل أنت متأكد من حذف هذه الفرصة؟' : 'Are you sure you want to delete this opportunity?'}</h3>
+                        <p>{deleteModal.name}</p>
+                        <div className="confirm-dialog__actions">
+                            <button type="button" className="btn-secondary" onClick={() => setDeleteModal({ open: false, id: null, name: '' })}>
+                                {isRtl ? 'إلغاء' : 'Cancel'}
+                            </button>
+                            <button type="button" className="btn-primary" style={{ background: 'var(--error, #B3261E)' }} onClick={handleDelete}>
+                                {isRtl ? 'حذف الفرصة' : 'Delete Opportunity'}
+                            </button>
+                        </div>
+                    </div>
+                </div>,
+                document.body
+            )}
 
             {/* Mobile Navigation Drawer */}
             </>

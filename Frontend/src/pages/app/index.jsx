@@ -5,6 +5,7 @@ import AppFooter from '../../components/app/AppFooter'
 import { useLanguage } from '../../hooks/useLanguage'
 import { useOnboarding } from '../../context/OnboardingContext'
 import WelcomeOnboarding from '../../components/app/onboarding/WelcomeOnboarding'
+import { loadSavedIds, persistSavedIds } from './savedItems'
 
 function SaveButton({ id, saved, ar, onToggle }) {
     return (
@@ -51,7 +52,7 @@ export default function AppHome() {
     }
     const [isRafeeqOpen, setIsRafeeqOpen] = useState(false)
     const [eventFilter, setEventFilter] = useState('all')
-    const [saved, setSaved] = useState(new Set())
+    const [saved, setSaved] = useState(() => loadSavedIds())
     const [toast, setToast] = useState(null)
 
     // Dynamic skills & major from parsed CV or Wizard
@@ -80,6 +81,7 @@ export default function AppHome() {
                 next.add(id)
                 showToast(ar ? 'تم الحفظ لوقت لاحق' : 'Saved for later')
             }
+            persistSavedIds(next)
             return next
         })
     }

@@ -519,7 +519,11 @@ body::before {
 
 html.dark body::before { opacity: 0.35; }
 
-body > * {
+/* Excludes .fixed/.sticky/.absolute: this unlayered rule otherwise always beats
+   Tailwind's @layer'd position utilities for any element portaled directly onto
+   <body> (e.g. createPortal(..., document.body) modals), forcing them to
+   position: relative and breaking their viewport pinning. */
+body > *:not(.fixed):not(.sticky):not(.absolute) {
     position: relative;
     z-index: 1;
 }

@@ -1,18 +1,42 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { useLanguage } from '../../hooks/useLanguage'
+import { loadAllOpportunities } from '../../pages/org/org-opportunities-data.js'
 
 // Read-only list of the students registered in one event, for admin
 // oversight (complaints, abuse checks, reports). Approve/reject stays
 // with the organization, so this section has no action buttons.
 
-// Sample registrations shown in the table (the frontend runs without a backend).
-const MOCK_REGISTRATIONS = [
-    { id: 1, status: 'confirmed', registered_at: '2026-10-02T10:15:00Z', user: { name: 'Ahmad Khalil', email: 'ahmad.k@example.com' } },
-    { id: 2, status: 'pending', registered_at: '2026-10-05T14:40:00Z', user: { name: 'Sara Haddad', email: 'sara.h@example.com' } },
-    { id: 3, status: 'rejected', registered_at: '2026-10-06T09:05:00Z', user: { name: 'Khaled Nasser', email: 'khaled.n@example.com' } },
-    { id: 4, status: 'confirmed', registered_at: '2026-10-08T17:20:00Z', user: { name: 'Lina Omar', email: 'lina.o@example.com' } },
-    { id: 5, status: 'pending', registered_at: '2026-10-10T11:30:00Z', user: { name: 'Yousef Saleh', email: 'yousef.s@example.com' } },
+// Sample registrant pool (the frontend runs without a backend) — cycled to match
+// the event's real applicant count from the shared org data layer.
+const NAME_POOL = [
+    { name: 'Ahmad Khalil', email: 'ahmad.k@example.com' },
+    { name: 'Sara Haddad', email: 'sara.h@example.com' },
+    { name: 'Khaled Nasser', email: 'khaled.n@example.com' },
+    { name: 'Lina Omar', email: 'lina.o@example.com' },
+    { name: 'Yousef Saleh', email: 'yousef.s@example.com' },
+    { name: 'Mariam Al-Fayed', email: 'mariam.f@example.com' },
+    { name: 'Omar Rashid', email: 'omar.r@example.com' },
+    { name: 'Dina Haydar', email: 'dina.h@example.com' },
+    { name: 'Tariq Younes', email: 'tariq.y@example.com' },
+    { name: 'Rania Zein', email: 'rania.z@example.com' },
 ]
+const STATUS_CYCLE = ['confirmed', 'confirmed', 'pending', 'confirmed', 'rejected']
+const FIRST_REGISTERED_AT = Date.parse('2026-10-02T10:15:00Z')
+const DAY_MS = 86400000
+
+// Builds this event's registrant list from its real applicant count (org-opportunities-data.js),
+// instead of showing the exact same fixed 5 rows for every event regardless of which one was opened.
+function buildRegistrationsForEvent(eventId) {
+    const opp = eventId ? loadAllOpportunities().find((o) => o.id === eventId) : null
+    // opp found -> trust its real count even when it's 0; opp not found -> fall back to the mock pool size
+    const count = opp ? Math.max(0, Number(opp.applicants ?? opp.applicantsCount ?? 0)) : NAME_POOL.length
+    return Array.from({ length: count }, (_, i) => ({
+        id: i + 1,
+        status: STATUS_CYCLE[i % STATUS_CYCLE.length],
+        registered_at: new Date(FIRST_REGISTERED_AT + i * DAY_MS).toISOString(),
+        user: NAME_POOL[i % NAME_POOL.length],
+    }))
+}
 
 const STATUS_LABELS = {
     all: { en: 'All', ar: 'الكل' },
@@ -35,14 +59,14 @@ const STATUS_BADGE = {
     cancelled: 'badge--cancelled',
 }
 
-export default function EventRegistrationsSection() {
+export default function EventRegistrationsSection({ eventId }) {
     const { language } = useLanguage()
     const ar = language === 'ar'
     const t = (en, arText) => (ar ? arText : en)
     const statusLabel = (status) => STATUS_LABELS[status]?.[ar ? 'ar' : 'en'] ?? status
 
-    // Frontend-only: the table shows the sample registrations (no backend call).
-    const registrations = MOCK_REGISTRATIONS
+    // Frontend-only: sized to this event's real applicant count (no backend call).
+    const registrations = useMemo(() => buildRegistrationsForEvent(eventId), [eventId])
     const total = registrations.length
     // selectedFilter updates the <select> right away; filter (what the table
     // shows) switches only after the old rows have faded out.

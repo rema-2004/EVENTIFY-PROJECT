@@ -7,6 +7,7 @@ import { useLanguage } from '../../hooks/useLanguage'
 import AnimatedCounter from '../../components/shared/AnimatedCounter'
 import RecruitMemberModal from '../../components/app/RecruitMemberModal'
 import TeamSettingsModal from '../../components/app/TeamSettingsModal'
+import { readJSON, writeJSON } from '../../utils/storage'
 
 // Pre-configured competitions with distinct team dashboards
 const COMPETITIONS_MAP = {
@@ -134,13 +135,9 @@ export default function TeamDashboard() {
         }
     }, [])
 
-    const [pendingInvites, setPendingInvites] = useState(() => {
-        try {
-            return JSON.parse(localStorage.getItem('eventify:pending-invites') || '[]')
-        } catch {
-            return []
-        }
-    })
+    const pendingInvitesKey = `eventify:pending-invites:${activeCompId}`
+
+    const [pendingInvites, setPendingInvites] = useState(() => readJSON(pendingInvitesKey, []))
 
     const maxMembers = currentComp.maxMembers || 6
     const totalOccupied = members.length + pendingInvites.length
@@ -156,11 +153,7 @@ export default function TeamDashboard() {
             return i !== index
         })
         setPendingInvites(updated)
-        try {
-            localStorage.setItem('eventify:pending-invites', JSON.stringify(updated))
-        } catch (err) {
-            console.error(err)
-        }
+        writeJSON(pendingInvitesKey, updated)
     }
 
     // Handle Transfer Leadership
@@ -656,6 +649,7 @@ export default function TeamDashboard() {
                     currentMemberCount={members.length}
                     pendingInvitesCount={pendingInvites.length}
                     pendingInvites={pendingInvites}
+                    pendingInvitesKey={pendingInvitesKey}
                     existingMembers={members}
                     onInviteSent={(inv) => {
                         const invList = Array.isArray(inv) ? inv : [inv]

@@ -5,6 +5,7 @@ import AppLangToggle from './AppLangToggle'
 import { useOnboarding } from '../../context/OnboardingContext'
 import { useTheme } from '../../hooks/useTheme'
 import { toast } from '../../utils/toast'
+import { clearSession } from '../../services/api.js'
 
 const NAV_LINKS = [
     { to: '/app', label: 'Home', labelAr: 'الرئيسية' },
@@ -230,6 +231,7 @@ export default function AppNavbar() {
                                         type="button"
                                         onClick={() => {
                                             setDropdownOpen(false)
+                                            clearSession()
                                             navigate('/auth/login')
                                         }}
                                         className="w-full flex items-center gap-2.5 px-3 py-2 text-xs font-semibold text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/30 rounded-xl transition-colors text-left"

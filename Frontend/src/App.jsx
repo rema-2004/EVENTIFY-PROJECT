@@ -226,6 +226,8 @@ export default function App() {
                     <Route path="profile" element={<OrgProfile />} />
                     <Route path="opportunities" element={<OrgOpportunities />} />
                     <Route path="create-event" element={<OrgCreateEvent />} />
+                    <Route path="edit-opportunity/:id?" element={<OrgCreateEvent />} />
+                    <Route path="edit-event/:id?" element={<OrgCreateEvent />} />
                     <Route path="applicants" element={<OrgApplicants />} />
                     <Route path="report-center" element={<OrgReportCenter />} />
                     <Route path="settings" element={<OrgSettings />} />

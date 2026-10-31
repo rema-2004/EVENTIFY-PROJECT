@@ -141,8 +141,6 @@ export default function Signup() {
             saveSession({ token: 'mock-participant-token-' + Date.now(), accountType: 'user', role: 'participant' })
             localStorage.setItem('eventify_current_participant', idValue)
             setIsProfileComplete(false)
-            localStorage.setItem('eventify_has_unlocked_profile', 'false')
-            localStorage.setItem('eventify_isProfileComplete', 'false')
             try {
                 const existing = JSON.parse(localStorage.getItem('eventify_userProfile') || '{}')
                 localStorage.setItem('eventify_userProfile', JSON.stringify({ ...existing, fullName: fullName.trim() }))

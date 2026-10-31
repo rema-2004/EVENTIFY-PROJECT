@@ -5,6 +5,7 @@ import AdminSidebar, { AdminMobileHeader } from '../../components/admin/AdminSid
 import AdminTopbar from '../../components/admin/AdminTopbar'
 import { useLanguage } from '../../hooks/useLanguage'
 import { toast } from '../../utils/toast'
+import { loadAllOpportunities, getDisplayName, getDisplayMeta, formatMetaCategory, updateOpportunityStatus } from '../org/org-opportunities-data.js'
 import '../../styles/admin/admin.css'
 
 const STATUS_TABS = [
@@ -13,58 +14,36 @@ const STATUS_TABS = [
     { status: 'rejected', en: 'Rejected', ar: 'مرفوض' },
 ]
 
-const INITIAL_EVENTS = [
-    {
-        id: 'evt-1',
-        title: 'DevOps Masterclass',
-        category: 'Course',
-        organizer: 'TechGenius Labs',
-        submitted: 'Submitted 2 hours ago',
-        submittedAr: 'تم التقديم منذ ساعتين',
-        description: 'A hands-on cloud lab covering CI/CD, Kubernetes, and infrastructure as code over 6 weeks.',
-        descriptionAr: 'مختبر سحابي عملي يغطي CI/CD وKubernetes والبنية التحتية ككود على مدار 6 أسابيع.',
-        status: 'pending',
-    },
-    {
-        id: 'evt-2',
-        title: 'Quantum Computing Bootcamp',
-        category: 'Workshop',
-        organizer: 'University of Technology',
-        submitted: 'Submitted yesterday',
-        submittedAr: 'تم التقديم بالأمس',
-        description: 'An intensive 3-day introduction to quantum algorithms for advanced undergraduate students.',
-        descriptionAr: 'مقدمة مكثفة مدتها 3 أيام لخوارزميات الحوسبة الكمية لطلاب البكالوريوس المتقدمين.',
-        status: 'pending',
-    },
-    {
-        id: 'evt-3',
-        title: 'Product Design Sprint',
-        category: 'Competition',
-        organizer: 'DesignHub Amman',
-        submitted: 'Submitted 3 days ago',
-        submittedAr: 'تم التقديم منذ 3 أيام',
-        description: 'Teams of 2-4 compete to redesign a real fintech product in 48 hours, judged by industry mentors.',
-        descriptionAr: 'تتنافس فرق من 2 إلى 4 أعضاء لإعادة تصميم منتج حقيقي في التكنولوجيا المالية خلال 48 ساعة.',
-        status: 'pending',
-    },
-    {
-        id: 'evt-4',
-        title: 'Future of AI Summit',
-        category: 'Conference',
-        organizer: 'TechGenius Labs',
-        submitted: 'Submitted 5 hours ago',
-        submittedAr: 'تم التقديم منذ 5 ساعات',
-        description: 'A one-day conference with keynote talks and panels on applied AI, open to students and industry professionals.',
-        descriptionAr: 'مؤتمر ليوم واحد يضم كلمات رئيسية وحلقات نقاشية حول الذكاء الاصطناعي التطبيقي.',
-        status: 'pending',
-    },
-]
+// فرص المنظمين الحقيقية (pending/rejected/live/upcoming/ended) تتجمّع هون بنفس تبويبات الأدمن الثلاثة:
+// معتمدة (live/upcoming/ended) تدخل تحت "Approved" لأنها أصلاً اجتازت موافقة الأدمن.
+function toAdminStatus(status) {
+    if (status === 'rejected') return 'rejected'
+    // 'draft' يُحسب كمعلّق هون كمان، اتساقاً مع isUnpublished بـorg-opportunities.jsx
+    if (status === 'pending' || status === 'draft') return 'pending'
+    return 'approved'
+}
+
+// يقرأ نفس بيانات صفحات المنظمة (localStorage) حتى قرار الأدمن ينعكس فوراً عند المنظم، والعكس.
+function buildAdminEvents() {
+    return loadAllOpportunities().map((opp) => ({
+        id: opp.id,
+        title: getDisplayName(opp, false),
+        category: formatMetaCategory(opp.category, false),
+        organizer: opp.organizer || 'Event organizer',
+        submitted: opp.createdAt ? `Submitted ${opp.createdAt.slice(0, 10)}` : 'Awaiting review',
+        submittedAr: opp.createdAt ? `تم التقديم بتاريخ ${opp.createdAt.slice(0, 10)}` : 'بانتظار المراجعة',
+        description: opp.descriptionEn || opp.description || getDisplayMeta(opp, false),
+        descriptionAr: opp.descriptionAr || getDisplayMeta(opp, true),
+        status: toAdminStatus(opp.status),
+        rejectionReason: opp.rejectionReasonAr || opp.rejectionReason || '',
+    }))
+}
 
 export default function AdminEvents() {
     const { language } = useLanguage()
     const ar = language === 'ar'
 
-    const [events, setEvents] = useState(INITIAL_EVENTS)
+    const [events, setEvents] = useState(buildAdminEvents)
     const [activeFilter, setActiveFilter] = useState('pending')
     const [rejectModalOpen, setRejectModalOpen] = useState(false)
     const [selectedEvent, setSelectedEvent] = useState(null)
@@ -90,28 +69,21 @@ export default function AdminEvents() {
     }
 
     const executeReject = (eventId, reason) => {
-        setEvents((prev) =>
-            prev.map((e) => {
-                if (e.id === eventId) {
-                    return { ...e, status: 'rejected', rejectionReason: reason }
-                }
-                return e
-            }),
-        )
         const eventItem = events.find((e) => e.id === eventId)
+        // لا نترجم السبب تلقائياً: نحفظه بلغة الأدمن الحالية فقط، وإلا يظهر نص إنجليزي غير مترجم
+        // داخل بطاقة "سبب الرفض" العربية عند المنظم (org-create-event.jsx تعتمد على rejectionReasonAr || rejectionReason)
+        updateOpportunityStatus(eventId, ar
+            ? { status: 'rejected', rejectionReasonAr: reason, rejectionReason: '' }
+            : { status: 'rejected', rejectionReason: reason, rejectionReasonAr: '' })
+        setEvents(buildAdminEvents())
         toast(ar ? `تم رفض فعالية "${eventItem?.title}"` : `Event "${eventItem?.title}" rejected`, 'error')
     }
 
     const handleApprove = (eventId) => {
-        setEvents((prev) =>
-            prev.map((e) => {
-                if (e.id === eventId) {
-                    return { ...e, status: 'approved' }
-                }
-                return e
-            }),
-        )
         const eventItem = events.find((e) => e.id === eventId)
+        // 'live' = الحالة المعتمدة الأساسية؛ upcoming/live/ended تُشتق منها تلقائياً حسب تواريخ الفعالية
+        updateOpportunityStatus(eventId, { status: 'live' })
+        setEvents(buildAdminEvents())
         toast(ar ? `تمت الموافقة على فعالية "${eventItem?.title}"` : `Event "${eventItem?.title}" approved`, 'success')
     }
 

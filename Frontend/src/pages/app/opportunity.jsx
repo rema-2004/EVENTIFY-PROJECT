@@ -4,6 +4,8 @@ import { useState, useEffect } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { useLanguage } from '../../hooks/useLanguage'
 import AnimatedCounter from '../../components/shared/AnimatedCounter'
+import { loadSavedIds, persistSavedIds } from './savedItems.js'
+import { readSessionJSON } from '../../utils/storage'
 
 const OPPORTUNITY_DETAILS = {
     'global-ai-innovation-challenge': {
@@ -287,17 +289,8 @@ export default function Opportunity() {
     const location = useLocation()
     const compFromState = location.state?.competition
 
-    const getStoredComp = () => {
-        try {
-            const raw = sessionStorage.getItem('eventify_selected_competition')
-            return raw ? JSON.parse(raw) : null
-        } catch {
-            return null
-        }
-    }
-
     // Prefer state, then sessionStorage, then fallback
-    const comp = compFromState || getStoredComp() || {
+    const comp = compFromState || readSessionJSON('eventify_selected_competition', null) || {
         id: 'global-ai-innovation-challenge',
         title: ar ? 'تحدي الابتكار العالمي بالذكاء الاصطناعي' : 'Global AI Innovation Challenge',
         cat: 'competition',
@@ -319,7 +312,7 @@ export default function Opportunity() {
         }
     }, [comp])
 
-    const [saved, setSaved] = useState(false)
+    const [saved, setSaved] = useState(() => loadSavedIds().has(comp.id))
     const [toast, setToast] = useState(null)
 
     const showToast = (msg) => { setToast(msg); setTimeout(() => setToast(null), 2800) }
@@ -328,6 +321,10 @@ export default function Opportunity() {
             showToast(prev
                 ? (ar ? 'تمت إزالته من المحفوظات' : 'Removed from saved')
                 : (ar ? 'تم الحفظ لوقت لاحق' : 'Saved for later'))
+            const ids = loadSavedIds()
+            if (prev) ids.delete(comp.id)
+            else ids.add(comp.id)
+            persistSavedIds(ids)
             return !prev
         })
     }

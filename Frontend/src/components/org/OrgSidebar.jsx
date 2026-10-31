@@ -1,6 +1,7 @@
 import { Link, useLocation } from 'react-router-dom'
 import { useLanguage } from '../../hooks/useLanguage'
 import LangToggleBtn from './LangToggleBtn'
+import CreateEventLink from './CreateEventLink'
 
 export { LangToggleBtn }
 
@@ -154,6 +155,23 @@ export default function OrgSidebar() {
                     <div className="nav-group">
                         {ORG_NAV_ITEMS.map((item) => {
                             const active = isCurrentActive(item)
+                            const icon = (
+                                <span
+                                    className="material-symbols-outlined"
+                                    aria-hidden="true"
+                                    style={active ? { fontVariationSettings: '"FILL" 1' } : {}}
+                                >
+                                    {item.icon}
+                                </span>
+                            )
+                            if (item.to === '/org/create-event') {
+                                return (
+                                    <CreateEventLink key={item.to} className="nav-link">
+                                        {icon}
+                                        {ar ? item.labelAr : item.label}
+                                    </CreateEventLink>
+                                )
+                            }
                             return (
                                 <Link
                                     key={item.to}
@@ -161,13 +179,7 @@ export default function OrgSidebar() {
                                     to={item.to}
                                     aria-current={active ? 'page' : undefined}
                                 >
-                                    <span
-                                        className="material-symbols-outlined"
-                                        aria-hidden="true"
-                                        style={active ? { fontVariationSettings: '"FILL" 1' } : {}}
-                                    >
-                                        {item.icon}
-                                    </span>
+                                    {icon}
                                     {ar ? item.labelAr : item.label}
                                 </Link>
                             )
@@ -221,6 +233,23 @@ export default function OrgSidebar() {
                 <div className="nav-group flex flex-1 flex-col gap-1">
                     {ORG_NAV_ITEMS.map((item) => {
                         const active = isCurrentActive(item)
+                        const icon = (
+                            <span
+                                className="material-symbols-outlined"
+                                aria-hidden="true"
+                                style={active ? { fontVariationSettings: '"FILL" 1' } : {}}
+                            >
+                                {item.icon}
+                            </span>
+                        )
+                        if (item.to === '/org/create-event') {
+                            return (
+                                <CreateEventLink key={item.to} className="nav-link">
+                                    {icon}
+                                    {ar ? item.labelAr : item.label}
+                                </CreateEventLink>
+                            )
+                        }
                         return (
                             <Link
                                 key={item.to}
@@ -228,13 +257,7 @@ export default function OrgSidebar() {
                                 to={item.to}
                                 aria-current={active ? 'page' : undefined}
                             >
-                                <span
-                                    className="material-symbols-outlined"
-                                    aria-hidden="true"
-                                    style={active ? { fontVariationSettings: '"FILL" 1' } : {}}
-                                >
-                                    {item.icon}
-                                </span>
+                                {icon}
                                 {ar ? item.labelAr : item.label}
                             </Link>
                         )

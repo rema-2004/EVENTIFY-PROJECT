@@ -4,6 +4,7 @@ import AppPageHead from '../../components/app/AppPageHead'
 import { useState, useEffect } from 'react'
 import { Link, useNavigate, useLocation } from 'react-router-dom'
 import { useLanguage } from '../../hooks/useLanguage'
+import { readSessionJSON } from '../../utils/storage'
 
 export default function ParticipationType() {
     const { language } = useLanguage()
@@ -15,17 +16,8 @@ export default function ParticipationType() {
     // Track simulated override if user toggles buttons
     const [simulatedType, setSimulatedType] = useState(null)
 
-    const getStoredComp = () => {
-        try {
-            const raw = sessionStorage.getItem('eventify_selected_competition')
-            return raw ? JSON.parse(raw) : null
-        } catch {
-            return null
-        }
-    }
-
     // Current competition: always prefers navigated state, then stored, then fallback
-    const comp = compFromState || getStoredComp() || {
+    const comp = compFromState || readSessionJSON('eventify_selected_competition', null) || {
         id: 'global-ai-innovation-challenge',
         title: ar ? 'تحدي الابتكار العالمي بالذكاء الاصطناعي' : 'Global AI Innovation Challenge',
         cat: 'competition',
@@ -274,7 +266,8 @@ export default function ParticipationType() {
                                 </div>
                             </div>
 
-                            {/* Live Simulation Switcher (Quick test pills) */}
+                            {/* Live Simulation Switcher (Quick test pills) — dev-only, never shown in production */}
+                            {import.meta.env.DEV && (
                             <div className={`flex items-center gap-1 bg-surface rounded-xl p-1 border border-outline-variant/40 shrink-0 ${ar ? 'flex-row-reverse' : ''}`}>
                                 <span className="text-[10px] font-bold uppercase tracking-wider text-on-surface-variant px-1.5 hidden sm:inline">
                                     {ar ? 'محاكاة:' : 'Test:'}
@@ -298,6 +291,7 @@ export default function ParticipationType() {
                                     </button>
                                 ))}
                             </div>
+                            )}
                         </div>
 
                         {/* Step indicator + heading */}

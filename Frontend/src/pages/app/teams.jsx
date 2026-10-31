@@ -5,6 +5,7 @@ import SkillFilter from '../../components/shared/SkillFilter'
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useLanguage } from '../../hooks/useLanguage'
+import { readSessionJSON } from '../../utils/storage'
 
 const TEAMS = [
     {
@@ -92,10 +93,7 @@ export default function Teams() {
     const ar = language === 'ar'
     const navigate = useNavigate()
     const requestToJoin = (team) => {
-        let comp = null
-        try {
-            comp = JSON.parse(sessionStorage.getItem('eventify_selected_competition') || '{}')
-        } catch {}
+        const comp = readSessionJSON('eventify_selected_competition', {})
         navigate('/app/registration-success', { state: { type: 'join', team: team.name, competition: comp } })
     }
 
